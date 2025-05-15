@@ -363,7 +363,59 @@ const forgetUsername = async (request, response) => {
 
 }
 
-const resetPassword = async (request, response) => { }
+const resetPassword = async (request, response) => { 
+
+  try {
+    
+    const { email, mobileNumber, newPassword } = request.body;
+
+    if (!email || !mobileNumber || !newPassword) {
+      throw new ApiError(400, "Please provide all required fields");
+    }
+
+    const findUser = await prisma.user.findUnique({
+      where: {
+        email: email.toLowerCase(),
+        mobileNumber
+      }
+    })
+
+    if (!findUser) {
+      throw new ApiError(404, "User not found");
+    }
+    
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+      where: {
+        userId: findUser.userId
+      },
+      data: {
+        password: hashedPassword
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        user: {
+          email: findUser.email,
+          mobileNumber: findUser.mobileNumber,
+          username: findUser.username,
+          firstName: findUser.firstName,
+          lastName: findUser.lastName
+        }
+      }, "Password reset successfully")
+    )
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to reset password", {
+        error: error.message
+      })
+    )
+
+  }
+}
 
 const updateProfile = async (request, response) => { }
 

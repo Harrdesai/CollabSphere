@@ -47,9 +47,11 @@ app.use((err, req, res, next) => {
 import healthCheckRouter from './routes/healthcheck.routes.js';
 import authRouter from './routes/auth.routes.js';
 import importDataRouter from './routes/importData.route.js';
+import teamsRoutes from './routes/teams.routes.js';
 
 app.use("/api/v1/healthcheck", healthCheckRouter)
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/import-data", importDataRouter)
+app.use("/api/v1/teams", teamsRoutes)
 
 export default app;

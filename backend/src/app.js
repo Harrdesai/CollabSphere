@@ -46,8 +46,10 @@ app.use((err, req, res, next) => {
 // router imports
 import healthCheckRouter from './routes/healthcheck.routes.js';
 import authRouter from './routes/auth.routes.js';
+import importDataRouter from './routes/importData.route.js';
 
 app.use("/api/v1/healthcheck", healthCheckRouter)
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/import-data", importDataRouter)
 
 export default app;

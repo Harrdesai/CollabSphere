@@ -1953,7 +1953,7 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     email: string | null
-    mobile: string | null
+    mobileNumber: string | null
     username: string | null
     password: string | null
     about: string | null
@@ -1972,7 +1972,7 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     email: string | null
-    mobile: string | null
+    mobileNumber: string | null
     username: string | null
     password: string | null
     about: string | null
@@ -1991,7 +1991,7 @@ export namespace Prisma {
     firstName: number
     lastName: number
     email: number
-    mobile: number
+    mobileNumber: number
     username: number
     password: number
     courseName: number
@@ -2013,7 +2013,7 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     email?: true
-    mobile?: true
+    mobileNumber?: true
     username?: true
     password?: true
     about?: true
@@ -2032,7 +2032,7 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     email?: true
-    mobile?: true
+    mobileNumber?: true
     username?: true
     password?: true
     about?: true
@@ -2051,7 +2051,7 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     email?: true
-    mobile?: true
+    mobileNumber?: true
     username?: true
     password?: true
     courseName?: true
@@ -2144,7 +2144,7 @@ export namespace Prisma {
     firstName: string
     lastName: string
     email: string
-    mobile: string
+    mobileNumber: string
     username: string
     password: string
     courseName: string[]
@@ -2181,7 +2181,7 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     email?: boolean
-    mobile?: boolean
+    mobileNumber?: boolean
     username?: boolean
     password?: boolean
     courseName?: boolean
@@ -2201,7 +2201,7 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     email?: boolean
-    mobile?: boolean
+    mobileNumber?: boolean
     username?: boolean
     password?: boolean
     courseName?: boolean
@@ -2221,7 +2221,7 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     email?: boolean
-    mobile?: boolean
+    mobileNumber?: boolean
     username?: boolean
     password?: boolean
     courseName?: boolean
@@ -2241,7 +2241,7 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     email?: boolean
-    mobile?: boolean
+    mobileNumber?: boolean
     username?: boolean
     password?: boolean
     courseName?: boolean
@@ -2256,7 +2256,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "email" | "mobile" | "username" | "password" | "courseName" | "about" | "role" | "twitter" | "github" | "linkedIn" | "hashnode" | "peerlist" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "email" | "mobileNumber" | "username" | "password" | "courseName" | "about" | "role" | "twitter" | "github" | "linkedIn" | "hashnode" | "peerlist" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -2266,7 +2266,7 @@ export namespace Prisma {
       firstName: string
       lastName: string
       email: string
-      mobile: string
+      mobileNumber: string
       username: string
       password: string
       courseName: string[]
@@ -2706,7 +2706,7 @@ export namespace Prisma {
     readonly firstName: FieldRef<"User", 'String'>
     readonly lastName: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly mobile: FieldRef<"User", 'String'>
+    readonly mobileNumber: FieldRef<"User", 'String'>
     readonly username: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly courseName: FieldRef<"User", 'String[]'>
@@ -3114,7 +3114,7 @@ export namespace Prisma {
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email',
-    mobile: 'mobile',
+    mobileNumber: 'mobileNumber',
     username: 'username',
     password: 'password',
     courseName: 'courseName',
@@ -3225,13 +3225,14 @@ export namespace Prisma {
 
   export type ImportCSVWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    email?: string
+    email_mobileNumber?: ImportCSVEmailMobileNumberCompoundUniqueInput
     AND?: ImportCSVWhereInput | ImportCSVWhereInput[]
     OR?: ImportCSVWhereInput[]
     NOT?: ImportCSVWhereInput | ImportCSVWhereInput[]
+    email?: StringFilter<"ImportCSV"> | string
     mobileNumber?: StringFilter<"ImportCSV"> | string
     courseName?: StringNullableListFilter<"ImportCSV">
-  }, "id" | "email">
+  }, "id" | "email_mobileNumber">
 
   export type ImportCSVOrderByWithAggregationInput = {
     id?: SortOrder
@@ -3261,7 +3262,7 @@ export namespace Prisma {
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    mobile?: StringFilter<"User"> | string
+    mobileNumber?: StringFilter<"User"> | string
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     courseName?: StringNullableListFilter<"User">
@@ -3281,7 +3282,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     email?: SortOrder
-    mobile?: SortOrder
+    mobileNumber?: SortOrder
     username?: SortOrder
     password?: SortOrder
     courseName?: SortOrder
@@ -3304,7 +3305,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
-    mobile?: StringFilter<"User"> | string
+    mobileNumber?: StringFilter<"User"> | string
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     courseName?: StringNullableListFilter<"User">
@@ -3324,7 +3325,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     email?: SortOrder
-    mobile?: SortOrder
+    mobileNumber?: SortOrder
     username?: SortOrder
     password?: SortOrder
     courseName?: SortOrder
@@ -3350,7 +3351,7 @@ export namespace Prisma {
     firstName?: StringWithAggregatesFilter<"User"> | string
     lastName?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    mobile?: StringWithAggregatesFilter<"User"> | string
+    mobileNumber?: StringWithAggregatesFilter<"User"> | string
     username?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     courseName?: StringNullableListFilter<"User">
@@ -3419,7 +3420,7 @@ export namespace Prisma {
     firstName: string
     lastName: string
     email: string
-    mobile: string
+    mobileNumber: string
     username: string
     password: string
     courseName?: UserCreatecourseNameInput | string[]
@@ -3439,7 +3440,7 @@ export namespace Prisma {
     firstName: string
     lastName: string
     email: string
-    mobile: string
+    mobileNumber: string
     username: string
     password: string
     courseName?: UserCreatecourseNameInput | string[]
@@ -3459,7 +3460,7 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    mobile?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     courseName?: UserUpdatecourseNameInput | string[]
@@ -3479,7 +3480,7 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    mobile?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     courseName?: UserUpdatecourseNameInput | string[]
@@ -3499,7 +3500,7 @@ export namespace Prisma {
     firstName: string
     lastName: string
     email: string
-    mobile: string
+    mobileNumber: string
     username: string
     password: string
     courseName?: UserCreatecourseNameInput | string[]
@@ -3519,7 +3520,7 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    mobile?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     courseName?: UserUpdatecourseNameInput | string[]
@@ -3539,7 +3540,7 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    mobile?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     courseName?: UserUpdatecourseNameInput | string[]
@@ -3575,6 +3576,11 @@ export namespace Prisma {
     hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
     hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
     isEmpty?: boolean
+  }
+
+  export type ImportCSVEmailMobileNumberCompoundUniqueInput = {
+    email: string
+    mobileNumber: string
   }
 
   export type ImportCSVCountOrderByAggregateInput = {
@@ -3650,7 +3656,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     email?: SortOrder
-    mobile?: SortOrder
+    mobileNumber?: SortOrder
     username?: SortOrder
     password?: SortOrder
     courseName?: SortOrder
@@ -3670,7 +3676,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     email?: SortOrder
-    mobile?: SortOrder
+    mobileNumber?: SortOrder
     username?: SortOrder
     password?: SortOrder
     about?: SortOrder
@@ -3689,7 +3695,7 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     email?: SortOrder
-    mobile?: SortOrder
+    mobileNumber?: SortOrder
     username?: SortOrder
     password?: SortOrder
     about?: SortOrder

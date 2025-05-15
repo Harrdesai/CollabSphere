@@ -1,8 +1,10 @@
 import express from 'express';
-import { registerUser, loginUser, logoutUser, getMe, forgetUsername, resetPassword, updateProfile } from '../controllers/auth.controllers.js';
+import { isUserAvailableInImportedCSV, registerUser, loginUser, logoutUser, getMe, forgetUsername, resetPassword, updateProfile } from '../controllers/auth.controllers.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const authRoutes = express.Router();
+
+authRoutes.post('/is-user-exists', isUserAvailableInImportedCSV);
 
 authRoutes.post('/register', registerUser);
 
@@ -12,7 +14,7 @@ authRoutes.post('/logout', authMiddleware, logoutUser);
 
 authRoutes.get('/me', authMiddleware, getMe);
 
-authRoutes.post('/forget-username', forgetUsername);
+authRoutes.get('/get-username', forgetUsername);
 
 authRoutes.post('/reset-password', resetPassword);
 

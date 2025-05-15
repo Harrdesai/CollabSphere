@@ -2,11 +2,13 @@ import { request, response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { ApiError } from "../utils/api-error.js";
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "../generated/prisma/index.js";
 
 dotenv.config({
   path: "./.env",
 });
+
+const prisma = new PrismaClient();
 
 const authMiddleware = async (request, response, next) => {
 
@@ -34,17 +36,16 @@ const authMiddleware = async (request, response, next) => {
 
     }
 
+    const userId = request.cookies.userId;
+
     const user = await prisma.user.findUnique({
       where: {
-        id: decoded.id
+        userId
       },
       select: {
-        id: true,
-        name: true,
-        image: true,
-        email: true,
-        role: true,
-        createdAt: true,
+        userId: true,
+        firstName: true,
+        lastName: true,
       }
     });
 
@@ -81,7 +82,7 @@ const checkRole = async (request, response, next) => {
       }
     });
 
-    if (!user || user.role === "USER") {
+    if (!user || user.role === "user") {
 
       throw new ApiError(403, "Access denied");
 

@@ -9,32 +9,30 @@ const prisma = new PrismaClient();
 const registerUser = async (request, response) => {
 
   try {
-   
+
   } catch (error) {
 
-    response.status(error.statusCode).json(
-      new ApiError(error.statusCode, "Error registering user", {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error While registering user", {
         error: error.message
       })
     )
-    
+
   }
 }
 
 const loginUser = async (request, response) => {
 
   try {
-    
-    
 
   } catch (error) {
 
-    response.status(error.statusCode).json(
-      new ApiError(error.statusCode, "Error logging in user", {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while logging in user", {
         error: error.message
       })
     )
-    
+
   }
 };
 
@@ -43,7 +41,7 @@ const logoutUser = async (request, response) => {
   try {
 
   } catch (error) {
-    
+
     console.error("Error logging out user:", error);
     response.status(error.statusCode).json(
       new ApiError(error.statusCode, "Error logging out user", {
@@ -57,12 +55,11 @@ const getMe = async (request, response) => {
 
   try {
 
-    
   } catch (error) {
-    
+
     console.error("Error fetching user:", error);
-    response.status(error.statusCode).json(
-      new ApiError(error.statusCode, "Error fetching user", {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error fetching user", {
         error: error.message
       })
     )
@@ -71,9 +68,9 @@ const getMe = async (request, response) => {
 
 const forgetUsername = async (request, response) => {}
 
-const resetPassword = async (request, response) => {}
+const resetPassword = async (request, response) => { }
 
-const updateProfile = async (request, response) => {}
+const updateProfile = async (request, response) => { }
 
 export {
   registerUser,

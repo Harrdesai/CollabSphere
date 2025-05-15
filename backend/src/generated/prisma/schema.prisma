@@ -16,27 +16,29 @@ datasource db {
 
 model ImportCSV {
   id           String   @id @default(uuid())
-  email        String   @unique
+  email        String
   mobileNumber String
   courseName   String[]
+
+  @@unique([email, mobileNumber])
 }
 
 model User {
-  userId     String   @id @default(uuid())
-  firstName  String
-  lastName   String
-  email      String   @unique
-  mobile     String
-  username   String
-  password   String
-  courseName String[]
-  about      String
-  role       String   @default("user")
-  twitter    String?
-  github     String?
-  linkedIn   String?
-  hashnode   String?
-  peerlist   String?
+  userId       String   @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String   @unique
+  mobileNumber String
+  username     String
+  password     String
+  courseName   String[]
+  about        String
+  role         String   @default("user")
+  twitter      String?
+  github       String?
+  linkedIn     String?
+  hashnode     String?
+  peerlist     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

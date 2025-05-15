@@ -54,6 +54,81 @@ const registerUser = async (request, response) => {
 
   try {
 
+    const { firstName, lastName, email, mobileNumber, username, password, courseName, about, twitter, github, linkedIn, hashnode, peerlist } = request.body
+
+    if (!firstName || !lastName || !email || !mobileNumber || !username || !password || !about) {
+      throw new ApiError(400, "Please provide all required fields",);
+    }
+
+    // match the email and mobileNumber with ImportCSV data-table
+    const user = await prisma.importCSV.findUnique({
+      where: {
+        email_mobileNumber: {
+          email: email.toLowerCase(),
+          mobileNumber
+        }
+      }
+    })
+
+    if (!user) {
+      throw new ApiError(400, "Invalid email or mobile number please contact admin")
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await prisma.user.create({
+      data: {
+        firstName,
+        lastName,
+        email: email.toLowerCase(),
+        mobileNumber,
+        username: username.toLowerCase(),
+        password: hashedPassword,
+        courseName,
+        about,
+        twitter,
+        github,
+        linkedIn,
+        hashnode,
+        peerlist
+      }
+    })
+
+    if (!newUser) {
+      throw new ApiError(500, "Error while registering user");
+    }
+
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+
+    response.cookie("jwt", token, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    })
+
+    response.status(200).json(
+      new ApiResponse(201, {
+        user: {
+          id: newUser.userId,
+          email: newUser.email,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          mobileNumber: newUser.mobileNumber,
+          username: newUser.username,
+          courseName: newUser.courseName,
+          about: newUser.about,
+          role: newUser.role,
+          twitter: newUser.twitter,
+          github: newUser.github,
+          linkedIn: newUser.linkedIn,
+          hashnode: newUser.hashnode,
+          peerlist: newUser.peerlist
+        }
+      }, "User Profile created successfully")
+    )
 
   } catch (error) {
 

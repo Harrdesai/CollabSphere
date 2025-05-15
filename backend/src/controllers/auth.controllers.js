@@ -417,9 +417,89 @@ const resetPassword = async (request, response) => {
   }
 }
 
-const updateProfile = async (request, response) => { }
+const updateProfile = async (request, response) => { 
+
+  try {
+
+    const userId = request.cookies.userId;
+
+    const { firstName, lastName, username, about, twitter, github, linkedIn, hashnode, peerlist } = request.body
+
+    if(!userId || !firstName || !lastName || !username || !about) {
+      throw new ApiError(400, "Please provide all required fields");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        userId
+      },
+      select: {
+        userId: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        mobileNumber: true,
+        username: true,
+        courseName: true,
+        about: true,
+        role: false,
+        twitter: true,
+        github: true,
+        linkedIn: true,
+        hashnode: true,
+        peerlist: true
+      }
+    })
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        userId
+      },
+      data: {
+        firstName,
+        lastName,
+        username,
+        about,
+        twitter,
+        github,
+        linkedIn,
+        hashnode,
+        peerlist
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        user: {
+          id: updatedUser.id,
+          email: updatedUser.email,
+          firstName: updatedUser.firstName,
+          lastName: updatedUser.lastName,
+          mobileNumber: updatedUser.mobileNumber,
+          username: updatedUser.username,
+          courseName: updatedUser.courseName,
+          about: updatedUser.about,
+          twitter: updatedUser.twitter,
+          github: updatedUser.github,
+          linkedIn: updatedUser.linkedIn,
+          hashnode: updatedUser.hashnode,
+          peerlist: updatedUser.peerlist
+        }
+      }, "Profile updated successfully")
+    )
+    
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error updating profile", {
+        error: error.message
+      })
+    )
+  }
+}
 
 export {
+  isUserAvailableInImportedCSV,
   registerUser,
   loginUser,
   logoutUser,

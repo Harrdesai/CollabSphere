@@ -320,7 +320,48 @@ const getMe = async (request, response) => {
   }
 }
 
-const forgetUsername = async (request, response) => {}
+const forgetUsername = async (request, response) => {
+
+  try {
+
+    const { email, mobileNumber } = request.body;
+  
+    if (!email || !mobileNumber) {
+      throw new ApiError(400, "Please provide email and mobile number");
+    }
+  
+    const findUser = await prisma.user.findUnique({
+      where: {
+        email: email.toLowerCase(),
+        mobileNumber
+      }
+    })
+  
+    if (!findUser) {
+      throw new ApiError(404, "User not found");
+    }
+  
+    response.status(200).json(
+      new ApiResponse(200, {
+        user: {
+          email: findUser.email,
+          mobileNumber: findUser.mobileNumber,
+          username: findUser.username
+        }
+      }, "User data fetched successfully")
+    )
+
+  } catch (error) {
+    
+    console.error("Error fetching user:", error);
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while checking user in imported CSV table", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const resetPassword = async (request, response) => { }
 

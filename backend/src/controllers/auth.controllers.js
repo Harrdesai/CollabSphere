@@ -6,9 +6,54 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
+const isUserAvailableInImportedCSV = async (request, response) => {
+
+  try {
+
+    const { email = "", mobileNumber = "" } = request.body;
+
+    if (!email && !mobileNumber) {
+      throw new ApiError(400, "Email and mobile number are required");
+    }
+
+    const isUserAvailable = await prisma.importCSV.findFirst({
+      where: {
+        OR: [
+          email ? { email: email.toLowerCase() } : undefined,
+          mobileNumber ? { mobileNumber } : undefined
+        ].filter(Boolean)
+      }
+    })
+
+    if (!isUserAvailable) {
+      throw new ApiError(404, "User not found in CSV table");
+    }
+
+    response.status(200).json(
+      new ApiResponse(201, {
+        user: {
+          email: isUserAvailable.email,
+          mobileNumber: isUserAvailable.mobileNumber,
+          courseName: isUserAvailable.courseName
+        }
+      }, "User found in CSV table")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while finding user in CSV table", {
+        error: error.message
+      })
+    )
+
+  }
+}
+
 const registerUser = async (request, response) => {
 
   try {
+
 
   } catch (error) {
 

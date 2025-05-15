@@ -259,6 +259,56 @@ const getMe = async (request, response) => {
 
   try {
 
+    if (!request.user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    const userId = request.cookies.userId;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        userId
+      },
+      select: {
+        userId: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        mobileNumber: true,
+        username: true,
+        courseName: true,
+        password: false,
+        about: true,
+        role: true,
+        twitter: true,
+        github: true,
+        linkedIn: true,
+        hashnode: true,
+        peerlist: true
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          mobileNumber: user.mobileNumber,
+          username: user.username,
+          courseName: user.courseName,
+          about: user.about,
+          role: user.role,
+          twitter: user.twitter,
+          github: user.github,
+          linkedIn: user.linkedIn,
+          hashnode: user.hashnode,
+          peerlist: user.peerlist
+        }
+      }, "User data fetched successfully")
+    )
+
   } catch (error) {
 
     console.error("Error fetching user:", error);

@@ -50,4 +50,5 @@ teamsRoutes.get('/get-team-members', authMiddleware, getListOfTeamMembers);
 teamsRoutes.get('/get-timeline-of-team-members', authMiddleware, getTimelineOfTeamMembers);
 
 teamsRoutes.get('/get-timeline-of-user', authMiddleware, getTimelineOfUser);
+
 export default teamsRoutes;

@@ -1,4 +1,4 @@
-// src/
+// src/routes/noticeBoard.routes.js
 
 import { Router } from "express";
 import { authMiddleware } from '../middleware/auth.middleware.js';

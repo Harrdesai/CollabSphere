@@ -225,6 +225,25 @@ const logoutUser = async (request, response) => {
 
   try {
 
+    response.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development"
+    });
+
+    response.clearCookie("userId", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development"
+    });
+
+    response.status(200).json(new ApiResponse(200, {
+      user: {
+        firstName: request.user.firstName,
+        lastName: request.user.lastName
+      }
+    }, "User logged out successfully"));
+
   } catch (error) {
 
     console.error("Error logging out user:", error);

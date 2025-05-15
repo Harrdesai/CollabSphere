@@ -50,6 +50,42 @@ const isUserAvailableInImportedCSV = async (request, response) => {
   }
 }
 
+const isUsernameAvailable = async (request, response) => {
+
+  try {
+    
+    const { username } = request.body;
+
+    if (!username) {
+      throw new ApiError(400, "Username is required");
+    }
+
+    const checkUsernameExists = await prisma.user.findUnique({
+      where: {
+        username
+      }
+    })
+
+    if (checkUsernameExists) {
+      throw new ApiError(400, "Username already in use, please choose another username");
+    }
+    
+    response.status(200).json(
+      new ApiResponse(201, {
+        username
+      }, "Username is available")
+    )
+
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while checking availability of username", {
+        error: error.message
+      })
+    )
+  }
+
+}
 const registerUser = async (request, response) => {
 
   try {
@@ -520,6 +556,7 @@ const updateProfile = async (request, response) => {
 
 export {
   isUserAvailableInImportedCSV,
+  isUsernameAvailable,
   registerUser,
   loginUser,
   logoutUser,

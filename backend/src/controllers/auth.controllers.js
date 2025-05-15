@@ -504,6 +504,17 @@ const updateProfile = async (request, response) => {
       }
     })
 
+    if (user.username !== username) {
+      const checkUsernameExists = await prisma.user.findUnique({
+        where: {
+          username
+        }
+      })
+      if (checkUsernameExists) {
+        throw new ApiError(400, "Username already exists, please choose another username");
+      }
+    }
+
     const updatedUser = await prisma.user.update({
       where: {
         userId

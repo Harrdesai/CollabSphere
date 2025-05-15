@@ -145,6 +145,71 @@ const loginUser = async (request, response) => {
 
   try {
 
+    const { email, password, username } = request.body;
+
+    // eighter email or username
+    if (!email && !username || !password) {
+      throw new ApiError(400, "Please provide email or username and password");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email.toLowerCase(),
+        username: username.toLowerCase()
+      }
+    })
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      throw new ApiError(401, "Incorrect password");
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+
+    const userId = user.userId
+
+    response.cookie("jwt", token, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    })
+
+    response.cookie("userId", userId, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    });
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        user: {
+          id: user.userId,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          mobileNumber: user.mobileNumber,
+          username: user.username,
+          courseName: user.courseName,
+          about: user.about,
+          role: user.role,
+          twitter: user.twitter,
+          github: user.github,
+          linkedIn: user.linkedIn,
+          hashnode: user.hashnode,
+          peerlist: user.peerlist
+        }
+      }, "User logged in successfully")
+    )
+
   } catch (error) {
 
     response.status(error.statusCode || 500).json(

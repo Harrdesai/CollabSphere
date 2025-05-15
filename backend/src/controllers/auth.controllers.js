@@ -74,6 +74,26 @@ const registerUser = async (request, response) => {
       throw new ApiError(400, "Invalid email or mobile number please contact admin")
     }
 
+    const checkUserExists = await prisma.user.findUnique({
+      where: {
+        email: email.toLowerCase()
+      }
+    })
+
+    if (checkUserExists) {
+      throw new ApiError(400, "User already exists");
+    }
+
+    const checkUsernameExists = await prisma.user.findUnique({
+      where: {
+        username: username.toLowerCase()
+      }
+    })
+
+    if (checkUsernameExists) {
+      throw new ApiError(400, "Username already exists, please choose another username");
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await prisma.user.create({

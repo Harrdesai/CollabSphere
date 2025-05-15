@@ -6,7 +6,7 @@ const authRoutes = express.Router();
 
 authRoutes.post('/is-user-exists', isUserAvailableInImportedCSV);
 
-authRoutes.post('/username-availablity', isUsernameAvailable);
+authRoutes.post('/username-availability', isUsernameAvailable);
 
 authRoutes.post('/register', registerUser);
 

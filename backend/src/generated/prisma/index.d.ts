@@ -3300,13 +3300,13 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     userId?: string
     email?: string
+    username?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
     mobileNumber?: StringFilter<"User"> | string
-    username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     courseName?: StringNullableListFilter<"User">
     about?: StringFilter<"User"> | string
@@ -3318,7 +3318,7 @@ export namespace Prisma {
     peerlist?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-  }, "userId" | "email">
+  }, "userId" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
     userId?: SortOrder

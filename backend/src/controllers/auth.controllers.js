@@ -62,7 +62,7 @@ const isUsernameAvailable = async (request, response) => {
 
     const checkUsernameExists = await prisma.user.findUnique({
       where: {
-        username
+        username: username.toLowerCase()
       }
     })
 
@@ -176,7 +176,6 @@ const registerUser = async (request, response) => {
           username: newUser.username,
           courseName: newUser.courseName,
           about: newUser.about,
-          role: newUser.role,
           twitter: newUser.twitter,
           github: newUser.github,
           linkedIn: newUser.linkedIn,
@@ -256,7 +255,6 @@ const loginUser = async (request, response) => {
           username: user.username,
           courseName: user.courseName,
           about: user.about,
-          role: user.role,
           twitter: user.twitter,
           github: user.github,
           linkedIn: user.linkedIn,
@@ -335,7 +333,7 @@ const getMe = async (request, response) => {
         courseName: true,
         password: false,
         about: true,
-        role: true,
+        role: false,
         twitter: true,
         github: true,
         linkedIn: true,
@@ -355,7 +353,6 @@ const getMe = async (request, response) => {
           username: user.username,
           courseName: user.courseName,
           about: user.about,
-          role: user.role,
           twitter: user.twitter,
           github: user.github,
           linkedIn: user.linkedIn,

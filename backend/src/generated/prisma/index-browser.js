@@ -138,11 +138,104 @@ exports.Prisma.UserScalarFieldEnum = {
   courseName: 'courseName',
   about: 'about',
   role: 'role',
+  isTeamLeader: 'isTeamLeader',
+  isActive: 'isActive',
   twitter: 'twitter',
   github: 'github',
   linkedIn: 'linkedIn',
   hashnode: 'hashnode',
   peerlist: 'peerlist',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.TeamsScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  about: 'about',
+  teamLeaderId: 'teamLeaderId',
+  isActive: 'isActive',
+  link: 'link',
+  noticeBoard: 'noticeBoard',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserTeamRoleHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  teamId: 'teamId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TagScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.TeamsEditLogScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  userId: 'userId',
+  action: 'action',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NoticeScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  postedById: 'postedById',
+  teamId: 'teamId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NoticeRequestScalarFieldEnum = {
+  id: 'id',
+  memberId: 'memberId',
+  teamId: 'teamId',
+  requestMessage: 'requestMessage',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NoticeHistoryScalarFieldEnum = {
+  id: 'id',
+  noticeId: 'noticeId',
+  action: 'action',
+  performedById: 'performedById',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ChatScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  about: 'about',
+  teamId: 'teamId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MessageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  chatId: 'chatId',
+  message: 'message',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -165,7 +258,17 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   ImportCSV: 'ImportCSV',
-  User: 'User'
+  User: 'User',
+  Role: 'Role',
+  Teams: 'Teams',
+  UserTeamRoleHistory: 'UserTeamRoleHistory',
+  Tag: 'Tag',
+  TeamsEditLog: 'TeamsEditLog',
+  Notice: 'Notice',
+  NoticeRequest: 'NoticeRequest',
+  NoticeHistory: 'NoticeHistory',
+  Chat: 'Chat',
+  Message: 'Message'
 };
 
 /**

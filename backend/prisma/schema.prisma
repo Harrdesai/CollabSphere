@@ -16,8 +16,8 @@ datasource db {
 
 model ImportCSV {
   id           String   @id @default(uuid())
-  email        String   
-  mobileNumber String   
+  email        String
+  mobileNumber String
   courseName   String[]
 
   @@unique([email, mobileNumber])
@@ -29,11 +29,13 @@ model User {
   lastName     String
   email        String   @unique
   mobileNumber String
-  username     String  @unique
+  username     String   @unique
   password     String
   courseName   String[]
   about        String
   role         String   @default("user")
+  isTeamLeader Boolean  @default(false)
+  isActive     Boolean  @default(true)
   twitter      String?
   github       String?
   linkedIn     String?
@@ -42,4 +44,154 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  roles               Role[]                @relation("UserRoles")
+  tags                Tag[]                 @relation("UserTags")
+  teamLeaderOf        Teams[]               @relation("TeamLeader")
+  teams               Teams[]               @relation("teamMembers")
+  chats               Chat[]                @relation("ChatMembers")
+  messages            Message[]
+  TeamsEditLog        TeamsEditLog[]
+  UserTeamRoleHistory UserTeamRoleHistory[]
+  noticeRequests      NoticeRequest[]
+  notices             Notice[]              @relation("UserNotices")
+  noticeHistory       NoticeHistory[]
+}
+
+model Role {
+  id   String @id @default(uuid())
+  name String @unique
+
+  users User[]  @relation("UserRoles")
+  teams Teams[] @relation("TeamRoles")
+
+  UserTeamRoleHistory UserTeamRoleHistory[]
+}
+
+model Teams {
+  id           String   @id @default(uuid())
+  title        String
+  about        String
+  teamLeaderId String
+  isActive     Boolean  @default(true)
+  link         String[]
+  noticeBoard  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teamLeader          User                  @relation("TeamLeader", fields: [teamLeaderId], references: [userId])
+  members             User[]                @relation("teamMembers")
+  tags                Tag[]                 @relation("TeamTags")
+  roles               Role[]                @relation("TeamRoles")
+  logs                TeamsEditLog[]        @relation("teamLogs")
+  UserTeamRoleHistory UserTeamRoleHistory[]
+  chats               Chat[]
+  notices             Notice[]
+  noticeRequests      NoticeRequest[]
+}
+
+model UserTeamRoleHistory {
+  id         String   @id @default(uuid())
+  userId     String
+  teamId     String
+  roleId     String
+  assignedAt DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User  @relation(fields: [userId], references: [userId])
+  team Teams @relation(fields: [teamId], references: [id])
+  role Role  @relation(fields: [roleId], references: [id])
+}
+
+model Tag {
+  id   String @id @default(uuid())
+  name String @unique
+
+  teams Teams[] @relation("TeamTags")
+  users User[]  @relation("UserTags")
+}
+
+model TeamsEditLog {
+  id     String @id @default(uuid())
+  teamId String
+  userId String
+  action String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team Teams @relation(fields: [teamId], references: [id], name: "teamLogs")
+  user User  @relation(fields: [userId], references: [userId])
+}
+
+model Notice {
+  id         String   @id @default(uuid())
+  title      String
+  content    String
+  postedById String
+  teamId     String
+  startDate  DateTime
+  endDate    DateTime
+  isActive   Boolean  @default(true) // To check if the notice is still active
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  postedBy User            @relation("UserNotices", fields: [postedById], references: [userId])
+  team     Teams           @relation(fields: [teamId], references: [id])
+  history  NoticeHistory[]
+}
+
+model NoticeRequest {
+  id             String   @id @default(uuid())
+  memberId       String
+  teamId         String
+  requestMessage String
+  status         String   @default("pending") // pending, approved, rejected
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  member User  @relation(fields: [memberId], references: [userId])
+  team   Teams @relation(fields: [teamId], references: [id])
+}
+
+model NoticeHistory {
+  id            String   @id @default(uuid())
+  noticeId      String
+  action        String // "approved", "rejected", "updated"
+  performedById String
+  createdAt     DateTime @default(now())
+
+  notice      Notice @relation(fields: [noticeId], references: [id])
+  performedBy User   @relation(fields: [performedById], references: [userId])
+}
+
+model Chat {
+  id       String  @id @default(uuid())
+  title    String
+  about    String
+  teamId   String
+  isActive Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team     Teams     @relation(fields: [teamId], references: [id])
+  messages Message[]
+  members  User[]    @relation("ChatMembers")
+}
+
+model Message {
+  id      String @id @default(uuid())
+  userId  String
+  chatId  String
+  message String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [userId])
+  chat Chat @relation(fields: [chatId], references: [id])
 }

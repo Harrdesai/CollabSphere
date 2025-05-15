@@ -6,34 +6,34 @@ import { createNotice, getNotices, getNotice, updateNotice, deleteNotice, create
 
 const noticeBoardRoutes = Router();
 
-noticeBoardRoutes.post('/create', authMiddleware, createNotice);
+noticeBoardRoutes.post('/', authMiddleware, createNotice);
 
-noticeBoardRoutes.get('/notices', authMiddleware, getNotices);
+noticeBoardRoutes.get('/', authMiddleware, getNotices);
 
-noticeBoardRoutes.get('/notice', authMiddleware, getNotice);
+noticeBoardRoutes.get('/:noticeId', authMiddleware, getNotice);
 
-noticeBoardRoutes.post('/update', authMiddleware, updateNotice );
+noticeBoardRoutes.put('/:noticeId', authMiddleware, updateNotice);
 
-noticeBoardRoutes.post('/delete', authMiddleware, deleteNotice );
+noticeBoardRoutes.delete('/:noticeId', authMiddleware, deleteNotice);
 
-noticeBoardRoutes.post('/create-request', authMiddleware, createNoticeRequest );
+noticeBoardRoutes.post('/requests', authMiddleware, createNoticeRequest);
 
-noticeBoardRoutes.get('/requests', authMiddleware, getNoticeRequests );
+noticeBoardRoutes.get('/requests', authMiddleware, getNoticeRequests);
 
-noticeBoardRoutes.get('/request', authMiddleware, getNoticeRequest );
+noticeBoardRoutes.get('/requests/:requestId', authMiddleware, getNoticeRequest);
 
-noticeBoardRoutes.post('/update-request', authMiddleware, updateNoticeRequest );
+noticeBoardRoutes.put('/requests/:requestId', authMiddleware, updateNoticeRequest);
 
-noticeBoardRoutes.post('/cancel-request', authMiddleware, cancelNoticeRequest );
+noticeBoardRoutes.delete('/requests/:requestId', authMiddleware, deleteNoticeRequest);
 
-noticeBoardRoutes.post('/accept-request', authMiddleware, acceptNoticeRequest );
+noticeBoardRoutes.post('/requests/:requestId/cancel', authMiddleware, cancelNoticeRequest);
 
-noticeBoardRoutes.post('/delete-request', authMiddleware, deleteNoticeRequest );
+noticeBoardRoutes.post('/requests/:requestId/accept', authMiddleware, acceptNoticeRequest);
 
-noticeBoardRoutes.post('/reject-request', authMiddleware, rejectNoticeRequest );
+noticeBoardRoutes.post('/requests/:requestId/reject', authMiddleware, rejectNoticeRequest);
 
-noticeBoardRoutes.get('/pending-requests', authMiddleware, getPendingNoticeRequests );
+noticeBoardRoutes.get('/requests/pending', authMiddleware, getPendingNoticeRequests);
 
-noticeBoardRoutes.get('/accepted-requests', authMiddleware, getAcceptedNoticeRequests );
+noticeBoardRoutes.get('/requests/accepted', authMiddleware, getAcceptedNoticeRequests);
 
 export default noticeBoardRoutes;

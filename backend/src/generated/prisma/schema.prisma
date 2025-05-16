@@ -73,13 +73,13 @@ enum Designation {
 }
 
 model Teams {
-  id           String   @id @default(uuid())
-  uniqueTitle  String   @unique
+  id           String  @id @default(uuid())
+  uniqueTitle  String  @unique
   title        String
   about        String
   teamLeaderId String
-  isActive     Boolean  @default(true)
-  link         String[]
+  isActive     Boolean @default(true)
+  link         Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

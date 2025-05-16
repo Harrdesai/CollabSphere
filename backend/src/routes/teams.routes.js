@@ -9,9 +9,9 @@ const teamsRoutes = express.Router();
 
 teamsRoutes.post('/create', authMiddleware, createTeam);
 
-teamsRoutes.post('/delete', authMiddleware, deleteTeam);
+teamsRoutes.post('/update/:teamId', authMiddleware, modifyTeamDetails);
 
-teamsRoutes.post('/update', authMiddleware, modifyTeamDetails);
+teamsRoutes.post('/delete/:teamId', authMiddleware, deleteTeam);
 
 teamsRoutes.post('/invite', authMiddleware, sendInviteToJoinTeam);
 

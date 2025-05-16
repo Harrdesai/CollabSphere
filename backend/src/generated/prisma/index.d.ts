@@ -4782,7 +4782,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive: boolean
-    link: string[]
+    link: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: TeamsCountAggregateOutputType | null
@@ -4901,7 +4901,7 @@ export namespace Prisma {
       about: string
       teamLeaderId: string
       isActive: boolean
-      link: string[]
+      link: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["teams"]>
@@ -5341,7 +5341,7 @@ export namespace Prisma {
     readonly about: FieldRef<"Teams", 'String'>
     readonly teamLeaderId: FieldRef<"Teams", 'String'>
     readonly isActive: FieldRef<"Teams", 'Boolean'>
-    readonly link: FieldRef<"Teams", 'String[]'>
+    readonly link: FieldRef<"Teams", 'Json'>
     readonly createdAt: FieldRef<"Teams", 'DateTime'>
     readonly updatedAt: FieldRef<"Teams", 'DateTime'>
   }
@@ -14867,6 +14867,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -14881,6 +14889,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -14934,6 +14951,20 @@ export namespace Prisma {
    * Reference to a field of type 'Designation[]'
    */
   export type ListEnumDesignationFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Designation[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -15183,7 +15214,7 @@ export namespace Prisma {
     about?: StringFilter<"Teams"> | string
     teamLeaderId?: StringFilter<"Teams"> | string
     isActive?: BoolFilter<"Teams"> | boolean
-    link?: StringNullableListFilter<"Teams">
+    link?: JsonNullableFilter<"Teams">
     createdAt?: DateTimeFilter<"Teams"> | Date | string
     updatedAt?: DateTimeFilter<"Teams"> | Date | string
     teamLeader?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -15203,7 +15234,7 @@ export namespace Prisma {
     about?: SortOrder
     teamLeaderId?: SortOrder
     isActive?: SortOrder
-    link?: SortOrder
+    link?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     teamLeader?: UserOrderByWithRelationInput
@@ -15226,7 +15257,7 @@ export namespace Prisma {
     about?: StringFilter<"Teams"> | string
     teamLeaderId?: StringFilter<"Teams"> | string
     isActive?: BoolFilter<"Teams"> | boolean
-    link?: StringNullableListFilter<"Teams">
+    link?: JsonNullableFilter<"Teams">
     createdAt?: DateTimeFilter<"Teams"> | Date | string
     updatedAt?: DateTimeFilter<"Teams"> | Date | string
     teamLeader?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -15246,7 +15277,7 @@ export namespace Prisma {
     about?: SortOrder
     teamLeaderId?: SortOrder
     isActive?: SortOrder
-    link?: SortOrder
+    link?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TeamsCountOrderByAggregateInput
@@ -15264,7 +15295,7 @@ export namespace Prisma {
     about?: StringWithAggregatesFilter<"Teams"> | string
     teamLeaderId?: StringWithAggregatesFilter<"Teams"> | string
     isActive?: BoolWithAggregatesFilter<"Teams"> | boolean
-    link?: StringNullableListFilter<"Teams">
+    link?: JsonNullableWithAggregatesFilter<"Teams">
     createdAt?: DateTimeWithAggregatesFilter<"Teams"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Teams"> | Date | string
   }
@@ -16045,7 +16076,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -16065,7 +16096,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -16083,7 +16114,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -16103,7 +16134,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -16122,7 +16153,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16133,7 +16164,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16145,7 +16176,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16989,6 +17020,29 @@ export namespace Prisma {
     _min?: NestedEnumDesignationNullableFilter<$PrismaModel>
     _max?: NestedEnumDesignationNullableFilter<$PrismaModel>
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
@@ -17037,6 +17091,32 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumDesignationFilter<$PrismaModel = never> = {
@@ -17756,10 +17836,6 @@ export namespace Prisma {
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
   }
 
-  export type TeamsCreatelinkInput = {
-    set: string[]
-  }
-
   export type UserCreateNestedOneWithoutTeamLeaderOfInput = {
     create?: XOR<UserCreateWithoutTeamLeaderOfInput, UserUncheckedCreateWithoutTeamLeaderOfInput>
     connectOrCreate?: UserCreateOrConnectWithoutTeamLeaderOfInput
@@ -17858,11 +17934,6 @@ export namespace Prisma {
     connectOrCreate?: NoticeRequestCreateOrConnectWithoutTeamInput | NoticeRequestCreateOrConnectWithoutTeamInput[]
     createMany?: NoticeRequestCreateManyTeamInputEnvelope
     connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-  }
-
-  export type TeamsUpdatelinkInput = {
-    set?: string[]
-    push?: string | string[]
   }
 
   export type UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput = {
@@ -18591,6 +18662,29 @@ export namespace Prisma {
     _min?: NestedEnumDesignationNullableFilter<$PrismaModel>
     _max?: NestedEnumDesignationNullableFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumDesignationFilter<$PrismaModel = never> = {
     equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel>
@@ -18649,7 +18743,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserCreateNestedManyWithoutTeamsInput
@@ -18667,7 +18761,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -18695,7 +18789,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -18714,7 +18808,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
@@ -18975,7 +19069,7 @@ export namespace Prisma {
     about?: StringFilter<"Teams"> | string
     teamLeaderId?: StringFilter<"Teams"> | string
     isActive?: BoolFilter<"Teams"> | boolean
-    link?: StringNullableListFilter<"Teams">
+    link?: JsonNullableFilter<"Teams">
     createdAt?: DateTimeFilter<"Teams"> | Date | string
     updatedAt?: DateTimeFilter<"Teams"> | Date | string
   }
@@ -19791,7 +19885,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -19810,7 +19904,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -19918,7 +20012,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -19937,7 +20031,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -19954,7 +20048,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -19973,7 +20067,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -20096,7 +20190,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -20115,7 +20209,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -20217,7 +20311,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -20236,7 +20330,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -20397,7 +20491,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -20416,7 +20510,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -20548,7 +20642,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -20567,7 +20661,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -20669,7 +20763,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -20688,7 +20782,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -20796,7 +20890,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -20815,7 +20909,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -21044,7 +21138,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -21063,7 +21157,7 @@ export namespace Prisma {
     about: string
     teamLeaderId: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -21191,7 +21285,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -21210,7 +21304,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -21463,7 +21557,7 @@ export namespace Prisma {
     title: string
     about: string
     isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21544,7 +21638,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUpdateManyWithoutTeamsNestedInput
@@ -21562,7 +21656,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -21580,7 +21674,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21591,7 +21685,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -21610,7 +21704,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
@@ -21628,7 +21722,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22130,7 +22224,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -22149,7 +22243,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -22167,7 +22261,7 @@ export namespace Prisma {
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
+    link?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

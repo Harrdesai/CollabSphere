@@ -10,7 +10,7 @@ const createTeam = async (request, response) => {
 
   try {
 
-    const { title, about, link, ArrayOfTagIds = [] } = request.body;
+    const { title, about, link = [], ArrayOfTagIds = [] } = request.body;
 
     const teamLeaderId = request.cookies.userId;
 
@@ -29,8 +29,6 @@ const createTeam = async (request, response) => {
     if (isTeamAlreadyCreated) {
       throw new ApiError(400, "Team already exists");
     }
-
-    console.log(`teamLeaderId: ${teamLeaderId}, title: ${title}, about: ${about}, link: ${link}, ArrayOfTagIds: ${ArrayOfTagIds}`);
 
     const team = await prisma.$transaction(async (prisma) => {
 
@@ -116,7 +114,85 @@ const createTeam = async (request, response) => {
   }
 }
 
-const modifyTeamDetails = async (request, response) => { }
+const modifyTeamDetails = async (request, response) => {
+
+  try {
+
+    const { title, about, link = [], ArrayOfTagIds = [] } = request.body;
+    const teamId = request.params.teamId;
+
+    if (!teamId) {
+      throw new ApiError(400, "Team id is not provided, please provide team id");
+    }
+
+    if (title != "" && title !== null && title !== undefined) {
+
+      const uniqueTitle = title.toLowerCase().split(" ").join("");
+
+      const uniqueTitleFromDB = await prisma.teams.findUnique({
+        where: {
+          id: teamId
+        },
+        select: {
+          uniqueTitle: true
+        }
+      })
+      if (uniqueTitle !== uniqueTitleFromDB.uniqueTitle) {
+
+        const isTeamAlreadyCreated = await prisma.teams.findFirst({
+          where: {
+            uniqueTitle
+          }
+        })
+
+        if (isTeamAlreadyCreated) {
+          throw new ApiError(400, "Team already exists");
+        }
+      }
+
+    }
+
+    const team = await prisma.$transaction(async (prisma) => {
+
+      const updateTeamDetails = await prisma.teams.update({
+        where: {
+          id: teamId
+        },
+        data: {
+          title,
+          about,
+          link,
+          tags: {
+            connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
+          }
+        }
+      });
+
+      return updateTeamDetails;
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        team: {
+          id: team.id,
+          title: team.title,
+          about: team.about,
+          link: team.link,
+          tags: team.tags
+        }
+
+      }, "Team details updated successfully")
+    )
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while updating team details", {
+        error: error.message
+      })
+    )
+
+  }
+}
 
 const deleteTeam = async (request, response) => { }
 
@@ -155,7 +231,7 @@ const updateMemberRole = async (request, response) => { }
 const getListOfTeamMembers = async (request, response) => { }
 
 const createTag = async (request, response) => {
-  
+
   try {
 
     const { tagName } = request.body;
@@ -185,7 +261,7 @@ const createTag = async (request, response) => {
         tag: newTag
       }, `Tag : ${tagName} created successfully`)
     )
-    
+
   } catch (error) {
 
     response.status(error.statusCode || 500).json(
@@ -193,11 +269,11 @@ const createTag = async (request, response) => {
         error: error.message
       })
     )
-    
+
   }
 }
 
-const updateTag = async (request, response) => { 
+const updateTag = async (request, response) => {
 
   try {
 
@@ -229,15 +305,15 @@ const updateTag = async (request, response) => {
         tag: updatedTag
       }, `Tag : ${updatedName} updated successfully`)
     )
-    
+
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while updating tag", {
         error: error.message
       })
     )
-    
+
   }
 }
 

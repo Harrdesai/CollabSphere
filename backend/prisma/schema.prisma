@@ -79,7 +79,7 @@ model Teams {
   about        String
   teamLeaderId String
   isActive     Boolean  @default(true)
-  link         String[]
+  link         Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

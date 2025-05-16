@@ -45,27 +45,31 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  roles               Role[]                @relation("UserRoles")
-  tags                Tag[]                 @relation("UserTags")
-  teamLeaderOf        Teams[]               @relation("TeamLeader")
-  teams               Teams[]               @relation("teamMembers")
-  chats               Chat[]                @relation("ChatMembers")
-  messages            Message[]
-  TeamsEditLog        TeamsEditLog[]
-  UserTeamRoleHistory UserTeamRoleHistory[]
-  noticeRequests      NoticeRequest[]
-  notices             Notice[]              @relation("UserNotices")
-  noticeHistory       NoticeHistory[]
+  designation    Designation?
+  tags           Tag[]            @relation("UserTags")
+  teamLeaderOf   Teams[]          @relation("TeamLeader")
+  teams          Teams[]          @relation("teamMembers")
+  chats          Chat[]           @relation("ChatMembers")
+  messages       Message[]
+  TeamsEditLog   TeamsEditLog[]
+  userRoleInTeam UserRoleInTeam[]
+  noticeRequests NoticeRequest[]
+  notices        Notice[]         @relation("UserNotices")
+  noticeHistory  NoticeHistory[]
 }
 
-model Role {
-  id   String @id @default(uuid())
-  name String @unique
-
-  users User[]  @relation("UserRoles")
-  teams Teams[] @relation("TeamRoles")
-
-  UserTeamRoleHistory UserTeamRoleHistory[]
+enum Designation {
+  FULLSTACK_DEVELOPER
+  FRONTEND_DEVELOPER
+  BACKEND_DEVELOPER
+  UI_DESIGNER
+  UX_DESIGNER
+  PRODUCT_DESIGNER
+  DATA_SCIENTIST
+  DATA_ANALYST
+  DATA_ENGINEER
+  DATABASE_DESIGNER
+  TEAM_LEADER
 }
 
 model Teams {
@@ -80,30 +84,27 @@ model Teams {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  teamLeader          User                  @relation("TeamLeader", fields: [teamLeaderId], references: [userId])
-  members             User[]                @relation("teamMembers")
-  tags                Tag[]                 @relation("TeamTags")
-  roles               Role[]                @relation("TeamRoles")
-  logs                TeamsEditLog[]        @relation("teamLogs")
-  UserTeamRoleHistory UserTeamRoleHistory[]
-  chats               Chat[]
-  notices             Notice[]
-  noticeRequests      NoticeRequest[]
+  teamLeader     User             @relation("TeamLeader", fields: [teamLeaderId], references: [userId])
+  members        User[]           @relation("teamMembers")
+  tags           Tag[]            @relation("TeamTags")
+  logs           TeamsEditLog[]   @relation("teamLogs")
+  userRoleInTeam UserRoleInTeam[]
+  chats          Chat[]
+  notices        Notice[]
+  noticeRequests NoticeRequest[]
 }
 
-model UserTeamRoleHistory {
-  id         String   @id @default(uuid())
-  userId     String
-  teamId     String
-  roleId     String
-  assignedAt DateTime @default(now())
+model UserRoleInTeam {
+  id          String      @id @default(uuid())
+  userId      String
+  teamId      String
+  designation Designation
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user User  @relation(fields: [userId], references: [userId])
   team Teams @relation(fields: [teamId], references: [id])
-  role Role  @relation(fields: [roleId], references: [id])
 }
 
 model Tag {
@@ -114,11 +115,24 @@ model Tag {
   users User[]  @relation("UserTags")
 }
 
+enum Action {
+  INVITATION_SENT
+  INVITATION_REVOKED
+  INVITATION_EXPIRED
+  INVITATION_REJECTED
+  INVITATION_ACCEPTED
+  ROLE_ASIGNED
+  ROLE_REMOVED
+  TEAM_CREATED
+  TEAM_DELETED
+}
+
 model TeamsEditLog {
-  id     String @id @default(uuid())
-  teamId String
-  userId String
-  action String
+  id          String      @id @default(uuid())
+  teamId      String
+  userId      String
+  action      Action
+  designation Designation
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -135,7 +149,7 @@ model Notice {
   teamId     String
   startDate  DateTime
   endDate    DateTime
-  isActive   Boolean  @default(true) // To check if the notice is still active
+  isActive   Boolean  @default(true)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

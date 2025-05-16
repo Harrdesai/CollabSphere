@@ -24,20 +24,15 @@ export type ImportCSV = $Result.DefaultSelection<Prisma.$ImportCSVPayload>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model Role
- * 
- */
-export type Role = $Result.DefaultSelection<Prisma.$RolePayload>
-/**
  * Model Teams
  * 
  */
 export type Teams = $Result.DefaultSelection<Prisma.$TeamsPayload>
 /**
- * Model UserTeamRoleHistory
+ * Model UserRoleInTeam
  * 
  */
-export type UserTeamRoleHistory = $Result.DefaultSelection<Prisma.$UserTeamRoleHistoryPayload>
+export type UserRoleInTeam = $Result.DefaultSelection<Prisma.$UserRoleInTeamPayload>
 /**
  * Model Tag
  * 
@@ -73,6 +68,51 @@ export type Chat = $Result.DefaultSelection<Prisma.$ChatPayload>
  * 
  */
 export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const Designation: {
+  FULLSTACK_DEVELOPER: 'FULLSTACK_DEVELOPER',
+  FRONTEND_DEVELOPER: 'FRONTEND_DEVELOPER',
+  BACKEND_DEVELOPER: 'BACKEND_DEVELOPER',
+  UI_DESIGNER: 'UI_DESIGNER',
+  UX_DESIGNER: 'UX_DESIGNER',
+  PRODUCT_DESIGNER: 'PRODUCT_DESIGNER',
+  DATA_SCIENTIST: 'DATA_SCIENTIST',
+  DATA_ANALYST: 'DATA_ANALYST',
+  DATA_ENGINEER: 'DATA_ENGINEER',
+  DATABASE_DESIGNER: 'DATABASE_DESIGNER',
+  TEAM_LEADER: 'TEAM_LEADER'
+};
+
+export type Designation = (typeof Designation)[keyof typeof Designation]
+
+
+export const Action: {
+  INVITATION_SENT: 'INVITATION_SENT',
+  INVITATION_REVOKED: 'INVITATION_REVOKED',
+  INVITATION_EXPIRED: 'INVITATION_EXPIRED',
+  INVITATION_REJECTED: 'INVITATION_REJECTED',
+  INVITATION_ACCEPTED: 'INVITATION_ACCEPTED',
+  ROLE_ASIGNED: 'ROLE_ASIGNED',
+  ROLE_REMOVED: 'ROLE_REMOVED',
+  TEAM_CREATED: 'TEAM_CREATED',
+  TEAM_DELETED: 'TEAM_DELETED'
+};
+
+export type Action = (typeof Action)[keyof typeof Action]
+
+}
+
+export type Designation = $Enums.Designation
+
+export const Designation: typeof $Enums.Designation
+
+export type Action = $Enums.Action
+
+export const Action: typeof $Enums.Action
 
 /**
  * ##  Prisma Client ʲˢ
@@ -220,16 +260,6 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.role`: Exposes CRUD operations for the **Role** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Roles
-    * const roles = await prisma.role.findMany()
-    * ```
-    */
-  get role(): Prisma.RoleDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.teams`: Exposes CRUD operations for the **Teams** model.
     * Example usage:
     * ```ts
@@ -240,14 +270,14 @@ export class PrismaClient<
   get teams(): Prisma.TeamsDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.userTeamRoleHistory`: Exposes CRUD operations for the **UserTeamRoleHistory** model.
+   * `prisma.userRoleInTeam`: Exposes CRUD operations for the **UserRoleInTeam** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more UserTeamRoleHistories
-    * const userTeamRoleHistories = await prisma.userTeamRoleHistory.findMany()
+    * // Fetch zero or more UserRoleInTeams
+    * const userRoleInTeams = await prisma.userRoleInTeam.findMany()
     * ```
     */
-  get userTeamRoleHistory(): Prisma.UserTeamRoleHistoryDelegate<ExtArgs, ClientOptions>;
+  get userRoleInTeam(): Prisma.UserRoleInTeamDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.tag`: Exposes CRUD operations for the **Tag** model.
@@ -376,8 +406,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.7.0
-   * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+   * Prisma Client JS version: 6.8.1
+   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
    */
   export type PrismaVersion = {
     client: string
@@ -760,9 +790,8 @@ export namespace Prisma {
   export const ModelName: {
     ImportCSV: 'ImportCSV',
     User: 'User',
-    Role: 'Role',
     Teams: 'Teams',
-    UserTeamRoleHistory: 'UserTeamRoleHistory',
+    UserRoleInTeam: 'UserRoleInTeam',
     Tag: 'Tag',
     TeamsEditLog: 'TeamsEditLog',
     Notice: 'Notice',
@@ -788,7 +817,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "importCSV" | "user" | "role" | "teams" | "userTeamRoleHistory" | "tag" | "teamsEditLog" | "notice" | "noticeRequest" | "noticeHistory" | "chat" | "message"
+      modelProps: "importCSV" | "user" | "teams" | "userRoleInTeam" | "tag" | "teamsEditLog" | "notice" | "noticeRequest" | "noticeHistory" | "chat" | "message"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -940,80 +969,6 @@ export namespace Prisma {
           }
         }
       }
-      Role: {
-        payload: Prisma.$RolePayload<ExtArgs>
-        fields: Prisma.RoleFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.RoleFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.RoleFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          findFirst: {
-            args: Prisma.RoleFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.RoleFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          findMany: {
-            args: Prisma.RoleFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>[]
-          }
-          create: {
-            args: Prisma.RoleCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          createMany: {
-            args: Prisma.RoleCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.RoleCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>[]
-          }
-          delete: {
-            args: Prisma.RoleDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          update: {
-            args: Prisma.RoleUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          deleteMany: {
-            args: Prisma.RoleDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.RoleUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.RoleUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>[]
-          }
-          upsert: {
-            args: Prisma.RoleUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          aggregate: {
-            args: Prisma.RoleAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateRole>
-          }
-          groupBy: {
-            args: Prisma.RoleGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RoleGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.RoleCountArgs<ExtArgs>
-            result: $Utils.Optional<RoleCountAggregateOutputType> | number
-          }
-        }
-      }
       Teams: {
         payload: Prisma.$TeamsPayload<ExtArgs>
         fields: Prisma.TeamsFieldRefs
@@ -1088,77 +1043,77 @@ export namespace Prisma {
           }
         }
       }
-      UserTeamRoleHistory: {
-        payload: Prisma.$UserTeamRoleHistoryPayload<ExtArgs>
-        fields: Prisma.UserTeamRoleHistoryFieldRefs
+      UserRoleInTeam: {
+        payload: Prisma.$UserRoleInTeamPayload<ExtArgs>
+        fields: Prisma.UserRoleInTeamFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.UserTeamRoleHistoryFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload> | null
+            args: Prisma.UserRoleInTeamFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.UserTeamRoleHistoryFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>
+            args: Prisma.UserRoleInTeamFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>
           }
           findFirst: {
-            args: Prisma.UserTeamRoleHistoryFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload> | null
+            args: Prisma.UserRoleInTeamFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.UserTeamRoleHistoryFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>
+            args: Prisma.UserRoleInTeamFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>
           }
           findMany: {
-            args: Prisma.UserTeamRoleHistoryFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>[]
+            args: Prisma.UserRoleInTeamFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>[]
           }
           create: {
-            args: Prisma.UserTeamRoleHistoryCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>
+            args: Prisma.UserRoleInTeamCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>
           }
           createMany: {
-            args: Prisma.UserTeamRoleHistoryCreateManyArgs<ExtArgs>
+            args: Prisma.UserRoleInTeamCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.UserTeamRoleHistoryCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>[]
+            args: Prisma.UserRoleInTeamCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>[]
           }
           delete: {
-            args: Prisma.UserTeamRoleHistoryDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>
+            args: Prisma.UserRoleInTeamDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>
           }
           update: {
-            args: Prisma.UserTeamRoleHistoryUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>
+            args: Prisma.UserRoleInTeamUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>
           }
           deleteMany: {
-            args: Prisma.UserTeamRoleHistoryDeleteManyArgs<ExtArgs>
+            args: Prisma.UserRoleInTeamDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.UserTeamRoleHistoryUpdateManyArgs<ExtArgs>
+            args: Prisma.UserRoleInTeamUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.UserTeamRoleHistoryUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>[]
+            args: Prisma.UserRoleInTeamUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>[]
           }
           upsert: {
-            args: Prisma.UserTeamRoleHistoryUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserTeamRoleHistoryPayload>
+            args: Prisma.UserRoleInTeamUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserRoleInTeamPayload>
           }
           aggregate: {
-            args: Prisma.UserTeamRoleHistoryAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUserTeamRoleHistory>
+            args: Prisma.UserRoleInTeamAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserRoleInTeam>
           }
           groupBy: {
-            args: Prisma.UserTeamRoleHistoryGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UserTeamRoleHistoryGroupByOutputType>[]
+            args: Prisma.UserRoleInTeamGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserRoleInTeamGroupByOutputType>[]
           }
           count: {
-            args: Prisma.UserTeamRoleHistoryCountArgs<ExtArgs>
-            result: $Utils.Optional<UserTeamRoleHistoryCountAggregateOutputType> | number
+            args: Prisma.UserRoleInTeamCountArgs<ExtArgs>
+            result: $Utils.Optional<UserRoleInTeamCountAggregateOutputType> | number
           }
         }
       }
@@ -1766,9 +1721,8 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     importCSV?: ImportCSVOmit
     user?: UserOmit
-    role?: RoleOmit
     teams?: TeamsOmit
-    userTeamRoleHistory?: UserTeamRoleHistoryOmit
+    userRoleInTeam?: UserRoleInTeamOmit
     tag?: TagOmit
     teamsEditLog?: TeamsEditLogOmit
     notice?: NoticeOmit
@@ -1870,28 +1824,26 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    roles: number
     tags: number
     teamLeaderOf: number
     teams: number
     chats: number
     messages: number
     TeamsEditLog: number
-    UserTeamRoleHistory: number
+    userRoleInTeam: number
     noticeRequests: number
     notices: number
     noticeHistory: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    roles?: boolean | UserCountOutputTypeCountRolesArgs
     tags?: boolean | UserCountOutputTypeCountTagsArgs
     teamLeaderOf?: boolean | UserCountOutputTypeCountTeamLeaderOfArgs
     teams?: boolean | UserCountOutputTypeCountTeamsArgs
     chats?: boolean | UserCountOutputTypeCountChatsArgs
     messages?: boolean | UserCountOutputTypeCountMessagesArgs
     TeamsEditLog?: boolean | UserCountOutputTypeCountTeamsEditLogArgs
-    UserTeamRoleHistory?: boolean | UserCountOutputTypeCountUserTeamRoleHistoryArgs
+    userRoleInTeam?: boolean | UserCountOutputTypeCountUserRoleInTeamArgs
     noticeRequests?: boolean | UserCountOutputTypeCountNoticeRequestsArgs
     notices?: boolean | UserCountOutputTypeCountNoticesArgs
     noticeHistory?: boolean | UserCountOutputTypeCountNoticeHistoryArgs
@@ -1906,13 +1858,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RoleWhereInput
   }
 
   /**
@@ -1960,8 +1905,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountUserTeamRoleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserTeamRoleHistoryWhereInput
+  export type UserCountOutputTypeCountUserRoleInTeamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserRoleInTeamWhereInput
   }
 
   /**
@@ -1987,64 +1932,14 @@ export namespace Prisma {
 
 
   /**
-   * Count Type RoleCountOutputType
-   */
-
-  export type RoleCountOutputType = {
-    users: number
-    teams: number
-    UserTeamRoleHistory: number
-  }
-
-  export type RoleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    users?: boolean | RoleCountOutputTypeCountUsersArgs
-    teams?: boolean | RoleCountOutputTypeCountTeamsArgs
-    UserTeamRoleHistory?: boolean | RoleCountOutputTypeCountUserTeamRoleHistoryArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * RoleCountOutputType without action
-   */
-  export type RoleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoleCountOutputType
-     */
-    select?: RoleCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * RoleCountOutputType without action
-   */
-  export type RoleCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-  }
-
-  /**
-   * RoleCountOutputType without action
-   */
-  export type RoleCountOutputTypeCountTeamsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TeamsWhereInput
-  }
-
-  /**
-   * RoleCountOutputType without action
-   */
-  export type RoleCountOutputTypeCountUserTeamRoleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserTeamRoleHistoryWhereInput
-  }
-
-
-  /**
    * Count Type TeamsCountOutputType
    */
 
   export type TeamsCountOutputType = {
     members: number
     tags: number
-    roles: number
     logs: number
-    UserTeamRoleHistory: number
+    userRoleInTeam: number
     chats: number
     notices: number
     noticeRequests: number
@@ -2053,9 +1948,8 @@ export namespace Prisma {
   export type TeamsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | TeamsCountOutputTypeCountMembersArgs
     tags?: boolean | TeamsCountOutputTypeCountTagsArgs
-    roles?: boolean | TeamsCountOutputTypeCountRolesArgs
     logs?: boolean | TeamsCountOutputTypeCountLogsArgs
-    UserTeamRoleHistory?: boolean | TeamsCountOutputTypeCountUserTeamRoleHistoryArgs
+    userRoleInTeam?: boolean | TeamsCountOutputTypeCountUserRoleInTeamArgs
     chats?: boolean | TeamsCountOutputTypeCountChatsArgs
     notices?: boolean | TeamsCountOutputTypeCountNoticesArgs
     noticeRequests?: boolean | TeamsCountOutputTypeCountNoticeRequestsArgs
@@ -2089,13 +1983,6 @@ export namespace Prisma {
   /**
    * TeamsCountOutputType without action
    */
-  export type TeamsCountOutputTypeCountRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RoleWhereInput
-  }
-
-  /**
-   * TeamsCountOutputType without action
-   */
   export type TeamsCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TeamsEditLogWhereInput
   }
@@ -2103,8 +1990,8 @@ export namespace Prisma {
   /**
    * TeamsCountOutputType without action
    */
-  export type TeamsCountOutputTypeCountUserTeamRoleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserTeamRoleHistoryWhereInput
+  export type TeamsCountOutputTypeCountUserRoleInTeamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserRoleInTeamWhereInput
   }
 
   /**
@@ -3251,6 +3138,7 @@ export namespace Prisma {
     peerlist: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    designation: $Enums.Designation | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3272,6 +3160,7 @@ export namespace Prisma {
     peerlist: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    designation: $Enums.Designation | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3294,6 +3183,7 @@ export namespace Prisma {
     peerlist: number
     createdAt: number
     updatedAt: number
+    designation: number
     _all: number
   }
 
@@ -3317,6 +3207,7 @@ export namespace Prisma {
     peerlist?: true
     createdAt?: true
     updatedAt?: true
+    designation?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3338,6 +3229,7 @@ export namespace Prisma {
     peerlist?: true
     createdAt?: true
     updatedAt?: true
+    designation?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3360,6 +3252,7 @@ export namespace Prisma {
     peerlist?: true
     createdAt?: true
     updatedAt?: true
+    designation?: true
     _all?: true
   }
 
@@ -3455,6 +3348,7 @@ export namespace Prisma {
     peerlist: string | null
     createdAt: Date
     updatedAt: Date
+    designation: $Enums.Designation | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3494,14 +3388,14 @@ export namespace Prisma {
     peerlist?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    roles?: boolean | User$rolesArgs<ExtArgs>
+    designation?: boolean
     tags?: boolean | User$tagsArgs<ExtArgs>
     teamLeaderOf?: boolean | User$teamLeaderOfArgs<ExtArgs>
     teams?: boolean | User$teamsArgs<ExtArgs>
     chats?: boolean | User$chatsArgs<ExtArgs>
     messages?: boolean | User$messagesArgs<ExtArgs>
     TeamsEditLog?: boolean | User$TeamsEditLogArgs<ExtArgs>
-    UserTeamRoleHistory?: boolean | User$UserTeamRoleHistoryArgs<ExtArgs>
+    userRoleInTeam?: boolean | User$userRoleInTeamArgs<ExtArgs>
     noticeRequests?: boolean | User$noticeRequestsArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
@@ -3528,6 +3422,7 @@ export namespace Prisma {
     peerlist?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    designation?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3550,6 +3445,7 @@ export namespace Prisma {
     peerlist?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    designation?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3572,18 +3468,18 @@ export namespace Prisma {
     peerlist?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    designation?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "email" | "mobileNumber" | "username" | "password" | "courseName" | "about" | "role" | "isTeamLeader" | "isActive" | "twitter" | "github" | "linkedIn" | "hashnode" | "peerlist" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "email" | "mobileNumber" | "username" | "password" | "courseName" | "about" | "role" | "isTeamLeader" | "isActive" | "twitter" | "github" | "linkedIn" | "hashnode" | "peerlist" | "createdAt" | "updatedAt" | "designation", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    roles?: boolean | User$rolesArgs<ExtArgs>
     tags?: boolean | User$tagsArgs<ExtArgs>
     teamLeaderOf?: boolean | User$teamLeaderOfArgs<ExtArgs>
     teams?: boolean | User$teamsArgs<ExtArgs>
     chats?: boolean | User$chatsArgs<ExtArgs>
     messages?: boolean | User$messagesArgs<ExtArgs>
     TeamsEditLog?: boolean | User$TeamsEditLogArgs<ExtArgs>
-    UserTeamRoleHistory?: boolean | User$UserTeamRoleHistoryArgs<ExtArgs>
+    userRoleInTeam?: boolean | User$userRoleInTeamArgs<ExtArgs>
     noticeRequests?: boolean | User$noticeRequestsArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
@@ -3595,14 +3491,13 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      roles: Prisma.$RolePayload<ExtArgs>[]
       tags: Prisma.$TagPayload<ExtArgs>[]
       teamLeaderOf: Prisma.$TeamsPayload<ExtArgs>[]
       teams: Prisma.$TeamsPayload<ExtArgs>[]
       chats: Prisma.$ChatPayload<ExtArgs>[]
       messages: Prisma.$MessagePayload<ExtArgs>[]
       TeamsEditLog: Prisma.$TeamsEditLogPayload<ExtArgs>[]
-      UserTeamRoleHistory: Prisma.$UserTeamRoleHistoryPayload<ExtArgs>[]
+      userRoleInTeam: Prisma.$UserRoleInTeamPayload<ExtArgs>[]
       noticeRequests: Prisma.$NoticeRequestPayload<ExtArgs>[]
       notices: Prisma.$NoticePayload<ExtArgs>[]
       noticeHistory: Prisma.$NoticeHistoryPayload<ExtArgs>[]
@@ -3627,6 +3522,7 @@ export namespace Prisma {
       peerlist: string | null
       createdAt: Date
       updatedAt: Date
+      designation: $Enums.Designation | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4021,14 +3917,13 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    roles<T extends User$rolesArgs<ExtArgs> = {}>(args?: Subset<T, User$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tags<T extends User$tagsArgs<ExtArgs> = {}>(args?: Subset<T, User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teamLeaderOf<T extends User$teamLeaderOfArgs<ExtArgs> = {}>(args?: Subset<T, User$teamLeaderOfArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teams<T extends User$teamsArgs<ExtArgs> = {}>(args?: Subset<T, User$teamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chats<T extends User$chatsArgs<ExtArgs> = {}>(args?: Subset<T, User$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     messages<T extends User$messagesArgs<ExtArgs> = {}>(args?: Subset<T, User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     TeamsEditLog<T extends User$TeamsEditLogArgs<ExtArgs> = {}>(args?: Subset<T, User$TeamsEditLogArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    UserTeamRoleHistory<T extends User$UserTeamRoleHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$UserTeamRoleHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userRoleInTeam<T extends User$userRoleInTeamArgs<ExtArgs> = {}>(args?: Subset<T, User$userRoleInTeamArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeRequests<T extends User$noticeRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$noticeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notices<T extends User$noticesArgs<ExtArgs> = {}>(args?: Subset<T, User$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeHistory<T extends User$noticeHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$noticeHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4080,6 +3975,7 @@ export namespace Prisma {
     readonly peerlist: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly designation: FieldRef<"User", 'Designation'>
   }
     
 
@@ -4468,30 +4364,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.roles
-   */
-  export type User$rolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    where?: RoleWhereInput
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    cursor?: RoleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
-  }
-
-  /**
    * User.tags
    */
   export type User$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4636,27 +4508,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.UserTeamRoleHistory
+   * User.userRoleInTeam
    */
-  export type User$UserTeamRoleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$userRoleInTeamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
-    where?: UserTeamRoleHistoryWhereInput
-    orderBy?: UserTeamRoleHistoryOrderByWithRelationInput | UserTeamRoleHistoryOrderByWithRelationInput[]
-    cursor?: UserTeamRoleHistoryWhereUniqueInput
+    include?: UserRoleInTeamInclude<ExtArgs> | null
+    where?: UserRoleInTeamWhereInput
+    orderBy?: UserRoleInTeamOrderByWithRelationInput | UserRoleInTeamOrderByWithRelationInput[]
+    cursor?: UserRoleInTeamWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserTeamRoleHistoryScalarFieldEnum | UserTeamRoleHistoryScalarFieldEnum[]
+    distinct?: UserRoleInTeamScalarFieldEnum | UserRoleInTeamScalarFieldEnum[]
   }
 
   /**
@@ -4747,1093 +4619,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Role
-   */
-
-  export type AggregateRole = {
-    _count: RoleCountAggregateOutputType | null
-    _min: RoleMinAggregateOutputType | null
-    _max: RoleMaxAggregateOutputType | null
-  }
-
-  export type RoleMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-  }
-
-  export type RoleMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-  }
-
-  export type RoleCountAggregateOutputType = {
-    id: number
-    name: number
-    _all: number
-  }
-
-
-  export type RoleMinAggregateInputType = {
-    id?: true
-    name?: true
-  }
-
-  export type RoleMaxAggregateInputType = {
-    id?: true
-    name?: true
-  }
-
-  export type RoleCountAggregateInputType = {
-    id?: true
-    name?: true
-    _all?: true
-  }
-
-  export type RoleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Role to aggregate.
-     */
-    where?: RoleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Roles to fetch.
-     */
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: RoleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Roles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Roles
-    **/
-    _count?: true | RoleCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: RoleMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: RoleMaxAggregateInputType
-  }
-
-  export type GetRoleAggregateType<T extends RoleAggregateArgs> = {
-        [P in keyof T & keyof AggregateRole]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateRole[P]>
-      : GetScalarType<T[P], AggregateRole[P]>
-  }
-
-
-
-
-  export type RoleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RoleWhereInput
-    orderBy?: RoleOrderByWithAggregationInput | RoleOrderByWithAggregationInput[]
-    by: RoleScalarFieldEnum[] | RoleScalarFieldEnum
-    having?: RoleScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: RoleCountAggregateInputType | true
-    _min?: RoleMinAggregateInputType
-    _max?: RoleMaxAggregateInputType
-  }
-
-  export type RoleGroupByOutputType = {
-    id: string
-    name: string
-    _count: RoleCountAggregateOutputType | null
-    _min: RoleMinAggregateOutputType | null
-    _max: RoleMaxAggregateOutputType | null
-  }
-
-  type GetRoleGroupByPayload<T extends RoleGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<RoleGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof RoleGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], RoleGroupByOutputType[P]>
-            : GetScalarType<T[P], RoleGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type RoleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    users?: boolean | Role$usersArgs<ExtArgs>
-    teams?: boolean | Role$teamsArgs<ExtArgs>
-    UserTeamRoleHistory?: boolean | Role$UserTeamRoleHistoryArgs<ExtArgs>
-    _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["role"]>
-
-  export type RoleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-  }, ExtArgs["result"]["role"]>
-
-  export type RoleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-  }, ExtArgs["result"]["role"]>
-
-  export type RoleSelectScalar = {
-    id?: boolean
-    name?: boolean
-  }
-
-  export type RoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["role"]>
-  export type RoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    users?: boolean | Role$usersArgs<ExtArgs>
-    teams?: boolean | Role$teamsArgs<ExtArgs>
-    UserTeamRoleHistory?: boolean | Role$UserTeamRoleHistoryArgs<ExtArgs>
-    _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type RoleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type RoleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $RolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Role"
-    objects: {
-      users: Prisma.$UserPayload<ExtArgs>[]
-      teams: Prisma.$TeamsPayload<ExtArgs>[]
-      UserTeamRoleHistory: Prisma.$UserTeamRoleHistoryPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-    }, ExtArgs["result"]["role"]>
-    composites: {}
-  }
-
-  type RoleGetPayload<S extends boolean | null | undefined | RoleDefaultArgs> = $Result.GetResult<Prisma.$RolePayload, S>
-
-  type RoleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<RoleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: RoleCountAggregateInputType | true
-    }
-
-  export interface RoleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Role'], meta: { name: 'Role' } }
-    /**
-     * Find zero or one Role that matches the filter.
-     * @param {RoleFindUniqueArgs} args - Arguments to find a Role
-     * @example
-     * // Get one Role
-     * const role = await prisma.role.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends RoleFindUniqueArgs>(args: SelectSubset<T, RoleFindUniqueArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Role that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {RoleFindUniqueOrThrowArgs} args - Arguments to find a Role
-     * @example
-     * // Get one Role
-     * const role = await prisma.role.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends RoleFindUniqueOrThrowArgs>(args: SelectSubset<T, RoleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Role that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoleFindFirstArgs} args - Arguments to find a Role
-     * @example
-     * // Get one Role
-     * const role = await prisma.role.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends RoleFindFirstArgs>(args?: SelectSubset<T, RoleFindFirstArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Role that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoleFindFirstOrThrowArgs} args - Arguments to find a Role
-     * @example
-     * // Get one Role
-     * const role = await prisma.role.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends RoleFindFirstOrThrowArgs>(args?: SelectSubset<T, RoleFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Roles that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoleFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Roles
-     * const roles = await prisma.role.findMany()
-     * 
-     * // Get first 10 Roles
-     * const roles = await prisma.role.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const roleWithIdOnly = await prisma.role.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends RoleFindManyArgs>(args?: SelectSubset<T, RoleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Role.
-     * @param {RoleCreateArgs} args - Arguments to create a Role.
-     * @example
-     * // Create one Role
-     * const Role = await prisma.role.create({
-     *   data: {
-     *     // ... data to create a Role
-     *   }
-     * })
-     * 
-     */
-    create<T extends RoleCreateArgs>(args: SelectSubset<T, RoleCreateArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Roles.
-     * @param {RoleCreateManyArgs} args - Arguments to create many Roles.
-     * @example
-     * // Create many Roles
-     * const role = await prisma.role.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends RoleCreateManyArgs>(args?: SelectSubset<T, RoleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Roles and returns the data saved in the database.
-     * @param {RoleCreateManyAndReturnArgs} args - Arguments to create many Roles.
-     * @example
-     * // Create many Roles
-     * const role = await prisma.role.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Roles and only return the `id`
-     * const roleWithIdOnly = await prisma.role.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends RoleCreateManyAndReturnArgs>(args?: SelectSubset<T, RoleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Role.
-     * @param {RoleDeleteArgs} args - Arguments to delete one Role.
-     * @example
-     * // Delete one Role
-     * const Role = await prisma.role.delete({
-     *   where: {
-     *     // ... filter to delete one Role
-     *   }
-     * })
-     * 
-     */
-    delete<T extends RoleDeleteArgs>(args: SelectSubset<T, RoleDeleteArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Role.
-     * @param {RoleUpdateArgs} args - Arguments to update one Role.
-     * @example
-     * // Update one Role
-     * const role = await prisma.role.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends RoleUpdateArgs>(args: SelectSubset<T, RoleUpdateArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Roles.
-     * @param {RoleDeleteManyArgs} args - Arguments to filter Roles to delete.
-     * @example
-     * // Delete a few Roles
-     * const { count } = await prisma.role.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends RoleDeleteManyArgs>(args?: SelectSubset<T, RoleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Roles.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoleUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Roles
-     * const role = await prisma.role.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends RoleUpdateManyArgs>(args: SelectSubset<T, RoleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Roles and returns the data updated in the database.
-     * @param {RoleUpdateManyAndReturnArgs} args - Arguments to update many Roles.
-     * @example
-     * // Update many Roles
-     * const role = await prisma.role.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Roles and only return the `id`
-     * const roleWithIdOnly = await prisma.role.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends RoleUpdateManyAndReturnArgs>(args: SelectSubset<T, RoleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Role.
-     * @param {RoleUpsertArgs} args - Arguments to update or create a Role.
-     * @example
-     * // Update or create a Role
-     * const role = await prisma.role.upsert({
-     *   create: {
-     *     // ... data to create a Role
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Role we want to update
-     *   }
-     * })
-     */
-    upsert<T extends RoleUpsertArgs>(args: SelectSubset<T, RoleUpsertArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Roles.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoleCountArgs} args - Arguments to filter Roles to count.
-     * @example
-     * // Count the number of Roles
-     * const count = await prisma.role.count({
-     *   where: {
-     *     // ... the filter for the Roles we want to count
-     *   }
-     * })
-    **/
-    count<T extends RoleCountArgs>(
-      args?: Subset<T, RoleCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], RoleCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Role.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends RoleAggregateArgs>(args: Subset<T, RoleAggregateArgs>): Prisma.PrismaPromise<GetRoleAggregateType<T>>
-
-    /**
-     * Group by Role.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoleGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends RoleGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: RoleGroupByArgs['orderBy'] }
-        : { orderBy?: RoleGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, RoleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Role model
-   */
-  readonly fields: RoleFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Role.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__RoleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    users<T extends Role$usersArgs<ExtArgs> = {}>(args?: Subset<T, Role$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    teams<T extends Role$teamsArgs<ExtArgs> = {}>(args?: Subset<T, Role$teamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    UserTeamRoleHistory<T extends Role$UserTeamRoleHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Role$UserTeamRoleHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Role model
-   */
-  interface RoleFieldRefs {
-    readonly id: FieldRef<"Role", 'String'>
-    readonly name: FieldRef<"Role", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Role findUnique
-   */
-  export type RoleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * Filter, which Role to fetch.
-     */
-    where: RoleWhereUniqueInput
-  }
-
-  /**
-   * Role findUniqueOrThrow
-   */
-  export type RoleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * Filter, which Role to fetch.
-     */
-    where: RoleWhereUniqueInput
-  }
-
-  /**
-   * Role findFirst
-   */
-  export type RoleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * Filter, which Role to fetch.
-     */
-    where?: RoleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Roles to fetch.
-     */
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Roles.
-     */
-    cursor?: RoleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Roles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Roles.
-     */
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
-  }
-
-  /**
-   * Role findFirstOrThrow
-   */
-  export type RoleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * Filter, which Role to fetch.
-     */
-    where?: RoleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Roles to fetch.
-     */
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Roles.
-     */
-    cursor?: RoleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Roles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Roles.
-     */
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
-  }
-
-  /**
-   * Role findMany
-   */
-  export type RoleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * Filter, which Roles to fetch.
-     */
-    where?: RoleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Roles to fetch.
-     */
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Roles.
-     */
-    cursor?: RoleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Roles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Roles.
-     */
-    skip?: number
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
-  }
-
-  /**
-   * Role create
-   */
-  export type RoleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Role.
-     */
-    data: XOR<RoleCreateInput, RoleUncheckedCreateInput>
-  }
-
-  /**
-   * Role createMany
-   */
-  export type RoleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Roles.
-     */
-    data: RoleCreateManyInput | RoleCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Role createManyAndReturn
-   */
-  export type RoleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * The data used to create many Roles.
-     */
-    data: RoleCreateManyInput | RoleCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Role update
-   */
-  export type RoleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Role.
-     */
-    data: XOR<RoleUpdateInput, RoleUncheckedUpdateInput>
-    /**
-     * Choose, which Role to update.
-     */
-    where: RoleWhereUniqueInput
-  }
-
-  /**
-   * Role updateMany
-   */
-  export type RoleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Roles.
-     */
-    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyInput>
-    /**
-     * Filter which Roles to update
-     */
-    where?: RoleWhereInput
-    /**
-     * Limit how many Roles to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Role updateManyAndReturn
-   */
-  export type RoleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * The data used to update Roles.
-     */
-    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyInput>
-    /**
-     * Filter which Roles to update
-     */
-    where?: RoleWhereInput
-    /**
-     * Limit how many Roles to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Role upsert
-   */
-  export type RoleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Role to update in case it exists.
-     */
-    where: RoleWhereUniqueInput
-    /**
-     * In case the Role found by the `where` argument doesn't exist, create a new Role with this data.
-     */
-    create: XOR<RoleCreateInput, RoleUncheckedCreateInput>
-    /**
-     * In case the Role was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<RoleUpdateInput, RoleUncheckedUpdateInput>
-  }
-
-  /**
-   * Role delete
-   */
-  export type RoleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    /**
-     * Filter which Role to delete.
-     */
-    where: RoleWhereUniqueInput
-  }
-
-  /**
-   * Role deleteMany
-   */
-  export type RoleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Roles to delete
-     */
-    where?: RoleWhereInput
-    /**
-     * Limit how many Roles to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Role.users
-   */
-  export type Role$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    cursor?: UserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * Role.teams
-   */
-  export type Role$teamsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Teams
-     */
-    select?: TeamsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Teams
-     */
-    omit?: TeamsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TeamsInclude<ExtArgs> | null
-    where?: TeamsWhereInput
-    orderBy?: TeamsOrderByWithRelationInput | TeamsOrderByWithRelationInput[]
-    cursor?: TeamsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TeamsScalarFieldEnum | TeamsScalarFieldEnum[]
-  }
-
-  /**
-   * Role.UserTeamRoleHistory
-   */
-  export type Role$UserTeamRoleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
-     */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserTeamRoleHistory
-     */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
-    where?: UserTeamRoleHistoryWhereInput
-    orderBy?: UserTeamRoleHistoryOrderByWithRelationInput | UserTeamRoleHistoryOrderByWithRelationInput[]
-    cursor?: UserTeamRoleHistoryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserTeamRoleHistoryScalarFieldEnum | UserTeamRoleHistoryScalarFieldEnum[]
-  }
-
-  /**
-   * Role without action
-   */
-  export type RoleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
   }
 
 
@@ -6032,9 +4817,8 @@ export namespace Prisma {
     teamLeader?: boolean | UserDefaultArgs<ExtArgs>
     members?: boolean | Teams$membersArgs<ExtArgs>
     tags?: boolean | Teams$tagsArgs<ExtArgs>
-    roles?: boolean | Teams$rolesArgs<ExtArgs>
     logs?: boolean | Teams$logsArgs<ExtArgs>
-    UserTeamRoleHistory?: boolean | Teams$UserTeamRoleHistoryArgs<ExtArgs>
+    userRoleInTeam?: boolean | Teams$userRoleInTeamArgs<ExtArgs>
     chats?: boolean | Teams$chatsArgs<ExtArgs>
     notices?: boolean | Teams$noticesArgs<ExtArgs>
     noticeRequests?: boolean | Teams$noticeRequestsArgs<ExtArgs>
@@ -6084,9 +4868,8 @@ export namespace Prisma {
     teamLeader?: boolean | UserDefaultArgs<ExtArgs>
     members?: boolean | Teams$membersArgs<ExtArgs>
     tags?: boolean | Teams$tagsArgs<ExtArgs>
-    roles?: boolean | Teams$rolesArgs<ExtArgs>
     logs?: boolean | Teams$logsArgs<ExtArgs>
-    UserTeamRoleHistory?: boolean | Teams$UserTeamRoleHistoryArgs<ExtArgs>
+    userRoleInTeam?: boolean | Teams$userRoleInTeamArgs<ExtArgs>
     chats?: boolean | Teams$chatsArgs<ExtArgs>
     notices?: boolean | Teams$noticesArgs<ExtArgs>
     noticeRequests?: boolean | Teams$noticeRequestsArgs<ExtArgs>
@@ -6105,9 +4888,8 @@ export namespace Prisma {
       teamLeader: Prisma.$UserPayload<ExtArgs>
       members: Prisma.$UserPayload<ExtArgs>[]
       tags: Prisma.$TagPayload<ExtArgs>[]
-      roles: Prisma.$RolePayload<ExtArgs>[]
       logs: Prisma.$TeamsEditLogPayload<ExtArgs>[]
-      UserTeamRoleHistory: Prisma.$UserTeamRoleHistoryPayload<ExtArgs>[]
+      userRoleInTeam: Prisma.$UserRoleInTeamPayload<ExtArgs>[]
       chats: Prisma.$ChatPayload<ExtArgs>[]
       notices: Prisma.$NoticePayload<ExtArgs>[]
       noticeRequests: Prisma.$NoticeRequestPayload<ExtArgs>[]
@@ -6519,9 +5301,8 @@ export namespace Prisma {
     teamLeader<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     members<T extends Teams$membersArgs<ExtArgs> = {}>(args?: Subset<T, Teams$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tags<T extends Teams$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    roles<T extends Teams$rolesArgs<ExtArgs> = {}>(args?: Subset<T, Teams$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     logs<T extends Teams$logsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    UserTeamRoleHistory<T extends Teams$UserTeamRoleHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Teams$UserTeamRoleHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userRoleInTeam<T extends Teams$userRoleInTeamArgs<ExtArgs> = {}>(args?: Subset<T, Teams$userRoleInTeamArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chats<T extends Teams$chatsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notices<T extends Teams$noticesArgs<ExtArgs> = {}>(args?: Subset<T, Teams$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeRequests<T extends Teams$noticeRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$noticeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7007,30 +5788,6 @@ export namespace Prisma {
   }
 
   /**
-   * Teams.roles
-   */
-  export type Teams$rolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Role
-     */
-    select?: RoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Role
-     */
-    omit?: RoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoleInclude<ExtArgs> | null
-    where?: RoleWhereInput
-    orderBy?: RoleOrderByWithRelationInput | RoleOrderByWithRelationInput[]
-    cursor?: RoleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RoleScalarFieldEnum | RoleScalarFieldEnum[]
-  }
-
-  /**
    * Teams.logs
    */
   export type Teams$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7055,27 +5812,27 @@ export namespace Prisma {
   }
 
   /**
-   * Teams.UserTeamRoleHistory
+   * Teams.userRoleInTeam
    */
-  export type Teams$UserTeamRoleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Teams$userRoleInTeamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
-    where?: UserTeamRoleHistoryWhereInput
-    orderBy?: UserTeamRoleHistoryOrderByWithRelationInput | UserTeamRoleHistoryOrderByWithRelationInput[]
-    cursor?: UserTeamRoleHistoryWhereUniqueInput
+    include?: UserRoleInTeamInclude<ExtArgs> | null
+    where?: UserRoleInTeamWhereInput
+    orderBy?: UserRoleInTeamOrderByWithRelationInput | UserRoleInTeamOrderByWithRelationInput[]
+    cursor?: UserRoleInTeamWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserTeamRoleHistoryScalarFieldEnum | UserTeamRoleHistoryScalarFieldEnum[]
+    distinct?: UserRoleInTeamScalarFieldEnum | UserRoleInTeamScalarFieldEnum[]
   }
 
   /**
@@ -7170,388 +5927,369 @@ export namespace Prisma {
 
 
   /**
-   * Model UserTeamRoleHistory
+   * Model UserRoleInTeam
    */
 
-  export type AggregateUserTeamRoleHistory = {
-    _count: UserTeamRoleHistoryCountAggregateOutputType | null
-    _min: UserTeamRoleHistoryMinAggregateOutputType | null
-    _max: UserTeamRoleHistoryMaxAggregateOutputType | null
+  export type AggregateUserRoleInTeam = {
+    _count: UserRoleInTeamCountAggregateOutputType | null
+    _min: UserRoleInTeamMinAggregateOutputType | null
+    _max: UserRoleInTeamMaxAggregateOutputType | null
   }
 
-  export type UserTeamRoleHistoryMinAggregateOutputType = {
+  export type UserRoleInTeamMinAggregateOutputType = {
     id: string | null
     userId: string | null
     teamId: string | null
-    roleId: string | null
-    assignedAt: Date | null
+    designation: $Enums.Designation | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type UserTeamRoleHistoryMaxAggregateOutputType = {
+  export type UserRoleInTeamMaxAggregateOutputType = {
     id: string | null
     userId: string | null
     teamId: string | null
-    roleId: string | null
-    assignedAt: Date | null
+    designation: $Enums.Designation | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type UserTeamRoleHistoryCountAggregateOutputType = {
+  export type UserRoleInTeamCountAggregateOutputType = {
     id: number
     userId: number
     teamId: number
-    roleId: number
-    assignedAt: number
+    designation: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type UserTeamRoleHistoryMinAggregateInputType = {
+  export type UserRoleInTeamMinAggregateInputType = {
     id?: true
     userId?: true
     teamId?: true
-    roleId?: true
-    assignedAt?: true
+    designation?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type UserTeamRoleHistoryMaxAggregateInputType = {
+  export type UserRoleInTeamMaxAggregateInputType = {
     id?: true
     userId?: true
     teamId?: true
-    roleId?: true
-    assignedAt?: true
+    designation?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type UserTeamRoleHistoryCountAggregateInputType = {
+  export type UserRoleInTeamCountAggregateInputType = {
     id?: true
     userId?: true
     teamId?: true
-    roleId?: true
-    assignedAt?: true
+    designation?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type UserTeamRoleHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which UserTeamRoleHistory to aggregate.
+     * Filter which UserRoleInTeam to aggregate.
      */
-    where?: UserTeamRoleHistoryWhereInput
+    where?: UserRoleInTeamWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserTeamRoleHistories to fetch.
+     * Determine the order of UserRoleInTeams to fetch.
      */
-    orderBy?: UserTeamRoleHistoryOrderByWithRelationInput | UserTeamRoleHistoryOrderByWithRelationInput[]
+    orderBy?: UserRoleInTeamOrderByWithRelationInput | UserRoleInTeamOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: UserTeamRoleHistoryWhereUniqueInput
+    cursor?: UserRoleInTeamWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserTeamRoleHistories from the position of the cursor.
+     * Take `±n` UserRoleInTeams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserTeamRoleHistories.
+     * Skip the first `n` UserRoleInTeams.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned UserTeamRoleHistories
+     * Count returned UserRoleInTeams
     **/
-    _count?: true | UserTeamRoleHistoryCountAggregateInputType
+    _count?: true | UserRoleInTeamCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: UserTeamRoleHistoryMinAggregateInputType
+    _min?: UserRoleInTeamMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: UserTeamRoleHistoryMaxAggregateInputType
+    _max?: UserRoleInTeamMaxAggregateInputType
   }
 
-  export type GetUserTeamRoleHistoryAggregateType<T extends UserTeamRoleHistoryAggregateArgs> = {
-        [P in keyof T & keyof AggregateUserTeamRoleHistory]: P extends '_count' | 'count'
+  export type GetUserRoleInTeamAggregateType<T extends UserRoleInTeamAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserRoleInTeam]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateUserTeamRoleHistory[P]>
-      : GetScalarType<T[P], AggregateUserTeamRoleHistory[P]>
+        : GetScalarType<T[P], AggregateUserRoleInTeam[P]>
+      : GetScalarType<T[P], AggregateUserRoleInTeam[P]>
   }
 
 
 
 
-  export type UserTeamRoleHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserTeamRoleHistoryWhereInput
-    orderBy?: UserTeamRoleHistoryOrderByWithAggregationInput | UserTeamRoleHistoryOrderByWithAggregationInput[]
-    by: UserTeamRoleHistoryScalarFieldEnum[] | UserTeamRoleHistoryScalarFieldEnum
-    having?: UserTeamRoleHistoryScalarWhereWithAggregatesInput
+  export type UserRoleInTeamGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserRoleInTeamWhereInput
+    orderBy?: UserRoleInTeamOrderByWithAggregationInput | UserRoleInTeamOrderByWithAggregationInput[]
+    by: UserRoleInTeamScalarFieldEnum[] | UserRoleInTeamScalarFieldEnum
+    having?: UserRoleInTeamScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: UserTeamRoleHistoryCountAggregateInputType | true
-    _min?: UserTeamRoleHistoryMinAggregateInputType
-    _max?: UserTeamRoleHistoryMaxAggregateInputType
+    _count?: UserRoleInTeamCountAggregateInputType | true
+    _min?: UserRoleInTeamMinAggregateInputType
+    _max?: UserRoleInTeamMaxAggregateInputType
   }
 
-  export type UserTeamRoleHistoryGroupByOutputType = {
+  export type UserRoleInTeamGroupByOutputType = {
     id: string
     userId: string
     teamId: string
-    roleId: string
-    assignedAt: Date
+    designation: $Enums.Designation
     createdAt: Date
     updatedAt: Date
-    _count: UserTeamRoleHistoryCountAggregateOutputType | null
-    _min: UserTeamRoleHistoryMinAggregateOutputType | null
-    _max: UserTeamRoleHistoryMaxAggregateOutputType | null
+    _count: UserRoleInTeamCountAggregateOutputType | null
+    _min: UserRoleInTeamMinAggregateOutputType | null
+    _max: UserRoleInTeamMaxAggregateOutputType | null
   }
 
-  type GetUserTeamRoleHistoryGroupByPayload<T extends UserTeamRoleHistoryGroupByArgs> = Prisma.PrismaPromise<
+  type GetUserRoleInTeamGroupByPayload<T extends UserRoleInTeamGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<UserTeamRoleHistoryGroupByOutputType, T['by']> &
+      PickEnumerable<UserRoleInTeamGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof UserTeamRoleHistoryGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof UserRoleInTeamGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], UserTeamRoleHistoryGroupByOutputType[P]>
-            : GetScalarType<T[P], UserTeamRoleHistoryGroupByOutputType[P]>
+              : GetScalarType<T[P], UserRoleInTeamGroupByOutputType[P]>
+            : GetScalarType<T[P], UserRoleInTeamGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type UserTeamRoleHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserRoleInTeamSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     teamId?: boolean
-    roleId?: boolean
-    assignedAt?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
-    role?: boolean | RoleDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userTeamRoleHistory"]>
+  }, ExtArgs["result"]["userRoleInTeam"]>
 
-  export type UserTeamRoleHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserRoleInTeamSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     teamId?: boolean
-    roleId?: boolean
-    assignedAt?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
-    role?: boolean | RoleDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userTeamRoleHistory"]>
+  }, ExtArgs["result"]["userRoleInTeam"]>
 
-  export type UserTeamRoleHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserRoleInTeamSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     teamId?: boolean
-    roleId?: boolean
-    assignedAt?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
-    role?: boolean | RoleDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userTeamRoleHistory"]>
+  }, ExtArgs["result"]["userRoleInTeam"]>
 
-  export type UserTeamRoleHistorySelectScalar = {
+  export type UserRoleInTeamSelectScalar = {
     id?: boolean
     userId?: boolean
     teamId?: boolean
-    roleId?: boolean
-    assignedAt?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserTeamRoleHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "teamId" | "roleId" | "assignedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["userTeamRoleHistory"]>
-  export type UserTeamRoleHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "teamId" | "designation" | "createdAt" | "updatedAt", ExtArgs["result"]["userRoleInTeam"]>
+  export type UserRoleInTeamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
-    role?: boolean | RoleDefaultArgs<ExtArgs>
   }
-  export type UserTeamRoleHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
-    role?: boolean | RoleDefaultArgs<ExtArgs>
   }
-  export type UserTeamRoleHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
-    role?: boolean | RoleDefaultArgs<ExtArgs>
   }
 
-  export type $UserTeamRoleHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UserTeamRoleHistory"
+  export type $UserRoleInTeamPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserRoleInTeam"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       team: Prisma.$TeamsPayload<ExtArgs>
-      role: Prisma.$RolePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
       teamId: string
-      roleId: string
-      assignedAt: Date
+      designation: $Enums.Designation
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["userTeamRoleHistory"]>
+    }, ExtArgs["result"]["userRoleInTeam"]>
     composites: {}
   }
 
-  type UserTeamRoleHistoryGetPayload<S extends boolean | null | undefined | UserTeamRoleHistoryDefaultArgs> = $Result.GetResult<Prisma.$UserTeamRoleHistoryPayload, S>
+  type UserRoleInTeamGetPayload<S extends boolean | null | undefined | UserRoleInTeamDefaultArgs> = $Result.GetResult<Prisma.$UserRoleInTeamPayload, S>
 
-  type UserTeamRoleHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UserTeamRoleHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: UserTeamRoleHistoryCountAggregateInputType | true
+  type UserRoleInTeamCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserRoleInTeamFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserRoleInTeamCountAggregateInputType | true
     }
 
-  export interface UserTeamRoleHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserTeamRoleHistory'], meta: { name: 'UserTeamRoleHistory' } }
+  export interface UserRoleInTeamDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserRoleInTeam'], meta: { name: 'UserRoleInTeam' } }
     /**
-     * Find zero or one UserTeamRoleHistory that matches the filter.
-     * @param {UserTeamRoleHistoryFindUniqueArgs} args - Arguments to find a UserTeamRoleHistory
+     * Find zero or one UserRoleInTeam that matches the filter.
+     * @param {UserRoleInTeamFindUniqueArgs} args - Arguments to find a UserRoleInTeam
      * @example
-     * // Get one UserTeamRoleHistory
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.findUnique({
+     * // Get one UserRoleInTeam
+     * const userRoleInTeam = await prisma.userRoleInTeam.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends UserTeamRoleHistoryFindUniqueArgs>(args: SelectSubset<T, UserTeamRoleHistoryFindUniqueArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends UserRoleInTeamFindUniqueArgs>(args: SelectSubset<T, UserRoleInTeamFindUniqueArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one UserTeamRoleHistory that matches the filter or throw an error with `error.code='P2025'`
+     * Find one UserRoleInTeam that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {UserTeamRoleHistoryFindUniqueOrThrowArgs} args - Arguments to find a UserTeamRoleHistory
+     * @param {UserRoleInTeamFindUniqueOrThrowArgs} args - Arguments to find a UserRoleInTeam
      * @example
-     * // Get one UserTeamRoleHistory
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.findUniqueOrThrow({
+     * // Get one UserRoleInTeam
+     * const userRoleInTeam = await prisma.userRoleInTeam.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends UserTeamRoleHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, UserTeamRoleHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends UserRoleInTeamFindUniqueOrThrowArgs>(args: SelectSubset<T, UserRoleInTeamFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first UserTeamRoleHistory that matches the filter.
+     * Find the first UserRoleInTeam that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserTeamRoleHistoryFindFirstArgs} args - Arguments to find a UserTeamRoleHistory
+     * @param {UserRoleInTeamFindFirstArgs} args - Arguments to find a UserRoleInTeam
      * @example
-     * // Get one UserTeamRoleHistory
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.findFirst({
+     * // Get one UserRoleInTeam
+     * const userRoleInTeam = await prisma.userRoleInTeam.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends UserTeamRoleHistoryFindFirstArgs>(args?: SelectSubset<T, UserTeamRoleHistoryFindFirstArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends UserRoleInTeamFindFirstArgs>(args?: SelectSubset<T, UserRoleInTeamFindFirstArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first UserTeamRoleHistory that matches the filter or
+     * Find the first UserRoleInTeam that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserTeamRoleHistoryFindFirstOrThrowArgs} args - Arguments to find a UserTeamRoleHistory
+     * @param {UserRoleInTeamFindFirstOrThrowArgs} args - Arguments to find a UserRoleInTeam
      * @example
-     * // Get one UserTeamRoleHistory
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.findFirstOrThrow({
+     * // Get one UserRoleInTeam
+     * const userRoleInTeam = await prisma.userRoleInTeam.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends UserTeamRoleHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, UserTeamRoleHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends UserRoleInTeamFindFirstOrThrowArgs>(args?: SelectSubset<T, UserRoleInTeamFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more UserTeamRoleHistories that matches the filter.
+     * Find zero or more UserRoleInTeams that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserTeamRoleHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {UserRoleInTeamFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all UserTeamRoleHistories
-     * const userTeamRoleHistories = await prisma.userTeamRoleHistory.findMany()
+     * // Get all UserRoleInTeams
+     * const userRoleInTeams = await prisma.userRoleInTeam.findMany()
      * 
-     * // Get first 10 UserTeamRoleHistories
-     * const userTeamRoleHistories = await prisma.userTeamRoleHistory.findMany({ take: 10 })
+     * // Get first 10 UserRoleInTeams
+     * const userRoleInTeams = await prisma.userRoleInTeam.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const userTeamRoleHistoryWithIdOnly = await prisma.userTeamRoleHistory.findMany({ select: { id: true } })
+     * const userRoleInTeamWithIdOnly = await prisma.userRoleInTeam.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends UserTeamRoleHistoryFindManyArgs>(args?: SelectSubset<T, UserTeamRoleHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends UserRoleInTeamFindManyArgs>(args?: SelectSubset<T, UserRoleInTeamFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a UserTeamRoleHistory.
-     * @param {UserTeamRoleHistoryCreateArgs} args - Arguments to create a UserTeamRoleHistory.
+     * Create a UserRoleInTeam.
+     * @param {UserRoleInTeamCreateArgs} args - Arguments to create a UserRoleInTeam.
      * @example
-     * // Create one UserTeamRoleHistory
-     * const UserTeamRoleHistory = await prisma.userTeamRoleHistory.create({
+     * // Create one UserRoleInTeam
+     * const UserRoleInTeam = await prisma.userRoleInTeam.create({
      *   data: {
-     *     // ... data to create a UserTeamRoleHistory
+     *     // ... data to create a UserRoleInTeam
      *   }
      * })
      * 
      */
-    create<T extends UserTeamRoleHistoryCreateArgs>(args: SelectSubset<T, UserTeamRoleHistoryCreateArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends UserRoleInTeamCreateArgs>(args: SelectSubset<T, UserRoleInTeamCreateArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many UserTeamRoleHistories.
-     * @param {UserTeamRoleHistoryCreateManyArgs} args - Arguments to create many UserTeamRoleHistories.
+     * Create many UserRoleInTeams.
+     * @param {UserRoleInTeamCreateManyArgs} args - Arguments to create many UserRoleInTeams.
      * @example
-     * // Create many UserTeamRoleHistories
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.createMany({
+     * // Create many UserRoleInTeams
+     * const userRoleInTeam = await prisma.userRoleInTeam.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends UserTeamRoleHistoryCreateManyArgs>(args?: SelectSubset<T, UserTeamRoleHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends UserRoleInTeamCreateManyArgs>(args?: SelectSubset<T, UserRoleInTeamCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many UserTeamRoleHistories and returns the data saved in the database.
-     * @param {UserTeamRoleHistoryCreateManyAndReturnArgs} args - Arguments to create many UserTeamRoleHistories.
+     * Create many UserRoleInTeams and returns the data saved in the database.
+     * @param {UserRoleInTeamCreateManyAndReturnArgs} args - Arguments to create many UserRoleInTeams.
      * @example
-     * // Create many UserTeamRoleHistories
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.createManyAndReturn({
+     * // Create many UserRoleInTeams
+     * const userRoleInTeam = await prisma.userRoleInTeam.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many UserTeamRoleHistories and only return the `id`
-     * const userTeamRoleHistoryWithIdOnly = await prisma.userTeamRoleHistory.createManyAndReturn({
+     * // Create many UserRoleInTeams and only return the `id`
+     * const userRoleInTeamWithIdOnly = await prisma.userRoleInTeam.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -7561,28 +6299,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends UserTeamRoleHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, UserTeamRoleHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends UserRoleInTeamCreateManyAndReturnArgs>(args?: SelectSubset<T, UserRoleInTeamCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a UserTeamRoleHistory.
-     * @param {UserTeamRoleHistoryDeleteArgs} args - Arguments to delete one UserTeamRoleHistory.
+     * Delete a UserRoleInTeam.
+     * @param {UserRoleInTeamDeleteArgs} args - Arguments to delete one UserRoleInTeam.
      * @example
-     * // Delete one UserTeamRoleHistory
-     * const UserTeamRoleHistory = await prisma.userTeamRoleHistory.delete({
+     * // Delete one UserRoleInTeam
+     * const UserRoleInTeam = await prisma.userRoleInTeam.delete({
      *   where: {
-     *     // ... filter to delete one UserTeamRoleHistory
+     *     // ... filter to delete one UserRoleInTeam
      *   }
      * })
      * 
      */
-    delete<T extends UserTeamRoleHistoryDeleteArgs>(args: SelectSubset<T, UserTeamRoleHistoryDeleteArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends UserRoleInTeamDeleteArgs>(args: SelectSubset<T, UserRoleInTeamDeleteArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one UserTeamRoleHistory.
-     * @param {UserTeamRoleHistoryUpdateArgs} args - Arguments to update one UserTeamRoleHistory.
+     * Update one UserRoleInTeam.
+     * @param {UserRoleInTeamUpdateArgs} args - Arguments to update one UserRoleInTeam.
      * @example
-     * // Update one UserTeamRoleHistory
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.update({
+     * // Update one UserRoleInTeam
+     * const userRoleInTeam = await prisma.userRoleInTeam.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -7592,30 +6330,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends UserTeamRoleHistoryUpdateArgs>(args: SelectSubset<T, UserTeamRoleHistoryUpdateArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends UserRoleInTeamUpdateArgs>(args: SelectSubset<T, UserRoleInTeamUpdateArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more UserTeamRoleHistories.
-     * @param {UserTeamRoleHistoryDeleteManyArgs} args - Arguments to filter UserTeamRoleHistories to delete.
+     * Delete zero or more UserRoleInTeams.
+     * @param {UserRoleInTeamDeleteManyArgs} args - Arguments to filter UserRoleInTeams to delete.
      * @example
-     * // Delete a few UserTeamRoleHistories
-     * const { count } = await prisma.userTeamRoleHistory.deleteMany({
+     * // Delete a few UserRoleInTeams
+     * const { count } = await prisma.userRoleInTeam.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends UserTeamRoleHistoryDeleteManyArgs>(args?: SelectSubset<T, UserTeamRoleHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends UserRoleInTeamDeleteManyArgs>(args?: SelectSubset<T, UserRoleInTeamDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more UserTeamRoleHistories.
+     * Update zero or more UserRoleInTeams.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserTeamRoleHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {UserRoleInTeamUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many UserTeamRoleHistories
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.updateMany({
+     * // Update many UserRoleInTeams
+     * const userRoleInTeam = await prisma.userRoleInTeam.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -7625,14 +6363,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends UserTeamRoleHistoryUpdateManyArgs>(args: SelectSubset<T, UserTeamRoleHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends UserRoleInTeamUpdateManyArgs>(args: SelectSubset<T, UserRoleInTeamUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more UserTeamRoleHistories and returns the data updated in the database.
-     * @param {UserTeamRoleHistoryUpdateManyAndReturnArgs} args - Arguments to update many UserTeamRoleHistories.
+     * Update zero or more UserRoleInTeams and returns the data updated in the database.
+     * @param {UserRoleInTeamUpdateManyAndReturnArgs} args - Arguments to update many UserRoleInTeams.
      * @example
-     * // Update many UserTeamRoleHistories
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.updateManyAndReturn({
+     * // Update many UserRoleInTeams
+     * const userRoleInTeam = await prisma.userRoleInTeam.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -7641,8 +6379,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more UserTeamRoleHistories and only return the `id`
-     * const userTeamRoleHistoryWithIdOnly = await prisma.userTeamRoleHistory.updateManyAndReturn({
+     * // Update zero or more UserRoleInTeams and only return the `id`
+     * const userRoleInTeamWithIdOnly = await prisma.userRoleInTeam.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -7655,56 +6393,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends UserTeamRoleHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, UserTeamRoleHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends UserRoleInTeamUpdateManyAndReturnArgs>(args: SelectSubset<T, UserRoleInTeamUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one UserTeamRoleHistory.
-     * @param {UserTeamRoleHistoryUpsertArgs} args - Arguments to update or create a UserTeamRoleHistory.
+     * Create or update one UserRoleInTeam.
+     * @param {UserRoleInTeamUpsertArgs} args - Arguments to update or create a UserRoleInTeam.
      * @example
-     * // Update or create a UserTeamRoleHistory
-     * const userTeamRoleHistory = await prisma.userTeamRoleHistory.upsert({
+     * // Update or create a UserRoleInTeam
+     * const userRoleInTeam = await prisma.userRoleInTeam.upsert({
      *   create: {
-     *     // ... data to create a UserTeamRoleHistory
+     *     // ... data to create a UserRoleInTeam
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the UserTeamRoleHistory we want to update
+     *     // ... the filter for the UserRoleInTeam we want to update
      *   }
      * })
      */
-    upsert<T extends UserTeamRoleHistoryUpsertArgs>(args: SelectSubset<T, UserTeamRoleHistoryUpsertArgs<ExtArgs>>): Prisma__UserTeamRoleHistoryClient<$Result.GetResult<Prisma.$UserTeamRoleHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends UserRoleInTeamUpsertArgs>(args: SelectSubset<T, UserRoleInTeamUpsertArgs<ExtArgs>>): Prisma__UserRoleInTeamClient<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of UserTeamRoleHistories.
+     * Count the number of UserRoleInTeams.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserTeamRoleHistoryCountArgs} args - Arguments to filter UserTeamRoleHistories to count.
+     * @param {UserRoleInTeamCountArgs} args - Arguments to filter UserRoleInTeams to count.
      * @example
-     * // Count the number of UserTeamRoleHistories
-     * const count = await prisma.userTeamRoleHistory.count({
+     * // Count the number of UserRoleInTeams
+     * const count = await prisma.userRoleInTeam.count({
      *   where: {
-     *     // ... the filter for the UserTeamRoleHistories we want to count
+     *     // ... the filter for the UserRoleInTeams we want to count
      *   }
      * })
     **/
-    count<T extends UserTeamRoleHistoryCountArgs>(
-      args?: Subset<T, UserTeamRoleHistoryCountArgs>,
+    count<T extends UserRoleInTeamCountArgs>(
+      args?: Subset<T, UserRoleInTeamCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], UserTeamRoleHistoryCountAggregateOutputType>
+          : GetScalarType<T['select'], UserRoleInTeamCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a UserTeamRoleHistory.
+     * Allows you to perform aggregations operations on a UserRoleInTeam.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserTeamRoleHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {UserRoleInTeamAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -7724,13 +6462,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends UserTeamRoleHistoryAggregateArgs>(args: Subset<T, UserTeamRoleHistoryAggregateArgs>): Prisma.PrismaPromise<GetUserTeamRoleHistoryAggregateType<T>>
+    aggregate<T extends UserRoleInTeamAggregateArgs>(args: Subset<T, UserRoleInTeamAggregateArgs>): Prisma.PrismaPromise<GetUserRoleInTeamAggregateType<T>>
 
     /**
-     * Group by UserTeamRoleHistory.
+     * Group by UserRoleInTeam.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserTeamRoleHistoryGroupByArgs} args - Group by arguments.
+     * @param {UserRoleInTeamGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -7745,14 +6483,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends UserTeamRoleHistoryGroupByArgs,
+      T extends UserRoleInTeamGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserTeamRoleHistoryGroupByArgs['orderBy'] }
-        : { orderBy?: UserTeamRoleHistoryGroupByArgs['orderBy'] },
+        ? { orderBy: UserRoleInTeamGroupByArgs['orderBy'] }
+        : { orderBy?: UserRoleInTeamGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -7801,24 +6539,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, UserTeamRoleHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserTeamRoleHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, UserRoleInTeamGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserRoleInTeamGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the UserTeamRoleHistory model
+   * Fields of the UserRoleInTeam model
    */
-  readonly fields: UserTeamRoleHistoryFieldRefs;
+  readonly fields: UserRoleInTeamFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for UserTeamRoleHistory.
+   * The delegate class that acts as a "Promise-like" for UserRoleInTeam.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UserTeamRoleHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UserRoleInTeamClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     team<T extends TeamsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamsDefaultArgs<ExtArgs>>): Prisma__TeamsClient<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    role<T extends RoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleDefaultArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7845,427 +6582,426 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the UserTeamRoleHistory model
+   * Fields of the UserRoleInTeam model
    */
-  interface UserTeamRoleHistoryFieldRefs {
-    readonly id: FieldRef<"UserTeamRoleHistory", 'String'>
-    readonly userId: FieldRef<"UserTeamRoleHistory", 'String'>
-    readonly teamId: FieldRef<"UserTeamRoleHistory", 'String'>
-    readonly roleId: FieldRef<"UserTeamRoleHistory", 'String'>
-    readonly assignedAt: FieldRef<"UserTeamRoleHistory", 'DateTime'>
-    readonly createdAt: FieldRef<"UserTeamRoleHistory", 'DateTime'>
-    readonly updatedAt: FieldRef<"UserTeamRoleHistory", 'DateTime'>
+  interface UserRoleInTeamFieldRefs {
+    readonly id: FieldRef<"UserRoleInTeam", 'String'>
+    readonly userId: FieldRef<"UserRoleInTeam", 'String'>
+    readonly teamId: FieldRef<"UserRoleInTeam", 'String'>
+    readonly designation: FieldRef<"UserRoleInTeam", 'Designation'>
+    readonly createdAt: FieldRef<"UserRoleInTeam", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserRoleInTeam", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * UserTeamRoleHistory findUnique
+   * UserRoleInTeam findUnique
    */
-  export type UserTeamRoleHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * Filter, which UserTeamRoleHistory to fetch.
+     * Filter, which UserRoleInTeam to fetch.
      */
-    where: UserTeamRoleHistoryWhereUniqueInput
+    where: UserRoleInTeamWhereUniqueInput
   }
 
   /**
-   * UserTeamRoleHistory findUniqueOrThrow
+   * UserRoleInTeam findUniqueOrThrow
    */
-  export type UserTeamRoleHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * Filter, which UserTeamRoleHistory to fetch.
+     * Filter, which UserRoleInTeam to fetch.
      */
-    where: UserTeamRoleHistoryWhereUniqueInput
+    where: UserRoleInTeamWhereUniqueInput
   }
 
   /**
-   * UserTeamRoleHistory findFirst
+   * UserRoleInTeam findFirst
    */
-  export type UserTeamRoleHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * Filter, which UserTeamRoleHistory to fetch.
+     * Filter, which UserRoleInTeam to fetch.
      */
-    where?: UserTeamRoleHistoryWhereInput
+    where?: UserRoleInTeamWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserTeamRoleHistories to fetch.
+     * Determine the order of UserRoleInTeams to fetch.
      */
-    orderBy?: UserTeamRoleHistoryOrderByWithRelationInput | UserTeamRoleHistoryOrderByWithRelationInput[]
+    orderBy?: UserRoleInTeamOrderByWithRelationInput | UserRoleInTeamOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for UserTeamRoleHistories.
+     * Sets the position for searching for UserRoleInTeams.
      */
-    cursor?: UserTeamRoleHistoryWhereUniqueInput
+    cursor?: UserRoleInTeamWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserTeamRoleHistories from the position of the cursor.
+     * Take `±n` UserRoleInTeams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserTeamRoleHistories.
+     * Skip the first `n` UserRoleInTeams.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of UserTeamRoleHistories.
+     * Filter by unique combinations of UserRoleInTeams.
      */
-    distinct?: UserTeamRoleHistoryScalarFieldEnum | UserTeamRoleHistoryScalarFieldEnum[]
+    distinct?: UserRoleInTeamScalarFieldEnum | UserRoleInTeamScalarFieldEnum[]
   }
 
   /**
-   * UserTeamRoleHistory findFirstOrThrow
+   * UserRoleInTeam findFirstOrThrow
    */
-  export type UserTeamRoleHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * Filter, which UserTeamRoleHistory to fetch.
+     * Filter, which UserRoleInTeam to fetch.
      */
-    where?: UserTeamRoleHistoryWhereInput
+    where?: UserRoleInTeamWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserTeamRoleHistories to fetch.
+     * Determine the order of UserRoleInTeams to fetch.
      */
-    orderBy?: UserTeamRoleHistoryOrderByWithRelationInput | UserTeamRoleHistoryOrderByWithRelationInput[]
+    orderBy?: UserRoleInTeamOrderByWithRelationInput | UserRoleInTeamOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for UserTeamRoleHistories.
+     * Sets the position for searching for UserRoleInTeams.
      */
-    cursor?: UserTeamRoleHistoryWhereUniqueInput
+    cursor?: UserRoleInTeamWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserTeamRoleHistories from the position of the cursor.
+     * Take `±n` UserRoleInTeams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserTeamRoleHistories.
+     * Skip the first `n` UserRoleInTeams.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of UserTeamRoleHistories.
+     * Filter by unique combinations of UserRoleInTeams.
      */
-    distinct?: UserTeamRoleHistoryScalarFieldEnum | UserTeamRoleHistoryScalarFieldEnum[]
+    distinct?: UserRoleInTeamScalarFieldEnum | UserRoleInTeamScalarFieldEnum[]
   }
 
   /**
-   * UserTeamRoleHistory findMany
+   * UserRoleInTeam findMany
    */
-  export type UserTeamRoleHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * Filter, which UserTeamRoleHistories to fetch.
+     * Filter, which UserRoleInTeams to fetch.
      */
-    where?: UserTeamRoleHistoryWhereInput
+    where?: UserRoleInTeamWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserTeamRoleHistories to fetch.
+     * Determine the order of UserRoleInTeams to fetch.
      */
-    orderBy?: UserTeamRoleHistoryOrderByWithRelationInput | UserTeamRoleHistoryOrderByWithRelationInput[]
+    orderBy?: UserRoleInTeamOrderByWithRelationInput | UserRoleInTeamOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing UserTeamRoleHistories.
+     * Sets the position for listing UserRoleInTeams.
      */
-    cursor?: UserTeamRoleHistoryWhereUniqueInput
+    cursor?: UserRoleInTeamWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserTeamRoleHistories from the position of the cursor.
+     * Take `±n` UserRoleInTeams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserTeamRoleHistories.
+     * Skip the first `n` UserRoleInTeams.
      */
     skip?: number
-    distinct?: UserTeamRoleHistoryScalarFieldEnum | UserTeamRoleHistoryScalarFieldEnum[]
+    distinct?: UserRoleInTeamScalarFieldEnum | UserRoleInTeamScalarFieldEnum[]
   }
 
   /**
-   * UserTeamRoleHistory create
+   * UserRoleInTeam create
    */
-  export type UserTeamRoleHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * The data needed to create a UserTeamRoleHistory.
+     * The data needed to create a UserRoleInTeam.
      */
-    data: XOR<UserTeamRoleHistoryCreateInput, UserTeamRoleHistoryUncheckedCreateInput>
+    data: XOR<UserRoleInTeamCreateInput, UserRoleInTeamUncheckedCreateInput>
   }
 
   /**
-   * UserTeamRoleHistory createMany
+   * UserRoleInTeam createMany
    */
-  export type UserTeamRoleHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many UserTeamRoleHistories.
+     * The data used to create many UserRoleInTeams.
      */
-    data: UserTeamRoleHistoryCreateManyInput | UserTeamRoleHistoryCreateManyInput[]
+    data: UserRoleInTeamCreateManyInput | UserRoleInTeamCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * UserTeamRoleHistory createManyAndReturn
+   * UserRoleInTeam createManyAndReturn
    */
-  export type UserTeamRoleHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelectCreateManyAndReturn<ExtArgs> | null
+    select?: UserRoleInTeamSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
-     * The data used to create many UserTeamRoleHistories.
+     * The data used to create many UserRoleInTeams.
      */
-    data: UserTeamRoleHistoryCreateManyInput | UserTeamRoleHistoryCreateManyInput[]
+    data: UserRoleInTeamCreateManyInput | UserRoleInTeamCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: UserRoleInTeamIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * UserTeamRoleHistory update
+   * UserRoleInTeam update
    */
-  export type UserTeamRoleHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * The data needed to update a UserTeamRoleHistory.
+     * The data needed to update a UserRoleInTeam.
      */
-    data: XOR<UserTeamRoleHistoryUpdateInput, UserTeamRoleHistoryUncheckedUpdateInput>
+    data: XOR<UserRoleInTeamUpdateInput, UserRoleInTeamUncheckedUpdateInput>
     /**
-     * Choose, which UserTeamRoleHistory to update.
+     * Choose, which UserRoleInTeam to update.
      */
-    where: UserTeamRoleHistoryWhereUniqueInput
+    where: UserRoleInTeamWhereUniqueInput
   }
 
   /**
-   * UserTeamRoleHistory updateMany
+   * UserRoleInTeam updateMany
    */
-  export type UserTeamRoleHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update UserTeamRoleHistories.
+     * The data used to update UserRoleInTeams.
      */
-    data: XOR<UserTeamRoleHistoryUpdateManyMutationInput, UserTeamRoleHistoryUncheckedUpdateManyInput>
+    data: XOR<UserRoleInTeamUpdateManyMutationInput, UserRoleInTeamUncheckedUpdateManyInput>
     /**
-     * Filter which UserTeamRoleHistories to update
+     * Filter which UserRoleInTeams to update
      */
-    where?: UserTeamRoleHistoryWhereInput
+    where?: UserRoleInTeamWhereInput
     /**
-     * Limit how many UserTeamRoleHistories to update.
+     * Limit how many UserRoleInTeams to update.
      */
     limit?: number
   }
 
   /**
-   * UserTeamRoleHistory updateManyAndReturn
+   * UserRoleInTeam updateManyAndReturn
    */
-  export type UserTeamRoleHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    select?: UserRoleInTeamSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
-     * The data used to update UserTeamRoleHistories.
+     * The data used to update UserRoleInTeams.
      */
-    data: XOR<UserTeamRoleHistoryUpdateManyMutationInput, UserTeamRoleHistoryUncheckedUpdateManyInput>
+    data: XOR<UserRoleInTeamUpdateManyMutationInput, UserRoleInTeamUncheckedUpdateManyInput>
     /**
-     * Filter which UserTeamRoleHistories to update
+     * Filter which UserRoleInTeams to update
      */
-    where?: UserTeamRoleHistoryWhereInput
+    where?: UserRoleInTeamWhereInput
     /**
-     * Limit how many UserTeamRoleHistories to update.
+     * Limit how many UserRoleInTeams to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: UserRoleInTeamIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * UserTeamRoleHistory upsert
+   * UserRoleInTeam upsert
    */
-  export type UserTeamRoleHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * The filter to search for the UserTeamRoleHistory to update in case it exists.
+     * The filter to search for the UserRoleInTeam to update in case it exists.
      */
-    where: UserTeamRoleHistoryWhereUniqueInput
+    where: UserRoleInTeamWhereUniqueInput
     /**
-     * In case the UserTeamRoleHistory found by the `where` argument doesn't exist, create a new UserTeamRoleHistory with this data.
+     * In case the UserRoleInTeam found by the `where` argument doesn't exist, create a new UserRoleInTeam with this data.
      */
-    create: XOR<UserTeamRoleHistoryCreateInput, UserTeamRoleHistoryUncheckedCreateInput>
+    create: XOR<UserRoleInTeamCreateInput, UserRoleInTeamUncheckedCreateInput>
     /**
-     * In case the UserTeamRoleHistory was found with the provided `where` argument, update it with this data.
+     * In case the UserRoleInTeam was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<UserTeamRoleHistoryUpdateInput, UserTeamRoleHistoryUncheckedUpdateInput>
+    update: XOR<UserRoleInTeamUpdateInput, UserRoleInTeamUncheckedUpdateInput>
   }
 
   /**
-   * UserTeamRoleHistory delete
+   * UserRoleInTeam delete
    */
-  export type UserTeamRoleHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
     /**
-     * Filter which UserTeamRoleHistory to delete.
+     * Filter which UserRoleInTeam to delete.
      */
-    where: UserTeamRoleHistoryWhereUniqueInput
+    where: UserRoleInTeamWhereUniqueInput
   }
 
   /**
-   * UserTeamRoleHistory deleteMany
+   * UserRoleInTeam deleteMany
    */
-  export type UserTeamRoleHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which UserTeamRoleHistories to delete
+     * Filter which UserRoleInTeams to delete
      */
-    where?: UserTeamRoleHistoryWhereInput
+    where?: UserRoleInTeamWhereInput
     /**
-     * Limit how many UserTeamRoleHistories to delete.
+     * Limit how many UserRoleInTeams to delete.
      */
     limit?: number
   }
 
   /**
-   * UserTeamRoleHistory without action
+   * UserRoleInTeam without action
    */
-  export type UserTeamRoleHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserRoleInTeamDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserTeamRoleHistory
+     * Select specific fields to fetch from the UserRoleInTeam
      */
-    select?: UserTeamRoleHistorySelect<ExtArgs> | null
+    select?: UserRoleInTeamSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserTeamRoleHistory
+     * Omit specific fields from the UserRoleInTeam
      */
-    omit?: UserTeamRoleHistoryOmit<ExtArgs> | null
+    omit?: UserRoleInTeamOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserTeamRoleHistoryInclude<ExtArgs> | null
+    include?: UserRoleInTeamInclude<ExtArgs> | null
   }
 
 
@@ -9342,7 +8078,8 @@ export namespace Prisma {
     id: string | null
     teamId: string | null
     userId: string | null
-    action: string | null
+    action: $Enums.Action | null
+    designation: $Enums.Designation | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9351,7 +8088,8 @@ export namespace Prisma {
     id: string | null
     teamId: string | null
     userId: string | null
-    action: string | null
+    action: $Enums.Action | null
+    designation: $Enums.Designation | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9361,6 +8099,7 @@ export namespace Prisma {
     teamId: number
     userId: number
     action: number
+    designation: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -9372,6 +8111,7 @@ export namespace Prisma {
     teamId?: true
     userId?: true
     action?: true
+    designation?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9381,6 +8121,7 @@ export namespace Prisma {
     teamId?: true
     userId?: true
     action?: true
+    designation?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9390,6 +8131,7 @@ export namespace Prisma {
     teamId?: true
     userId?: true
     action?: true
+    designation?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9471,7 +8213,8 @@ export namespace Prisma {
     id: string
     teamId: string
     userId: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt: Date
     updatedAt: Date
     _count: TeamsEditLogCountAggregateOutputType | null
@@ -9498,6 +8241,7 @@ export namespace Prisma {
     teamId?: boolean
     userId?: boolean
     action?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -9509,6 +8253,7 @@ export namespace Prisma {
     teamId?: boolean
     userId?: boolean
     action?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -9520,6 +8265,7 @@ export namespace Prisma {
     teamId?: boolean
     userId?: boolean
     action?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -9531,11 +8277,12 @@ export namespace Prisma {
     teamId?: boolean
     userId?: boolean
     action?: boolean
+    designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TeamsEditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "userId" | "action" | "createdAt" | "updatedAt", ExtArgs["result"]["teamsEditLog"]>
+  export type TeamsEditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "userId" | "action" | "designation" | "createdAt" | "updatedAt", ExtArgs["result"]["teamsEditLog"]>
   export type TeamsEditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -9559,7 +8306,8 @@ export namespace Prisma {
       id: string
       teamId: string
       userId: string
-      action: string
+      action: $Enums.Action
+      designation: $Enums.Designation
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["teamsEditLog"]>
@@ -9990,7 +8738,8 @@ export namespace Prisma {
     readonly id: FieldRef<"TeamsEditLog", 'String'>
     readonly teamId: FieldRef<"TeamsEditLog", 'String'>
     readonly userId: FieldRef<"TeamsEditLog", 'String'>
-    readonly action: FieldRef<"TeamsEditLog", 'String'>
+    readonly action: FieldRef<"TeamsEditLog", 'Action'>
+    readonly designation: FieldRef<"TeamsEditLog", 'Designation'>
     readonly createdAt: FieldRef<"TeamsEditLog", 'DateTime'>
     readonly updatedAt: FieldRef<"TeamsEditLog", 'DateTime'>
   }
@@ -15990,18 +14739,11 @@ export namespace Prisma {
     hashnode: 'hashnode',
     peerlist: 'peerlist',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    designation: 'designation'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-  export const RoleScalarFieldEnum: {
-    id: 'id',
-    name: 'name'
-  };
-
-  export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
 
 
   export const TeamsScalarFieldEnum: {
@@ -16019,17 +14761,16 @@ export namespace Prisma {
   export type TeamsScalarFieldEnum = (typeof TeamsScalarFieldEnum)[keyof typeof TeamsScalarFieldEnum]
 
 
-  export const UserTeamRoleHistoryScalarFieldEnum: {
+  export const UserRoleInTeamScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
     teamId: 'teamId',
-    roleId: 'roleId',
-    assignedAt: 'assignedAt',
+    designation: 'designation',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type UserTeamRoleHistoryScalarFieldEnum = (typeof UserTeamRoleHistoryScalarFieldEnum)[keyof typeof UserTeamRoleHistoryScalarFieldEnum]
+  export type UserRoleInTeamScalarFieldEnum = (typeof UserRoleInTeamScalarFieldEnum)[keyof typeof UserRoleInTeamScalarFieldEnum]
 
 
   export const TagScalarFieldEnum: {
@@ -16045,6 +14786,7 @@ export namespace Prisma {
     teamId: 'teamId',
     userId: 'userId',
     action: 'action',
+    designation: 'designation',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -16182,6 +14924,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Designation'
+   */
+  export type EnumDesignationFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Designation'>
+    
+
+
+  /**
+   * Reference to a field of type 'Designation[]'
+   */
+  export type ListEnumDesignationFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Designation[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Action'
+   */
+  export type EnumActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Action'>
+    
+
+
+  /**
+   * Reference to a field of type 'Action[]'
+   */
+  export type ListEnumActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Action[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -16269,14 +15039,14 @@ export namespace Prisma {
     peerlist?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    roles?: RoleListRelationFilter
+    designation?: EnumDesignationNullableFilter<"User"> | $Enums.Designation | null
     tags?: TagListRelationFilter
     teamLeaderOf?: TeamsListRelationFilter
     teams?: TeamsListRelationFilter
     chats?: ChatListRelationFilter
     messages?: MessageListRelationFilter
     TeamsEditLog?: TeamsEditLogListRelationFilter
-    UserTeamRoleHistory?: UserTeamRoleHistoryListRelationFilter
+    userRoleInTeam?: UserRoleInTeamListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
@@ -16302,14 +15072,14 @@ export namespace Prisma {
     peerlist?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    roles?: RoleOrderByRelationAggregateInput
+    designation?: SortOrderInput | SortOrder
     tags?: TagOrderByRelationAggregateInput
     teamLeaderOf?: TeamsOrderByRelationAggregateInput
     teams?: TeamsOrderByRelationAggregateInput
     chats?: ChatOrderByRelationAggregateInput
     messages?: MessageOrderByRelationAggregateInput
     TeamsEditLog?: TeamsEditLogOrderByRelationAggregateInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryOrderByRelationAggregateInput
+    userRoleInTeam?: UserRoleInTeamOrderByRelationAggregateInput
     noticeRequests?: NoticeRequestOrderByRelationAggregateInput
     notices?: NoticeOrderByRelationAggregateInput
     noticeHistory?: NoticeHistoryOrderByRelationAggregateInput
@@ -16338,14 +15108,14 @@ export namespace Prisma {
     peerlist?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    roles?: RoleListRelationFilter
+    designation?: EnumDesignationNullableFilter<"User"> | $Enums.Designation | null
     tags?: TagListRelationFilter
     teamLeaderOf?: TeamsListRelationFilter
     teams?: TeamsListRelationFilter
     chats?: ChatListRelationFilter
     messages?: MessageListRelationFilter
     TeamsEditLog?: TeamsEditLogListRelationFilter
-    UserTeamRoleHistory?: UserTeamRoleHistoryListRelationFilter
+    userRoleInTeam?: UserRoleInTeamListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
@@ -16371,6 +15141,7 @@ export namespace Prisma {
     peerlist?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    designation?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -16399,52 +15170,7 @@ export namespace Prisma {
     peerlist?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-  }
-
-  export type RoleWhereInput = {
-    AND?: RoleWhereInput | RoleWhereInput[]
-    OR?: RoleWhereInput[]
-    NOT?: RoleWhereInput | RoleWhereInput[]
-    id?: StringFilter<"Role"> | string
-    name?: StringFilter<"Role"> | string
-    users?: UserListRelationFilter
-    teams?: TeamsListRelationFilter
-    UserTeamRoleHistory?: UserTeamRoleHistoryListRelationFilter
-  }
-
-  export type RoleOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    users?: UserOrderByRelationAggregateInput
-    teams?: TeamsOrderByRelationAggregateInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryOrderByRelationAggregateInput
-  }
-
-  export type RoleWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    name?: string
-    AND?: RoleWhereInput | RoleWhereInput[]
-    OR?: RoleWhereInput[]
-    NOT?: RoleWhereInput | RoleWhereInput[]
-    users?: UserListRelationFilter
-    teams?: TeamsListRelationFilter
-    UserTeamRoleHistory?: UserTeamRoleHistoryListRelationFilter
-  }, "id" | "name">
-
-  export type RoleOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    _count?: RoleCountOrderByAggregateInput
-    _max?: RoleMaxOrderByAggregateInput
-    _min?: RoleMinOrderByAggregateInput
-  }
-
-  export type RoleScalarWhereWithAggregatesInput = {
-    AND?: RoleScalarWhereWithAggregatesInput | RoleScalarWhereWithAggregatesInput[]
-    OR?: RoleScalarWhereWithAggregatesInput[]
-    NOT?: RoleScalarWhereWithAggregatesInput | RoleScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Role"> | string
-    name?: StringWithAggregatesFilter<"Role"> | string
+    designation?: EnumDesignationNullableWithAggregatesFilter<"User"> | $Enums.Designation | null
   }
 
   export type TeamsWhereInput = {
@@ -16463,9 +15189,8 @@ export namespace Prisma {
     teamLeader?: XOR<UserScalarRelationFilter, UserWhereInput>
     members?: UserListRelationFilter
     tags?: TagListRelationFilter
-    roles?: RoleListRelationFilter
     logs?: TeamsEditLogListRelationFilter
-    UserTeamRoleHistory?: UserTeamRoleHistoryListRelationFilter
+    userRoleInTeam?: UserRoleInTeamListRelationFilter
     chats?: ChatListRelationFilter
     notices?: NoticeListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
@@ -16484,9 +15209,8 @@ export namespace Prisma {
     teamLeader?: UserOrderByWithRelationInput
     members?: UserOrderByRelationAggregateInput
     tags?: TagOrderByRelationAggregateInput
-    roles?: RoleOrderByRelationAggregateInput
     logs?: TeamsEditLogOrderByRelationAggregateInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryOrderByRelationAggregateInput
+    userRoleInTeam?: UserRoleInTeamOrderByRelationAggregateInput
     chats?: ChatOrderByRelationAggregateInput
     notices?: NoticeOrderByRelationAggregateInput
     noticeRequests?: NoticeRequestOrderByRelationAggregateInput
@@ -16508,9 +15232,8 @@ export namespace Prisma {
     teamLeader?: XOR<UserScalarRelationFilter, UserWhereInput>
     members?: UserListRelationFilter
     tags?: TagListRelationFilter
-    roles?: RoleListRelationFilter
     logs?: TeamsEditLogListRelationFilter
-    UserTeamRoleHistory?: UserTeamRoleHistoryListRelationFilter
+    userRoleInTeam?: UserRoleInTeamListRelationFilter
     chats?: ChatListRelationFilter
     notices?: NoticeListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
@@ -16546,75 +15269,67 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Teams"> | Date | string
   }
 
-  export type UserTeamRoleHistoryWhereInput = {
-    AND?: UserTeamRoleHistoryWhereInput | UserTeamRoleHistoryWhereInput[]
-    OR?: UserTeamRoleHistoryWhereInput[]
-    NOT?: UserTeamRoleHistoryWhereInput | UserTeamRoleHistoryWhereInput[]
-    id?: StringFilter<"UserTeamRoleHistory"> | string
-    userId?: StringFilter<"UserTeamRoleHistory"> | string
-    teamId?: StringFilter<"UserTeamRoleHistory"> | string
-    roleId?: StringFilter<"UserTeamRoleHistory"> | string
-    assignedAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
-    createdAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
-    updatedAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
+  export type UserRoleInTeamWhereInput = {
+    AND?: UserRoleInTeamWhereInput | UserRoleInTeamWhereInput[]
+    OR?: UserRoleInTeamWhereInput[]
+    NOT?: UserRoleInTeamWhereInput | UserRoleInTeamWhereInput[]
+    id?: StringFilter<"UserRoleInTeam"> | string
+    userId?: StringFilter<"UserRoleInTeam"> | string
+    teamId?: StringFilter<"UserRoleInTeam"> | string
+    designation?: EnumDesignationFilter<"UserRoleInTeam"> | $Enums.Designation
+    createdAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
+    updatedAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
-    role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
   }
 
-  export type UserTeamRoleHistoryOrderByWithRelationInput = {
+  export type UserRoleInTeamOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
     teamId?: SortOrder
-    roleId?: SortOrder
-    assignedAt?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     team?: TeamsOrderByWithRelationInput
-    role?: RoleOrderByWithRelationInput
   }
 
-  export type UserTeamRoleHistoryWhereUniqueInput = Prisma.AtLeast<{
+  export type UserRoleInTeamWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: UserTeamRoleHistoryWhereInput | UserTeamRoleHistoryWhereInput[]
-    OR?: UserTeamRoleHistoryWhereInput[]
-    NOT?: UserTeamRoleHistoryWhereInput | UserTeamRoleHistoryWhereInput[]
-    userId?: StringFilter<"UserTeamRoleHistory"> | string
-    teamId?: StringFilter<"UserTeamRoleHistory"> | string
-    roleId?: StringFilter<"UserTeamRoleHistory"> | string
-    assignedAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
-    createdAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
-    updatedAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
+    AND?: UserRoleInTeamWhereInput | UserRoleInTeamWhereInput[]
+    OR?: UserRoleInTeamWhereInput[]
+    NOT?: UserRoleInTeamWhereInput | UserRoleInTeamWhereInput[]
+    userId?: StringFilter<"UserRoleInTeam"> | string
+    teamId?: StringFilter<"UserRoleInTeam"> | string
+    designation?: EnumDesignationFilter<"UserRoleInTeam"> | $Enums.Designation
+    createdAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
+    updatedAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
-    role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
   }, "id">
 
-  export type UserTeamRoleHistoryOrderByWithAggregationInput = {
+  export type UserRoleInTeamOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     teamId?: SortOrder
-    roleId?: SortOrder
-    assignedAt?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: UserTeamRoleHistoryCountOrderByAggregateInput
-    _max?: UserTeamRoleHistoryMaxOrderByAggregateInput
-    _min?: UserTeamRoleHistoryMinOrderByAggregateInput
+    _count?: UserRoleInTeamCountOrderByAggregateInput
+    _max?: UserRoleInTeamMaxOrderByAggregateInput
+    _min?: UserRoleInTeamMinOrderByAggregateInput
   }
 
-  export type UserTeamRoleHistoryScalarWhereWithAggregatesInput = {
-    AND?: UserTeamRoleHistoryScalarWhereWithAggregatesInput | UserTeamRoleHistoryScalarWhereWithAggregatesInput[]
-    OR?: UserTeamRoleHistoryScalarWhereWithAggregatesInput[]
-    NOT?: UserTeamRoleHistoryScalarWhereWithAggregatesInput | UserTeamRoleHistoryScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"UserTeamRoleHistory"> | string
-    userId?: StringWithAggregatesFilter<"UserTeamRoleHistory"> | string
-    teamId?: StringWithAggregatesFilter<"UserTeamRoleHistory"> | string
-    roleId?: StringWithAggregatesFilter<"UserTeamRoleHistory"> | string
-    assignedAt?: DateTimeWithAggregatesFilter<"UserTeamRoleHistory"> | Date | string
-    createdAt?: DateTimeWithAggregatesFilter<"UserTeamRoleHistory"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"UserTeamRoleHistory"> | Date | string
+  export type UserRoleInTeamScalarWhereWithAggregatesInput = {
+    AND?: UserRoleInTeamScalarWhereWithAggregatesInput | UserRoleInTeamScalarWhereWithAggregatesInput[]
+    OR?: UserRoleInTeamScalarWhereWithAggregatesInput[]
+    NOT?: UserRoleInTeamScalarWhereWithAggregatesInput | UserRoleInTeamScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserRoleInTeam"> | string
+    userId?: StringWithAggregatesFilter<"UserRoleInTeam"> | string
+    teamId?: StringWithAggregatesFilter<"UserRoleInTeam"> | string
+    designation?: EnumDesignationWithAggregatesFilter<"UserRoleInTeam"> | $Enums.Designation
+    createdAt?: DateTimeWithAggregatesFilter<"UserRoleInTeam"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserRoleInTeam"> | Date | string
   }
 
   export type TagWhereInput = {
@@ -16667,7 +15382,8 @@ export namespace Prisma {
     id?: StringFilter<"TeamsEditLog"> | string
     teamId?: StringFilter<"TeamsEditLog"> | string
     userId?: StringFilter<"TeamsEditLog"> | string
-    action?: StringFilter<"TeamsEditLog"> | string
+    action?: EnumActionFilter<"TeamsEditLog"> | $Enums.Action
+    designation?: EnumDesignationFilter<"TeamsEditLog"> | $Enums.Designation
     createdAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
     updatedAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
@@ -16679,6 +15395,7 @@ export namespace Prisma {
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     team?: TeamsOrderByWithRelationInput
@@ -16692,7 +15409,8 @@ export namespace Prisma {
     NOT?: TeamsEditLogWhereInput | TeamsEditLogWhereInput[]
     teamId?: StringFilter<"TeamsEditLog"> | string
     userId?: StringFilter<"TeamsEditLog"> | string
-    action?: StringFilter<"TeamsEditLog"> | string
+    action?: EnumActionFilter<"TeamsEditLog"> | $Enums.Action
+    designation?: EnumDesignationFilter<"TeamsEditLog"> | $Enums.Designation
     createdAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
     updatedAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
@@ -16704,6 +15422,7 @@ export namespace Prisma {
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TeamsEditLogCountOrderByAggregateInput
@@ -16718,7 +15437,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"TeamsEditLog"> | string
     teamId?: StringWithAggregatesFilter<"TeamsEditLog"> | string
     userId?: StringWithAggregatesFilter<"TeamsEditLog"> | string
-    action?: StringWithAggregatesFilter<"TeamsEditLog"> | string
+    action?: EnumActionWithAggregatesFilter<"TeamsEditLog"> | $Enums.Action
+    designation?: EnumDesignationWithAggregatesFilter<"TeamsEditLog"> | $Enums.Designation
     createdAt?: DateTimeWithAggregatesFilter<"TeamsEditLog"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TeamsEditLog"> | Date | string
   }
@@ -17138,14 +15858,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -17171,14 +15891,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -17204,14 +15924,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -17237,14 +15957,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -17270,6 +15990,7 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    designation?: $Enums.Designation | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -17292,6 +16013,7 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -17314,53 +16036,7 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RoleCreateInput = {
-    id?: string
-    name: string
-    users?: UserCreateNestedManyWithoutRolesInput
-    teams?: TeamsCreateNestedManyWithoutRolesInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutRoleInput
-  }
-
-  export type RoleUncheckedCreateInput = {
-    id?: string
-    name: string
-    users?: UserUncheckedCreateNestedManyWithoutRolesInput
-    teams?: TeamsUncheckedCreateNestedManyWithoutRolesInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutRoleInput
-  }
-
-  export type RoleUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    users?: UserUpdateManyWithoutRolesNestedInput
-    teams?: TeamsUpdateManyWithoutRolesNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    users?: UserUncheckedUpdateManyWithoutRolesNestedInput
-    teams?: TeamsUncheckedUpdateManyWithoutRolesNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleCreateManyInput = {
-    id?: string
-    name: string
-  }
-
-  export type RoleUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type RoleUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
   }
 
   export type TeamsCreateInput = {
@@ -17375,9 +16051,8 @@ export namespace Prisma {
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -17395,9 +16070,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -17415,9 +16089,8 @@ export namespace Prisma {
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -17435,9 +16108,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -17478,69 +16150,63 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserTeamRoleHistoryCreateInput = {
+  export type UserRoleInTeamCreateInput = {
     id?: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutUserTeamRoleHistoryInput
-    team: TeamsCreateNestedOneWithoutUserTeamRoleHistoryInput
-    role: RoleCreateNestedOneWithoutUserTeamRoleHistoryInput
+    user: UserCreateNestedOneWithoutUserRoleInTeamInput
+    team: TeamsCreateNestedOneWithoutUserRoleInTeamInput
   }
 
-  export type UserTeamRoleHistoryUncheckedCreateInput = {
-    id?: string
-    userId: string
-    teamId: string
-    roleId: string
-    assignedAt?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserTeamRoleHistoryUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
-    team?: TeamsUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
-    role?: RoleUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
-  }
-
-  export type UserTeamRoleHistoryUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserTeamRoleHistoryCreateManyInput = {
+  export type UserRoleInTeamUncheckedCreateInput = {
     id?: string
     userId: string
     teamId: string
-    roleId: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UserTeamRoleHistoryUpdateManyMutationInput = {
+  export type UserRoleInTeamUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserRoleInTeamNestedInput
+    team?: TeamsUpdateOneRequiredWithoutUserRoleInTeamNestedInput
+  }
+
+  export type UserRoleInTeamUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserTeamRoleHistoryUncheckedUpdateManyInput = {
+  export type UserRoleInTeamCreateManyInput = {
+    id?: string
+    userId: string
+    teamId: string
+    designation: $Enums.Designation
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserRoleInTeamUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRoleInTeamUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17590,7 +16256,8 @@ export namespace Prisma {
 
   export type TeamsEditLogCreateInput = {
     id?: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutLogsInput
@@ -17601,14 +16268,16 @@ export namespace Prisma {
     id?: string
     teamId: string
     userId: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TeamsEditLogUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutLogsNestedInput
@@ -17619,7 +16288,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17628,14 +16298,16 @@ export namespace Prisma {
     id?: string
     teamId: string
     userId: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TeamsEditLogUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17644,7 +16316,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18098,10 +16771,11 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type RoleListRelationFilter = {
-    every?: RoleWhereInput
-    some?: RoleWhereInput
-    none?: RoleWhereInput
+  export type EnumDesignationNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDesignationNullableFilter<$PrismaModel> | $Enums.Designation | null
   }
 
   export type TagListRelationFilter = {
@@ -18134,10 +16808,10 @@ export namespace Prisma {
     none?: TeamsEditLogWhereInput
   }
 
-  export type UserTeamRoleHistoryListRelationFilter = {
-    every?: UserTeamRoleHistoryWhereInput
-    some?: UserTeamRoleHistoryWhereInput
-    none?: UserTeamRoleHistoryWhereInput
+  export type UserRoleInTeamListRelationFilter = {
+    every?: UserRoleInTeamWhereInput
+    some?: UserRoleInTeamWhereInput
+    none?: UserRoleInTeamWhereInput
   }
 
   export type NoticeRequestListRelationFilter = {
@@ -18163,10 +16837,6 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type RoleOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type TagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -18187,7 +16857,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type UserTeamRoleHistoryOrderByRelationAggregateInput = {
+  export type UserRoleInTeamOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -18223,6 +16893,7 @@ export namespace Prisma {
     peerlist?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    designation?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -18244,6 +16915,7 @@ export namespace Prisma {
     peerlist?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    designation?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -18265,6 +16937,7 @@ export namespace Prisma {
     peerlist?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    designation?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -18307,6 +16980,21 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type EnumDesignationNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDesignationNullableWithAggregatesFilter<$PrismaModel> | $Enums.Designation | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumDesignationNullableFilter<$PrismaModel>
+    _max?: NestedEnumDesignationNullableFilter<$PrismaModel>
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
@@ -18315,26 +17003,6 @@ export namespace Prisma {
 
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
-  }
-
-  export type RoleCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-  }
-
-  export type RoleMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-  }
-
-  export type RoleMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type TeamsCountOrderByAggregateInput = {
@@ -18371,44 +17039,53 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumDesignationFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel>
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    not?: NestedEnumDesignationFilter<$PrismaModel> | $Enums.Designation
+  }
+
   export type TeamsScalarRelationFilter = {
     is?: TeamsWhereInput
     isNot?: TeamsWhereInput
   }
 
-  export type RoleScalarRelationFilter = {
-    is?: RoleWhereInput
-    isNot?: RoleWhereInput
-  }
-
-  export type UserTeamRoleHistoryCountOrderByAggregateInput = {
+  export type UserRoleInTeamCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     teamId?: SortOrder
-    roleId?: SortOrder
-    assignedAt?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UserTeamRoleHistoryMaxOrderByAggregateInput = {
+  export type UserRoleInTeamMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     teamId?: SortOrder
-    roleId?: SortOrder
-    assignedAt?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UserTeamRoleHistoryMinOrderByAggregateInput = {
+  export type UserRoleInTeamMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     teamId?: SortOrder
-    roleId?: SortOrder
-    assignedAt?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EnumDesignationWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel>
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    not?: NestedEnumDesignationWithAggregatesFilter<$PrismaModel> | $Enums.Designation
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDesignationFilter<$PrismaModel>
+    _max?: NestedEnumDesignationFilter<$PrismaModel>
   }
 
   export type TagCountOrderByAggregateInput = {
@@ -18426,11 +17103,19 @@ export namespace Prisma {
     name?: SortOrder
   }
 
+  export type EnumActionFilter<$PrismaModel = never> = {
+    equals?: $Enums.Action | EnumActionFieldRefInput<$PrismaModel>
+    in?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionFilter<$PrismaModel> | $Enums.Action
+  }
+
   export type TeamsEditLogCountOrderByAggregateInput = {
     id?: SortOrder
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18440,6 +17125,7 @@ export namespace Prisma {
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18449,8 +17135,19 @@ export namespace Prisma {
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
+    designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EnumActionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Action | EnumActionFieldRefInput<$PrismaModel>
+    in?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionWithAggregatesFilter<$PrismaModel> | $Enums.Action
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumActionFilter<$PrismaModel>
+    _max?: NestedEnumActionFilter<$PrismaModel>
   }
 
   export type NoticeCountOrderByAggregateInput = {
@@ -18630,12 +17327,6 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type RoleCreateNestedManyWithoutUsersInput = {
-    create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput> | RoleCreateWithoutUsersInput[] | RoleUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutUsersInput | RoleCreateOrConnectWithoutUsersInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-  }
-
   export type TagCreateNestedManyWithoutUsersInput = {
     create?: XOR<TagCreateWithoutUsersInput, TagUncheckedCreateWithoutUsersInput> | TagCreateWithoutUsersInput[] | TagUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: TagCreateOrConnectWithoutUsersInput | TagCreateOrConnectWithoutUsersInput[]
@@ -18675,11 +17366,11 @@ export namespace Prisma {
     connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
   }
 
-  export type UserTeamRoleHistoryCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutUserInput, UserTeamRoleHistoryUncheckedCreateWithoutUserInput> | UserTeamRoleHistoryCreateWithoutUserInput[] | UserTeamRoleHistoryUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutUserInput | UserTeamRoleHistoryCreateOrConnectWithoutUserInput[]
-    createMany?: UserTeamRoleHistoryCreateManyUserInputEnvelope
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
+  export type UserRoleInTeamCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutUserInput, UserRoleInTeamUncheckedCreateWithoutUserInput> | UserRoleInTeamCreateWithoutUserInput[] | UserRoleInTeamUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutUserInput | UserRoleInTeamCreateOrConnectWithoutUserInput[]
+    createMany?: UserRoleInTeamCreateManyUserInputEnvelope
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
   }
 
   export type NoticeRequestCreateNestedManyWithoutMemberInput = {
@@ -18701,12 +17392,6 @@ export namespace Prisma {
     connectOrCreate?: NoticeHistoryCreateOrConnectWithoutPerformedByInput | NoticeHistoryCreateOrConnectWithoutPerformedByInput[]
     createMany?: NoticeHistoryCreateManyPerformedByInputEnvelope
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
-  }
-
-  export type RoleUncheckedCreateNestedManyWithoutUsersInput = {
-    create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput> | RoleCreateWithoutUsersInput[] | RoleUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutUsersInput | RoleCreateOrConnectWithoutUsersInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
   }
 
   export type TagUncheckedCreateNestedManyWithoutUsersInput = {
@@ -18748,11 +17433,11 @@ export namespace Prisma {
     connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
   }
 
-  export type UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutUserInput, UserTeamRoleHistoryUncheckedCreateWithoutUserInput> | UserTeamRoleHistoryCreateWithoutUserInput[] | UserTeamRoleHistoryUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutUserInput | UserTeamRoleHistoryCreateOrConnectWithoutUserInput[]
-    createMany?: UserTeamRoleHistoryCreateManyUserInputEnvelope
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
+  export type UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutUserInput, UserRoleInTeamUncheckedCreateWithoutUserInput> | UserRoleInTeamCreateWithoutUserInput[] | UserRoleInTeamUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutUserInput | UserRoleInTeamCreateOrConnectWithoutUserInput[]
+    createMany?: UserRoleInTeamCreateManyUserInputEnvelope
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
   }
 
   export type NoticeRequestUncheckedCreateNestedManyWithoutMemberInput = {
@@ -18793,17 +17478,8 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type RoleUpdateManyWithoutUsersNestedInput = {
-    create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput> | RoleCreateWithoutUsersInput[] | RoleUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutUsersInput | RoleCreateOrConnectWithoutUsersInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutUsersInput | RoleUpsertWithWhereUniqueWithoutUsersInput[]
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutUsersInput | RoleUpdateWithWhereUniqueWithoutUsersInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutUsersInput | RoleUpdateManyWithWhereWithoutUsersInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
+  export type NullableEnumDesignationFieldUpdateOperationsInput = {
+    set?: $Enums.Designation | null
   }
 
   export type TagUpdateManyWithoutUsersNestedInput = {
@@ -18887,18 +17563,18 @@ export namespace Prisma {
     deleteMany?: TeamsEditLogScalarWhereInput | TeamsEditLogScalarWhereInput[]
   }
 
-  export type UserTeamRoleHistoryUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutUserInput, UserTeamRoleHistoryUncheckedCreateWithoutUserInput> | UserTeamRoleHistoryCreateWithoutUserInput[] | UserTeamRoleHistoryUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutUserInput | UserTeamRoleHistoryCreateOrConnectWithoutUserInput[]
-    upsert?: UserTeamRoleHistoryUpsertWithWhereUniqueWithoutUserInput | UserTeamRoleHistoryUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserTeamRoleHistoryCreateManyUserInputEnvelope
-    set?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    disconnect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    delete?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    update?: UserTeamRoleHistoryUpdateWithWhereUniqueWithoutUserInput | UserTeamRoleHistoryUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserTeamRoleHistoryUpdateManyWithWhereWithoutUserInput | UserTeamRoleHistoryUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
+  export type UserRoleInTeamUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutUserInput, UserRoleInTeamUncheckedCreateWithoutUserInput> | UserRoleInTeamCreateWithoutUserInput[] | UserRoleInTeamUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutUserInput | UserRoleInTeamCreateOrConnectWithoutUserInput[]
+    upsert?: UserRoleInTeamUpsertWithWhereUniqueWithoutUserInput | UserRoleInTeamUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserRoleInTeamCreateManyUserInputEnvelope
+    set?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    disconnect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    delete?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    update?: UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput | UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutUserInput | UserRoleInTeamUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
   }
 
   export type NoticeRequestUpdateManyWithoutMemberNestedInput = {
@@ -18941,19 +17617,6 @@ export namespace Prisma {
     update?: NoticeHistoryUpdateWithWhereUniqueWithoutPerformedByInput | NoticeHistoryUpdateWithWhereUniqueWithoutPerformedByInput[]
     updateMany?: NoticeHistoryUpdateManyWithWhereWithoutPerformedByInput | NoticeHistoryUpdateManyWithWhereWithoutPerformedByInput[]
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
-  }
-
-  export type RoleUncheckedUpdateManyWithoutUsersNestedInput = {
-    create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput> | RoleCreateWithoutUsersInput[] | RoleUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutUsersInput | RoleCreateOrConnectWithoutUsersInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutUsersInput | RoleUpsertWithWhereUniqueWithoutUsersInput[]
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutUsersInput | RoleUpdateWithWhereUniqueWithoutUsersInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutUsersInput | RoleUpdateManyWithWhereWithoutUsersInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
   }
 
   export type TagUncheckedUpdateManyWithoutUsersNestedInput = {
@@ -19037,18 +17700,18 @@ export namespace Prisma {
     deleteMany?: TeamsEditLogScalarWhereInput | TeamsEditLogScalarWhereInput[]
   }
 
-  export type UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutUserInput, UserTeamRoleHistoryUncheckedCreateWithoutUserInput> | UserTeamRoleHistoryCreateWithoutUserInput[] | UserTeamRoleHistoryUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutUserInput | UserTeamRoleHistoryCreateOrConnectWithoutUserInput[]
-    upsert?: UserTeamRoleHistoryUpsertWithWhereUniqueWithoutUserInput | UserTeamRoleHistoryUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserTeamRoleHistoryCreateManyUserInputEnvelope
-    set?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    disconnect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    delete?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    update?: UserTeamRoleHistoryUpdateWithWhereUniqueWithoutUserInput | UserTeamRoleHistoryUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserTeamRoleHistoryUpdateManyWithWhereWithoutUserInput | UserTeamRoleHistoryUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
+  export type UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutUserInput, UserRoleInTeamUncheckedCreateWithoutUserInput> | UserRoleInTeamCreateWithoutUserInput[] | UserRoleInTeamUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutUserInput | UserRoleInTeamCreateOrConnectWithoutUserInput[]
+    upsert?: UserRoleInTeamUpsertWithWhereUniqueWithoutUserInput | UserRoleInTeamUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserRoleInTeamCreateManyUserInputEnvelope
+    set?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    disconnect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    delete?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    update?: UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput | UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutUserInput | UserRoleInTeamUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
   }
 
   export type NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput = {
@@ -19093,124 +17756,6 @@ export namespace Prisma {
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
   }
 
-  export type UserCreateNestedManyWithoutRolesInput = {
-    create?: XOR<UserCreateWithoutRolesInput, UserUncheckedCreateWithoutRolesInput> | UserCreateWithoutRolesInput[] | UserUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutRolesInput | UserCreateOrConnectWithoutRolesInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
-  export type TeamsCreateNestedManyWithoutRolesInput = {
-    create?: XOR<TeamsCreateWithoutRolesInput, TeamsUncheckedCreateWithoutRolesInput> | TeamsCreateWithoutRolesInput[] | TeamsUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: TeamsCreateOrConnectWithoutRolesInput | TeamsCreateOrConnectWithoutRolesInput[]
-    connect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-  }
-
-  export type UserTeamRoleHistoryCreateNestedManyWithoutRoleInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutRoleInput, UserTeamRoleHistoryUncheckedCreateWithoutRoleInput> | UserTeamRoleHistoryCreateWithoutRoleInput[] | UserTeamRoleHistoryUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutRoleInput | UserTeamRoleHistoryCreateOrConnectWithoutRoleInput[]
-    createMany?: UserTeamRoleHistoryCreateManyRoleInputEnvelope
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-  }
-
-  export type UserUncheckedCreateNestedManyWithoutRolesInput = {
-    create?: XOR<UserCreateWithoutRolesInput, UserUncheckedCreateWithoutRolesInput> | UserCreateWithoutRolesInput[] | UserUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutRolesInput | UserCreateOrConnectWithoutRolesInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
-  export type TeamsUncheckedCreateNestedManyWithoutRolesInput = {
-    create?: XOR<TeamsCreateWithoutRolesInput, TeamsUncheckedCreateWithoutRolesInput> | TeamsCreateWithoutRolesInput[] | TeamsUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: TeamsCreateOrConnectWithoutRolesInput | TeamsCreateOrConnectWithoutRolesInput[]
-    connect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-  }
-
-  export type UserTeamRoleHistoryUncheckedCreateNestedManyWithoutRoleInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutRoleInput, UserTeamRoleHistoryUncheckedCreateWithoutRoleInput> | UserTeamRoleHistoryCreateWithoutRoleInput[] | UserTeamRoleHistoryUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutRoleInput | UserTeamRoleHistoryCreateOrConnectWithoutRoleInput[]
-    createMany?: UserTeamRoleHistoryCreateManyRoleInputEnvelope
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-  }
-
-  export type UserUpdateManyWithoutRolesNestedInput = {
-    create?: XOR<UserCreateWithoutRolesInput, UserUncheckedCreateWithoutRolesInput> | UserCreateWithoutRolesInput[] | UserUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutRolesInput | UserCreateOrConnectWithoutRolesInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutRolesInput | UserUpsertWithWhereUniqueWithoutRolesInput[]
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutRolesInput | UserUpdateWithWhereUniqueWithoutRolesInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutRolesInput | UserUpdateManyWithWhereWithoutRolesInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
-  }
-
-  export type TeamsUpdateManyWithoutRolesNestedInput = {
-    create?: XOR<TeamsCreateWithoutRolesInput, TeamsUncheckedCreateWithoutRolesInput> | TeamsCreateWithoutRolesInput[] | TeamsUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: TeamsCreateOrConnectWithoutRolesInput | TeamsCreateOrConnectWithoutRolesInput[]
-    upsert?: TeamsUpsertWithWhereUniqueWithoutRolesInput | TeamsUpsertWithWhereUniqueWithoutRolesInput[]
-    set?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    disconnect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    delete?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    connect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    update?: TeamsUpdateWithWhereUniqueWithoutRolesInput | TeamsUpdateWithWhereUniqueWithoutRolesInput[]
-    updateMany?: TeamsUpdateManyWithWhereWithoutRolesInput | TeamsUpdateManyWithWhereWithoutRolesInput[]
-    deleteMany?: TeamsScalarWhereInput | TeamsScalarWhereInput[]
-  }
-
-  export type UserTeamRoleHistoryUpdateManyWithoutRoleNestedInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutRoleInput, UserTeamRoleHistoryUncheckedCreateWithoutRoleInput> | UserTeamRoleHistoryCreateWithoutRoleInput[] | UserTeamRoleHistoryUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutRoleInput | UserTeamRoleHistoryCreateOrConnectWithoutRoleInput[]
-    upsert?: UserTeamRoleHistoryUpsertWithWhereUniqueWithoutRoleInput | UserTeamRoleHistoryUpsertWithWhereUniqueWithoutRoleInput[]
-    createMany?: UserTeamRoleHistoryCreateManyRoleInputEnvelope
-    set?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    disconnect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    delete?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    update?: UserTeamRoleHistoryUpdateWithWhereUniqueWithoutRoleInput | UserTeamRoleHistoryUpdateWithWhereUniqueWithoutRoleInput[]
-    updateMany?: UserTeamRoleHistoryUpdateManyWithWhereWithoutRoleInput | UserTeamRoleHistoryUpdateManyWithWhereWithoutRoleInput[]
-    deleteMany?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
-  }
-
-  export type UserUncheckedUpdateManyWithoutRolesNestedInput = {
-    create?: XOR<UserCreateWithoutRolesInput, UserUncheckedCreateWithoutRolesInput> | UserCreateWithoutRolesInput[] | UserUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutRolesInput | UserCreateOrConnectWithoutRolesInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutRolesInput | UserUpsertWithWhereUniqueWithoutRolesInput[]
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutRolesInput | UserUpdateWithWhereUniqueWithoutRolesInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutRolesInput | UserUpdateManyWithWhereWithoutRolesInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
-  }
-
-  export type TeamsUncheckedUpdateManyWithoutRolesNestedInput = {
-    create?: XOR<TeamsCreateWithoutRolesInput, TeamsUncheckedCreateWithoutRolesInput> | TeamsCreateWithoutRolesInput[] | TeamsUncheckedCreateWithoutRolesInput[]
-    connectOrCreate?: TeamsCreateOrConnectWithoutRolesInput | TeamsCreateOrConnectWithoutRolesInput[]
-    upsert?: TeamsUpsertWithWhereUniqueWithoutRolesInput | TeamsUpsertWithWhereUniqueWithoutRolesInput[]
-    set?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    disconnect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    delete?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    connect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
-    update?: TeamsUpdateWithWhereUniqueWithoutRolesInput | TeamsUpdateWithWhereUniqueWithoutRolesInput[]
-    updateMany?: TeamsUpdateManyWithWhereWithoutRolesInput | TeamsUpdateManyWithWhereWithoutRolesInput[]
-    deleteMany?: TeamsScalarWhereInput | TeamsScalarWhereInput[]
-  }
-
-  export type UserTeamRoleHistoryUncheckedUpdateManyWithoutRoleNestedInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutRoleInput, UserTeamRoleHistoryUncheckedCreateWithoutRoleInput> | UserTeamRoleHistoryCreateWithoutRoleInput[] | UserTeamRoleHistoryUncheckedCreateWithoutRoleInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutRoleInput | UserTeamRoleHistoryCreateOrConnectWithoutRoleInput[]
-    upsert?: UserTeamRoleHistoryUpsertWithWhereUniqueWithoutRoleInput | UserTeamRoleHistoryUpsertWithWhereUniqueWithoutRoleInput[]
-    createMany?: UserTeamRoleHistoryCreateManyRoleInputEnvelope
-    set?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    disconnect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    delete?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    update?: UserTeamRoleHistoryUpdateWithWhereUniqueWithoutRoleInput | UserTeamRoleHistoryUpdateWithWhereUniqueWithoutRoleInput[]
-    updateMany?: UserTeamRoleHistoryUpdateManyWithWhereWithoutRoleInput | UserTeamRoleHistoryUpdateManyWithWhereWithoutRoleInput[]
-    deleteMany?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
-  }
-
   export type TeamsCreatelinkInput = {
     set: string[]
   }
@@ -19233,12 +17778,6 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
-  export type RoleCreateNestedManyWithoutTeamsInput = {
-    create?: XOR<RoleCreateWithoutTeamsInput, RoleUncheckedCreateWithoutTeamsInput> | RoleCreateWithoutTeamsInput[] | RoleUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutTeamsInput | RoleCreateOrConnectWithoutTeamsInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-  }
-
   export type TeamsEditLogCreateNestedManyWithoutTeamInput = {
     create?: XOR<TeamsEditLogCreateWithoutTeamInput, TeamsEditLogUncheckedCreateWithoutTeamInput> | TeamsEditLogCreateWithoutTeamInput[] | TeamsEditLogUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamsEditLogCreateOrConnectWithoutTeamInput | TeamsEditLogCreateOrConnectWithoutTeamInput[]
@@ -19246,11 +17785,11 @@ export namespace Prisma {
     connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
   }
 
-  export type UserTeamRoleHistoryCreateNestedManyWithoutTeamInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutTeamInput, UserTeamRoleHistoryUncheckedCreateWithoutTeamInput> | UserTeamRoleHistoryCreateWithoutTeamInput[] | UserTeamRoleHistoryUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutTeamInput | UserTeamRoleHistoryCreateOrConnectWithoutTeamInput[]
-    createMany?: UserTeamRoleHistoryCreateManyTeamInputEnvelope
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
+  export type UserRoleInTeamCreateNestedManyWithoutTeamInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutTeamInput, UserRoleInTeamUncheckedCreateWithoutTeamInput> | UserRoleInTeamCreateWithoutTeamInput[] | UserRoleInTeamUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutTeamInput | UserRoleInTeamCreateOrConnectWithoutTeamInput[]
+    createMany?: UserRoleInTeamCreateManyTeamInputEnvelope
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
   }
 
   export type ChatCreateNestedManyWithoutTeamInput = {
@@ -19286,12 +17825,6 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
-  export type RoleUncheckedCreateNestedManyWithoutTeamsInput = {
-    create?: XOR<RoleCreateWithoutTeamsInput, RoleUncheckedCreateWithoutTeamsInput> | RoleCreateWithoutTeamsInput[] | RoleUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutTeamsInput | RoleCreateOrConnectWithoutTeamsInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-  }
-
   export type TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput = {
     create?: XOR<TeamsEditLogCreateWithoutTeamInput, TeamsEditLogUncheckedCreateWithoutTeamInput> | TeamsEditLogCreateWithoutTeamInput[] | TeamsEditLogUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamsEditLogCreateOrConnectWithoutTeamInput | TeamsEditLogCreateOrConnectWithoutTeamInput[]
@@ -19299,11 +17832,11 @@ export namespace Prisma {
     connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
   }
 
-  export type UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutTeamInput, UserTeamRoleHistoryUncheckedCreateWithoutTeamInput> | UserTeamRoleHistoryCreateWithoutTeamInput[] | UserTeamRoleHistoryUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutTeamInput | UserTeamRoleHistoryCreateOrConnectWithoutTeamInput[]
-    createMany?: UserTeamRoleHistoryCreateManyTeamInputEnvelope
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
+  export type UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutTeamInput, UserRoleInTeamUncheckedCreateWithoutTeamInput> | UserRoleInTeamCreateWithoutTeamInput[] | UserRoleInTeamUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutTeamInput | UserRoleInTeamCreateOrConnectWithoutTeamInput[]
+    createMany?: UserRoleInTeamCreateManyTeamInputEnvelope
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
   }
 
   export type ChatUncheckedCreateNestedManyWithoutTeamInput = {
@@ -19366,19 +17899,6 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
-  export type RoleUpdateManyWithoutTeamsNestedInput = {
-    create?: XOR<RoleCreateWithoutTeamsInput, RoleUncheckedCreateWithoutTeamsInput> | RoleCreateWithoutTeamsInput[] | RoleUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutTeamsInput | RoleCreateOrConnectWithoutTeamsInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutTeamsInput | RoleUpsertWithWhereUniqueWithoutTeamsInput[]
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutTeamsInput | RoleUpdateWithWhereUniqueWithoutTeamsInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutTeamsInput | RoleUpdateManyWithWhereWithoutTeamsInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
-  }
-
   export type TeamsEditLogUpdateManyWithoutTeamNestedInput = {
     create?: XOR<TeamsEditLogCreateWithoutTeamInput, TeamsEditLogUncheckedCreateWithoutTeamInput> | TeamsEditLogCreateWithoutTeamInput[] | TeamsEditLogUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamsEditLogCreateOrConnectWithoutTeamInput | TeamsEditLogCreateOrConnectWithoutTeamInput[]
@@ -19393,18 +17913,18 @@ export namespace Prisma {
     deleteMany?: TeamsEditLogScalarWhereInput | TeamsEditLogScalarWhereInput[]
   }
 
-  export type UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutTeamInput, UserTeamRoleHistoryUncheckedCreateWithoutTeamInput> | UserTeamRoleHistoryCreateWithoutTeamInput[] | UserTeamRoleHistoryUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutTeamInput | UserTeamRoleHistoryCreateOrConnectWithoutTeamInput[]
-    upsert?: UserTeamRoleHistoryUpsertWithWhereUniqueWithoutTeamInput | UserTeamRoleHistoryUpsertWithWhereUniqueWithoutTeamInput[]
-    createMany?: UserTeamRoleHistoryCreateManyTeamInputEnvelope
-    set?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    disconnect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    delete?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    update?: UserTeamRoleHistoryUpdateWithWhereUniqueWithoutTeamInput | UserTeamRoleHistoryUpdateWithWhereUniqueWithoutTeamInput[]
-    updateMany?: UserTeamRoleHistoryUpdateManyWithWhereWithoutTeamInput | UserTeamRoleHistoryUpdateManyWithWhereWithoutTeamInput[]
-    deleteMany?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
+  export type UserRoleInTeamUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutTeamInput, UserRoleInTeamUncheckedCreateWithoutTeamInput> | UserRoleInTeamCreateWithoutTeamInput[] | UserRoleInTeamUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutTeamInput | UserRoleInTeamCreateOrConnectWithoutTeamInput[]
+    upsert?: UserRoleInTeamUpsertWithWhereUniqueWithoutTeamInput | UserRoleInTeamUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: UserRoleInTeamCreateManyTeamInputEnvelope
+    set?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    disconnect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    delete?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    update?: UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput | UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutTeamInput | UserRoleInTeamUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
   }
 
   export type ChatUpdateManyWithoutTeamNestedInput = {
@@ -19475,19 +17995,6 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
-  export type RoleUncheckedUpdateManyWithoutTeamsNestedInput = {
-    create?: XOR<RoleCreateWithoutTeamsInput, RoleUncheckedCreateWithoutTeamsInput> | RoleCreateWithoutTeamsInput[] | RoleUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: RoleCreateOrConnectWithoutTeamsInput | RoleCreateOrConnectWithoutTeamsInput[]
-    upsert?: RoleUpsertWithWhereUniqueWithoutTeamsInput | RoleUpsertWithWhereUniqueWithoutTeamsInput[]
-    set?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    disconnect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    delete?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    connect?: RoleWhereUniqueInput | RoleWhereUniqueInput[]
-    update?: RoleUpdateWithWhereUniqueWithoutTeamsInput | RoleUpdateWithWhereUniqueWithoutTeamsInput[]
-    updateMany?: RoleUpdateManyWithWhereWithoutTeamsInput | RoleUpdateManyWithWhereWithoutTeamsInput[]
-    deleteMany?: RoleScalarWhereInput | RoleScalarWhereInput[]
-  }
-
   export type TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput = {
     create?: XOR<TeamsEditLogCreateWithoutTeamInput, TeamsEditLogUncheckedCreateWithoutTeamInput> | TeamsEditLogCreateWithoutTeamInput[] | TeamsEditLogUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamsEditLogCreateOrConnectWithoutTeamInput | TeamsEditLogCreateOrConnectWithoutTeamInput[]
@@ -19502,18 +18009,18 @@ export namespace Prisma {
     deleteMany?: TeamsEditLogScalarWhereInput | TeamsEditLogScalarWhereInput[]
   }
 
-  export type UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput = {
-    create?: XOR<UserTeamRoleHistoryCreateWithoutTeamInput, UserTeamRoleHistoryUncheckedCreateWithoutTeamInput> | UserTeamRoleHistoryCreateWithoutTeamInput[] | UserTeamRoleHistoryUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: UserTeamRoleHistoryCreateOrConnectWithoutTeamInput | UserTeamRoleHistoryCreateOrConnectWithoutTeamInput[]
-    upsert?: UserTeamRoleHistoryUpsertWithWhereUniqueWithoutTeamInput | UserTeamRoleHistoryUpsertWithWhereUniqueWithoutTeamInput[]
-    createMany?: UserTeamRoleHistoryCreateManyTeamInputEnvelope
-    set?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    disconnect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    delete?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    connect?: UserTeamRoleHistoryWhereUniqueInput | UserTeamRoleHistoryWhereUniqueInput[]
-    update?: UserTeamRoleHistoryUpdateWithWhereUniqueWithoutTeamInput | UserTeamRoleHistoryUpdateWithWhereUniqueWithoutTeamInput[]
-    updateMany?: UserTeamRoleHistoryUpdateManyWithWhereWithoutTeamInput | UserTeamRoleHistoryUpdateManyWithWhereWithoutTeamInput[]
-    deleteMany?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
+  export type UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<UserRoleInTeamCreateWithoutTeamInput, UserRoleInTeamUncheckedCreateWithoutTeamInput> | UserRoleInTeamCreateWithoutTeamInput[] | UserRoleInTeamUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutTeamInput | UserRoleInTeamCreateOrConnectWithoutTeamInput[]
+    upsert?: UserRoleInTeamUpsertWithWhereUniqueWithoutTeamInput | UserRoleInTeamUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: UserRoleInTeamCreateManyTeamInputEnvelope
+    set?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    disconnect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    delete?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+    update?: UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput | UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutTeamInput | UserRoleInTeamUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
   }
 
   export type ChatUncheckedUpdateManyWithoutTeamNestedInput = {
@@ -19558,46 +18065,36 @@ export namespace Prisma {
     deleteMany?: NoticeRequestScalarWhereInput | NoticeRequestScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutUserTeamRoleHistoryInput = {
-    create?: XOR<UserCreateWithoutUserTeamRoleHistoryInput, UserUncheckedCreateWithoutUserTeamRoleHistoryInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUserTeamRoleHistoryInput
+  export type UserCreateNestedOneWithoutUserRoleInTeamInput = {
+    create?: XOR<UserCreateWithoutUserRoleInTeamInput, UserUncheckedCreateWithoutUserRoleInTeamInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserRoleInTeamInput
     connect?: UserWhereUniqueInput
   }
 
-  export type TeamsCreateNestedOneWithoutUserTeamRoleHistoryInput = {
-    create?: XOR<TeamsCreateWithoutUserTeamRoleHistoryInput, TeamsUncheckedCreateWithoutUserTeamRoleHistoryInput>
-    connectOrCreate?: TeamsCreateOrConnectWithoutUserTeamRoleHistoryInput
+  export type TeamsCreateNestedOneWithoutUserRoleInTeamInput = {
+    create?: XOR<TeamsCreateWithoutUserRoleInTeamInput, TeamsUncheckedCreateWithoutUserRoleInTeamInput>
+    connectOrCreate?: TeamsCreateOrConnectWithoutUserRoleInTeamInput
     connect?: TeamsWhereUniqueInput
   }
 
-  export type RoleCreateNestedOneWithoutUserTeamRoleHistoryInput = {
-    create?: XOR<RoleCreateWithoutUserTeamRoleHistoryInput, RoleUncheckedCreateWithoutUserTeamRoleHistoryInput>
-    connectOrCreate?: RoleCreateOrConnectWithoutUserTeamRoleHistoryInput
-    connect?: RoleWhereUniqueInput
+  export type EnumDesignationFieldUpdateOperationsInput = {
+    set?: $Enums.Designation
   }
 
-  export type UserUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput = {
-    create?: XOR<UserCreateWithoutUserTeamRoleHistoryInput, UserUncheckedCreateWithoutUserTeamRoleHistoryInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUserTeamRoleHistoryInput
-    upsert?: UserUpsertWithoutUserTeamRoleHistoryInput
+  export type UserUpdateOneRequiredWithoutUserRoleInTeamNestedInput = {
+    create?: XOR<UserCreateWithoutUserRoleInTeamInput, UserUncheckedCreateWithoutUserRoleInTeamInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserRoleInTeamInput
+    upsert?: UserUpsertWithoutUserRoleInTeamInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserTeamRoleHistoryInput, UserUpdateWithoutUserTeamRoleHistoryInput>, UserUncheckedUpdateWithoutUserTeamRoleHistoryInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserRoleInTeamInput, UserUpdateWithoutUserRoleInTeamInput>, UserUncheckedUpdateWithoutUserRoleInTeamInput>
   }
 
-  export type TeamsUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput = {
-    create?: XOR<TeamsCreateWithoutUserTeamRoleHistoryInput, TeamsUncheckedCreateWithoutUserTeamRoleHistoryInput>
-    connectOrCreate?: TeamsCreateOrConnectWithoutUserTeamRoleHistoryInput
-    upsert?: TeamsUpsertWithoutUserTeamRoleHistoryInput
+  export type TeamsUpdateOneRequiredWithoutUserRoleInTeamNestedInput = {
+    create?: XOR<TeamsCreateWithoutUserRoleInTeamInput, TeamsUncheckedCreateWithoutUserRoleInTeamInput>
+    connectOrCreate?: TeamsCreateOrConnectWithoutUserRoleInTeamInput
+    upsert?: TeamsUpsertWithoutUserRoleInTeamInput
     connect?: TeamsWhereUniqueInput
-    update?: XOR<XOR<TeamsUpdateToOneWithWhereWithoutUserTeamRoleHistoryInput, TeamsUpdateWithoutUserTeamRoleHistoryInput>, TeamsUncheckedUpdateWithoutUserTeamRoleHistoryInput>
-  }
-
-  export type RoleUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput = {
-    create?: XOR<RoleCreateWithoutUserTeamRoleHistoryInput, RoleUncheckedCreateWithoutUserTeamRoleHistoryInput>
-    connectOrCreate?: RoleCreateOrConnectWithoutUserTeamRoleHistoryInput
-    upsert?: RoleUpsertWithoutUserTeamRoleHistoryInput
-    connect?: RoleWhereUniqueInput
-    update?: XOR<XOR<RoleUpdateToOneWithWhereWithoutUserTeamRoleHistoryInput, RoleUpdateWithoutUserTeamRoleHistoryInput>, RoleUncheckedUpdateWithoutUserTeamRoleHistoryInput>
+    update?: XOR<XOR<TeamsUpdateToOneWithWhereWithoutUserRoleInTeamInput, TeamsUpdateWithoutUserRoleInTeamInput>, TeamsUncheckedUpdateWithoutUserRoleInTeamInput>
   }
 
   export type TeamsCreateNestedManyWithoutTagsInput = {
@@ -19686,6 +18183,10 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutTeamsEditLogInput, UserUncheckedCreateWithoutTeamsEditLogInput>
     connectOrCreate?: UserCreateOrConnectWithoutTeamsEditLogInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type EnumActionFieldUpdateOperationsInput = {
+    set?: $Enums.Action
   }
 
   export type TeamsUpdateOneRequiredWithoutLogsNestedInput = {
@@ -20024,6 +18525,13 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedEnumDesignationNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDesignationNullableFilter<$PrismaModel> | $Enums.Designation | null
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -20074,23 +18582,48 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type RoleCreateWithoutUsersInput = {
-    id?: string
-    name: string
-    teams?: TeamsCreateNestedManyWithoutRolesInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutRoleInput
+  export type NestedEnumDesignationNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDesignationNullableWithAggregatesFilter<$PrismaModel> | $Enums.Designation | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumDesignationNullableFilter<$PrismaModel>
+    _max?: NestedEnumDesignationNullableFilter<$PrismaModel>
   }
 
-  export type RoleUncheckedCreateWithoutUsersInput = {
-    id?: string
-    name: string
-    teams?: TeamsUncheckedCreateNestedManyWithoutRolesInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutRoleInput
+  export type NestedEnumDesignationFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel>
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    not?: NestedEnumDesignationFilter<$PrismaModel> | $Enums.Designation
   }
 
-  export type RoleCreateOrConnectWithoutUsersInput = {
-    where: RoleWhereUniqueInput
-    create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
+  export type NestedEnumDesignationWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Designation | EnumDesignationFieldRefInput<$PrismaModel>
+    in?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Designation[] | ListEnumDesignationFieldRefInput<$PrismaModel>
+    not?: NestedEnumDesignationWithAggregatesFilter<$PrismaModel> | $Enums.Designation
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDesignationFilter<$PrismaModel>
+    _max?: NestedEnumDesignationFilter<$PrismaModel>
+  }
+
+  export type NestedEnumActionFilter<$PrismaModel = never> = {
+    equals?: $Enums.Action | EnumActionFieldRefInput<$PrismaModel>
+    in?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionFilter<$PrismaModel> | $Enums.Action
+  }
+
+  export type NestedEnumActionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Action | EnumActionFieldRefInput<$PrismaModel>
+    in?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Action[] | ListEnumActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionWithAggregatesFilter<$PrismaModel> | $Enums.Action
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumActionFilter<$PrismaModel>
+    _max?: NestedEnumActionFilter<$PrismaModel>
   }
 
   export type TagCreateWithoutUsersInput = {
@@ -20121,9 +18654,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -20140,9 +18672,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -20169,9 +18700,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -20188,9 +18718,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -20256,7 +18785,8 @@ export namespace Prisma {
 
   export type TeamsEditLogCreateWithoutUserInput = {
     id?: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutLogsInput
@@ -20265,7 +18795,8 @@ export namespace Prisma {
   export type TeamsEditLogUncheckedCreateWithoutUserInput = {
     id?: string
     teamId: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20280,31 +18811,29 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserTeamRoleHistoryCreateWithoutUserInput = {
+  export type UserRoleInTeamCreateWithoutUserInput = {
     id?: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
-    team: TeamsCreateNestedOneWithoutUserTeamRoleHistoryInput
-    role: RoleCreateNestedOneWithoutUserTeamRoleHistoryInput
+    team: TeamsCreateNestedOneWithoutUserRoleInTeamInput
   }
 
-  export type UserTeamRoleHistoryUncheckedCreateWithoutUserInput = {
+  export type UserRoleInTeamUncheckedCreateWithoutUserInput = {
     id?: string
     teamId: string
-    roleId: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UserTeamRoleHistoryCreateOrConnectWithoutUserInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    create: XOR<UserTeamRoleHistoryCreateWithoutUserInput, UserTeamRoleHistoryUncheckedCreateWithoutUserInput>
+  export type UserRoleInTeamCreateOrConnectWithoutUserInput = {
+    where: UserRoleInTeamWhereUniqueInput
+    create: XOR<UserRoleInTeamCreateWithoutUserInput, UserRoleInTeamUncheckedCreateWithoutUserInput>
   }
 
-  export type UserTeamRoleHistoryCreateManyUserInputEnvelope = {
-    data: UserTeamRoleHistoryCreateManyUserInput | UserTeamRoleHistoryCreateManyUserInput[]
+  export type UserRoleInTeamCreateManyUserInputEnvelope = {
+    data: UserRoleInTeamCreateManyUserInput | UserRoleInTeamCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -20394,30 +18923,6 @@ export namespace Prisma {
   export type NoticeHistoryCreateManyPerformedByInputEnvelope = {
     data: NoticeHistoryCreateManyPerformedByInput | NoticeHistoryCreateManyPerformedByInput[]
     skipDuplicates?: boolean
-  }
-
-  export type RoleUpsertWithWhereUniqueWithoutUsersInput = {
-    where: RoleWhereUniqueInput
-    update: XOR<RoleUpdateWithoutUsersInput, RoleUncheckedUpdateWithoutUsersInput>
-    create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
-  }
-
-  export type RoleUpdateWithWhereUniqueWithoutUsersInput = {
-    where: RoleWhereUniqueInput
-    data: XOR<RoleUpdateWithoutUsersInput, RoleUncheckedUpdateWithoutUsersInput>
-  }
-
-  export type RoleUpdateManyWithWhereWithoutUsersInput = {
-    where: RoleScalarWhereInput
-    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutUsersInput>
-  }
-
-  export type RoleScalarWhereInput = {
-    AND?: RoleScalarWhereInput | RoleScalarWhereInput[]
-    OR?: RoleScalarWhereInput[]
-    NOT?: RoleScalarWhereInput | RoleScalarWhereInput[]
-    id?: StringFilter<"Role"> | string
-    name?: StringFilter<"Role"> | string
   }
 
   export type TagUpsertWithWhereUniqueWithoutUsersInput = {
@@ -20571,38 +19076,38 @@ export namespace Prisma {
     id?: StringFilter<"TeamsEditLog"> | string
     teamId?: StringFilter<"TeamsEditLog"> | string
     userId?: StringFilter<"TeamsEditLog"> | string
-    action?: StringFilter<"TeamsEditLog"> | string
+    action?: EnumActionFilter<"TeamsEditLog"> | $Enums.Action
+    designation?: EnumDesignationFilter<"TeamsEditLog"> | $Enums.Designation
     createdAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
     updatedAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
   }
 
-  export type UserTeamRoleHistoryUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    update: XOR<UserTeamRoleHistoryUpdateWithoutUserInput, UserTeamRoleHistoryUncheckedUpdateWithoutUserInput>
-    create: XOR<UserTeamRoleHistoryCreateWithoutUserInput, UserTeamRoleHistoryUncheckedCreateWithoutUserInput>
+  export type UserRoleInTeamUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserRoleInTeamWhereUniqueInput
+    update: XOR<UserRoleInTeamUpdateWithoutUserInput, UserRoleInTeamUncheckedUpdateWithoutUserInput>
+    create: XOR<UserRoleInTeamCreateWithoutUserInput, UserRoleInTeamUncheckedCreateWithoutUserInput>
   }
 
-  export type UserTeamRoleHistoryUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    data: XOR<UserTeamRoleHistoryUpdateWithoutUserInput, UserTeamRoleHistoryUncheckedUpdateWithoutUserInput>
+  export type UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserRoleInTeamWhereUniqueInput
+    data: XOR<UserRoleInTeamUpdateWithoutUserInput, UserRoleInTeamUncheckedUpdateWithoutUserInput>
   }
 
-  export type UserTeamRoleHistoryUpdateManyWithWhereWithoutUserInput = {
-    where: UserTeamRoleHistoryScalarWhereInput
-    data: XOR<UserTeamRoleHistoryUpdateManyMutationInput, UserTeamRoleHistoryUncheckedUpdateManyWithoutUserInput>
+  export type UserRoleInTeamUpdateManyWithWhereWithoutUserInput = {
+    where: UserRoleInTeamScalarWhereInput
+    data: XOR<UserRoleInTeamUpdateManyMutationInput, UserRoleInTeamUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type UserTeamRoleHistoryScalarWhereInput = {
-    AND?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
-    OR?: UserTeamRoleHistoryScalarWhereInput[]
-    NOT?: UserTeamRoleHistoryScalarWhereInput | UserTeamRoleHistoryScalarWhereInput[]
-    id?: StringFilter<"UserTeamRoleHistory"> | string
-    userId?: StringFilter<"UserTeamRoleHistory"> | string
-    teamId?: StringFilter<"UserTeamRoleHistory"> | string
-    roleId?: StringFilter<"UserTeamRoleHistory"> | string
-    assignedAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
-    createdAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
-    updatedAt?: DateTimeFilter<"UserTeamRoleHistory"> | Date | string
+  export type UserRoleInTeamScalarWhereInput = {
+    AND?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
+    OR?: UserRoleInTeamScalarWhereInput[]
+    NOT?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
+    id?: StringFilter<"UserRoleInTeam"> | string
+    userId?: StringFilter<"UserRoleInTeam"> | string
+    teamId?: StringFilter<"UserRoleInTeam"> | string
+    designation?: EnumDesignationFilter<"UserRoleInTeam"> | $Enums.Designation
+    createdAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
+    updatedAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
   }
 
   export type NoticeRequestUpsertWithWhereUniqueWithoutMemberInput = {
@@ -20693,219 +19198,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"NoticeHistory"> | Date | string
   }
 
-  export type UserCreateWithoutRolesInput = {
-    userId?: string
-    firstName: string
-    lastName: string
-    email: string
-    mobileNumber: string
-    username: string
-    password: string
-    courseName?: UserCreatecourseNameInput | string[]
-    about: string
-    role?: string
-    isTeamLeader?: boolean
-    isActive?: boolean
-    twitter?: string | null
-    github?: string | null
-    linkedIn?: string | null
-    hashnode?: string | null
-    peerlist?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tags?: TagCreateNestedManyWithoutUsersInput
-    teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
-    teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
-    TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
-  }
-
-  export type UserUncheckedCreateWithoutRolesInput = {
-    userId?: string
-    firstName: string
-    lastName: string
-    email: string
-    mobileNumber: string
-    username: string
-    password: string
-    courseName?: UserCreatecourseNameInput | string[]
-    about: string
-    role?: string
-    isTeamLeader?: boolean
-    isActive?: boolean
-    twitter?: string | null
-    github?: string | null
-    linkedIn?: string | null
-    hashnode?: string | null
-    peerlist?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tags?: TagUncheckedCreateNestedManyWithoutUsersInput
-    teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
-    teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
-  }
-
-  export type UserCreateOrConnectWithoutRolesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutRolesInput, UserUncheckedCreateWithoutRolesInput>
-  }
-
-  export type TeamsCreateWithoutRolesInput = {
-    id?: string
-    uniqueTitle: string
-    title: string
-    about: string
-    isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
-    members?: UserCreateNestedManyWithoutTeamsInput
-    tags?: TagCreateNestedManyWithoutTeamsInput
-    logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
-    chats?: ChatCreateNestedManyWithoutTeamInput
-    notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
-  }
-
-  export type TeamsUncheckedCreateWithoutRolesInput = {
-    id?: string
-    uniqueTitle: string
-    title: string
-    about: string
-    teamLeaderId: string
-    isActive?: boolean
-    link?: TeamsCreatelinkInput | string[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    members?: UserUncheckedCreateNestedManyWithoutTeamsInput
-    tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
-    chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
-  }
-
-  export type TeamsCreateOrConnectWithoutRolesInput = {
-    where: TeamsWhereUniqueInput
-    create: XOR<TeamsCreateWithoutRolesInput, TeamsUncheckedCreateWithoutRolesInput>
-  }
-
-  export type UserTeamRoleHistoryCreateWithoutRoleInput = {
-    id?: string
-    assignedAt?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutUserTeamRoleHistoryInput
-    team: TeamsCreateNestedOneWithoutUserTeamRoleHistoryInput
-  }
-
-  export type UserTeamRoleHistoryUncheckedCreateWithoutRoleInput = {
-    id?: string
-    userId: string
-    teamId: string
-    assignedAt?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserTeamRoleHistoryCreateOrConnectWithoutRoleInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    create: XOR<UserTeamRoleHistoryCreateWithoutRoleInput, UserTeamRoleHistoryUncheckedCreateWithoutRoleInput>
-  }
-
-  export type UserTeamRoleHistoryCreateManyRoleInputEnvelope = {
-    data: UserTeamRoleHistoryCreateManyRoleInput | UserTeamRoleHistoryCreateManyRoleInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithWhereUniqueWithoutRolesInput = {
-    where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutRolesInput, UserUncheckedUpdateWithoutRolesInput>
-    create: XOR<UserCreateWithoutRolesInput, UserUncheckedCreateWithoutRolesInput>
-  }
-
-  export type UserUpdateWithWhereUniqueWithoutRolesInput = {
-    where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutRolesInput, UserUncheckedUpdateWithoutRolesInput>
-  }
-
-  export type UserUpdateManyWithWhereWithoutRolesInput = {
-    where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutRolesInput>
-  }
-
-  export type UserScalarWhereInput = {
-    AND?: UserScalarWhereInput | UserScalarWhereInput[]
-    OR?: UserScalarWhereInput[]
-    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
-    userId?: StringFilter<"User"> | string
-    firstName?: StringFilter<"User"> | string
-    lastName?: StringFilter<"User"> | string
-    email?: StringFilter<"User"> | string
-    mobileNumber?: StringFilter<"User"> | string
-    username?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
-    courseName?: StringNullableListFilter<"User">
-    about?: StringFilter<"User"> | string
-    role?: StringFilter<"User"> | string
-    isTeamLeader?: BoolFilter<"User"> | boolean
-    isActive?: BoolFilter<"User"> | boolean
-    twitter?: StringNullableFilter<"User"> | string | null
-    github?: StringNullableFilter<"User"> | string | null
-    linkedIn?: StringNullableFilter<"User"> | string | null
-    hashnode?: StringNullableFilter<"User"> | string | null
-    peerlist?: StringNullableFilter<"User"> | string | null
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-  }
-
-  export type TeamsUpsertWithWhereUniqueWithoutRolesInput = {
-    where: TeamsWhereUniqueInput
-    update: XOR<TeamsUpdateWithoutRolesInput, TeamsUncheckedUpdateWithoutRolesInput>
-    create: XOR<TeamsCreateWithoutRolesInput, TeamsUncheckedCreateWithoutRolesInput>
-  }
-
-  export type TeamsUpdateWithWhereUniqueWithoutRolesInput = {
-    where: TeamsWhereUniqueInput
-    data: XOR<TeamsUpdateWithoutRolesInput, TeamsUncheckedUpdateWithoutRolesInput>
-  }
-
-  export type TeamsUpdateManyWithWhereWithoutRolesInput = {
-    where: TeamsScalarWhereInput
-    data: XOR<TeamsUpdateManyMutationInput, TeamsUncheckedUpdateManyWithoutRolesInput>
-  }
-
-  export type UserTeamRoleHistoryUpsertWithWhereUniqueWithoutRoleInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    update: XOR<UserTeamRoleHistoryUpdateWithoutRoleInput, UserTeamRoleHistoryUncheckedUpdateWithoutRoleInput>
-    create: XOR<UserTeamRoleHistoryCreateWithoutRoleInput, UserTeamRoleHistoryUncheckedCreateWithoutRoleInput>
-  }
-
-  export type UserTeamRoleHistoryUpdateWithWhereUniqueWithoutRoleInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    data: XOR<UserTeamRoleHistoryUpdateWithoutRoleInput, UserTeamRoleHistoryUncheckedUpdateWithoutRoleInput>
-  }
-
-  export type UserTeamRoleHistoryUpdateManyWithWhereWithoutRoleInput = {
-    where: UserTeamRoleHistoryScalarWhereInput
-    data: XOR<UserTeamRoleHistoryUpdateManyMutationInput, UserTeamRoleHistoryUncheckedUpdateManyWithoutRoleInput>
-  }
-
   export type UserCreateWithoutTeamLeaderOfInput = {
     userId?: string
     firstName: string
@@ -20926,13 +19218,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -20958,13 +19250,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -20995,13 +19287,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -21027,13 +19319,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -21061,28 +19353,10 @@ export namespace Prisma {
     create: XOR<TagCreateWithoutTeamsInput, TagUncheckedCreateWithoutTeamsInput>
   }
 
-  export type RoleCreateWithoutTeamsInput = {
-    id?: string
-    name: string
-    users?: UserCreateNestedManyWithoutRolesInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutRoleInput
-  }
-
-  export type RoleUncheckedCreateWithoutTeamsInput = {
-    id?: string
-    name: string
-    users?: UserUncheckedCreateNestedManyWithoutRolesInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutRoleInput
-  }
-
-  export type RoleCreateOrConnectWithoutTeamsInput = {
-    where: RoleWhereUniqueInput
-    create: XOR<RoleCreateWithoutTeamsInput, RoleUncheckedCreateWithoutTeamsInput>
-  }
-
   export type TeamsEditLogCreateWithoutTeamInput = {
     id?: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTeamsEditLogInput
@@ -21091,7 +19365,8 @@ export namespace Prisma {
   export type TeamsEditLogUncheckedCreateWithoutTeamInput = {
     id?: string
     userId: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21106,31 +19381,29 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserTeamRoleHistoryCreateWithoutTeamInput = {
+  export type UserRoleInTeamCreateWithoutTeamInput = {
     id?: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutUserTeamRoleHistoryInput
-    role: RoleCreateNestedOneWithoutUserTeamRoleHistoryInput
+    user: UserCreateNestedOneWithoutUserRoleInTeamInput
   }
 
-  export type UserTeamRoleHistoryUncheckedCreateWithoutTeamInput = {
+  export type UserRoleInTeamUncheckedCreateWithoutTeamInput = {
     id?: string
     userId: string
-    roleId: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UserTeamRoleHistoryCreateOrConnectWithoutTeamInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    create: XOR<UserTeamRoleHistoryCreateWithoutTeamInput, UserTeamRoleHistoryUncheckedCreateWithoutTeamInput>
+  export type UserRoleInTeamCreateOrConnectWithoutTeamInput = {
+    where: UserRoleInTeamWhereUniqueInput
+    create: XOR<UserRoleInTeamCreateWithoutTeamInput, UserRoleInTeamUncheckedCreateWithoutTeamInput>
   }
 
-  export type UserTeamRoleHistoryCreateManyTeamInputEnvelope = {
-    data: UserTeamRoleHistoryCreateManyTeamInput | UserTeamRoleHistoryCreateManyTeamInput[]
+  export type UserRoleInTeamCreateManyTeamInputEnvelope = {
+    data: UserRoleInTeamCreateManyTeamInput | UserRoleInTeamCreateManyTeamInput[]
     skipDuplicates?: boolean
   }
 
@@ -21261,13 +19534,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -21293,13 +19566,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -21321,6 +19594,32 @@ export namespace Prisma {
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutTeamsInput>
   }
 
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    userId?: StringFilter<"User"> | string
+    firstName?: StringFilter<"User"> | string
+    lastName?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    mobileNumber?: StringFilter<"User"> | string
+    username?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    courseName?: StringNullableListFilter<"User">
+    about?: StringFilter<"User"> | string
+    role?: StringFilter<"User"> | string
+    isTeamLeader?: BoolFilter<"User"> | boolean
+    isActive?: BoolFilter<"User"> | boolean
+    twitter?: StringNullableFilter<"User"> | string | null
+    github?: StringNullableFilter<"User"> | string | null
+    linkedIn?: StringNullableFilter<"User"> | string | null
+    hashnode?: StringNullableFilter<"User"> | string | null
+    peerlist?: StringNullableFilter<"User"> | string | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    designation?: EnumDesignationNullableFilter<"User"> | $Enums.Designation | null
+  }
+
   export type TagUpsertWithWhereUniqueWithoutTeamsInput = {
     where: TagWhereUniqueInput
     update: XOR<TagUpdateWithoutTeamsInput, TagUncheckedUpdateWithoutTeamsInput>
@@ -21335,22 +19634,6 @@ export namespace Prisma {
   export type TagUpdateManyWithWhereWithoutTeamsInput = {
     where: TagScalarWhereInput
     data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutTeamsInput>
-  }
-
-  export type RoleUpsertWithWhereUniqueWithoutTeamsInput = {
-    where: RoleWhereUniqueInput
-    update: XOR<RoleUpdateWithoutTeamsInput, RoleUncheckedUpdateWithoutTeamsInput>
-    create: XOR<RoleCreateWithoutTeamsInput, RoleUncheckedCreateWithoutTeamsInput>
-  }
-
-  export type RoleUpdateWithWhereUniqueWithoutTeamsInput = {
-    where: RoleWhereUniqueInput
-    data: XOR<RoleUpdateWithoutTeamsInput, RoleUncheckedUpdateWithoutTeamsInput>
-  }
-
-  export type RoleUpdateManyWithWhereWithoutTeamsInput = {
-    where: RoleScalarWhereInput
-    data: XOR<RoleUpdateManyMutationInput, RoleUncheckedUpdateManyWithoutTeamsInput>
   }
 
   export type TeamsEditLogUpsertWithWhereUniqueWithoutTeamInput = {
@@ -21369,20 +19652,20 @@ export namespace Prisma {
     data: XOR<TeamsEditLogUpdateManyMutationInput, TeamsEditLogUncheckedUpdateManyWithoutTeamInput>
   }
 
-  export type UserTeamRoleHistoryUpsertWithWhereUniqueWithoutTeamInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    update: XOR<UserTeamRoleHistoryUpdateWithoutTeamInput, UserTeamRoleHistoryUncheckedUpdateWithoutTeamInput>
-    create: XOR<UserTeamRoleHistoryCreateWithoutTeamInput, UserTeamRoleHistoryUncheckedCreateWithoutTeamInput>
+  export type UserRoleInTeamUpsertWithWhereUniqueWithoutTeamInput = {
+    where: UserRoleInTeamWhereUniqueInput
+    update: XOR<UserRoleInTeamUpdateWithoutTeamInput, UserRoleInTeamUncheckedUpdateWithoutTeamInput>
+    create: XOR<UserRoleInTeamCreateWithoutTeamInput, UserRoleInTeamUncheckedCreateWithoutTeamInput>
   }
 
-  export type UserTeamRoleHistoryUpdateWithWhereUniqueWithoutTeamInput = {
-    where: UserTeamRoleHistoryWhereUniqueInput
-    data: XOR<UserTeamRoleHistoryUpdateWithoutTeamInput, UserTeamRoleHistoryUncheckedUpdateWithoutTeamInput>
+  export type UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput = {
+    where: UserRoleInTeamWhereUniqueInput
+    data: XOR<UserRoleInTeamUpdateWithoutTeamInput, UserRoleInTeamUncheckedUpdateWithoutTeamInput>
   }
 
-  export type UserTeamRoleHistoryUpdateManyWithWhereWithoutTeamInput = {
-    where: UserTeamRoleHistoryScalarWhereInput
-    data: XOR<UserTeamRoleHistoryUpdateManyMutationInput, UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamInput>
+  export type UserRoleInTeamUpdateManyWithWhereWithoutTeamInput = {
+    where: UserRoleInTeamScalarWhereInput
+    data: XOR<UserRoleInTeamUpdateManyMutationInput, UserRoleInTeamUncheckedUpdateManyWithoutTeamInput>
   }
 
   export type ChatUpsertWithWhereUniqueWithoutTeamInput = {
@@ -21433,7 +19716,7 @@ export namespace Prisma {
     data: XOR<NoticeRequestUpdateManyMutationInput, NoticeRequestUncheckedUpdateManyWithoutTeamInput>
   }
 
-  export type UserCreateWithoutUserTeamRoleHistoryInput = {
+  export type UserCreateWithoutUserRoleInTeamInput = {
     userId?: string
     firstName: string
     lastName: string
@@ -21453,7 +19736,7 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
@@ -21465,7 +19748,7 @@ export namespace Prisma {
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
   }
 
-  export type UserUncheckedCreateWithoutUserTeamRoleHistoryInput = {
+  export type UserUncheckedCreateWithoutUserRoleInTeamInput = {
     userId?: string
     firstName: string
     lastName: string
@@ -21485,7 +19768,7 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
@@ -21497,12 +19780,12 @@ export namespace Prisma {
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   }
 
-  export type UserCreateOrConnectWithoutUserTeamRoleHistoryInput = {
+  export type UserCreateOrConnectWithoutUserRoleInTeamInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUserTeamRoleHistoryInput, UserUncheckedCreateWithoutUserTeamRoleHistoryInput>
+    create: XOR<UserCreateWithoutUserRoleInTeamInput, UserUncheckedCreateWithoutUserRoleInTeamInput>
   }
 
-  export type TeamsCreateWithoutUserTeamRoleHistoryInput = {
+  export type TeamsCreateWithoutUserRoleInTeamInput = {
     id?: string
     uniqueTitle: string
     title: string
@@ -21514,14 +19797,13 @@ export namespace Prisma {
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
-  export type TeamsUncheckedCreateWithoutUserTeamRoleHistoryInput = {
+  export type TeamsUncheckedCreateWithoutUserRoleInTeamInput = {
     id?: string
     uniqueTitle: string
     title: string
@@ -21533,49 +19815,29 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
-  export type TeamsCreateOrConnectWithoutUserTeamRoleHistoryInput = {
+  export type TeamsCreateOrConnectWithoutUserRoleInTeamInput = {
     where: TeamsWhereUniqueInput
-    create: XOR<TeamsCreateWithoutUserTeamRoleHistoryInput, TeamsUncheckedCreateWithoutUserTeamRoleHistoryInput>
+    create: XOR<TeamsCreateWithoutUserRoleInTeamInput, TeamsUncheckedCreateWithoutUserRoleInTeamInput>
   }
 
-  export type RoleCreateWithoutUserTeamRoleHistoryInput = {
-    id?: string
-    name: string
-    users?: UserCreateNestedManyWithoutRolesInput
-    teams?: TeamsCreateNestedManyWithoutRolesInput
-  }
-
-  export type RoleUncheckedCreateWithoutUserTeamRoleHistoryInput = {
-    id?: string
-    name: string
-    users?: UserUncheckedCreateNestedManyWithoutRolesInput
-    teams?: TeamsUncheckedCreateNestedManyWithoutRolesInput
-  }
-
-  export type RoleCreateOrConnectWithoutUserTeamRoleHistoryInput = {
-    where: RoleWhereUniqueInput
-    create: XOR<RoleCreateWithoutUserTeamRoleHistoryInput, RoleUncheckedCreateWithoutUserTeamRoleHistoryInput>
-  }
-
-  export type UserUpsertWithoutUserTeamRoleHistoryInput = {
-    update: XOR<UserUpdateWithoutUserTeamRoleHistoryInput, UserUncheckedUpdateWithoutUserTeamRoleHistoryInput>
-    create: XOR<UserCreateWithoutUserTeamRoleHistoryInput, UserUncheckedCreateWithoutUserTeamRoleHistoryInput>
+  export type UserUpsertWithoutUserRoleInTeamInput = {
+    update: XOR<UserUpdateWithoutUserRoleInTeamInput, UserUncheckedUpdateWithoutUserRoleInTeamInput>
+    create: XOR<UserCreateWithoutUserRoleInTeamInput, UserUncheckedCreateWithoutUserRoleInTeamInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutUserTeamRoleHistoryInput = {
+  export type UserUpdateToOneWithWhereWithoutUserRoleInTeamInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutUserTeamRoleHistoryInput, UserUncheckedUpdateWithoutUserTeamRoleHistoryInput>
+    data: XOR<UserUpdateWithoutUserRoleInTeamInput, UserUncheckedUpdateWithoutUserRoleInTeamInput>
   }
 
-  export type UserUpdateWithoutUserTeamRoleHistoryInput = {
+  export type UserUpdateWithoutUserRoleInTeamInput = {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
@@ -21595,7 +19857,7 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
@@ -21607,7 +19869,7 @@ export namespace Prisma {
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutUserTeamRoleHistoryInput = {
+  export type UserUncheckedUpdateWithoutUserRoleInTeamInput = {
     userId?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
@@ -21627,7 +19889,7 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
@@ -21639,18 +19901,18 @@ export namespace Prisma {
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   }
 
-  export type TeamsUpsertWithoutUserTeamRoleHistoryInput = {
-    update: XOR<TeamsUpdateWithoutUserTeamRoleHistoryInput, TeamsUncheckedUpdateWithoutUserTeamRoleHistoryInput>
-    create: XOR<TeamsCreateWithoutUserTeamRoleHistoryInput, TeamsUncheckedCreateWithoutUserTeamRoleHistoryInput>
+  export type TeamsUpsertWithoutUserRoleInTeamInput = {
+    update: XOR<TeamsUpdateWithoutUserRoleInTeamInput, TeamsUncheckedUpdateWithoutUserRoleInTeamInput>
+    create: XOR<TeamsCreateWithoutUserRoleInTeamInput, TeamsUncheckedCreateWithoutUserRoleInTeamInput>
     where?: TeamsWhereInput
   }
 
-  export type TeamsUpdateToOneWithWhereWithoutUserTeamRoleHistoryInput = {
+  export type TeamsUpdateToOneWithWhereWithoutUserRoleInTeamInput = {
     where?: TeamsWhereInput
-    data: XOR<TeamsUpdateWithoutUserTeamRoleHistoryInput, TeamsUncheckedUpdateWithoutUserTeamRoleHistoryInput>
+    data: XOR<TeamsUpdateWithoutUserRoleInTeamInput, TeamsUncheckedUpdateWithoutUserRoleInTeamInput>
   }
 
-  export type TeamsUpdateWithoutUserTeamRoleHistoryInput = {
+  export type TeamsUpdateWithoutUserRoleInTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -21662,14 +19924,13 @@ export namespace Prisma {
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
-  export type TeamsUncheckedUpdateWithoutUserTeamRoleHistoryInput = {
+  export type TeamsUncheckedUpdateWithoutUserRoleInTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -21681,36 +19942,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
-  }
-
-  export type RoleUpsertWithoutUserTeamRoleHistoryInput = {
-    update: XOR<RoleUpdateWithoutUserTeamRoleHistoryInput, RoleUncheckedUpdateWithoutUserTeamRoleHistoryInput>
-    create: XOR<RoleCreateWithoutUserTeamRoleHistoryInput, RoleUncheckedCreateWithoutUserTeamRoleHistoryInput>
-    where?: RoleWhereInput
-  }
-
-  export type RoleUpdateToOneWithWhereWithoutUserTeamRoleHistoryInput = {
-    where?: RoleWhereInput
-    data: XOR<RoleUpdateWithoutUserTeamRoleHistoryInput, RoleUncheckedUpdateWithoutUserTeamRoleHistoryInput>
-  }
-
-  export type RoleUpdateWithoutUserTeamRoleHistoryInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    users?: UserUpdateManyWithoutRolesNestedInput
-    teams?: TeamsUpdateManyWithoutRolesNestedInput
-  }
-
-  export type RoleUncheckedUpdateWithoutUserTeamRoleHistoryInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    users?: UserUncheckedUpdateManyWithoutRolesNestedInput
-    teams?: TeamsUncheckedUpdateManyWithoutRolesNestedInput
   }
 
   export type TeamsCreateWithoutTagsInput = {
@@ -21724,9 +19959,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     members?: UserCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -21743,9 +19977,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -21776,13 +20009,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -21808,13 +20041,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -21869,8 +20102,7 @@ export namespace Prisma {
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -21888,8 +20120,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -21920,13 +20151,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -21952,13 +20183,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -21992,8 +20223,7 @@ export namespace Prisma {
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -22011,8 +20241,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -22049,13 +20278,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -22081,13 +20310,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -22113,14 +20342,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
   }
@@ -22145,14 +20374,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   }
@@ -22174,9 +20403,8 @@ export namespace Prisma {
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
@@ -22193,9 +20421,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
@@ -22260,14 +20487,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
   }
@@ -22292,14 +20519,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   }
@@ -22327,9 +20554,8 @@ export namespace Prisma {
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
@@ -22346,9 +20572,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
@@ -22389,14 +20614,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
   }
@@ -22421,14 +20646,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   }
@@ -22450,9 +20675,8 @@ export namespace Prisma {
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
   }
@@ -22469,9 +20693,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
   }
@@ -22512,14 +20735,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
   }
@@ -22544,14 +20767,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   }
@@ -22579,9 +20802,8 @@ export namespace Prisma {
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
   }
@@ -22598,9 +20820,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
   }
@@ -22656,14 +20877,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
   }
@@ -22688,14 +20909,14 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
   }
@@ -22773,14 +20994,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
   }
@@ -22805,14 +21026,14 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
   }
@@ -22829,9 +21050,8 @@ export namespace Prisma {
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
-    roles?: RoleCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
@@ -22848,9 +21068,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    roles?: RoleUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
@@ -22906,13 +21125,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -22938,13 +21157,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -22978,9 +21197,8 @@ export namespace Prisma {
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
@@ -22997,9 +21215,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
@@ -23056,13 +21273,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -23088,13 +21305,13 @@ export namespace Prisma {
     peerlist?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -23163,13 +21380,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -23195,13 +21412,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -23262,16 +21479,16 @@ export namespace Prisma {
   export type TeamsEditLogCreateManyUserInput = {
     id?: string
     teamId: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UserTeamRoleHistoryCreateManyUserInput = {
+  export type UserRoleInTeamCreateManyUserInput = {
     id?: string
     teamId: string
-    roleId: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23304,25 +21521,6 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type RoleUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    teams?: TeamsUpdateManyWithoutRolesNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    teams?: TeamsUncheckedUpdateManyWithoutRolesNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateManyWithoutUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
   export type TagUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -23351,9 +21549,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -23370,9 +21567,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -23400,9 +21596,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -23419,9 +21614,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -23497,7 +21691,8 @@ export namespace Prisma {
 
   export type TeamsEditLogUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutLogsNestedInput
@@ -23506,7 +21701,8 @@ export namespace Prisma {
   export type TeamsEditLogUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23514,34 +21710,32 @@ export namespace Prisma {
   export type TeamsEditLogUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserTeamRoleHistoryUpdateWithoutUserInput = {
+  export type UserRoleInTeamUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    team?: TeamsUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
-    role?: RoleUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
+    team?: TeamsUpdateOneRequiredWithoutUserRoleInTeamNestedInput
   }
 
-  export type UserTeamRoleHistoryUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserTeamRoleHistoryUncheckedUpdateManyWithoutUserInput = {
+  export type UserRoleInTeamUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRoleInTeamUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23632,191 +21826,19 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserTeamRoleHistoryCreateManyRoleInput = {
-    id?: string
-    userId: string
-    teamId: string
-    assignedAt?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserUpdateWithoutRolesInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    courseName?: UserUpdatecourseNameInput | string[]
-    about?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    twitter?: NullableStringFieldUpdateOperationsInput | string | null
-    github?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
-    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
-    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tags?: TagUpdateManyWithoutUsersNestedInput
-    teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
-    teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
-    TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutRolesInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    courseName?: UserUpdatecourseNameInput | string[]
-    about?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    twitter?: NullableStringFieldUpdateOperationsInput | string | null
-    github?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
-    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
-    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
-    teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
-    teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutRolesInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    courseName?: UserUpdatecourseNameInput | string[]
-    about?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    twitter?: NullableStringFieldUpdateOperationsInput | string | null
-    github?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
-    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
-    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TeamsUpdateWithoutRolesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    uniqueTitle?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    about?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
-    members?: UserUpdateManyWithoutTeamsNestedInput
-    tags?: TagUpdateManyWithoutTeamsNestedInput
-    logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
-    chats?: ChatUpdateManyWithoutTeamNestedInput
-    notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
-  }
-
-  export type TeamsUncheckedUpdateWithoutRolesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    uniqueTitle?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    about?: StringFieldUpdateOperationsInput | string
-    teamLeaderId?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
-    tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
-  }
-
-  export type TeamsUncheckedUpdateManyWithoutRolesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    uniqueTitle?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    about?: StringFieldUpdateOperationsInput | string
-    teamLeaderId?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: TeamsUpdatelinkInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserTeamRoleHistoryUpdateWithoutRoleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
-    team?: TeamsUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
-  }
-
-  export type UserTeamRoleHistoryUncheckedUpdateWithoutRoleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserTeamRoleHistoryUncheckedUpdateManyWithoutRoleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type TeamsEditLogCreateManyTeamInput = {
     id?: string
     userId: string
-    action: string
+    action: $Enums.Action
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UserTeamRoleHistoryCreateManyTeamInput = {
+  export type UserRoleInTeamCreateManyTeamInput = {
     id?: string
     userId: string
-    roleId: string
-    assignedAt?: Date | string
+    designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23871,13 +21893,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -23903,13 +21925,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -23935,6 +21957,7 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
   }
 
   export type TagUpdateWithoutTeamsInput = {
@@ -23954,28 +21977,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
   }
 
-  export type RoleUpdateWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    users?: UserUpdateManyWithoutRolesNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    users?: UserUncheckedUpdateManyWithoutRolesNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutRoleNestedInput
-  }
-
-  export type RoleUncheckedUpdateManyWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
   export type TeamsEditLogUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTeamsEditLogNestedInput
@@ -23984,7 +21989,8 @@ export namespace Prisma {
   export type TeamsEditLogUncheckedUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23992,34 +21998,32 @@ export namespace Prisma {
   export type TeamsEditLogUncheckedUpdateManyWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserTeamRoleHistoryUpdateWithoutTeamInput = {
+  export type UserRoleInTeamUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
-    role?: RoleUpdateOneRequiredWithoutUserTeamRoleHistoryNestedInput
+    user?: UserUpdateOneRequiredWithoutUserRoleInTeamNestedInput
   }
 
-  export type UserTeamRoleHistoryUncheckedUpdateWithoutTeamInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamInput = {
+  export type UserRoleInTeamUncheckedUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRoleInTeamUncheckedUpdateManyWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24131,9 +22135,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
     members?: UserUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -24150,9 +22153,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -24190,13 +22192,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -24222,13 +22224,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -24254,6 +22256,7 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
   }
 
   export type NoticeHistoryCreateManyNoticeInput = {
@@ -24336,13 +22339,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -24368,13 +22371,13 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    UserTeamRoleHistory?: UserTeamRoleHistoryUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -24400,6 +22403,7 @@ export namespace Prisma {
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
   }
 
 

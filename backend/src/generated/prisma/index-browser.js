@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.7.0
- * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+ * Prisma Client JS version: 6.8.1
+ * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
  */
 Prisma.prismaVersion = {
-  client: "6.7.0",
-  engine: "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed"
+  client: "6.8.1",
+  engine: "2060c79ba17c6bb9f5823312b6f6b7f4a845738e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -146,12 +146,8 @@ exports.Prisma.UserScalarFieldEnum = {
   hashnode: 'hashnode',
   peerlist: 'peerlist',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.RoleScalarFieldEnum = {
-  id: 'id',
-  name: 'name'
+  updatedAt: 'updatedAt',
+  designation: 'designation'
 };
 
 exports.Prisma.TeamsScalarFieldEnum = {
@@ -166,12 +162,11 @@ exports.Prisma.TeamsScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.UserTeamRoleHistoryScalarFieldEnum = {
+exports.Prisma.UserRoleInTeamScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   teamId: 'teamId',
-  roleId: 'roleId',
-  assignedAt: 'assignedAt',
+  designation: 'designation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -186,6 +181,7 @@ exports.Prisma.TeamsEditLogScalarFieldEnum = {
   teamId: 'teamId',
   userId: 'userId',
   action: 'action',
+  designation: 'designation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -254,14 +250,37 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Designation = exports.$Enums.Designation = {
+  FULLSTACK_DEVELOPER: 'FULLSTACK_DEVELOPER',
+  FRONTEND_DEVELOPER: 'FRONTEND_DEVELOPER',
+  BACKEND_DEVELOPER: 'BACKEND_DEVELOPER',
+  UI_DESIGNER: 'UI_DESIGNER',
+  UX_DESIGNER: 'UX_DESIGNER',
+  PRODUCT_DESIGNER: 'PRODUCT_DESIGNER',
+  DATA_SCIENTIST: 'DATA_SCIENTIST',
+  DATA_ANALYST: 'DATA_ANALYST',
+  DATA_ENGINEER: 'DATA_ENGINEER',
+  DATABASE_DESIGNER: 'DATABASE_DESIGNER',
+  TEAM_LEADER: 'TEAM_LEADER'
+};
 
+exports.Action = exports.$Enums.Action = {
+  INVITATION_SENT: 'INVITATION_SENT',
+  INVITATION_REVOKED: 'INVITATION_REVOKED',
+  INVITATION_EXPIRED: 'INVITATION_EXPIRED',
+  INVITATION_REJECTED: 'INVITATION_REJECTED',
+  INVITATION_ACCEPTED: 'INVITATION_ACCEPTED',
+  ROLE_ASIGNED: 'ROLE_ASIGNED',
+  ROLE_REMOVED: 'ROLE_REMOVED',
+  TEAM_CREATED: 'TEAM_CREATED',
+  TEAM_DELETED: 'TEAM_DELETED'
+};
 
 exports.Prisma.ModelName = {
   ImportCSV: 'ImportCSV',
   User: 'User',
-  Role: 'Role',
   Teams: 'Teams',
-  UserTeamRoleHistory: 'UserTeamRoleHistory',
+  UserRoleInTeam: 'UserRoleInTeam',
   Tag: 'Tag',
   TeamsEditLog: 'TeamsEditLog',
   Notice: 'Notice',

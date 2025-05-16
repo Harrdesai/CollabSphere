@@ -45,17 +45,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  designation Designation
-  tags                Tag[]                 @relation("UserTags")
-  teamLeaderOf        Teams[]               @relation("TeamLeader")
-  teams               Teams[]               @relation("teamMembers")
-  chats               Chat[]                @relation("ChatMembers")
-  messages            Message[]
-  TeamsEditLog        TeamsEditLog[]
-  userRoleInTeam      UserRoleInTeam[]
-  noticeRequests      NoticeRequest[]
-  notices             Notice[]              @relation("UserNotices")
-  noticeHistory       NoticeHistory[]
+  designation    Designation?
+  tags           Tag[]            @relation("UserTags")
+  teamLeaderOf   Teams[]          @relation("TeamLeader")
+  teams          Teams[]          @relation("teamMembers")
+  chats          Chat[]           @relation("ChatMembers")
+  messages       Message[]
+  TeamsEditLog   TeamsEditLog[]
+  userRoleInTeam UserRoleInTeam[]
+  noticeRequests NoticeRequest[]
+  notices        Notice[]         @relation("UserNotices")
+  noticeHistory  NoticeHistory[]
 }
 
 enum Designation {
@@ -69,6 +69,7 @@ enum Designation {
   DATA_ANALYST
   DATA_ENGINEER
   DATABASE_DESIGNER
+  TEAM_LEADER
 }
 
 model Teams {
@@ -83,21 +84,20 @@ model Teams {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  teamLeader          User                  @relation("TeamLeader", fields: [teamLeaderId], references: [userId])
-  members             User[]                @relation("teamMembers")
-  tags                Tag[]                 @relation("TeamTags")
-  designation Designation
-  logs                TeamsEditLog[]        @relation("teamLogs")
+  teamLeader     User             @relation("TeamLeader", fields: [teamLeaderId], references: [userId])
+  members        User[]           @relation("teamMembers")
+  tags           Tag[]            @relation("TeamTags")
+  logs           TeamsEditLog[]   @relation("teamLogs")
   userRoleInTeam UserRoleInTeam[]
-  chats               Chat[]
-  notices             Notice[]
-  noticeRequests      NoticeRequest[]
+  chats          Chat[]
+  notices        Notice[]
+  noticeRequests NoticeRequest[]
 }
 
 model UserRoleInTeam {
-  id         String   @id @default(uuid())
-  userId     String
-  teamId     String
+  id          String      @id @default(uuid())
+  userId      String
+  teamId      String
   designation Designation
 
   createdAt DateTime @default(now())
@@ -115,7 +115,6 @@ model Tag {
   users User[]  @relation("UserTags")
 }
 
-// Enum for Action
 enum Action {
   INVITATION_SENT
   INVITATION_REVOKED
@@ -127,11 +126,12 @@ enum Action {
   TEAM_CREATED
   TEAM_DELETED
 }
+
 model TeamsEditLog {
-  id     String @id @default(uuid())
-  teamId String
-  userId String
-  action Action
+  id          String      @id @default(uuid())
+  teamId      String
+  userId      String
+  action      Action
   designation Designation
 
   createdAt DateTime @default(now())
@@ -149,7 +149,7 @@ model Notice {
   teamId     String
   startDate  DateTime
   endDate    DateTime
-  isActive   Boolean  @default(true) 
+  isActive   Boolean  @default(true)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

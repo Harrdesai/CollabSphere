@@ -52,7 +52,7 @@ model User {
   chats               Chat[]                @relation("ChatMembers")
   messages            Message[]
   TeamsEditLog        TeamsEditLog[]
-  UserTeamRoleHistory UserTeamRoleHistory[]
+  userRoleInTeam      UserRoleInTeam[]
   noticeRequests      NoticeRequest[]
   notices             Notice[]              @relation("UserNotices")
   noticeHistory       NoticeHistory[]
@@ -65,17 +65,19 @@ model Role {
   users User[]  @relation("UserRoles")
   teams Teams[] @relation("TeamRoles")
 
-  UserTeamRoleHistory UserTeamRoleHistory[]
+  
+  TeamsEditLog        TeamsEditLog[]
+  userRoleInTeam UserRoleInTeam[]
 }
 
 model Teams {
   id           String   @id @default(uuid())
+  uniqueTitle  String   @unique
   title        String
   about        String
   teamLeaderId String
   isActive     Boolean  @default(true)
   link         String[]
-  noticeBoard  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -85,18 +87,17 @@ model Teams {
   tags                Tag[]                 @relation("TeamTags")
   roles               Role[]                @relation("TeamRoles")
   logs                TeamsEditLog[]        @relation("teamLogs")
-  UserTeamRoleHistory UserTeamRoleHistory[]
+  userRoleInTeam UserRoleInTeam[]
   chats               Chat[]
   notices             Notice[]
   noticeRequests      NoticeRequest[]
 }
 
-model UserTeamRoleHistory {
+model UserRoleInTeam {
   id         String   @id @default(uuid())
   userId     String
   teamId     String
   roleId     String
-  assignedAt DateTime @default(now())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -114,17 +115,31 @@ model Tag {
   users User[]  @relation("UserTags")
 }
 
+// Enum for Action
+enum Action {
+  INVITATION_SENT
+  INVITATION_REVOKED
+  INVITATION_EXPIRED
+  INVITATION_REJECTED
+  INVITATION_ACCEPTED
+  ROLE_ASIGNED
+  ROLE_REMOVED
+  TEAM_CREATED
+  TEAM_DELETED
+}
 model TeamsEditLog {
   id     String @id @default(uuid())
   teamId String
   userId String
-  action String
+  action Action
+  roleId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   team Teams @relation(fields: [teamId], references: [id], name: "teamLogs")
   user User  @relation(fields: [userId], references: [userId])
+  role Role  @relation(fields: [roleId], references: [id])
 }
 
 model Notice {
@@ -135,7 +150,7 @@ model Notice {
   teamId     String
   startDate  DateTime
   endDate    DateTime
-  isActive   Boolean  @default(true) // To check if the notice is still active
+  isActive   Boolean  @default(true) 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

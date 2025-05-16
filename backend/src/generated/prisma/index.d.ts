@@ -5849,34 +5849,34 @@ export namespace Prisma {
 
   export type TeamsMinAggregateOutputType = {
     id: string | null
+    uniqueTitle: string | null
     title: string | null
     about: string | null
     teamLeaderId: string | null
     isActive: boolean | null
-    noticeBoard: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type TeamsMaxAggregateOutputType = {
     id: string | null
+    uniqueTitle: string | null
     title: string | null
     about: string | null
     teamLeaderId: string | null
     isActive: boolean | null
-    noticeBoard: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type TeamsCountAggregateOutputType = {
     id: number
+    uniqueTitle: number
     title: number
     about: number
     teamLeaderId: number
     isActive: number
     link: number
-    noticeBoard: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -5885,34 +5885,34 @@ export namespace Prisma {
 
   export type TeamsMinAggregateInputType = {
     id?: true
+    uniqueTitle?: true
     title?: true
     about?: true
     teamLeaderId?: true
     isActive?: true
-    noticeBoard?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type TeamsMaxAggregateInputType = {
     id?: true
+    uniqueTitle?: true
     title?: true
     about?: true
     teamLeaderId?: true
     isActive?: true
-    noticeBoard?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type TeamsCountAggregateInputType = {
     id?: true
+    uniqueTitle?: true
     title?: true
     about?: true
     teamLeaderId?: true
     isActive?: true
     link?: true
-    noticeBoard?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -5992,12 +5992,12 @@ export namespace Prisma {
 
   export type TeamsGroupByOutputType = {
     id: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive: boolean
     link: string[]
-    noticeBoard: string | null
     createdAt: Date
     updatedAt: Date
     _count: TeamsCountAggregateOutputType | null
@@ -6021,12 +6021,12 @@ export namespace Prisma {
 
   export type TeamsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    uniqueTitle?: boolean
     title?: boolean
     about?: boolean
     teamLeaderId?: boolean
     isActive?: boolean
     link?: boolean
-    noticeBoard?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     teamLeader?: boolean | UserDefaultArgs<ExtArgs>
@@ -6043,12 +6043,12 @@ export namespace Prisma {
 
   export type TeamsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    uniqueTitle?: boolean
     title?: boolean
     about?: boolean
     teamLeaderId?: boolean
     isActive?: boolean
     link?: boolean
-    noticeBoard?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     teamLeader?: boolean | UserDefaultArgs<ExtArgs>
@@ -6056,12 +6056,12 @@ export namespace Prisma {
 
   export type TeamsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    uniqueTitle?: boolean
     title?: boolean
     about?: boolean
     teamLeaderId?: boolean
     isActive?: boolean
     link?: boolean
-    noticeBoard?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     teamLeader?: boolean | UserDefaultArgs<ExtArgs>
@@ -6069,17 +6069,17 @@ export namespace Prisma {
 
   export type TeamsSelectScalar = {
     id?: boolean
+    uniqueTitle?: boolean
     title?: boolean
     about?: boolean
     teamLeaderId?: boolean
     isActive?: boolean
     link?: boolean
-    noticeBoard?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TeamsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "about" | "teamLeaderId" | "isActive" | "link" | "noticeBoard" | "createdAt" | "updatedAt", ExtArgs["result"]["teams"]>
+  export type TeamsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uniqueTitle" | "title" | "about" | "teamLeaderId" | "isActive" | "link" | "createdAt" | "updatedAt", ExtArgs["result"]["teams"]>
   export type TeamsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teamLeader?: boolean | UserDefaultArgs<ExtArgs>
     members?: boolean | Teams$membersArgs<ExtArgs>
@@ -6114,12 +6114,12 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      uniqueTitle: string
       title: string
       about: string
       teamLeaderId: string
       isActive: boolean
       link: string[]
-      noticeBoard: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["teams"]>
@@ -6555,12 +6555,12 @@ export namespace Prisma {
    */
   interface TeamsFieldRefs {
     readonly id: FieldRef<"Teams", 'String'>
+    readonly uniqueTitle: FieldRef<"Teams", 'String'>
     readonly title: FieldRef<"Teams", 'String'>
     readonly about: FieldRef<"Teams", 'String'>
     readonly teamLeaderId: FieldRef<"Teams", 'String'>
     readonly isActive: FieldRef<"Teams", 'Boolean'>
     readonly link: FieldRef<"Teams", 'String[]'>
-    readonly noticeBoard: FieldRef<"Teams", 'String'>
     readonly createdAt: FieldRef<"Teams", 'DateTime'>
     readonly updatedAt: FieldRef<"Teams", 'DateTime'>
   }
@@ -16006,12 +16006,12 @@ export namespace Prisma {
 
   export const TeamsScalarFieldEnum: {
     id: 'id',
+    uniqueTitle: 'uniqueTitle',
     title: 'title',
     about: 'about',
     teamLeaderId: 'teamLeaderId',
     isActive: 'isActive',
     link: 'link',
-    noticeBoard: 'noticeBoard',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -16452,12 +16452,12 @@ export namespace Prisma {
     OR?: TeamsWhereInput[]
     NOT?: TeamsWhereInput | TeamsWhereInput[]
     id?: StringFilter<"Teams"> | string
+    uniqueTitle?: StringFilter<"Teams"> | string
     title?: StringFilter<"Teams"> | string
     about?: StringFilter<"Teams"> | string
     teamLeaderId?: StringFilter<"Teams"> | string
     isActive?: BoolFilter<"Teams"> | boolean
     link?: StringNullableListFilter<"Teams">
-    noticeBoard?: StringNullableFilter<"Teams"> | string | null
     createdAt?: DateTimeFilter<"Teams"> | Date | string
     updatedAt?: DateTimeFilter<"Teams"> | Date | string
     teamLeader?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -16473,12 +16473,12 @@ export namespace Prisma {
 
   export type TeamsOrderByWithRelationInput = {
     id?: SortOrder
+    uniqueTitle?: SortOrder
     title?: SortOrder
     about?: SortOrder
     teamLeaderId?: SortOrder
     isActive?: SortOrder
     link?: SortOrder
-    noticeBoard?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     teamLeader?: UserOrderByWithRelationInput
@@ -16494,6 +16494,7 @@ export namespace Prisma {
 
   export type TeamsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    uniqueTitle?: string
     AND?: TeamsWhereInput | TeamsWhereInput[]
     OR?: TeamsWhereInput[]
     NOT?: TeamsWhereInput | TeamsWhereInput[]
@@ -16502,7 +16503,6 @@ export namespace Prisma {
     teamLeaderId?: StringFilter<"Teams"> | string
     isActive?: BoolFilter<"Teams"> | boolean
     link?: StringNullableListFilter<"Teams">
-    noticeBoard?: StringNullableFilter<"Teams"> | string | null
     createdAt?: DateTimeFilter<"Teams"> | Date | string
     updatedAt?: DateTimeFilter<"Teams"> | Date | string
     teamLeader?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -16514,16 +16514,16 @@ export namespace Prisma {
     chats?: ChatListRelationFilter
     notices?: NoticeListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
-  }, "id">
+  }, "id" | "uniqueTitle">
 
   export type TeamsOrderByWithAggregationInput = {
     id?: SortOrder
+    uniqueTitle?: SortOrder
     title?: SortOrder
     about?: SortOrder
     teamLeaderId?: SortOrder
     isActive?: SortOrder
     link?: SortOrder
-    noticeBoard?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TeamsCountOrderByAggregateInput
@@ -16536,12 +16536,12 @@ export namespace Prisma {
     OR?: TeamsScalarWhereWithAggregatesInput[]
     NOT?: TeamsScalarWhereWithAggregatesInput | TeamsScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Teams"> | string
+    uniqueTitle?: StringWithAggregatesFilter<"Teams"> | string
     title?: StringWithAggregatesFilter<"Teams"> | string
     about?: StringWithAggregatesFilter<"Teams"> | string
     teamLeaderId?: StringWithAggregatesFilter<"Teams"> | string
     isActive?: BoolWithAggregatesFilter<"Teams"> | boolean
     link?: StringNullableListFilter<"Teams">
-    noticeBoard?: StringNullableWithAggregatesFilter<"Teams"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Teams"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Teams"> | Date | string
   }
@@ -17365,11 +17365,11 @@ export namespace Prisma {
 
   export type TeamsCreateInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -17385,12 +17385,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -17405,11 +17405,11 @@ export namespace Prisma {
 
   export type TeamsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -17425,12 +17425,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -17445,35 +17445,35 @@ export namespace Prisma {
 
   export type TeamsCreateManyInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TeamsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TeamsUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18339,34 +18339,34 @@ export namespace Prisma {
 
   export type TeamsCountOrderByAggregateInput = {
     id?: SortOrder
+    uniqueTitle?: SortOrder
     title?: SortOrder
     about?: SortOrder
     teamLeaderId?: SortOrder
     isActive?: SortOrder
     link?: SortOrder
-    noticeBoard?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TeamsMaxOrderByAggregateInput = {
     id?: SortOrder
+    uniqueTitle?: SortOrder
     title?: SortOrder
     about?: SortOrder
     teamLeaderId?: SortOrder
     isActive?: SortOrder
-    noticeBoard?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TeamsMinOrderByAggregateInput = {
     id?: SortOrder
+    uniqueTitle?: SortOrder
     title?: SortOrder
     about?: SortOrder
     teamLeaderId?: SortOrder
     isActive?: SortOrder
-    noticeBoard?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20112,11 +20112,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutTeamLeaderInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserCreateNestedManyWithoutTeamsInput
@@ -20131,11 +20131,11 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutTeamLeaderInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -20160,11 +20160,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutMembersInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -20179,12 +20179,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutMembersInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
@@ -20465,12 +20465,12 @@ export namespace Prisma {
     OR?: TeamsScalarWhereInput[]
     NOT?: TeamsScalarWhereInput | TeamsScalarWhereInput[]
     id?: StringFilter<"Teams"> | string
+    uniqueTitle?: StringFilter<"Teams"> | string
     title?: StringFilter<"Teams"> | string
     about?: StringFilter<"Teams"> | string
     teamLeaderId?: StringFilter<"Teams"> | string
     isActive?: BoolFilter<"Teams"> | boolean
     link?: StringNullableListFilter<"Teams">
-    noticeBoard?: StringNullableFilter<"Teams"> | string | null
     createdAt?: DateTimeFilter<"Teams"> | Date | string
     updatedAt?: DateTimeFilter<"Teams"> | Date | string
   }
@@ -20764,11 +20764,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutRolesInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -20783,12 +20783,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutRolesInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -21504,11 +21504,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutUserTeamRoleHistoryInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -21523,12 +21523,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutUserTeamRoleHistoryInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -21652,11 +21652,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutUserTeamRoleHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -21671,12 +21671,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutUserTeamRoleHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -21715,11 +21715,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutTagsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -21734,12 +21734,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutTagsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -21859,11 +21859,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutLogsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -21878,12 +21878,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutLogsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -21982,11 +21982,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -22001,12 +22001,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -22164,11 +22164,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutNoticesInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -22183,12 +22183,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutNoticesInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -22317,11 +22317,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutNoticesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -22336,12 +22336,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutNoticesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -22440,11 +22440,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutNoticeRequestsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -22459,12 +22459,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutNoticeRequestsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -22569,11 +22569,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutNoticeRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -22588,12 +22588,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutNoticeRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -22819,11 +22819,11 @@ export namespace Prisma {
 
   export type TeamsCreateWithoutChatsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
@@ -22838,12 +22838,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedCreateWithoutChatsInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     teamLeaderId: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
@@ -22968,11 +22968,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutChatsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -22987,12 +22987,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutChatsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -23242,11 +23242,11 @@ export namespace Prisma {
 
   export type TeamsCreateManyTeamLeaderInput = {
     id?: string
+    uniqueTitle: string
     title: string
     about: string
     isActive?: boolean
     link?: TeamsCreatelinkInput | string[]
-    noticeBoard?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23342,11 +23342,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutTeamLeaderInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUpdateManyWithoutTeamsNestedInput
@@ -23361,11 +23361,11 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutTeamLeaderInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -23380,22 +23380,22 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateManyWithoutTeamLeaderInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TeamsUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -23410,12 +23410,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
@@ -23429,12 +23429,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateManyWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23729,11 +23729,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutRolesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -23748,12 +23748,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutRolesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -23767,12 +23767,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateManyWithoutRolesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24122,11 +24122,11 @@ export namespace Prisma {
 
   export type TeamsUpdateWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
@@ -24141,12 +24141,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
@@ -24160,12 +24160,12 @@ export namespace Prisma {
 
   export type TeamsUncheckedUpdateManyWithoutTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     about?: StringFieldUpdateOperationsInput | string
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: TeamsUpdatelinkInput | string[]
-    noticeBoard?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

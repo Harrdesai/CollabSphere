@@ -156,12 +156,12 @@ exports.Prisma.RoleScalarFieldEnum = {
 
 exports.Prisma.TeamsScalarFieldEnum = {
   id: 'id',
+  uniqueTitle: 'uniqueTitle',
   title: 'title',
   about: 'about',
   teamLeaderId: 'teamLeaderId',
   isActive: 'isActive',
   link: 'link',
-  noticeBoard: 'noticeBoard',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -24,7 +24,7 @@ const canUserJoinAnotherTeam = async (userId) => {
   const teamMemberships = await prisma.userRoleInTeam.findMany({
     where: { userId },
     select: { teamId: true },
-    distinct: ['teamId'] // Only works in recent Prisma versions
+    distinct: ['teamId']
   });
 
   return teamMemberships.length < 3;
@@ -36,10 +36,33 @@ const createTeam = async (request, response) => {
 
     const { title, about, link = [], ArrayOfTagIds = [] } = request.body;
 
-    const teamLeaderId = request.cookies.userId;
+    const teamLeaderId = request.user.userId;
 
     if (!title || !about || !teamLeaderId) {
       throw new ApiError(400, "All fields are required");
+    }
+
+    const isAllowed = await canUserJoinAnotherTeam(teamLeaderId);
+
+    if (!isAllowed) {
+          const getListOfTeamJoined = await prisma.userRoleInTeam.findMany({
+      where: {
+        userId: teamLeaderId
+      },
+      include: {
+        team: true
+      }
+    })
+
+    // create a JSON object of designation and team title
+
+    const listOfTeamJoined = getListOfTeamJoined.map((team) => ({
+      designation: team.designation,
+      teamTitle: team.team.title
+    }))
+    
+      throw new ApiError(400, 
+      `You can't create a new team as you are already a member of 3 teams or you are a team leader of team ${listOfTeamJoined[0].teamTitle} with designation ${listOfTeamJoined[0].designation} ------------2nd team ${listOfTeamJoined[1].teamTitle} with designation ${listOfTeamJoined[1].designation} ------------3rd team ${listOfTeamJoined[2].teamTitle} with designation ${listOfTeamJoined[2].designation}------------------3rd team ${listOfTeamJoined[3].teamTitle} with designation ${listOfTeamJoined[3].designation} `);
     }
 
     const uniqueTitle = title.toLowerCase().split(" ").join("");
@@ -234,9 +257,23 @@ const sendInviteToJoinTeam = async (request, response) => {
 
     const { userId, designation } = request.body;
     const teamId = request.params.teamId;
+    const teamLeaderIdFromUser = request.user.userId
 
-    if (!teamId || !userId || !designation) {
+    if (!teamId || !userId || !designation || !teamLeaderIdFromUser) {
       throw new ApiError(400, "Please provide team id, user id and designation");
+    }
+
+    const teamLeaderIdFromDB = await prisma.teams.findUnique({
+      where: {
+        id: teamId
+      },
+      select: {
+        teamLeaderId: true
+      }
+    })
+
+    if (teamLeaderIdFromUser !== teamLeaderIdFromDB.teamLeaderId) {
+      throw new ApiError(400, "Only team leader can invite user to join team");
     }
 
     const isUserEligibleToInvite = await canUserJoinAnotherTeam(userId);
@@ -314,6 +351,7 @@ const cancelTeamInvitation = async (request, response) => {
   try {
 
     const id = request.params.id;
+    const userId = request.user.userId
 
     if (!id) {
       throw new ApiError(400, "Please provide invitation id");
@@ -322,8 +360,11 @@ const cancelTeamInvitation = async (request, response) => {
     const cancelTeamJoiningInvitation = await prisma.$transaction(async (prisma) => {
 
       const invitation = await prisma.activeInvitationOrRequest.findUnique({
-        where: {
-          id
+        where: { id },
+        select: {
+          teamId: true,
+          memberId: true,
+          designation: true
         }
       });
 
@@ -331,6 +372,10 @@ const cancelTeamInvitation = async (request, response) => {
         throw new ApiError(400, "Invitation not found");
       }
 
+      if (invitation.memberId !== userId) {
+        throw new ApiError(400, "You are not authorized to cancel this invitation");
+      }
+      
       await prisma.teamsEditLog.create({
         data: {
           teamId: invitation.teamId,
@@ -485,9 +530,69 @@ const rejectTeamInvitation = async (request, response) => {
 
   try {
 
+    const invitationId = request.params.id;
+    const userId = request.user.userId
+
+    if (!invitationId || !userId) {
+      throw new ApiError(400, "Please provide user id and invitation id");
+    }
+
+    const rejectTeamJoiningInvitation = await prisma.$transaction(async (prisma) => {
+
+      const invitation = await prisma.activeInvitationOrRequest.findUnique({
+        where: { id: invitationId },
+        select: {
+          memberId: true,
+          teamId: true,
+          designation: true
+        }
+      })
+
+      if (!invitation) {
+        throw new ApiError(404, "Invitation no longer exists");
+      }
+
+      if (invitation.memberId !== userId) {
+        throw new ApiError(403, "You are not authorized to reject this invitation");
+      }
+
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: invitation.teamId,
+          userId: invitation.memberId,
+          action: $Enums.Action.INVITATION_REJECTED,
+          designation: invitation.designation,
+          requestId: invitation.id
+        }
+      })
+
+      await prisma.activeInvitationOrRequest.delete({
+        where: {
+          id: invitationId
+        }
+      })
+
+      return invitation
+    })
+
+    if (!rejectTeamJoiningInvitation) {
+      throw new ApiError(400, "Invitation rejection process failed in database");
+    }
+    response.status(200).json(
+      new ApiResponse(200, {
+        invitation: rejectTeamJoiningInvitation
+      }, "Invitation rejection processed successfully")
+    )
+
   } catch (error) {
 
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to reject Team invitation", {
+        error: error.message
+      })
+    )
   }
+
 }
 
 const getListOfPendingTeamInvitations = async (request, response) => { }

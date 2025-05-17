@@ -19,7 +19,7 @@ teamsRoutes.post('/cancel-invitation/:id', authMiddleware, cancelTeamInvitation)
 
 teamsRoutes.post('/accept-invitation/:id', authMiddleware, acceptTeamInvitation);
 
-teamsRoutes.post('/reject-invitation', authMiddleware, rejectTeamInvitation);
+teamsRoutes.post('/reject-invitation/:id', authMiddleware, rejectTeamInvitation);
 
 teamsRoutes.get('/pending-invitations', authMiddleware, getListOfPendingTeamInvitations);
 

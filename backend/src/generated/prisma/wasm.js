@@ -178,6 +178,7 @@ exports.Prisma.TagScalarFieldEnum = {
 
 exports.Prisma.TeamsEditLogScalarFieldEnum = {
   id: 'id',
+  requestId: 'requestId',
   teamId: 'teamId',
   userId: 'userId',
   action: 'action',

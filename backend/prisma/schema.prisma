@@ -130,8 +130,10 @@ enum Action {
   TEAM_DELETED
 }
 
+// store id of request or invitation in TeamEditLog in requestId field
 model TeamsEditLog {
   id          String      @id @default(uuid())
+  requestId   String?
   teamId      String
   userId      String
   action      Action
@@ -139,7 +141,8 @@ model TeamsEditLog {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  
+  request     ActiveInvitationOrRequest? @relation(fields: [requestId], references: [id])
   team Teams @relation(fields: [teamId], references: [id], name: "teamLogs")
   user User  @relation(fields: [userId], references: [userId])
 }
@@ -154,7 +157,8 @@ model ActiveInvitationOrRequest {
 
   team   Teams @relation(fields: [teamId], references: [id])
   member User  @relation(fields: [memberId], references: [userId])
-  
+  logs         TeamsEditLog[]
+
   @@unique([teamId, memberId, designation])
 }
 

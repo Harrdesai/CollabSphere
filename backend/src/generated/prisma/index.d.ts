@@ -2166,6 +2166,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ActiveInvitationOrRequestCountOutputType
+   */
+
+  export type ActiveInvitationOrRequestCountOutputType = {
+    logs: number
+  }
+
+  export type ActiveInvitationOrRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    logs?: boolean | ActiveInvitationOrRequestCountOutputTypeCountLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ActiveInvitationOrRequestCountOutputType without action
+   */
+  export type ActiveInvitationOrRequestCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequestCountOutputType
+     */
+    select?: ActiveInvitationOrRequestCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ActiveInvitationOrRequestCountOutputType without action
+   */
+  export type ActiveInvitationOrRequestCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamsEditLogWhereInput
+  }
+
+
+  /**
    * Count Type NoticeCountOutputType
    */
 
@@ -8241,6 +8272,7 @@ export namespace Prisma {
 
   export type TeamsEditLogMinAggregateOutputType = {
     id: string | null
+    requestId: string | null
     teamId: string | null
     userId: string | null
     action: $Enums.Action | null
@@ -8251,6 +8283,7 @@ export namespace Prisma {
 
   export type TeamsEditLogMaxAggregateOutputType = {
     id: string | null
+    requestId: string | null
     teamId: string | null
     userId: string | null
     action: $Enums.Action | null
@@ -8261,6 +8294,7 @@ export namespace Prisma {
 
   export type TeamsEditLogCountAggregateOutputType = {
     id: number
+    requestId: number
     teamId: number
     userId: number
     action: number
@@ -8273,6 +8307,7 @@ export namespace Prisma {
 
   export type TeamsEditLogMinAggregateInputType = {
     id?: true
+    requestId?: true
     teamId?: true
     userId?: true
     action?: true
@@ -8283,6 +8318,7 @@ export namespace Prisma {
 
   export type TeamsEditLogMaxAggregateInputType = {
     id?: true
+    requestId?: true
     teamId?: true
     userId?: true
     action?: true
@@ -8293,6 +8329,7 @@ export namespace Prisma {
 
   export type TeamsEditLogCountAggregateInputType = {
     id?: true
+    requestId?: true
     teamId?: true
     userId?: true
     action?: true
@@ -8376,6 +8413,7 @@ export namespace Prisma {
 
   export type TeamsEditLogGroupByOutputType = {
     id: string
+    requestId: string | null
     teamId: string
     userId: string
     action: $Enums.Action
@@ -8403,42 +8441,49 @@ export namespace Prisma {
 
   export type TeamsEditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    requestId?: boolean
     teamId?: boolean
     userId?: boolean
     action?: boolean
     designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    request?: boolean | TeamsEditLog$requestArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamsEditLog"]>
 
   export type TeamsEditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    requestId?: boolean
     teamId?: boolean
     userId?: boolean
     action?: boolean
     designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    request?: boolean | TeamsEditLog$requestArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamsEditLog"]>
 
   export type TeamsEditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    requestId?: boolean
     teamId?: boolean
     userId?: boolean
     action?: boolean
     designation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    request?: boolean | TeamsEditLog$requestArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamsEditLog"]>
 
   export type TeamsEditLogSelectScalar = {
     id?: boolean
+    requestId?: boolean
     teamId?: boolean
     userId?: boolean
     action?: boolean
@@ -8447,16 +8492,19 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TeamsEditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "userId" | "action" | "designation" | "createdAt" | "updatedAt", ExtArgs["result"]["teamsEditLog"]>
+  export type TeamsEditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "requestId" | "teamId" | "userId" | "action" | "designation" | "createdAt" | "updatedAt", ExtArgs["result"]["teamsEditLog"]>
   export type TeamsEditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    request?: boolean | TeamsEditLog$requestArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type TeamsEditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    request?: boolean | TeamsEditLog$requestArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type TeamsEditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    request?: boolean | TeamsEditLog$requestArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -8464,11 +8512,13 @@ export namespace Prisma {
   export type $TeamsEditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TeamsEditLog"
     objects: {
+      request: Prisma.$ActiveInvitationOrRequestPayload<ExtArgs> | null
       team: Prisma.$TeamsPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      requestId: string | null
       teamId: string
       userId: string
       action: $Enums.Action
@@ -8869,6 +8919,7 @@ export namespace Prisma {
    */
   export interface Prisma__TeamsEditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    request<T extends TeamsEditLog$requestArgs<ExtArgs> = {}>(args?: Subset<T, TeamsEditLog$requestArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     team<T extends TeamsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamsDefaultArgs<ExtArgs>>): Prisma__TeamsClient<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -8901,6 +8952,7 @@ export namespace Prisma {
    */
   interface TeamsEditLogFieldRefs {
     readonly id: FieldRef<"TeamsEditLog", 'String'>
+    readonly requestId: FieldRef<"TeamsEditLog", 'String'>
     readonly teamId: FieldRef<"TeamsEditLog", 'String'>
     readonly userId: FieldRef<"TeamsEditLog", 'String'>
     readonly action: FieldRef<"TeamsEditLog", 'Action'>
@@ -9303,6 +9355,25 @@ export namespace Prisma {
   }
 
   /**
+   * TeamsEditLog.request
+   */
+  export type TeamsEditLog$requestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    where?: ActiveInvitationOrRequestWhereInput
+  }
+
+  /**
    * TeamsEditLog without action
    */
   export type TeamsEditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9495,6 +9566,8 @@ export namespace Prisma {
     updatedAt?: boolean
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     member?: boolean | UserDefaultArgs<ExtArgs>
+    logs?: boolean | ActiveInvitationOrRequest$logsArgs<ExtArgs>
+    _count?: boolean | ActiveInvitationOrRequestCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["activeInvitationOrRequest"]>
 
   export type ActiveInvitationOrRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9532,6 +9605,8 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     member?: boolean | UserDefaultArgs<ExtArgs>
+    logs?: boolean | ActiveInvitationOrRequest$logsArgs<ExtArgs>
+    _count?: boolean | ActiveInvitationOrRequestCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ActiveInvitationOrRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -9547,6 +9622,7 @@ export namespace Prisma {
     objects: {
       team: Prisma.$TeamsPayload<ExtArgs>
       member: Prisma.$UserPayload<ExtArgs>
+      logs: Prisma.$TeamsEditLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9951,6 +10027,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     team<T extends TeamsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamsDefaultArgs<ExtArgs>>): Prisma__TeamsClient<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     member<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    logs<T extends ActiveInvitationOrRequest$logsArgs<ExtArgs> = {}>(args?: Subset<T, ActiveInvitationOrRequest$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10379,6 +10456,30 @@ export namespace Prisma {
      * Limit how many ActiveInvitationOrRequests to delete.
      */
     limit?: number
+  }
+
+  /**
+   * ActiveInvitationOrRequest.logs
+   */
+  export type ActiveInvitationOrRequest$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamsEditLog
+     */
+    select?: TeamsEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamsEditLog
+     */
+    omit?: TeamsEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamsEditLogInclude<ExtArgs> | null
+    where?: TeamsEditLogWhereInput
+    orderBy?: TeamsEditLogOrderByWithRelationInput | TeamsEditLogOrderByWithRelationInput[]
+    cursor?: TeamsEditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TeamsEditLogScalarFieldEnum | TeamsEditLogScalarFieldEnum[]
   }
 
   /**
@@ -16027,6 +16128,7 @@ export namespace Prisma {
 
   export const TeamsEditLogScalarFieldEnum: {
     id: 'id',
+    requestId: 'requestId',
     teamId: 'teamId',
     userId: 'userId',
     action: 'action',
@@ -16673,24 +16775,28 @@ export namespace Prisma {
     OR?: TeamsEditLogWhereInput[]
     NOT?: TeamsEditLogWhereInput | TeamsEditLogWhereInput[]
     id?: StringFilter<"TeamsEditLog"> | string
+    requestId?: StringNullableFilter<"TeamsEditLog"> | string | null
     teamId?: StringFilter<"TeamsEditLog"> | string
     userId?: StringFilter<"TeamsEditLog"> | string
     action?: EnumActionFilter<"TeamsEditLog"> | $Enums.Action
     designation?: EnumDesignationFilter<"TeamsEditLog"> | $Enums.Designation
     createdAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
     updatedAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
+    request?: XOR<ActiveInvitationOrRequestNullableScalarRelationFilter, ActiveInvitationOrRequestWhereInput> | null
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type TeamsEditLogOrderByWithRelationInput = {
     id?: SortOrder
+    requestId?: SortOrderInput | SortOrder
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
     designation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    request?: ActiveInvitationOrRequestOrderByWithRelationInput
     team?: TeamsOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
@@ -16700,18 +16806,21 @@ export namespace Prisma {
     AND?: TeamsEditLogWhereInput | TeamsEditLogWhereInput[]
     OR?: TeamsEditLogWhereInput[]
     NOT?: TeamsEditLogWhereInput | TeamsEditLogWhereInput[]
+    requestId?: StringNullableFilter<"TeamsEditLog"> | string | null
     teamId?: StringFilter<"TeamsEditLog"> | string
     userId?: StringFilter<"TeamsEditLog"> | string
     action?: EnumActionFilter<"TeamsEditLog"> | $Enums.Action
     designation?: EnumDesignationFilter<"TeamsEditLog"> | $Enums.Designation
     createdAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
     updatedAt?: DateTimeFilter<"TeamsEditLog"> | Date | string
+    request?: XOR<ActiveInvitationOrRequestNullableScalarRelationFilter, ActiveInvitationOrRequestWhereInput> | null
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type TeamsEditLogOrderByWithAggregationInput = {
     id?: SortOrder
+    requestId?: SortOrderInput | SortOrder
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
@@ -16728,6 +16837,7 @@ export namespace Prisma {
     OR?: TeamsEditLogScalarWhereWithAggregatesInput[]
     NOT?: TeamsEditLogScalarWhereWithAggregatesInput | TeamsEditLogScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"TeamsEditLog"> | string
+    requestId?: StringNullableWithAggregatesFilter<"TeamsEditLog"> | string | null
     teamId?: StringWithAggregatesFilter<"TeamsEditLog"> | string
     userId?: StringWithAggregatesFilter<"TeamsEditLog"> | string
     action?: EnumActionWithAggregatesFilter<"TeamsEditLog"> | $Enums.Action
@@ -16748,6 +16858,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     member?: XOR<UserScalarRelationFilter, UserWhereInput>
+    logs?: TeamsEditLogListRelationFilter
   }
 
   export type ActiveInvitationOrRequestOrderByWithRelationInput = {
@@ -16759,6 +16870,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     team?: TeamsOrderByWithRelationInput
     member?: UserOrderByWithRelationInput
+    logs?: TeamsEditLogOrderByRelationAggregateInput
   }
 
   export type ActiveInvitationOrRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -16774,6 +16886,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     member?: XOR<UserScalarRelationFilter, UserWhereInput>
+    logs?: TeamsEditLogListRelationFilter
   }, "id" | "teamId_memberId_designation">
 
   export type ActiveInvitationOrRequestOrderByWithAggregationInput = {
@@ -17625,12 +17738,14 @@ export namespace Prisma {
     designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
+    request?: ActiveInvitationOrRequestCreateNestedOneWithoutLogsInput
     team: TeamsCreateNestedOneWithoutLogsInput
     user: UserCreateNestedOneWithoutTeamsEditLogInput
   }
 
   export type TeamsEditLogUncheckedCreateInput = {
     id?: string
+    requestId?: string | null
     teamId: string
     userId: string
     action: $Enums.Action
@@ -17645,12 +17760,14 @@ export namespace Prisma {
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    request?: ActiveInvitationOrRequestUpdateOneWithoutLogsNestedInput
     team?: TeamsUpdateOneRequiredWithoutLogsNestedInput
     user?: UserUpdateOneRequiredWithoutTeamsEditLogNestedInput
   }
 
   export type TeamsEditLogUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
     teamId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
@@ -17661,6 +17778,7 @@ export namespace Prisma {
 
   export type TeamsEditLogCreateManyInput = {
     id?: string
+    requestId?: string | null
     teamId: string
     userId: string
     action: $Enums.Action
@@ -17679,6 +17797,7 @@ export namespace Prisma {
 
   export type TeamsEditLogUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
     teamId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
@@ -17694,6 +17813,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutActiveRequestsInput
     member: UserCreateNestedOneWithoutActiveRequestsInput
+    logs?: TeamsEditLogCreateNestedManyWithoutRequestInput
   }
 
   export type ActiveInvitationOrRequestUncheckedCreateInput = {
@@ -17703,6 +17823,7 @@ export namespace Prisma {
     designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
+    logs?: TeamsEditLogUncheckedCreateNestedManyWithoutRequestInput
   }
 
   export type ActiveInvitationOrRequestUpdateInput = {
@@ -17712,6 +17833,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput
     member?: UserUpdateOneRequiredWithoutActiveRequestsNestedInput
+    logs?: TeamsEditLogUpdateManyWithoutRequestNestedInput
   }
 
   export type ActiveInvitationOrRequestUncheckedUpdateInput = {
@@ -17721,6 +17843,7 @@ export namespace Prisma {
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logs?: TeamsEditLogUncheckedUpdateManyWithoutRequestNestedInput
   }
 
   export type ActiveInvitationOrRequestCreateManyInput = {
@@ -18595,8 +18718,14 @@ export namespace Prisma {
     not?: NestedEnumActionFilter<$PrismaModel> | $Enums.Action
   }
 
+  export type ActiveInvitationOrRequestNullableScalarRelationFilter = {
+    is?: ActiveInvitationOrRequestWhereInput | null
+    isNot?: ActiveInvitationOrRequestWhereInput | null
+  }
+
   export type TeamsEditLogCountOrderByAggregateInput = {
     id?: SortOrder
+    requestId?: SortOrder
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
@@ -18607,6 +18736,7 @@ export namespace Prisma {
 
   export type TeamsEditLogMaxOrderByAggregateInput = {
     id?: SortOrder
+    requestId?: SortOrder
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
@@ -18617,6 +18747,7 @@ export namespace Prisma {
 
   export type TeamsEditLogMinOrderByAggregateInput = {
     id?: SortOrder
+    requestId?: SortOrder
     teamId?: SortOrder
     userId?: SortOrder
     action?: SortOrder
@@ -19766,6 +19897,12 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type ActiveInvitationOrRequestCreateNestedOneWithoutLogsInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutLogsInput, ActiveInvitationOrRequestUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutLogsInput
+    connect?: ActiveInvitationOrRequestWhereUniqueInput
+  }
+
   export type TeamsCreateNestedOneWithoutLogsInput = {
     create?: XOR<TeamsCreateWithoutLogsInput, TeamsUncheckedCreateWithoutLogsInput>
     connectOrCreate?: TeamsCreateOrConnectWithoutLogsInput
@@ -19780,6 +19917,16 @@ export namespace Prisma {
 
   export type EnumActionFieldUpdateOperationsInput = {
     set?: $Enums.Action
+  }
+
+  export type ActiveInvitationOrRequestUpdateOneWithoutLogsNestedInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutLogsInput, ActiveInvitationOrRequestUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutLogsInput
+    upsert?: ActiveInvitationOrRequestUpsertWithoutLogsInput
+    disconnect?: ActiveInvitationOrRequestWhereInput | boolean
+    delete?: ActiveInvitationOrRequestWhereInput | boolean
+    connect?: ActiveInvitationOrRequestWhereUniqueInput
+    update?: XOR<XOR<ActiveInvitationOrRequestUpdateToOneWithWhereWithoutLogsInput, ActiveInvitationOrRequestUpdateWithoutLogsInput>, ActiveInvitationOrRequestUncheckedUpdateWithoutLogsInput>
   }
 
   export type TeamsUpdateOneRequiredWithoutLogsNestedInput = {
@@ -19810,6 +19957,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type TeamsEditLogCreateNestedManyWithoutRequestInput = {
+    create?: XOR<TeamsEditLogCreateWithoutRequestInput, TeamsEditLogUncheckedCreateWithoutRequestInput> | TeamsEditLogCreateWithoutRequestInput[] | TeamsEditLogUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: TeamsEditLogCreateOrConnectWithoutRequestInput | TeamsEditLogCreateOrConnectWithoutRequestInput[]
+    createMany?: TeamsEditLogCreateManyRequestInputEnvelope
+    connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+  }
+
+  export type TeamsEditLogUncheckedCreateNestedManyWithoutRequestInput = {
+    create?: XOR<TeamsEditLogCreateWithoutRequestInput, TeamsEditLogUncheckedCreateWithoutRequestInput> | TeamsEditLogCreateWithoutRequestInput[] | TeamsEditLogUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: TeamsEditLogCreateOrConnectWithoutRequestInput | TeamsEditLogCreateOrConnectWithoutRequestInput[]
+    createMany?: TeamsEditLogCreateManyRequestInputEnvelope
+    connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+  }
+
   export type TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput = {
     create?: XOR<TeamsCreateWithoutActiveRequestsInput, TeamsUncheckedCreateWithoutActiveRequestsInput>
     connectOrCreate?: TeamsCreateOrConnectWithoutActiveRequestsInput
@@ -19824,6 +19985,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutActiveRequestsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActiveRequestsInput, UserUpdateWithoutActiveRequestsInput>, UserUncheckedUpdateWithoutActiveRequestsInput>
+  }
+
+  export type TeamsEditLogUpdateManyWithoutRequestNestedInput = {
+    create?: XOR<TeamsEditLogCreateWithoutRequestInput, TeamsEditLogUncheckedCreateWithoutRequestInput> | TeamsEditLogCreateWithoutRequestInput[] | TeamsEditLogUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: TeamsEditLogCreateOrConnectWithoutRequestInput | TeamsEditLogCreateOrConnectWithoutRequestInput[]
+    upsert?: TeamsEditLogUpsertWithWhereUniqueWithoutRequestInput | TeamsEditLogUpsertWithWhereUniqueWithoutRequestInput[]
+    createMany?: TeamsEditLogCreateManyRequestInputEnvelope
+    set?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    disconnect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    delete?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    update?: TeamsEditLogUpdateWithWhereUniqueWithoutRequestInput | TeamsEditLogUpdateWithWhereUniqueWithoutRequestInput[]
+    updateMany?: TeamsEditLogUpdateManyWithWhereWithoutRequestInput | TeamsEditLogUpdateManyWithWhereWithoutRequestInput[]
+    deleteMany?: TeamsEditLogScalarWhereInput | TeamsEditLogScalarWhereInput[]
+  }
+
+  export type TeamsEditLogUncheckedUpdateManyWithoutRequestNestedInput = {
+    create?: XOR<TeamsEditLogCreateWithoutRequestInput, TeamsEditLogUncheckedCreateWithoutRequestInput> | TeamsEditLogCreateWithoutRequestInput[] | TeamsEditLogUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: TeamsEditLogCreateOrConnectWithoutRequestInput | TeamsEditLogCreateOrConnectWithoutRequestInput[]
+    upsert?: TeamsEditLogUpsertWithWhereUniqueWithoutRequestInput | TeamsEditLogUpsertWithWhereUniqueWithoutRequestInput[]
+    createMany?: TeamsEditLogCreateManyRequestInputEnvelope
+    set?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    disconnect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    delete?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    connect?: TeamsEditLogWhereUniqueInput | TeamsEditLogWhereUniqueInput[]
+    update?: TeamsEditLogUpdateWithWhereUniqueWithoutRequestInput | TeamsEditLogUpdateWithWhereUniqueWithoutRequestInput[]
+    updateMany?: TeamsEditLogUpdateManyWithWhereWithoutRequestInput | TeamsEditLogUpdateManyWithWhereWithoutRequestInput[]
+    deleteMany?: TeamsEditLogScalarWhereInput | TeamsEditLogScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutNoticesInput = {
@@ -20384,6 +20573,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutActiveRequestsInput
+    logs?: TeamsEditLogCreateNestedManyWithoutRequestInput
   }
 
   export type ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput = {
@@ -20392,6 +20582,7 @@ export namespace Prisma {
     designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
+    logs?: TeamsEditLogUncheckedCreateNestedManyWithoutRequestInput
   }
 
   export type ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput = {
@@ -20410,11 +20601,13 @@ export namespace Prisma {
     designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
+    request?: ActiveInvitationOrRequestCreateNestedOneWithoutLogsInput
     team: TeamsCreateNestedOneWithoutLogsInput
   }
 
   export type TeamsEditLogUncheckedCreateWithoutUserInput = {
     id?: string
+    requestId?: string | null
     teamId: string
     action: $Enums.Action
     designation: $Enums.Designation
@@ -20719,6 +20912,7 @@ export namespace Prisma {
     OR?: TeamsEditLogScalarWhereInput[]
     NOT?: TeamsEditLogScalarWhereInput | TeamsEditLogScalarWhereInput[]
     id?: StringFilter<"TeamsEditLog"> | string
+    requestId?: StringNullableFilter<"TeamsEditLog"> | string | null
     teamId?: StringFilter<"TeamsEditLog"> | string
     userId?: StringFilter<"TeamsEditLog"> | string
     action?: EnumActionFilter<"TeamsEditLog"> | $Enums.Action
@@ -21065,11 +21259,13 @@ export namespace Prisma {
     designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
+    request?: ActiveInvitationOrRequestCreateNestedOneWithoutLogsInput
     user: UserCreateNestedOneWithoutTeamsEditLogInput
   }
 
   export type TeamsEditLogUncheckedCreateWithoutTeamInput = {
     id?: string
+    requestId?: string | null
     userId: string
     action: $Enums.Action
     designation: $Enums.Designation
@@ -21119,6 +21315,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     member: UserCreateNestedOneWithoutActiveRequestsInput
+    logs?: TeamsEditLogCreateNestedManyWithoutRequestInput
   }
 
   export type ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput = {
@@ -21127,6 +21324,7 @@ export namespace Prisma {
     designation: $Enums.Designation
     createdAt?: Date | string
     updatedAt?: Date | string
+    logs?: TeamsEditLogUncheckedCreateNestedManyWithoutRequestInput
   }
 
   export type ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput = {
@@ -21852,6 +22050,29 @@ export namespace Prisma {
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutTagsInput>
   }
 
+  export type ActiveInvitationOrRequestCreateWithoutLogsInput = {
+    id?: string
+    designation: $Enums.Designation
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    team: TeamsCreateNestedOneWithoutActiveRequestsInput
+    member: UserCreateNestedOneWithoutActiveRequestsInput
+  }
+
+  export type ActiveInvitationOrRequestUncheckedCreateWithoutLogsInput = {
+    id?: string
+    teamId: string
+    memberId: string
+    designation: $Enums.Designation
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ActiveInvitationOrRequestCreateOrConnectWithoutLogsInput = {
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    create: XOR<ActiveInvitationOrRequestCreateWithoutLogsInput, ActiveInvitationOrRequestUncheckedCreateWithoutLogsInput>
+  }
+
   export type TeamsCreateWithoutLogsInput = {
     id?: string
     uniqueTitle: string
@@ -21964,6 +22185,35 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutTeamsEditLogInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutTeamsEditLogInput, UserUncheckedCreateWithoutTeamsEditLogInput>
+  }
+
+  export type ActiveInvitationOrRequestUpsertWithoutLogsInput = {
+    update: XOR<ActiveInvitationOrRequestUpdateWithoutLogsInput, ActiveInvitationOrRequestUncheckedUpdateWithoutLogsInput>
+    create: XOR<ActiveInvitationOrRequestCreateWithoutLogsInput, ActiveInvitationOrRequestUncheckedCreateWithoutLogsInput>
+    where?: ActiveInvitationOrRequestWhereInput
+  }
+
+  export type ActiveInvitationOrRequestUpdateToOneWithWhereWithoutLogsInput = {
+    where?: ActiveInvitationOrRequestWhereInput
+    data: XOR<ActiveInvitationOrRequestUpdateWithoutLogsInput, ActiveInvitationOrRequestUncheckedUpdateWithoutLogsInput>
+  }
+
+  export type ActiveInvitationOrRequestUpdateWithoutLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput
+    member?: UserUpdateOneRequiredWithoutActiveRequestsNestedInput
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateWithoutLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    memberId?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TeamsUpsertWithoutLogsInput = {
@@ -22206,6 +22456,36 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutActiveRequestsInput, UserUncheckedCreateWithoutActiveRequestsInput>
   }
 
+  export type TeamsEditLogCreateWithoutRequestInput = {
+    id?: string
+    action: $Enums.Action
+    designation: $Enums.Designation
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    team: TeamsCreateNestedOneWithoutLogsInput
+    user: UserCreateNestedOneWithoutTeamsEditLogInput
+  }
+
+  export type TeamsEditLogUncheckedCreateWithoutRequestInput = {
+    id?: string
+    teamId: string
+    userId: string
+    action: $Enums.Action
+    designation: $Enums.Designation
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TeamsEditLogCreateOrConnectWithoutRequestInput = {
+    where: TeamsEditLogWhereUniqueInput
+    create: XOR<TeamsEditLogCreateWithoutRequestInput, TeamsEditLogUncheckedCreateWithoutRequestInput>
+  }
+
+  export type TeamsEditLogCreateManyRequestInputEnvelope = {
+    data: TeamsEditLogCreateManyRequestInput | TeamsEditLogCreateManyRequestInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TeamsUpsertWithoutActiveRequestsInput = {
     update: XOR<TeamsUpdateWithoutActiveRequestsInput, TeamsUncheckedUpdateWithoutActiveRequestsInput>
     create: XOR<TeamsCreateWithoutActiveRequestsInput, TeamsUncheckedCreateWithoutActiveRequestsInput>
@@ -22330,6 +22610,22 @@ export namespace Prisma {
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  }
+
+  export type TeamsEditLogUpsertWithWhereUniqueWithoutRequestInput = {
+    where: TeamsEditLogWhereUniqueInput
+    update: XOR<TeamsEditLogUpdateWithoutRequestInput, TeamsEditLogUncheckedUpdateWithoutRequestInput>
+    create: XOR<TeamsEditLogCreateWithoutRequestInput, TeamsEditLogUncheckedCreateWithoutRequestInput>
+  }
+
+  export type TeamsEditLogUpdateWithWhereUniqueWithoutRequestInput = {
+    where: TeamsEditLogWhereUniqueInput
+    data: XOR<TeamsEditLogUpdateWithoutRequestInput, TeamsEditLogUncheckedUpdateWithoutRequestInput>
+  }
+
+  export type TeamsEditLogUpdateManyWithWhereWithoutRequestInput = {
+    where: TeamsEditLogScalarWhereInput
+    data: XOR<TeamsEditLogUpdateManyMutationInput, TeamsEditLogUncheckedUpdateManyWithoutRequestInput>
   }
 
   export type UserCreateWithoutNoticesInput = {
@@ -23518,6 +23814,7 @@ export namespace Prisma {
 
   export type TeamsEditLogCreateManyUserInput = {
     id?: string
+    requestId?: string | null
     teamId: string
     action: $Enums.Action
     designation: $Enums.Designation
@@ -23691,6 +23988,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput
+    logs?: TeamsEditLogUpdateManyWithoutRequestNestedInput
   }
 
   export type ActiveInvitationOrRequestUncheckedUpdateWithoutMemberInput = {
@@ -23699,6 +23997,7 @@ export namespace Prisma {
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logs?: TeamsEditLogUncheckedUpdateManyWithoutRequestNestedInput
   }
 
   export type ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberInput = {
@@ -23715,11 +24014,13 @@ export namespace Prisma {
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    request?: ActiveInvitationOrRequestUpdateOneWithoutLogsNestedInput
     team?: TeamsUpdateOneRequiredWithoutLogsNestedInput
   }
 
   export type TeamsEditLogUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
     teamId?: StringFieldUpdateOperationsInput | string
     action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
@@ -23729,6 +24030,7 @@ export namespace Prisma {
 
   export type TeamsEditLogUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
     teamId?: StringFieldUpdateOperationsInput | string
     action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
@@ -23904,6 +24206,7 @@ export namespace Prisma {
 
   export type TeamsEditLogCreateManyTeamInput = {
     id?: string
+    requestId?: string | null
     userId: string
     action: $Enums.Action
     designation: $Enums.Designation
@@ -24069,11 +24372,13 @@ export namespace Prisma {
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    request?: ActiveInvitationOrRequestUpdateOneWithoutLogsNestedInput
     user?: UserUpdateOneRequiredWithoutTeamsEditLogNestedInput
   }
 
   export type TeamsEditLogUncheckedUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
@@ -24083,6 +24388,7 @@ export namespace Prisma {
 
   export type TeamsEditLogUncheckedUpdateManyWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
@@ -24120,6 +24426,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     member?: UserUpdateOneRequiredWithoutActiveRequestsNestedInput
+    logs?: TeamsEditLogUpdateManyWithoutRequestNestedInput
   }
 
   export type ActiveInvitationOrRequestUncheckedUpdateWithoutTeamInput = {
@@ -24128,6 +24435,7 @@ export namespace Prisma {
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logs?: TeamsEditLogUncheckedUpdateManyWithoutRequestNestedInput
   }
 
   export type ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamInput = {
@@ -24371,6 +24679,46 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
+  }
+
+  export type TeamsEditLogCreateManyRequestInput = {
+    id?: string
+    teamId: string
+    userId: string
+    action: $Enums.Action
+    designation: $Enums.Designation
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TeamsEditLogUpdateWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamsUpdateOneRequiredWithoutLogsNestedInput
+    user?: UserUpdateOneRequiredWithoutTeamsEditLogNestedInput
+  }
+
+  export type TeamsEditLogUncheckedUpdateWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamsEditLogUncheckedUpdateManyWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoticeHistoryCreateManyNoticeInput = {

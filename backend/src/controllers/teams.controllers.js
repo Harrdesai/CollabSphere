@@ -2,7 +2,7 @@
 
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
-import { $Enums, PrismaClient } from "../generated/prisma/index.js";
+import { $Enums, Prisma, PrismaClient } from "../generated/prisma/index.js";
 
 const prisma = new PrismaClient();
 
@@ -117,43 +117,43 @@ const createTeam = async (request, response) => {
 const modifyTeamDetails = async (request, response) => {
 
   try {
-    
+
     const { title, about, link = [], ArrayOfTagIds = [] } = request.body;
     const teamId = request.params.teamId;
 
-    if ( !teamId ) {
+    if (!teamId) {
       throw new ApiError(400, "Team id is not provided, please provide team id");
     }
 
-    if ( title != ""  && title !== null && title !== undefined ) {
-      
+    if (title != "" && title !== null && title !== undefined) {
+
       const uniqueTitle = title.toLowerCase().split(" ").join("");
 
-    const uniqueTitleFromDB = await prisma.teams.findUnique({
-      where: {
-        id: teamId
-      },
-      select: {
-        uniqueTitle: true
-      }
-    })
-    if ( uniqueTitle !== uniqueTitleFromDB.uniqueTitle ) {
-      
-      const isTeamAlreadyCreated = await prisma.teams.findFirst({
+      const uniqueTitleFromDB = await prisma.teams.findUnique({
         where: {
-          uniqueTitle
+          id: teamId
+        },
+        select: {
+          uniqueTitle: true
         }
       })
+      if (uniqueTitle !== uniqueTitleFromDB.uniqueTitle) {
 
-      if (isTeamAlreadyCreated) {
-        throw new ApiError(400, "Team already exists");
+        const isTeamAlreadyCreated = await prisma.teams.findFirst({
+          where: {
+            uniqueTitle
+          }
+        })
+
+        if (isTeamAlreadyCreated) {
+          throw new ApiError(400, "Team already exists");
+        }
       }
-    }
 
     }
 
     const team = await prisma.$transaction(async (prisma) => {
-      
+
       const updateTeamDetails = await prisma.teams.update({
         where: {
           id: teamId
@@ -180,11 +180,11 @@ const modifyTeamDetails = async (request, response) => {
           link: team.link,
           tags: team.tags
         }
-        
+
       }, "Team details updated successfully")
     )
   } catch (error) {
-   
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while updating team details", {
         error: error.message
@@ -196,14 +196,14 @@ const modifyTeamDetails = async (request, response) => {
 
 const deleteTeam = async (request, response) => { }
 
-const sendInviteToJoinTeam = async (request, response) => { 
+const sendInviteToJoinTeam = async (request, response) => {
 
   try {
-  
+
     const { userId, designation } = request.body;
     const teamId = request.params.teamId;
 
-    if ( !teamId || !userId || !designation ) {
+    if (!teamId || !userId || !designation) {
       throw new ApiError(400, "Please provide team id, user id and designation");
     }
 
@@ -216,31 +216,44 @@ const sendInviteToJoinTeam = async (request, response) => {
       }
     })
 
-    if ( isInvitteeIsTeamLeader.isTeamLeader ) {
+    if (isInvitteeIsTeamLeader.isTeamLeader) {
       throw new ApiError(400, "we can't proceed this request as invitee is team leader");
     }
 
-    const sendTeamJoingInvitation = await prisma.$transaction(async (prisma) => {
-    
-    const invitation = await prisma.activeInvitationOrRequest.create({
-      data: {
-        teamId,
-        memberId: userId,
-        designation
-      }
-    });
-    
-    await prisma.teamsEditLog.create({
-      data: {
+    const checkIsMemberAlreayWithSameDesignation = await prisma.userRoleInTeam.findFirst({
+      where: {
         teamId,
         userId,
-        action: $Enums.Action.INVITATION_SENT,
         designation
       }
     })
 
-    return invitation;
-  })
+    if (checkIsMemberAlreayWithSameDesignation) {
+      throw new ApiError(400, "User is already a member with same designation");
+    }
+
+    const sendTeamJoingInvitation = await prisma.$transaction(async (prisma) => {
+
+      const invitation = await prisma.activeInvitationOrRequest.create({
+        data: {
+          teamId,
+          memberId: userId,
+          designation
+        }
+      });
+
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: invitation.teamId,
+          userId: invitation.memberId,
+          action: $Enums.Action.INVITATION_SENT,
+          designation: invitation.designation,
+          requestId: invitation.id
+        }
+      })
+
+      return invitation
+    })
 
     response.status(200).json(
       new ApiResponse(200, {
@@ -249,42 +262,73 @@ const sendInviteToJoinTeam = async (request, response) => {
     )
   } catch (error) {
     
+    console.log(`error : ${error}------------${error.code}`);
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === 'P2002') {
+      return response.status(400).json(
+        new ApiError(400, {}, `Already invitation ${error.meta.target}`)
+      );
+    }
+  }
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to send Team join invitation request", {
         error: error.message
       })
-    ) 
+    )
   }
 
 }
 
-const cancelTeamInvitation = async (request, response) => { 
+const cancelTeamInvitation = async (request, response) => {
 
   try {
 
-    const teamId = request.params.teamId;
-    const { userId } = request.body;
+    const id = request.params.id;
 
-    if ( !teamId || !userId ) {
-      throw new ApiError(400, "Please provide team id and user id");
+    if (!id) {
+      throw new ApiError(400, "Please provide invitation id");
     }
 
-    const updateTeamEditLog = await prisma.teamsEditLog.create({
-      data: {
-        teamId,
-        userId,
-        action: $Enums.Action.INVITATION_REVOKED
+    const cancelTeamJoiningInvitation = await prisma.$transaction(async (prisma) => {
+
+      const invitation = await prisma.activeInvitationOrRequest.findUnique({
+        where: {
+          id
+        }
+      });
+
+      if (!invitation) {
+        throw new ApiError(400, "Invitation not found");
       }
+      
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: invitation.teamId,
+          userId: invitation.memberId,
+          action: $Enums.Action.INVITATION_REVOKED,
+          designation: invitation.designation,
+          requestId: invitation.id
+        }
+      })
+
+      await prisma.activeInvitationOrRequest.delete({
+        where: {
+          id
+        }
+      })
+
+      return invitation;
     })
 
     response.status(200).json(
       new ApiResponse(200, {
-        teamEditLog: updateTeamEditLog
-      }, "Team joining invitation revoked successfully")
+        invitation: cancelTeamJoiningInvitation
+      }, "Invitation cancelled successfully")
     )
-    
+
   } catch (error) {
-  
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to cancel Team invitation", {
         error: error.message
@@ -325,7 +369,7 @@ const updateMemberRole = async (request, response) => { }
 const getListOfTeamMembers = async (request, response) => { }
 
 const createTag = async (request, response) => {
-  
+
   try {
 
     const { tagName } = request.body;
@@ -355,7 +399,7 @@ const createTag = async (request, response) => {
         tag: newTag
       }, `Tag : ${tagName} created successfully`)
     )
-    
+
   } catch (error) {
 
     response.status(error.statusCode || 500).json(
@@ -363,11 +407,11 @@ const createTag = async (request, response) => {
         error: error.message
       })
     )
-    
+
   }
 }
 
-const updateTag = async (request, response) => { 
+const updateTag = async (request, response) => {
 
   try {
 
@@ -399,15 +443,15 @@ const updateTag = async (request, response) => {
         tag: updatedTag
       }, `Tag : ${updatedName} updated successfully`)
     )
-    
+
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while updating tag", {
         error: error.message
       })
     )
-    
+
   }
 }
 

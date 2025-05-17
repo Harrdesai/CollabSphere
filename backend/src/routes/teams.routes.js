@@ -13,7 +13,7 @@ teamsRoutes.post('/update/:teamId', authMiddleware, modifyTeamDetails);
 
 teamsRoutes.post('/delete/:teamId', authMiddleware, deleteTeam);
 
-teamsRoutes.post('/invite', authMiddleware, sendInviteToJoinTeam);
+teamsRoutes.post('/invite/:teamId', authMiddleware, sendInviteToJoinTeam);
 
 teamsRoutes.post('/cancel-invitation', authMiddleware, cancelTeamInvitation);
 

@@ -117,43 +117,43 @@ const createTeam = async (request, response) => {
 const modifyTeamDetails = async (request, response) => {
 
   try {
-
+    
     const { title, about, link = [], ArrayOfTagIds = [] } = request.body;
     const teamId = request.params.teamId;
 
-    if (!teamId) {
+    if ( !teamId ) {
       throw new ApiError(400, "Team id is not provided, please provide team id");
     }
 
-    if (title != "" && title !== null && title !== undefined) {
-
+    if ( title != ""  && title !== null && title !== undefined ) {
+      
       const uniqueTitle = title.toLowerCase().split(" ").join("");
 
-      const uniqueTitleFromDB = await prisma.teams.findUnique({
+    const uniqueTitleFromDB = await prisma.teams.findUnique({
+      where: {
+        id: teamId
+      },
+      select: {
+        uniqueTitle: true
+      }
+    })
+    if ( uniqueTitle !== uniqueTitleFromDB.uniqueTitle ) {
+      
+      const isTeamAlreadyCreated = await prisma.teams.findFirst({
         where: {
-          id: teamId
-        },
-        select: {
-          uniqueTitle: true
+          uniqueTitle
         }
       })
-      if (uniqueTitle !== uniqueTitleFromDB.uniqueTitle) {
 
-        const isTeamAlreadyCreated = await prisma.teams.findFirst({
-          where: {
-            uniqueTitle
-          }
-        })
-
-        if (isTeamAlreadyCreated) {
-          throw new ApiError(400, "Team already exists");
-        }
+      if (isTeamAlreadyCreated) {
+        throw new ApiError(400, "Team already exists");
       }
+    }
 
     }
 
     const team = await prisma.$transaction(async (prisma) => {
-
+      
       const updateTeamDetails = await prisma.teams.update({
         where: {
           id: teamId
@@ -180,11 +180,11 @@ const modifyTeamDetails = async (request, response) => {
           link: team.link,
           tags: team.tags
         }
-
+        
       }, "Team details updated successfully")
     )
   } catch (error) {
-
+   
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while updating team details", {
         error: error.message
@@ -196,7 +196,54 @@ const modifyTeamDetails = async (request, response) => {
 
 const deleteTeam = async (request, response) => { }
 
-const sendInviteToJoinTeam = async (request, response) => { }
+const sendInviteToJoinTeam = async (request, response) => { 
+
+  try {
+  
+    const { userId, designation } = request.body;
+    const teamId = request.params.teamId;
+
+    if ( !teamId || !userId || !designation ) {
+      throw new ApiError(400, "Please provide team id, user id and designation");
+    }
+
+    const isInvitteeIsTeamLeader = await prisma.user.findUnique({
+      where: {
+        userId
+      },
+      select: {
+        isTeamLeader: true
+      }
+    })
+
+    if ( isInvitteeIsTeamLeader.isTeamLeader ) {
+      throw new ApiError(400, "we can't proceed this request as invitee is team leader");
+    }
+
+    const updateTeamEditLog = await prisma.teamsEditLog.create({
+      data: {
+        teamId,
+        userId,
+        action: $Enums.Action.INVITATION_SENT,
+        designation
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teamEditLog: updateTeamEditLog
+      })
+    )
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to send Team join invitation request", {
+        error: error.message
+      })
+    ) 
+  }
+
+}
 
 const cancelTeamInvitation = async (request, response) => { }
 
@@ -231,7 +278,7 @@ const updateMemberRole = async (request, response) => { }
 const getListOfTeamMembers = async (request, response) => { }
 
 const createTag = async (request, response) => {
-
+  
   try {
 
     const { tagName } = request.body;
@@ -261,7 +308,7 @@ const createTag = async (request, response) => {
         tag: newTag
       }, `Tag : ${tagName} created successfully`)
     )
-
+    
   } catch (error) {
 
     response.status(error.statusCode || 500).json(
@@ -269,11 +316,11 @@ const createTag = async (request, response) => {
         error: error.message
       })
     )
-
+    
   }
 }
 
-const updateTag = async (request, response) => {
+const updateTag = async (request, response) => { 
 
   try {
 
@@ -305,15 +352,15 @@ const updateTag = async (request, response) => {
         tag: updatedTag
       }, `Tag : ${updatedName} updated successfully`)
     )
-
+    
   } catch (error) {
-
+    
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while updating tag", {
         error: error.message
       })
     )
-
+    
   }
 }
 

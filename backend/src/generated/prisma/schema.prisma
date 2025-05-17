@@ -46,15 +46,16 @@ model User {
   updatedAt DateTime @updatedAt
 
   designation    Designation?
-  tags           Tag[]            @relation("UserTags")
-  teamLeaderOf   Teams[]          @relation("TeamLeader")
-  teams          Teams[]          @relation("teamMembers")
-  chats          Chat[]           @relation("ChatMembers")
-  messages       Message[]
+  tags           Tag[]                       @relation("UserTags")
+  teamLeaderOf   Teams[]                     @relation("TeamLeader")
+  teams          Teams[]                     @relation("teamMembers")
+  ActiveRequests ActiveInvitationOrRequest[]
   TeamsEditLog   TeamsEditLog[]
   userRoleInTeam UserRoleInTeam[]
+  chats          Chat[]                      @relation("ChatMembers")
+  messages       Message[]
   noticeRequests NoticeRequest[]
-  notices        Notice[]         @relation("UserNotices")
+  notices        Notice[]                    @relation("UserNotices")
   noticeHistory  NoticeHistory[]
 }
 
@@ -84,11 +85,12 @@ model Teams {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  teamLeader     User             @relation("TeamLeader", fields: [teamLeaderId], references: [userId])
-  members        User[]           @relation("teamMembers")
-  tags           Tag[]            @relation("TeamTags")
-  logs           TeamsEditLog[]   @relation("teamLogs")
+  teamLeader     User                        @relation("TeamLeader", fields: [teamLeaderId], references: [userId])
+  members        User[]                      @relation("teamMembers")
+  tags           Tag[]                       @relation("TeamTags")
+  logs           TeamsEditLog[]              @relation("teamLogs")
   userRoleInTeam UserRoleInTeam[]
+  ActiveRequests ActiveInvitationOrRequest[]
   chats          Chat[]
   notices        Notice[]
   noticeRequests NoticeRequest[]
@@ -139,6 +141,17 @@ model TeamsEditLog {
 
   team Teams @relation(fields: [teamId], references: [id], name: "teamLogs")
   user User  @relation(fields: [userId], references: [userId])
+}
+
+model ActiveInvitationOrRequest {
+  id        String   @id @default(uuid())
+  teamId    String
+  memberId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team   Teams @relation(fields: [teamId], references: [id])
+  member User  @relation(fields: [memberId], references: [userId])
 }
 
 model Notice {

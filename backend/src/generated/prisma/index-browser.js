@@ -186,6 +186,14 @@ exports.Prisma.TeamsEditLogScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ActiveInvitationOrRequestScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  memberId: 'memberId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.NoticeScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -294,6 +302,7 @@ exports.Prisma.ModelName = {
   UserRoleInTeam: 'UserRoleInTeam',
   Tag: 'Tag',
   TeamsEditLog: 'TeamsEditLog',
+  ActiveInvitationOrRequest: 'ActiveInvitationOrRequest',
   Notice: 'Notice',
   NoticeRequest: 'NoticeRequest',
   NoticeHistory: 'NoticeHistory',

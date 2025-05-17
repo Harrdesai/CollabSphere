@@ -49,10 +49,11 @@ model User {
   tags           Tag[]            @relation("UserTags")
   teamLeaderOf   Teams[]          @relation("TeamLeader")
   teams          Teams[]          @relation("teamMembers")
-  chats          Chat[]           @relation("ChatMembers")
-  messages       Message[]
+  ActiveRequests ActiveInvitationOrRequest[]
   TeamsEditLog   TeamsEditLog[]
   userRoleInTeam UserRoleInTeam[]
+  chats          Chat[]           @relation("ChatMembers")
+  messages       Message[]
   noticeRequests NoticeRequest[]
   notices        Notice[]         @relation("UserNotices")
   noticeHistory  NoticeHistory[]
@@ -89,9 +90,11 @@ model Teams {
   tags           Tag[]            @relation("TeamTags")
   logs           TeamsEditLog[]   @relation("teamLogs")
   userRoleInTeam UserRoleInTeam[]
+  ActiveRequests ActiveInvitationOrRequest[]
   chats          Chat[]
   notices        Notice[]
   noticeRequests NoticeRequest[]
+  
 }
 
 model UserRoleInTeam {
@@ -139,6 +142,17 @@ model TeamsEditLog {
 
   team Teams @relation(fields: [teamId], references: [id], name: "teamLogs")
   user User  @relation(fields: [userId], references: [userId])
+}
+
+model ActiveInvitationOrRequest {
+  id        String   @id @default(uuid())
+  teamId    String
+  memberId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team   Teams @relation(fields: [teamId], references: [id])
+  member User  @relation(fields: [memberId], references: [userId])
 }
 
 model Notice {

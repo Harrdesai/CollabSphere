@@ -44,6 +44,11 @@ export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
  */
 export type TeamsEditLog = $Result.DefaultSelection<Prisma.$TeamsEditLogPayload>
 /**
+ * Model ActiveInvitationOrRequest
+ * 
+ */
+export type ActiveInvitationOrRequest = $Result.DefaultSelection<Prisma.$ActiveInvitationOrRequestPayload>
+/**
  * Model Notice
  * 
  */
@@ -298,6 +303,16 @@ export class PrismaClient<
     * ```
     */
   get teamsEditLog(): Prisma.TeamsEditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.activeInvitationOrRequest`: Exposes CRUD operations for the **ActiveInvitationOrRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ActiveInvitationOrRequests
+    * const activeInvitationOrRequests = await prisma.activeInvitationOrRequest.findMany()
+    * ```
+    */
+  get activeInvitationOrRequest(): Prisma.ActiveInvitationOrRequestDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.notice`: Exposes CRUD operations for the **Notice** model.
@@ -794,6 +809,7 @@ export namespace Prisma {
     UserRoleInTeam: 'UserRoleInTeam',
     Tag: 'Tag',
     TeamsEditLog: 'TeamsEditLog',
+    ActiveInvitationOrRequest: 'ActiveInvitationOrRequest',
     Notice: 'Notice',
     NoticeRequest: 'NoticeRequest',
     NoticeHistory: 'NoticeHistory',
@@ -817,7 +833,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "importCSV" | "user" | "teams" | "userRoleInTeam" | "tag" | "teamsEditLog" | "notice" | "noticeRequest" | "noticeHistory" | "chat" | "message"
+      modelProps: "importCSV" | "user" | "teams" | "userRoleInTeam" | "tag" | "teamsEditLog" | "activeInvitationOrRequest" | "notice" | "noticeRequest" | "noticeHistory" | "chat" | "message"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1262,6 +1278,80 @@ export namespace Prisma {
           count: {
             args: Prisma.TeamsEditLogCountArgs<ExtArgs>
             result: $Utils.Optional<TeamsEditLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      ActiveInvitationOrRequest: {
+        payload: Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>
+        fields: Prisma.ActiveInvitationOrRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ActiveInvitationOrRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ActiveInvitationOrRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.ActiveInvitationOrRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ActiveInvitationOrRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>
+          }
+          findMany: {
+            args: Prisma.ActiveInvitationOrRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>[]
+          }
+          create: {
+            args: Prisma.ActiveInvitationOrRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>
+          }
+          createMany: {
+            args: Prisma.ActiveInvitationOrRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ActiveInvitationOrRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.ActiveInvitationOrRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>
+          }
+          update: {
+            args: Prisma.ActiveInvitationOrRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.ActiveInvitationOrRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ActiveInvitationOrRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ActiveInvitationOrRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.ActiveInvitationOrRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveInvitationOrRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.ActiveInvitationOrRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateActiveInvitationOrRequest>
+          }
+          groupBy: {
+            args: Prisma.ActiveInvitationOrRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ActiveInvitationOrRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ActiveInvitationOrRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<ActiveInvitationOrRequestCountAggregateOutputType> | number
           }
         }
       }
@@ -1725,6 +1815,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamOmit
     tag?: TagOmit
     teamsEditLog?: TeamsEditLogOmit
+    activeInvitationOrRequest?: ActiveInvitationOrRequestOmit
     notice?: NoticeOmit
     noticeRequest?: NoticeRequestOmit
     noticeHistory?: NoticeHistoryOmit
@@ -1827,10 +1918,11 @@ export namespace Prisma {
     tags: number
     teamLeaderOf: number
     teams: number
-    chats: number
-    messages: number
+    ActiveRequests: number
     TeamsEditLog: number
     userRoleInTeam: number
+    chats: number
+    messages: number
     noticeRequests: number
     notices: number
     noticeHistory: number
@@ -1840,10 +1932,11 @@ export namespace Prisma {
     tags?: boolean | UserCountOutputTypeCountTagsArgs
     teamLeaderOf?: boolean | UserCountOutputTypeCountTeamLeaderOfArgs
     teams?: boolean | UserCountOutputTypeCountTeamsArgs
-    chats?: boolean | UserCountOutputTypeCountChatsArgs
-    messages?: boolean | UserCountOutputTypeCountMessagesArgs
+    ActiveRequests?: boolean | UserCountOutputTypeCountActiveRequestsArgs
     TeamsEditLog?: boolean | UserCountOutputTypeCountTeamsEditLogArgs
     userRoleInTeam?: boolean | UserCountOutputTypeCountUserRoleInTeamArgs
+    chats?: boolean | UserCountOutputTypeCountChatsArgs
+    messages?: boolean | UserCountOutputTypeCountMessagesArgs
     noticeRequests?: boolean | UserCountOutputTypeCountNoticeRequestsArgs
     notices?: boolean | UserCountOutputTypeCountNoticesArgs
     noticeHistory?: boolean | UserCountOutputTypeCountNoticeHistoryArgs
@@ -1884,15 +1977,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountChatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ChatWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MessageWhereInput
+  export type UserCountOutputTypeCountActiveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveInvitationOrRequestWhereInput
   }
 
   /**
@@ -1907,6 +1993,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUserRoleInTeamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserRoleInTeamWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountChatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MessageWhereInput
   }
 
   /**
@@ -1940,6 +2040,7 @@ export namespace Prisma {
     tags: number
     logs: number
     userRoleInTeam: number
+    ActiveRequests: number
     chats: number
     notices: number
     noticeRequests: number
@@ -1950,6 +2051,7 @@ export namespace Prisma {
     tags?: boolean | TeamsCountOutputTypeCountTagsArgs
     logs?: boolean | TeamsCountOutputTypeCountLogsArgs
     userRoleInTeam?: boolean | TeamsCountOutputTypeCountUserRoleInTeamArgs
+    ActiveRequests?: boolean | TeamsCountOutputTypeCountActiveRequestsArgs
     chats?: boolean | TeamsCountOutputTypeCountChatsArgs
     notices?: boolean | TeamsCountOutputTypeCountNoticesArgs
     noticeRequests?: boolean | TeamsCountOutputTypeCountNoticeRequestsArgs
@@ -1992,6 +2094,13 @@ export namespace Prisma {
    */
   export type TeamsCountOutputTypeCountUserRoleInTeamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserRoleInTeamWhereInput
+  }
+
+  /**
+   * TeamsCountOutputType without action
+   */
+  export type TeamsCountOutputTypeCountActiveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveInvitationOrRequestWhereInput
   }
 
   /**
@@ -3392,10 +3501,11 @@ export namespace Prisma {
     tags?: boolean | User$tagsArgs<ExtArgs>
     teamLeaderOf?: boolean | User$teamLeaderOfArgs<ExtArgs>
     teams?: boolean | User$teamsArgs<ExtArgs>
-    chats?: boolean | User$chatsArgs<ExtArgs>
-    messages?: boolean | User$messagesArgs<ExtArgs>
+    ActiveRequests?: boolean | User$ActiveRequestsArgs<ExtArgs>
     TeamsEditLog?: boolean | User$TeamsEditLogArgs<ExtArgs>
     userRoleInTeam?: boolean | User$userRoleInTeamArgs<ExtArgs>
+    chats?: boolean | User$chatsArgs<ExtArgs>
+    messages?: boolean | User$messagesArgs<ExtArgs>
     noticeRequests?: boolean | User$noticeRequestsArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
@@ -3476,10 +3586,11 @@ export namespace Prisma {
     tags?: boolean | User$tagsArgs<ExtArgs>
     teamLeaderOf?: boolean | User$teamLeaderOfArgs<ExtArgs>
     teams?: boolean | User$teamsArgs<ExtArgs>
-    chats?: boolean | User$chatsArgs<ExtArgs>
-    messages?: boolean | User$messagesArgs<ExtArgs>
+    ActiveRequests?: boolean | User$ActiveRequestsArgs<ExtArgs>
     TeamsEditLog?: boolean | User$TeamsEditLogArgs<ExtArgs>
     userRoleInTeam?: boolean | User$userRoleInTeamArgs<ExtArgs>
+    chats?: boolean | User$chatsArgs<ExtArgs>
+    messages?: boolean | User$messagesArgs<ExtArgs>
     noticeRequests?: boolean | User$noticeRequestsArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
@@ -3494,10 +3605,11 @@ export namespace Prisma {
       tags: Prisma.$TagPayload<ExtArgs>[]
       teamLeaderOf: Prisma.$TeamsPayload<ExtArgs>[]
       teams: Prisma.$TeamsPayload<ExtArgs>[]
-      chats: Prisma.$ChatPayload<ExtArgs>[]
-      messages: Prisma.$MessagePayload<ExtArgs>[]
+      ActiveRequests: Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>[]
       TeamsEditLog: Prisma.$TeamsEditLogPayload<ExtArgs>[]
       userRoleInTeam: Prisma.$UserRoleInTeamPayload<ExtArgs>[]
+      chats: Prisma.$ChatPayload<ExtArgs>[]
+      messages: Prisma.$MessagePayload<ExtArgs>[]
       noticeRequests: Prisma.$NoticeRequestPayload<ExtArgs>[]
       notices: Prisma.$NoticePayload<ExtArgs>[]
       noticeHistory: Prisma.$NoticeHistoryPayload<ExtArgs>[]
@@ -3920,10 +4032,11 @@ export namespace Prisma {
     tags<T extends User$tagsArgs<ExtArgs> = {}>(args?: Subset<T, User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teamLeaderOf<T extends User$teamLeaderOfArgs<ExtArgs> = {}>(args?: Subset<T, User$teamLeaderOfArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teams<T extends User$teamsArgs<ExtArgs> = {}>(args?: Subset<T, User$teamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    chats<T extends User$chatsArgs<ExtArgs> = {}>(args?: Subset<T, User$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    messages<T extends User$messagesArgs<ExtArgs> = {}>(args?: Subset<T, User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ActiveRequests<T extends User$ActiveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$ActiveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     TeamsEditLog<T extends User$TeamsEditLogArgs<ExtArgs> = {}>(args?: Subset<T, User$TeamsEditLogArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userRoleInTeam<T extends User$userRoleInTeamArgs<ExtArgs> = {}>(args?: Subset<T, User$userRoleInTeamArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chats<T extends User$chatsArgs<ExtArgs> = {}>(args?: Subset<T, User$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    messages<T extends User$messagesArgs<ExtArgs> = {}>(args?: Subset<T, User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeRequests<T extends User$noticeRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$noticeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notices<T extends User$noticesArgs<ExtArgs> = {}>(args?: Subset<T, User$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeHistory<T extends User$noticeHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$noticeHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4436,51 +4549,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.chats
+   * User.ActiveRequests
    */
-  export type User$chatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$ActiveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Chat
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
      */
-    select?: ChatSelect<ExtArgs> | null
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Chat
+     * Omit specific fields from the ActiveInvitationOrRequest
      */
-    omit?: ChatOmit<ExtArgs> | null
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ChatInclude<ExtArgs> | null
-    where?: ChatWhereInput
-    orderBy?: ChatOrderByWithRelationInput | ChatOrderByWithRelationInput[]
-    cursor?: ChatWhereUniqueInput
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    where?: ActiveInvitationOrRequestWhereInput
+    orderBy?: ActiveInvitationOrRequestOrderByWithRelationInput | ActiveInvitationOrRequestOrderByWithRelationInput[]
+    cursor?: ActiveInvitationOrRequestWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ChatScalarFieldEnum | ChatScalarFieldEnum[]
-  }
-
-  /**
-   * User.messages
-   */
-  export type User$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Message
-     */
-    select?: MessageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Message
-     */
-    omit?: MessageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MessageInclude<ExtArgs> | null
-    where?: MessageWhereInput
-    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
-    cursor?: MessageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+    distinct?: ActiveInvitationOrRequestScalarFieldEnum | ActiveInvitationOrRequestScalarFieldEnum[]
   }
 
   /**
@@ -4529,6 +4618,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserRoleInTeamScalarFieldEnum | UserRoleInTeamScalarFieldEnum[]
+  }
+
+  /**
+   * User.chats
+   */
+  export type User$chatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    where?: ChatWhereInput
+    orderBy?: ChatOrderByWithRelationInput | ChatOrderByWithRelationInput[]
+    cursor?: ChatWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatScalarFieldEnum | ChatScalarFieldEnum[]
+  }
+
+  /**
+   * User.messages
+   */
+  export type User$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    where?: MessageWhereInput
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    cursor?: MessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
   }
 
   /**
@@ -4819,6 +4956,7 @@ export namespace Prisma {
     tags?: boolean | Teams$tagsArgs<ExtArgs>
     logs?: boolean | Teams$logsArgs<ExtArgs>
     userRoleInTeam?: boolean | Teams$userRoleInTeamArgs<ExtArgs>
+    ActiveRequests?: boolean | Teams$ActiveRequestsArgs<ExtArgs>
     chats?: boolean | Teams$chatsArgs<ExtArgs>
     notices?: boolean | Teams$noticesArgs<ExtArgs>
     noticeRequests?: boolean | Teams$noticeRequestsArgs<ExtArgs>
@@ -4870,6 +5008,7 @@ export namespace Prisma {
     tags?: boolean | Teams$tagsArgs<ExtArgs>
     logs?: boolean | Teams$logsArgs<ExtArgs>
     userRoleInTeam?: boolean | Teams$userRoleInTeamArgs<ExtArgs>
+    ActiveRequests?: boolean | Teams$ActiveRequestsArgs<ExtArgs>
     chats?: boolean | Teams$chatsArgs<ExtArgs>
     notices?: boolean | Teams$noticesArgs<ExtArgs>
     noticeRequests?: boolean | Teams$noticeRequestsArgs<ExtArgs>
@@ -4890,6 +5029,7 @@ export namespace Prisma {
       tags: Prisma.$TagPayload<ExtArgs>[]
       logs: Prisma.$TeamsEditLogPayload<ExtArgs>[]
       userRoleInTeam: Prisma.$UserRoleInTeamPayload<ExtArgs>[]
+      ActiveRequests: Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>[]
       chats: Prisma.$ChatPayload<ExtArgs>[]
       notices: Prisma.$NoticePayload<ExtArgs>[]
       noticeRequests: Prisma.$NoticeRequestPayload<ExtArgs>[]
@@ -5303,6 +5443,7 @@ export namespace Prisma {
     tags<T extends Teams$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     logs<T extends Teams$logsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamsEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userRoleInTeam<T extends Teams$userRoleInTeamArgs<ExtArgs> = {}>(args?: Subset<T, Teams$userRoleInTeamArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ActiveRequests<T extends Teams$ActiveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$ActiveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chats<T extends Teams$chatsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notices<T extends Teams$noticesArgs<ExtArgs> = {}>(args?: Subset<T, Teams$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeRequests<T extends Teams$noticeRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$noticeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5833,6 +5974,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserRoleInTeamScalarFieldEnum | UserRoleInTeamScalarFieldEnum[]
+  }
+
+  /**
+   * Teams.ActiveRequests
+   */
+  export type Teams$ActiveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    where?: ActiveInvitationOrRequestWhereInput
+    orderBy?: ActiveInvitationOrRequestOrderByWithRelationInput | ActiveInvitationOrRequestOrderByWithRelationInput[]
+    cursor?: ActiveInvitationOrRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActiveInvitationOrRequestScalarFieldEnum | ActiveInvitationOrRequestScalarFieldEnum[]
   }
 
   /**
@@ -9153,6 +9318,1072 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: TeamsEditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ActiveInvitationOrRequest
+   */
+
+  export type AggregateActiveInvitationOrRequest = {
+    _count: ActiveInvitationOrRequestCountAggregateOutputType | null
+    _min: ActiveInvitationOrRequestMinAggregateOutputType | null
+    _max: ActiveInvitationOrRequestMaxAggregateOutputType | null
+  }
+
+  export type ActiveInvitationOrRequestMinAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    memberId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ActiveInvitationOrRequestMaxAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    memberId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ActiveInvitationOrRequestCountAggregateOutputType = {
+    id: number
+    teamId: number
+    memberId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ActiveInvitationOrRequestMinAggregateInputType = {
+    id?: true
+    teamId?: true
+    memberId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ActiveInvitationOrRequestMaxAggregateInputType = {
+    id?: true
+    teamId?: true
+    memberId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ActiveInvitationOrRequestCountAggregateInputType = {
+    id?: true
+    teamId?: true
+    memberId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ActiveInvitationOrRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActiveInvitationOrRequest to aggregate.
+     */
+    where?: ActiveInvitationOrRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveInvitationOrRequests to fetch.
+     */
+    orderBy?: ActiveInvitationOrRequestOrderByWithRelationInput | ActiveInvitationOrRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ActiveInvitationOrRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveInvitationOrRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveInvitationOrRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ActiveInvitationOrRequests
+    **/
+    _count?: true | ActiveInvitationOrRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ActiveInvitationOrRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ActiveInvitationOrRequestMaxAggregateInputType
+  }
+
+  export type GetActiveInvitationOrRequestAggregateType<T extends ActiveInvitationOrRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateActiveInvitationOrRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateActiveInvitationOrRequest[P]>
+      : GetScalarType<T[P], AggregateActiveInvitationOrRequest[P]>
+  }
+
+
+
+
+  export type ActiveInvitationOrRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveInvitationOrRequestWhereInput
+    orderBy?: ActiveInvitationOrRequestOrderByWithAggregationInput | ActiveInvitationOrRequestOrderByWithAggregationInput[]
+    by: ActiveInvitationOrRequestScalarFieldEnum[] | ActiveInvitationOrRequestScalarFieldEnum
+    having?: ActiveInvitationOrRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ActiveInvitationOrRequestCountAggregateInputType | true
+    _min?: ActiveInvitationOrRequestMinAggregateInputType
+    _max?: ActiveInvitationOrRequestMaxAggregateInputType
+  }
+
+  export type ActiveInvitationOrRequestGroupByOutputType = {
+    id: string
+    teamId: string
+    memberId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ActiveInvitationOrRequestCountAggregateOutputType | null
+    _min: ActiveInvitationOrRequestMinAggregateOutputType | null
+    _max: ActiveInvitationOrRequestMaxAggregateOutputType | null
+  }
+
+  type GetActiveInvitationOrRequestGroupByPayload<T extends ActiveInvitationOrRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ActiveInvitationOrRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ActiveInvitationOrRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ActiveInvitationOrRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], ActiveInvitationOrRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ActiveInvitationOrRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    memberId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    team?: boolean | TeamsDefaultArgs<ExtArgs>
+    member?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeInvitationOrRequest"]>
+
+  export type ActiveInvitationOrRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    memberId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    team?: boolean | TeamsDefaultArgs<ExtArgs>
+    member?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeInvitationOrRequest"]>
+
+  export type ActiveInvitationOrRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    memberId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    team?: boolean | TeamsDefaultArgs<ExtArgs>
+    member?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeInvitationOrRequest"]>
+
+  export type ActiveInvitationOrRequestSelectScalar = {
+    id?: boolean
+    teamId?: boolean
+    memberId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ActiveInvitationOrRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "memberId" | "createdAt" | "updatedAt", ExtArgs["result"]["activeInvitationOrRequest"]>
+  export type ActiveInvitationOrRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamsDefaultArgs<ExtArgs>
+    member?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ActiveInvitationOrRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamsDefaultArgs<ExtArgs>
+    member?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ActiveInvitationOrRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamsDefaultArgs<ExtArgs>
+    member?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ActiveInvitationOrRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ActiveInvitationOrRequest"
+    objects: {
+      team: Prisma.$TeamsPayload<ExtArgs>
+      member: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      teamId: string
+      memberId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["activeInvitationOrRequest"]>
+    composites: {}
+  }
+
+  type ActiveInvitationOrRequestGetPayload<S extends boolean | null | undefined | ActiveInvitationOrRequestDefaultArgs> = $Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload, S>
+
+  type ActiveInvitationOrRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ActiveInvitationOrRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ActiveInvitationOrRequestCountAggregateInputType | true
+    }
+
+  export interface ActiveInvitationOrRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ActiveInvitationOrRequest'], meta: { name: 'ActiveInvitationOrRequest' } }
+    /**
+     * Find zero or one ActiveInvitationOrRequest that matches the filter.
+     * @param {ActiveInvitationOrRequestFindUniqueArgs} args - Arguments to find a ActiveInvitationOrRequest
+     * @example
+     * // Get one ActiveInvitationOrRequest
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ActiveInvitationOrRequestFindUniqueArgs>(args: SelectSubset<T, ActiveInvitationOrRequestFindUniqueArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ActiveInvitationOrRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ActiveInvitationOrRequestFindUniqueOrThrowArgs} args - Arguments to find a ActiveInvitationOrRequest
+     * @example
+     * // Get one ActiveInvitationOrRequest
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ActiveInvitationOrRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, ActiveInvitationOrRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActiveInvitationOrRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveInvitationOrRequestFindFirstArgs} args - Arguments to find a ActiveInvitationOrRequest
+     * @example
+     * // Get one ActiveInvitationOrRequest
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ActiveInvitationOrRequestFindFirstArgs>(args?: SelectSubset<T, ActiveInvitationOrRequestFindFirstArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActiveInvitationOrRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveInvitationOrRequestFindFirstOrThrowArgs} args - Arguments to find a ActiveInvitationOrRequest
+     * @example
+     * // Get one ActiveInvitationOrRequest
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ActiveInvitationOrRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, ActiveInvitationOrRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ActiveInvitationOrRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveInvitationOrRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ActiveInvitationOrRequests
+     * const activeInvitationOrRequests = await prisma.activeInvitationOrRequest.findMany()
+     * 
+     * // Get first 10 ActiveInvitationOrRequests
+     * const activeInvitationOrRequests = await prisma.activeInvitationOrRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const activeInvitationOrRequestWithIdOnly = await prisma.activeInvitationOrRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ActiveInvitationOrRequestFindManyArgs>(args?: SelectSubset<T, ActiveInvitationOrRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ActiveInvitationOrRequest.
+     * @param {ActiveInvitationOrRequestCreateArgs} args - Arguments to create a ActiveInvitationOrRequest.
+     * @example
+     * // Create one ActiveInvitationOrRequest
+     * const ActiveInvitationOrRequest = await prisma.activeInvitationOrRequest.create({
+     *   data: {
+     *     // ... data to create a ActiveInvitationOrRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends ActiveInvitationOrRequestCreateArgs>(args: SelectSubset<T, ActiveInvitationOrRequestCreateArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ActiveInvitationOrRequests.
+     * @param {ActiveInvitationOrRequestCreateManyArgs} args - Arguments to create many ActiveInvitationOrRequests.
+     * @example
+     * // Create many ActiveInvitationOrRequests
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ActiveInvitationOrRequestCreateManyArgs>(args?: SelectSubset<T, ActiveInvitationOrRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ActiveInvitationOrRequests and returns the data saved in the database.
+     * @param {ActiveInvitationOrRequestCreateManyAndReturnArgs} args - Arguments to create many ActiveInvitationOrRequests.
+     * @example
+     * // Create many ActiveInvitationOrRequests
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ActiveInvitationOrRequests and only return the `id`
+     * const activeInvitationOrRequestWithIdOnly = await prisma.activeInvitationOrRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ActiveInvitationOrRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, ActiveInvitationOrRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ActiveInvitationOrRequest.
+     * @param {ActiveInvitationOrRequestDeleteArgs} args - Arguments to delete one ActiveInvitationOrRequest.
+     * @example
+     * // Delete one ActiveInvitationOrRequest
+     * const ActiveInvitationOrRequest = await prisma.activeInvitationOrRequest.delete({
+     *   where: {
+     *     // ... filter to delete one ActiveInvitationOrRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ActiveInvitationOrRequestDeleteArgs>(args: SelectSubset<T, ActiveInvitationOrRequestDeleteArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ActiveInvitationOrRequest.
+     * @param {ActiveInvitationOrRequestUpdateArgs} args - Arguments to update one ActiveInvitationOrRequest.
+     * @example
+     * // Update one ActiveInvitationOrRequest
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ActiveInvitationOrRequestUpdateArgs>(args: SelectSubset<T, ActiveInvitationOrRequestUpdateArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ActiveInvitationOrRequests.
+     * @param {ActiveInvitationOrRequestDeleteManyArgs} args - Arguments to filter ActiveInvitationOrRequests to delete.
+     * @example
+     * // Delete a few ActiveInvitationOrRequests
+     * const { count } = await prisma.activeInvitationOrRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ActiveInvitationOrRequestDeleteManyArgs>(args?: SelectSubset<T, ActiveInvitationOrRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActiveInvitationOrRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveInvitationOrRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ActiveInvitationOrRequests
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ActiveInvitationOrRequestUpdateManyArgs>(args: SelectSubset<T, ActiveInvitationOrRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActiveInvitationOrRequests and returns the data updated in the database.
+     * @param {ActiveInvitationOrRequestUpdateManyAndReturnArgs} args - Arguments to update many ActiveInvitationOrRequests.
+     * @example
+     * // Update many ActiveInvitationOrRequests
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ActiveInvitationOrRequests and only return the `id`
+     * const activeInvitationOrRequestWithIdOnly = await prisma.activeInvitationOrRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ActiveInvitationOrRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, ActiveInvitationOrRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ActiveInvitationOrRequest.
+     * @param {ActiveInvitationOrRequestUpsertArgs} args - Arguments to update or create a ActiveInvitationOrRequest.
+     * @example
+     * // Update or create a ActiveInvitationOrRequest
+     * const activeInvitationOrRequest = await prisma.activeInvitationOrRequest.upsert({
+     *   create: {
+     *     // ... data to create a ActiveInvitationOrRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ActiveInvitationOrRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ActiveInvitationOrRequestUpsertArgs>(args: SelectSubset<T, ActiveInvitationOrRequestUpsertArgs<ExtArgs>>): Prisma__ActiveInvitationOrRequestClient<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ActiveInvitationOrRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveInvitationOrRequestCountArgs} args - Arguments to filter ActiveInvitationOrRequests to count.
+     * @example
+     * // Count the number of ActiveInvitationOrRequests
+     * const count = await prisma.activeInvitationOrRequest.count({
+     *   where: {
+     *     // ... the filter for the ActiveInvitationOrRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends ActiveInvitationOrRequestCountArgs>(
+      args?: Subset<T, ActiveInvitationOrRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ActiveInvitationOrRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ActiveInvitationOrRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveInvitationOrRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ActiveInvitationOrRequestAggregateArgs>(args: Subset<T, ActiveInvitationOrRequestAggregateArgs>): Prisma.PrismaPromise<GetActiveInvitationOrRequestAggregateType<T>>
+
+    /**
+     * Group by ActiveInvitationOrRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveInvitationOrRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ActiveInvitationOrRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ActiveInvitationOrRequestGroupByArgs['orderBy'] }
+        : { orderBy?: ActiveInvitationOrRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ActiveInvitationOrRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetActiveInvitationOrRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ActiveInvitationOrRequest model
+   */
+  readonly fields: ActiveInvitationOrRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ActiveInvitationOrRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ActiveInvitationOrRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    team<T extends TeamsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamsDefaultArgs<ExtArgs>>): Prisma__TeamsClient<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    member<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ActiveInvitationOrRequest model
+   */
+  interface ActiveInvitationOrRequestFieldRefs {
+    readonly id: FieldRef<"ActiveInvitationOrRequest", 'String'>
+    readonly teamId: FieldRef<"ActiveInvitationOrRequest", 'String'>
+    readonly memberId: FieldRef<"ActiveInvitationOrRequest", 'String'>
+    readonly createdAt: FieldRef<"ActiveInvitationOrRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"ActiveInvitationOrRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ActiveInvitationOrRequest findUnique
+   */
+  export type ActiveInvitationOrRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveInvitationOrRequest to fetch.
+     */
+    where: ActiveInvitationOrRequestWhereUniqueInput
+  }
+
+  /**
+   * ActiveInvitationOrRequest findUniqueOrThrow
+   */
+  export type ActiveInvitationOrRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveInvitationOrRequest to fetch.
+     */
+    where: ActiveInvitationOrRequestWhereUniqueInput
+  }
+
+  /**
+   * ActiveInvitationOrRequest findFirst
+   */
+  export type ActiveInvitationOrRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveInvitationOrRequest to fetch.
+     */
+    where?: ActiveInvitationOrRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveInvitationOrRequests to fetch.
+     */
+    orderBy?: ActiveInvitationOrRequestOrderByWithRelationInput | ActiveInvitationOrRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActiveInvitationOrRequests.
+     */
+    cursor?: ActiveInvitationOrRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveInvitationOrRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveInvitationOrRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActiveInvitationOrRequests.
+     */
+    distinct?: ActiveInvitationOrRequestScalarFieldEnum | ActiveInvitationOrRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveInvitationOrRequest findFirstOrThrow
+   */
+  export type ActiveInvitationOrRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveInvitationOrRequest to fetch.
+     */
+    where?: ActiveInvitationOrRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveInvitationOrRequests to fetch.
+     */
+    orderBy?: ActiveInvitationOrRequestOrderByWithRelationInput | ActiveInvitationOrRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActiveInvitationOrRequests.
+     */
+    cursor?: ActiveInvitationOrRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveInvitationOrRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveInvitationOrRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActiveInvitationOrRequests.
+     */
+    distinct?: ActiveInvitationOrRequestScalarFieldEnum | ActiveInvitationOrRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveInvitationOrRequest findMany
+   */
+  export type ActiveInvitationOrRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveInvitationOrRequests to fetch.
+     */
+    where?: ActiveInvitationOrRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveInvitationOrRequests to fetch.
+     */
+    orderBy?: ActiveInvitationOrRequestOrderByWithRelationInput | ActiveInvitationOrRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ActiveInvitationOrRequests.
+     */
+    cursor?: ActiveInvitationOrRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveInvitationOrRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveInvitationOrRequests.
+     */
+    skip?: number
+    distinct?: ActiveInvitationOrRequestScalarFieldEnum | ActiveInvitationOrRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveInvitationOrRequest create
+   */
+  export type ActiveInvitationOrRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ActiveInvitationOrRequest.
+     */
+    data: XOR<ActiveInvitationOrRequestCreateInput, ActiveInvitationOrRequestUncheckedCreateInput>
+  }
+
+  /**
+   * ActiveInvitationOrRequest createMany
+   */
+  export type ActiveInvitationOrRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ActiveInvitationOrRequests.
+     */
+    data: ActiveInvitationOrRequestCreateManyInput | ActiveInvitationOrRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ActiveInvitationOrRequest createManyAndReturn
+   */
+  export type ActiveInvitationOrRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many ActiveInvitationOrRequests.
+     */
+    data: ActiveInvitationOrRequestCreateManyInput | ActiveInvitationOrRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActiveInvitationOrRequest update
+   */
+  export type ActiveInvitationOrRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ActiveInvitationOrRequest.
+     */
+    data: XOR<ActiveInvitationOrRequestUpdateInput, ActiveInvitationOrRequestUncheckedUpdateInput>
+    /**
+     * Choose, which ActiveInvitationOrRequest to update.
+     */
+    where: ActiveInvitationOrRequestWhereUniqueInput
+  }
+
+  /**
+   * ActiveInvitationOrRequest updateMany
+   */
+  export type ActiveInvitationOrRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ActiveInvitationOrRequests.
+     */
+    data: XOR<ActiveInvitationOrRequestUpdateManyMutationInput, ActiveInvitationOrRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which ActiveInvitationOrRequests to update
+     */
+    where?: ActiveInvitationOrRequestWhereInput
+    /**
+     * Limit how many ActiveInvitationOrRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActiveInvitationOrRequest updateManyAndReturn
+   */
+  export type ActiveInvitationOrRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update ActiveInvitationOrRequests.
+     */
+    data: XOR<ActiveInvitationOrRequestUpdateManyMutationInput, ActiveInvitationOrRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which ActiveInvitationOrRequests to update
+     */
+    where?: ActiveInvitationOrRequestWhereInput
+    /**
+     * Limit how many ActiveInvitationOrRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActiveInvitationOrRequest upsert
+   */
+  export type ActiveInvitationOrRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ActiveInvitationOrRequest to update in case it exists.
+     */
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    /**
+     * In case the ActiveInvitationOrRequest found by the `where` argument doesn't exist, create a new ActiveInvitationOrRequest with this data.
+     */
+    create: XOR<ActiveInvitationOrRequestCreateInput, ActiveInvitationOrRequestUncheckedCreateInput>
+    /**
+     * In case the ActiveInvitationOrRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ActiveInvitationOrRequestUpdateInput, ActiveInvitationOrRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * ActiveInvitationOrRequest delete
+   */
+  export type ActiveInvitationOrRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
+    /**
+     * Filter which ActiveInvitationOrRequest to delete.
+     */
+    where: ActiveInvitationOrRequestWhereUniqueInput
+  }
+
+  /**
+   * ActiveInvitationOrRequest deleteMany
+   */
+  export type ActiveInvitationOrRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActiveInvitationOrRequests to delete
+     */
+    where?: ActiveInvitationOrRequestWhereInput
+    /**
+     * Limit how many ActiveInvitationOrRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActiveInvitationOrRequest without action
+   */
+  export type ActiveInvitationOrRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveInvitationOrRequest
+     */
+    select?: ActiveInvitationOrRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveInvitationOrRequest
+     */
+    omit?: ActiveInvitationOrRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveInvitationOrRequestInclude<ExtArgs> | null
   }
 
 
@@ -14794,6 +16025,17 @@ export namespace Prisma {
   export type TeamsEditLogScalarFieldEnum = (typeof TeamsEditLogScalarFieldEnum)[keyof typeof TeamsEditLogScalarFieldEnum]
 
 
+  export const ActiveInvitationOrRequestScalarFieldEnum: {
+    id: 'id',
+    teamId: 'teamId',
+    memberId: 'memberId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ActiveInvitationOrRequestScalarFieldEnum = (typeof ActiveInvitationOrRequestScalarFieldEnum)[keyof typeof ActiveInvitationOrRequestScalarFieldEnum]
+
+
   export const NoticeScalarFieldEnum: {
     id: 'id',
     title: 'title',
@@ -15074,10 +16316,11 @@ export namespace Prisma {
     tags?: TagListRelationFilter
     teamLeaderOf?: TeamsListRelationFilter
     teams?: TeamsListRelationFilter
-    chats?: ChatListRelationFilter
-    messages?: MessageListRelationFilter
+    ActiveRequests?: ActiveInvitationOrRequestListRelationFilter
     TeamsEditLog?: TeamsEditLogListRelationFilter
     userRoleInTeam?: UserRoleInTeamListRelationFilter
+    chats?: ChatListRelationFilter
+    messages?: MessageListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
@@ -15107,10 +16350,11 @@ export namespace Prisma {
     tags?: TagOrderByRelationAggregateInput
     teamLeaderOf?: TeamsOrderByRelationAggregateInput
     teams?: TeamsOrderByRelationAggregateInput
-    chats?: ChatOrderByRelationAggregateInput
-    messages?: MessageOrderByRelationAggregateInput
+    ActiveRequests?: ActiveInvitationOrRequestOrderByRelationAggregateInput
     TeamsEditLog?: TeamsEditLogOrderByRelationAggregateInput
     userRoleInTeam?: UserRoleInTeamOrderByRelationAggregateInput
+    chats?: ChatOrderByRelationAggregateInput
+    messages?: MessageOrderByRelationAggregateInput
     noticeRequests?: NoticeRequestOrderByRelationAggregateInput
     notices?: NoticeOrderByRelationAggregateInput
     noticeHistory?: NoticeHistoryOrderByRelationAggregateInput
@@ -15143,10 +16387,11 @@ export namespace Prisma {
     tags?: TagListRelationFilter
     teamLeaderOf?: TeamsListRelationFilter
     teams?: TeamsListRelationFilter
-    chats?: ChatListRelationFilter
-    messages?: MessageListRelationFilter
+    ActiveRequests?: ActiveInvitationOrRequestListRelationFilter
     TeamsEditLog?: TeamsEditLogListRelationFilter
     userRoleInTeam?: UserRoleInTeamListRelationFilter
+    chats?: ChatListRelationFilter
+    messages?: MessageListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
@@ -15222,6 +16467,7 @@ export namespace Prisma {
     tags?: TagListRelationFilter
     logs?: TeamsEditLogListRelationFilter
     userRoleInTeam?: UserRoleInTeamListRelationFilter
+    ActiveRequests?: ActiveInvitationOrRequestListRelationFilter
     chats?: ChatListRelationFilter
     notices?: NoticeListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
@@ -15242,6 +16488,7 @@ export namespace Prisma {
     tags?: TagOrderByRelationAggregateInput
     logs?: TeamsEditLogOrderByRelationAggregateInput
     userRoleInTeam?: UserRoleInTeamOrderByRelationAggregateInput
+    ActiveRequests?: ActiveInvitationOrRequestOrderByRelationAggregateInput
     chats?: ChatOrderByRelationAggregateInput
     notices?: NoticeOrderByRelationAggregateInput
     noticeRequests?: NoticeRequestOrderByRelationAggregateInput
@@ -15265,6 +16512,7 @@ export namespace Prisma {
     tags?: TagListRelationFilter
     logs?: TeamsEditLogListRelationFilter
     userRoleInTeam?: UserRoleInTeamListRelationFilter
+    ActiveRequests?: ActiveInvitationOrRequestListRelationFilter
     chats?: ChatListRelationFilter
     notices?: NoticeListRelationFilter
     noticeRequests?: NoticeRequestListRelationFilter
@@ -15472,6 +16720,64 @@ export namespace Prisma {
     designation?: EnumDesignationWithAggregatesFilter<"TeamsEditLog"> | $Enums.Designation
     createdAt?: DateTimeWithAggregatesFilter<"TeamsEditLog"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TeamsEditLog"> | Date | string
+  }
+
+  export type ActiveInvitationOrRequestWhereInput = {
+    AND?: ActiveInvitationOrRequestWhereInput | ActiveInvitationOrRequestWhereInput[]
+    OR?: ActiveInvitationOrRequestWhereInput[]
+    NOT?: ActiveInvitationOrRequestWhereInput | ActiveInvitationOrRequestWhereInput[]
+    id?: StringFilter<"ActiveInvitationOrRequest"> | string
+    teamId?: StringFilter<"ActiveInvitationOrRequest"> | string
+    memberId?: StringFilter<"ActiveInvitationOrRequest"> | string
+    createdAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
+    team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
+    member?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ActiveInvitationOrRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    memberId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    team?: TeamsOrderByWithRelationInput
+    member?: UserOrderByWithRelationInput
+  }
+
+  export type ActiveInvitationOrRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ActiveInvitationOrRequestWhereInput | ActiveInvitationOrRequestWhereInput[]
+    OR?: ActiveInvitationOrRequestWhereInput[]
+    NOT?: ActiveInvitationOrRequestWhereInput | ActiveInvitationOrRequestWhereInput[]
+    teamId?: StringFilter<"ActiveInvitationOrRequest"> | string
+    memberId?: StringFilter<"ActiveInvitationOrRequest"> | string
+    createdAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
+    team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
+    member?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ActiveInvitationOrRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    memberId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ActiveInvitationOrRequestCountOrderByAggregateInput
+    _max?: ActiveInvitationOrRequestMaxOrderByAggregateInput
+    _min?: ActiveInvitationOrRequestMinOrderByAggregateInput
+  }
+
+  export type ActiveInvitationOrRequestScalarWhereWithAggregatesInput = {
+    AND?: ActiveInvitationOrRequestScalarWhereWithAggregatesInput | ActiveInvitationOrRequestScalarWhereWithAggregatesInput[]
+    OR?: ActiveInvitationOrRequestScalarWhereWithAggregatesInput[]
+    NOT?: ActiveInvitationOrRequestScalarWhereWithAggregatesInput | ActiveInvitationOrRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ActiveInvitationOrRequest"> | string
+    teamId?: StringWithAggregatesFilter<"ActiveInvitationOrRequest"> | string
+    memberId?: StringWithAggregatesFilter<"ActiveInvitationOrRequest"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ActiveInvitationOrRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ActiveInvitationOrRequest"> | Date | string
   }
 
   export type NoticeWhereInput = {
@@ -15893,10 +17199,11 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -15926,10 +17233,11 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -15959,10 +17267,11 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -15992,10 +17301,11 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -16084,6 +17394,7 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -16103,6 +17414,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -16122,6 +17434,7 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -16141,6 +17454,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -16349,6 +17663,60 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveInvitationOrRequestCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    team: TeamsCreateNestedOneWithoutActiveRequestsInput
+    member: UserCreateNestedOneWithoutActiveRequestsInput
+  }
+
+  export type ActiveInvitationOrRequestUncheckedCreateInput = {
+    id?: string
+    teamId: string
+    memberId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ActiveInvitationOrRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput
+    member?: UserUpdateOneRequiredWithoutActiveRequestsNestedInput
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    memberId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveInvitationOrRequestCreateManyInput = {
+    id?: string
+    teamId: string
+    memberId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ActiveInvitationOrRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    memberId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16821,16 +18189,10 @@ export namespace Prisma {
     none?: TeamsWhereInput
   }
 
-  export type ChatListRelationFilter = {
-    every?: ChatWhereInput
-    some?: ChatWhereInput
-    none?: ChatWhereInput
-  }
-
-  export type MessageListRelationFilter = {
-    every?: MessageWhereInput
-    some?: MessageWhereInput
-    none?: MessageWhereInput
+  export type ActiveInvitationOrRequestListRelationFilter = {
+    every?: ActiveInvitationOrRequestWhereInput
+    some?: ActiveInvitationOrRequestWhereInput
+    none?: ActiveInvitationOrRequestWhereInput
   }
 
   export type TeamsEditLogListRelationFilter = {
@@ -16843,6 +18205,18 @@ export namespace Prisma {
     every?: UserRoleInTeamWhereInput
     some?: UserRoleInTeamWhereInput
     none?: UserRoleInTeamWhereInput
+  }
+
+  export type ChatListRelationFilter = {
+    every?: ChatWhereInput
+    some?: ChatWhereInput
+    none?: ChatWhereInput
+  }
+
+  export type MessageListRelationFilter = {
+    every?: MessageWhereInput
+    some?: MessageWhereInput
+    none?: MessageWhereInput
   }
 
   export type NoticeRequestListRelationFilter = {
@@ -16876,11 +18250,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ChatOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type MessageOrderByRelationAggregateInput = {
+  export type ActiveInvitationOrRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16889,6 +18259,14 @@ export namespace Prisma {
   }
 
   export type UserRoleInTeamOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChatOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MessageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17230,6 +18608,30 @@ export namespace Prisma {
     _max?: NestedEnumActionFilter<$PrismaModel>
   }
 
+  export type ActiveInvitationOrRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    memberId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ActiveInvitationOrRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    memberId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ActiveInvitationOrRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    memberId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type NoticeCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -17426,17 +18828,11 @@ export namespace Prisma {
     connect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
   }
 
-  export type ChatCreateNestedManyWithoutMembersInput = {
-    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
-    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-  }
-
-  export type MessageCreateNestedManyWithoutUserInput = {
-    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
-    createMany?: MessageCreateManyUserInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  export type ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutMemberInput, ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput> | ActiveInvitationOrRequestCreateWithoutMemberInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput | ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyMemberInputEnvelope
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
   }
 
   export type TeamsEditLogCreateNestedManyWithoutUserInput = {
@@ -17451,6 +18847,19 @@ export namespace Prisma {
     connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutUserInput | UserRoleInTeamCreateOrConnectWithoutUserInput[]
     createMany?: UserRoleInTeamCreateManyUserInputEnvelope
     connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+  }
+
+  export type ChatCreateNestedManyWithoutMembersInput = {
+    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+  }
+
+  export type MessageCreateNestedManyWithoutUserInput = {
+    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
+    createMany?: MessageCreateManyUserInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
   export type NoticeRequestCreateNestedManyWithoutMemberInput = {
@@ -17493,17 +18902,11 @@ export namespace Prisma {
     connect?: TeamsWhereUniqueInput | TeamsWhereUniqueInput[]
   }
 
-  export type ChatUncheckedCreateNestedManyWithoutMembersInput = {
-    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
-    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-  }
-
-  export type MessageUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
-    createMany?: MessageCreateManyUserInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  export type ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutMemberInput, ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput> | ActiveInvitationOrRequestCreateWithoutMemberInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput | ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyMemberInputEnvelope
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
   }
 
   export type TeamsEditLogUncheckedCreateNestedManyWithoutUserInput = {
@@ -17518,6 +18921,19 @@ export namespace Prisma {
     connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutUserInput | UserRoleInTeamCreateOrConnectWithoutUserInput[]
     createMany?: UserRoleInTeamCreateManyUserInputEnvelope
     connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+  }
+
+  export type ChatUncheckedCreateNestedManyWithoutMembersInput = {
+    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+  }
+
+  export type MessageUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
+    createMany?: MessageCreateManyUserInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
   export type NoticeRequestUncheckedCreateNestedManyWithoutMemberInput = {
@@ -17602,31 +19018,18 @@ export namespace Prisma {
     deleteMany?: TeamsScalarWhereInput | TeamsScalarWhereInput[]
   }
 
-  export type ChatUpdateManyWithoutMembersNestedInput = {
-    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
-    upsert?: ChatUpsertWithWhereUniqueWithoutMembersInput | ChatUpsertWithWhereUniqueWithoutMembersInput[]
-    set?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    disconnect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    delete?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    update?: ChatUpdateWithWhereUniqueWithoutMembersInput | ChatUpdateWithWhereUniqueWithoutMembersInput[]
-    updateMany?: ChatUpdateManyWithWhereWithoutMembersInput | ChatUpdateManyWithWhereWithoutMembersInput[]
-    deleteMany?: ChatScalarWhereInput | ChatScalarWhereInput[]
-  }
-
-  export type MessageUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutUserInput | MessageUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MessageCreateManyUserInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutUserInput | MessageUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutUserInput | MessageUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  export type ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutMemberInput, ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput> | ActiveInvitationOrRequestCreateWithoutMemberInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput | ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput[]
+    upsert?: ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutMemberInput | ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutMemberInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyMemberInputEnvelope
+    set?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    disconnect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    delete?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    update?: ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutMemberInput | ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutMemberInput[]
+    updateMany?: ActiveInvitationOrRequestUpdateManyWithWhereWithoutMemberInput | ActiveInvitationOrRequestUpdateManyWithWhereWithoutMemberInput[]
+    deleteMany?: ActiveInvitationOrRequestScalarWhereInput | ActiveInvitationOrRequestScalarWhereInput[]
   }
 
   export type TeamsEditLogUpdateManyWithoutUserNestedInput = {
@@ -17655,6 +19058,33 @@ export namespace Prisma {
     update?: UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput | UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutUserInput | UserRoleInTeamUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
+  }
+
+  export type ChatUpdateManyWithoutMembersNestedInput = {
+    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
+    upsert?: ChatUpsertWithWhereUniqueWithoutMembersInput | ChatUpsertWithWhereUniqueWithoutMembersInput[]
+    set?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    disconnect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    delete?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    update?: ChatUpdateWithWhereUniqueWithoutMembersInput | ChatUpdateWithWhereUniqueWithoutMembersInput[]
+    updateMany?: ChatUpdateManyWithWhereWithoutMembersInput | ChatUpdateManyWithWhereWithoutMembersInput[]
+    deleteMany?: ChatScalarWhereInput | ChatScalarWhereInput[]
+  }
+
+  export type MessageUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutUserInput | MessageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MessageCreateManyUserInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutUserInput | MessageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutUserInput | MessageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
   export type NoticeRequestUpdateManyWithoutMemberNestedInput = {
@@ -17739,31 +19169,18 @@ export namespace Prisma {
     deleteMany?: TeamsScalarWhereInput | TeamsScalarWhereInput[]
   }
 
-  export type ChatUncheckedUpdateManyWithoutMembersNestedInput = {
-    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
-    upsert?: ChatUpsertWithWhereUniqueWithoutMembersInput | ChatUpsertWithWhereUniqueWithoutMembersInput[]
-    set?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    disconnect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    delete?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
-    update?: ChatUpdateWithWhereUniqueWithoutMembersInput | ChatUpdateWithWhereUniqueWithoutMembersInput[]
-    updateMany?: ChatUpdateManyWithWhereWithoutMembersInput | ChatUpdateManyWithWhereWithoutMembersInput[]
-    deleteMany?: ChatScalarWhereInput | ChatScalarWhereInput[]
-  }
-
-  export type MessageUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutUserInput | MessageUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MessageCreateManyUserInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutUserInput | MessageUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutUserInput | MessageUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  export type ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutMemberInput, ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput> | ActiveInvitationOrRequestCreateWithoutMemberInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput | ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput[]
+    upsert?: ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutMemberInput | ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutMemberInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyMemberInputEnvelope
+    set?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    disconnect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    delete?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    update?: ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutMemberInput | ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutMemberInput[]
+    updateMany?: ActiveInvitationOrRequestUpdateManyWithWhereWithoutMemberInput | ActiveInvitationOrRequestUpdateManyWithWhereWithoutMemberInput[]
+    deleteMany?: ActiveInvitationOrRequestScalarWhereInput | ActiveInvitationOrRequestScalarWhereInput[]
   }
 
   export type TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput = {
@@ -17792,6 +19209,33 @@ export namespace Prisma {
     update?: UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput | UserRoleInTeamUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutUserInput | UserRoleInTeamUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
+  }
+
+  export type ChatUncheckedUpdateManyWithoutMembersNestedInput = {
+    create?: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput> | ChatCreateWithoutMembersInput[] | ChatUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutMembersInput | ChatCreateOrConnectWithoutMembersInput[]
+    upsert?: ChatUpsertWithWhereUniqueWithoutMembersInput | ChatUpsertWithWhereUniqueWithoutMembersInput[]
+    set?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    disconnect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    delete?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    update?: ChatUpdateWithWhereUniqueWithoutMembersInput | ChatUpdateWithWhereUniqueWithoutMembersInput[]
+    updateMany?: ChatUpdateManyWithWhereWithoutMembersInput | ChatUpdateManyWithWhereWithoutMembersInput[]
+    deleteMany?: ChatScalarWhereInput | ChatScalarWhereInput[]
+  }
+
+  export type MessageUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput> | MessageCreateWithoutUserInput[] | MessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutUserInput | MessageCreateOrConnectWithoutUserInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutUserInput | MessageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MessageCreateManyUserInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutUserInput | MessageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutUserInput | MessageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
   export type NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput = {
@@ -17868,6 +19312,13 @@ export namespace Prisma {
     connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
   }
 
+  export type ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutTeamInput, ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput> | ActiveInvitationOrRequestCreateWithoutTeamInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput | ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyTeamInputEnvelope
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+  }
+
   export type ChatCreateNestedManyWithoutTeamInput = {
     create?: XOR<ChatCreateWithoutTeamInput, ChatUncheckedCreateWithoutTeamInput> | ChatCreateWithoutTeamInput[] | ChatUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: ChatCreateOrConnectWithoutTeamInput | ChatCreateOrConnectWithoutTeamInput[]
@@ -17913,6 +19364,13 @@ export namespace Prisma {
     connectOrCreate?: UserRoleInTeamCreateOrConnectWithoutTeamInput | UserRoleInTeamCreateOrConnectWithoutTeamInput[]
     createMany?: UserRoleInTeamCreateManyTeamInputEnvelope
     connect?: UserRoleInTeamWhereUniqueInput | UserRoleInTeamWhereUniqueInput[]
+  }
+
+  export type ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutTeamInput, ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput> | ActiveInvitationOrRequestCreateWithoutTeamInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput | ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyTeamInputEnvelope
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
   }
 
   export type ChatUncheckedCreateNestedManyWithoutTeamInput = {
@@ -17996,6 +19454,20 @@ export namespace Prisma {
     update?: UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput | UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput[]
     updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutTeamInput | UserRoleInTeamUpdateManyWithWhereWithoutTeamInput[]
     deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
+  }
+
+  export type ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutTeamInput, ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput> | ActiveInvitationOrRequestCreateWithoutTeamInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput | ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput[]
+    upsert?: ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutTeamInput | ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyTeamInputEnvelope
+    set?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    disconnect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    delete?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    update?: ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutTeamInput | ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: ActiveInvitationOrRequestUpdateManyWithWhereWithoutTeamInput | ActiveInvitationOrRequestUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: ActiveInvitationOrRequestScalarWhereInput | ActiveInvitationOrRequestScalarWhereInput[]
   }
 
   export type ChatUpdateManyWithoutTeamNestedInput = {
@@ -18092,6 +19564,20 @@ export namespace Prisma {
     update?: UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput | UserRoleInTeamUpdateWithWhereUniqueWithoutTeamInput[]
     updateMany?: UserRoleInTeamUpdateManyWithWhereWithoutTeamInput | UserRoleInTeamUpdateManyWithWhereWithoutTeamInput[]
     deleteMany?: UserRoleInTeamScalarWhereInput | UserRoleInTeamScalarWhereInput[]
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<ActiveInvitationOrRequestCreateWithoutTeamInput, ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput> | ActiveInvitationOrRequestCreateWithoutTeamInput[] | ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput | ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput[]
+    upsert?: ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutTeamInput | ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: ActiveInvitationOrRequestCreateManyTeamInputEnvelope
+    set?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    disconnect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    delete?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    connect?: ActiveInvitationOrRequestWhereUniqueInput | ActiveInvitationOrRequestWhereUniqueInput[]
+    update?: ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutTeamInput | ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: ActiveInvitationOrRequestUpdateManyWithWhereWithoutTeamInput | ActiveInvitationOrRequestUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: ActiveInvitationOrRequestScalarWhereInput | ActiveInvitationOrRequestScalarWhereInput[]
   }
 
   export type ChatUncheckedUpdateManyWithoutTeamNestedInput = {
@@ -18274,6 +19760,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutTeamsEditLogInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeamsEditLogInput, UserUpdateWithoutTeamsEditLogInput>, UserUncheckedUpdateWithoutTeamsEditLogInput>
+  }
+
+  export type TeamsCreateNestedOneWithoutActiveRequestsInput = {
+    create?: XOR<TeamsCreateWithoutActiveRequestsInput, TeamsUncheckedCreateWithoutActiveRequestsInput>
+    connectOrCreate?: TeamsCreateOrConnectWithoutActiveRequestsInput
+    connect?: TeamsWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutActiveRequestsInput = {
+    create?: XOR<UserCreateWithoutActiveRequestsInput, UserUncheckedCreateWithoutActiveRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutActiveRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput = {
+    create?: XOR<TeamsCreateWithoutActiveRequestsInput, TeamsUncheckedCreateWithoutActiveRequestsInput>
+    connectOrCreate?: TeamsCreateOrConnectWithoutActiveRequestsInput
+    upsert?: TeamsUpsertWithoutActiveRequestsInput
+    connect?: TeamsWhereUniqueInput
+    update?: XOR<XOR<TeamsUpdateToOneWithWhereWithoutActiveRequestsInput, TeamsUpdateWithoutActiveRequestsInput>, TeamsUncheckedUpdateWithoutActiveRequestsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutActiveRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutActiveRequestsInput, UserUncheckedCreateWithoutActiveRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutActiveRequestsInput
+    upsert?: UserUpsertWithoutActiveRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActiveRequestsInput, UserUpdateWithoutActiveRequestsInput>, UserUncheckedUpdateWithoutActiveRequestsInput>
   }
 
   export type UserCreateNestedOneWithoutNoticesInput = {
@@ -18750,6 +20264,7 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -18768,6 +20283,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -18796,6 +20312,7 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -18814,6 +20331,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -18824,56 +20342,27 @@ export namespace Prisma {
     create: XOR<TeamsCreateWithoutMembersInput, TeamsUncheckedCreateWithoutMembersInput>
   }
 
-  export type ChatCreateWithoutMembersInput = {
+  export type ActiveInvitationOrRequestCreateWithoutMemberInput = {
     id?: string
-    title: string
-    about: string
-    isActive: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    team: TeamsCreateNestedOneWithoutChatsInput
-    messages?: MessageCreateNestedManyWithoutChatInput
+    team: TeamsCreateNestedOneWithoutActiveRequestsInput
   }
 
-  export type ChatUncheckedCreateWithoutMembersInput = {
+  export type ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput = {
     id?: string
-    title: string
-    about: string
     teamId: string
-    isActive: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    messages?: MessageUncheckedCreateNestedManyWithoutChatInput
-  }
-
-  export type ChatCreateOrConnectWithoutMembersInput = {
-    where: ChatWhereUniqueInput
-    create: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
-  }
-
-  export type MessageCreateWithoutUserInput = {
-    id?: string
-    message: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    chat: ChatCreateNestedOneWithoutMessagesInput
-  }
-
-  export type MessageUncheckedCreateWithoutUserInput = {
-    id?: string
-    chatId: string
-    message: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type MessageCreateOrConnectWithoutUserInput = {
-    where: MessageWhereUniqueInput
-    create: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput>
+  export type ActiveInvitationOrRequestCreateOrConnectWithoutMemberInput = {
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    create: XOR<ActiveInvitationOrRequestCreateWithoutMemberInput, ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput>
   }
 
-  export type MessageCreateManyUserInputEnvelope = {
-    data: MessageCreateManyUserInput | MessageCreateManyUserInput[]
+  export type ActiveInvitationOrRequestCreateManyMemberInputEnvelope = {
+    data: ActiveInvitationOrRequestCreateManyMemberInput | ActiveInvitationOrRequestCreateManyMemberInput[]
     skipDuplicates?: boolean
   }
 
@@ -18928,6 +20417,59 @@ export namespace Prisma {
 
   export type UserRoleInTeamCreateManyUserInputEnvelope = {
     data: UserRoleInTeamCreateManyUserInput | UserRoleInTeamCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChatCreateWithoutMembersInput = {
+    id?: string
+    title: string
+    about: string
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    team: TeamsCreateNestedOneWithoutChatsInput
+    messages?: MessageCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatUncheckedCreateWithoutMembersInput = {
+    id?: string
+    title: string
+    about: string
+    teamId: string
+    isActive: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: MessageUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatCreateOrConnectWithoutMembersInput = {
+    where: ChatWhereUniqueInput
+    create: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
+  }
+
+  export type MessageCreateWithoutUserInput = {
+    id?: string
+    message: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    chat: ChatCreateNestedOneWithoutMessagesInput
+  }
+
+  export type MessageUncheckedCreateWithoutUserInput = {
+    id?: string
+    chatId: string
+    message: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MessageCreateOrConnectWithoutUserInput = {
+    where: MessageWhereUniqueInput
+    create: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput>
+  }
+
+  export type MessageCreateManyUserInputEnvelope = {
+    data: MessageCreateManyUserInput | MessageCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -19090,61 +20632,31 @@ export namespace Prisma {
     data: XOR<TeamsUpdateManyMutationInput, TeamsUncheckedUpdateManyWithoutMembersInput>
   }
 
-  export type ChatUpsertWithWhereUniqueWithoutMembersInput = {
-    where: ChatWhereUniqueInput
-    update: XOR<ChatUpdateWithoutMembersInput, ChatUncheckedUpdateWithoutMembersInput>
-    create: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
+  export type ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutMemberInput = {
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    update: XOR<ActiveInvitationOrRequestUpdateWithoutMemberInput, ActiveInvitationOrRequestUncheckedUpdateWithoutMemberInput>
+    create: XOR<ActiveInvitationOrRequestCreateWithoutMemberInput, ActiveInvitationOrRequestUncheckedCreateWithoutMemberInput>
   }
 
-  export type ChatUpdateWithWhereUniqueWithoutMembersInput = {
-    where: ChatWhereUniqueInput
-    data: XOR<ChatUpdateWithoutMembersInput, ChatUncheckedUpdateWithoutMembersInput>
+  export type ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutMemberInput = {
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    data: XOR<ActiveInvitationOrRequestUpdateWithoutMemberInput, ActiveInvitationOrRequestUncheckedUpdateWithoutMemberInput>
   }
 
-  export type ChatUpdateManyWithWhereWithoutMembersInput = {
-    where: ChatScalarWhereInput
-    data: XOR<ChatUpdateManyMutationInput, ChatUncheckedUpdateManyWithoutMembersInput>
+  export type ActiveInvitationOrRequestUpdateManyWithWhereWithoutMemberInput = {
+    where: ActiveInvitationOrRequestScalarWhereInput
+    data: XOR<ActiveInvitationOrRequestUpdateManyMutationInput, ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberInput>
   }
 
-  export type ChatScalarWhereInput = {
-    AND?: ChatScalarWhereInput | ChatScalarWhereInput[]
-    OR?: ChatScalarWhereInput[]
-    NOT?: ChatScalarWhereInput | ChatScalarWhereInput[]
-    id?: StringFilter<"Chat"> | string
-    title?: StringFilter<"Chat"> | string
-    about?: StringFilter<"Chat"> | string
-    teamId?: StringFilter<"Chat"> | string
-    isActive?: BoolFilter<"Chat"> | boolean
-    createdAt?: DateTimeFilter<"Chat"> | Date | string
-    updatedAt?: DateTimeFilter<"Chat"> | Date | string
-  }
-
-  export type MessageUpsertWithWhereUniqueWithoutUserInput = {
-    where: MessageWhereUniqueInput
-    update: XOR<MessageUpdateWithoutUserInput, MessageUncheckedUpdateWithoutUserInput>
-    create: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput>
-  }
-
-  export type MessageUpdateWithWhereUniqueWithoutUserInput = {
-    where: MessageWhereUniqueInput
-    data: XOR<MessageUpdateWithoutUserInput, MessageUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MessageUpdateManyWithWhereWithoutUserInput = {
-    where: MessageScalarWhereInput
-    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type MessageScalarWhereInput = {
-    AND?: MessageScalarWhereInput | MessageScalarWhereInput[]
-    OR?: MessageScalarWhereInput[]
-    NOT?: MessageScalarWhereInput | MessageScalarWhereInput[]
-    id?: StringFilter<"Message"> | string
-    userId?: StringFilter<"Message"> | string
-    chatId?: StringFilter<"Message"> | string
-    message?: StringFilter<"Message"> | string
-    createdAt?: DateTimeFilter<"Message"> | Date | string
-    updatedAt?: DateTimeFilter<"Message"> | Date | string
+  export type ActiveInvitationOrRequestScalarWhereInput = {
+    AND?: ActiveInvitationOrRequestScalarWhereInput | ActiveInvitationOrRequestScalarWhereInput[]
+    OR?: ActiveInvitationOrRequestScalarWhereInput[]
+    NOT?: ActiveInvitationOrRequestScalarWhereInput | ActiveInvitationOrRequestScalarWhereInput[]
+    id?: StringFilter<"ActiveInvitationOrRequest"> | string
+    teamId?: StringFilter<"ActiveInvitationOrRequest"> | string
+    memberId?: StringFilter<"ActiveInvitationOrRequest"> | string
+    createdAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
   }
 
   export type TeamsEditLogUpsertWithWhereUniqueWithoutUserInput = {
@@ -19202,6 +20714,63 @@ export namespace Prisma {
     designation?: EnumDesignationFilter<"UserRoleInTeam"> | $Enums.Designation
     createdAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     updatedAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
+  }
+
+  export type ChatUpsertWithWhereUniqueWithoutMembersInput = {
+    where: ChatWhereUniqueInput
+    update: XOR<ChatUpdateWithoutMembersInput, ChatUncheckedUpdateWithoutMembersInput>
+    create: XOR<ChatCreateWithoutMembersInput, ChatUncheckedCreateWithoutMembersInput>
+  }
+
+  export type ChatUpdateWithWhereUniqueWithoutMembersInput = {
+    where: ChatWhereUniqueInput
+    data: XOR<ChatUpdateWithoutMembersInput, ChatUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type ChatUpdateManyWithWhereWithoutMembersInput = {
+    where: ChatScalarWhereInput
+    data: XOR<ChatUpdateManyMutationInput, ChatUncheckedUpdateManyWithoutMembersInput>
+  }
+
+  export type ChatScalarWhereInput = {
+    AND?: ChatScalarWhereInput | ChatScalarWhereInput[]
+    OR?: ChatScalarWhereInput[]
+    NOT?: ChatScalarWhereInput | ChatScalarWhereInput[]
+    id?: StringFilter<"Chat"> | string
+    title?: StringFilter<"Chat"> | string
+    about?: StringFilter<"Chat"> | string
+    teamId?: StringFilter<"Chat"> | string
+    isActive?: BoolFilter<"Chat"> | boolean
+    createdAt?: DateTimeFilter<"Chat"> | Date | string
+    updatedAt?: DateTimeFilter<"Chat"> | Date | string
+  }
+
+  export type MessageUpsertWithWhereUniqueWithoutUserInput = {
+    where: MessageWhereUniqueInput
+    update: XOR<MessageUpdateWithoutUserInput, MessageUncheckedUpdateWithoutUserInput>
+    create: XOR<MessageCreateWithoutUserInput, MessageUncheckedCreateWithoutUserInput>
+  }
+
+  export type MessageUpdateWithWhereUniqueWithoutUserInput = {
+    where: MessageWhereUniqueInput
+    data: XOR<MessageUpdateWithoutUserInput, MessageUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MessageUpdateManyWithWhereWithoutUserInput = {
+    where: MessageScalarWhereInput
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MessageScalarWhereInput = {
+    AND?: MessageScalarWhereInput | MessageScalarWhereInput[]
+    OR?: MessageScalarWhereInput[]
+    NOT?: MessageScalarWhereInput | MessageScalarWhereInput[]
+    id?: StringFilter<"Message"> | string
+    userId?: StringFilter<"Message"> | string
+    chatId?: StringFilter<"Message"> | string
+    message?: StringFilter<"Message"> | string
+    createdAt?: DateTimeFilter<"Message"> | Date | string
+    updatedAt?: DateTimeFilter<"Message"> | Date | string
   }
 
   export type NoticeRequestUpsertWithWhereUniqueWithoutMemberInput = {
@@ -19315,10 +20884,11 @@ export namespace Prisma {
     designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -19347,10 +20917,11 @@ export namespace Prisma {
     designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -19384,10 +20955,11 @@ export namespace Prisma {
     designation?: $Enums.Designation | null
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -19416,10 +20988,11 @@ export namespace Prisma {
     designation?: $Enums.Designation | null
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -19498,6 +21071,30 @@ export namespace Prisma {
 
   export type UserRoleInTeamCreateManyTeamInputEnvelope = {
     data: UserRoleInTeamCreateManyTeamInput | UserRoleInTeamCreateManyTeamInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ActiveInvitationOrRequestCreateWithoutTeamInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    member: UserCreateNestedOneWithoutActiveRequestsInput
+  }
+
+  export type ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput = {
+    id?: string
+    memberId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ActiveInvitationOrRequestCreateOrConnectWithoutTeamInput = {
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    create: XOR<ActiveInvitationOrRequestCreateWithoutTeamInput, ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput>
+  }
+
+  export type ActiveInvitationOrRequestCreateManyTeamInputEnvelope = {
+    data: ActiveInvitationOrRequestCreateManyTeamInput | ActiveInvitationOrRequestCreateManyTeamInput[]
     skipDuplicates?: boolean
   }
 
@@ -19631,10 +21228,11 @@ export namespace Prisma {
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -19663,10 +21261,11 @@ export namespace Prisma {
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -19762,6 +21361,22 @@ export namespace Prisma {
     data: XOR<UserRoleInTeamUpdateManyMutationInput, UserRoleInTeamUncheckedUpdateManyWithoutTeamInput>
   }
 
+  export type ActiveInvitationOrRequestUpsertWithWhereUniqueWithoutTeamInput = {
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    update: XOR<ActiveInvitationOrRequestUpdateWithoutTeamInput, ActiveInvitationOrRequestUncheckedUpdateWithoutTeamInput>
+    create: XOR<ActiveInvitationOrRequestCreateWithoutTeamInput, ActiveInvitationOrRequestUncheckedCreateWithoutTeamInput>
+  }
+
+  export type ActiveInvitationOrRequestUpdateWithWhereUniqueWithoutTeamInput = {
+    where: ActiveInvitationOrRequestWhereUniqueInput
+    data: XOR<ActiveInvitationOrRequestUpdateWithoutTeamInput, ActiveInvitationOrRequestUncheckedUpdateWithoutTeamInput>
+  }
+
+  export type ActiveInvitationOrRequestUpdateManyWithWhereWithoutTeamInput = {
+    where: ActiveInvitationOrRequestScalarWhereInput
+    data: XOR<ActiveInvitationOrRequestUpdateManyMutationInput, ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamInput>
+  }
+
   export type ChatUpsertWithWhereUniqueWithoutTeamInput = {
     where: ChatWhereUniqueInput
     update: XOR<ChatUpdateWithoutTeamInput, ChatUncheckedUpdateWithoutTeamInput>
@@ -19834,9 +21449,10 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
+    TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -19866,9 +21482,10 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
+    TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -19892,6 +21509,7 @@ export namespace Prisma {
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -19910,6 +21528,7 @@ export namespace Prisma {
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -19955,9 +21574,10 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
+    TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -19987,9 +21607,10 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
+    TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -20019,6 +21640,7 @@ export namespace Prisma {
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -20037,6 +21659,7 @@ export namespace Prisma {
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -20055,6 +21678,7 @@ export namespace Prisma {
     members?: UserCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -20073,6 +21697,7 @@ export namespace Prisma {
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -20106,10 +21731,11 @@ export namespace Prisma {
     designation?: $Enums.Designation | null
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -20138,10 +21764,11 @@ export namespace Prisma {
     designation?: $Enums.Designation | null
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -20197,6 +21824,7 @@ export namespace Prisma {
     members?: UserCreateNestedManyWithoutTeamsInput
     tags?: TagCreateNestedManyWithoutTeamsInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
@@ -20215,6 +21843,7 @@ export namespace Prisma {
     members?: UserUncheckedCreateNestedManyWithoutTeamsInput
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
@@ -20249,9 +21878,10 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -20281,9 +21911,10 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -20318,6 +21949,7 @@ export namespace Prisma {
     members?: UserUpdateManyWithoutTeamsNestedInput
     tags?: TagUpdateManyWithoutTeamsNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -20336,6 +21968,7 @@ export namespace Prisma {
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -20376,9 +22009,10 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -20408,9 +22042,250 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  }
+
+  export type TeamsCreateWithoutActiveRequestsInput = {
+    id?: string
+    uniqueTitle: string
+    title: string
+    about: string
+    isActive?: boolean
+    link?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
+    members?: UserCreateNestedManyWithoutTeamsInput
+    tags?: TagCreateNestedManyWithoutTeamsInput
+    logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    chats?: ChatCreateNestedManyWithoutTeamInput
+    notices?: NoticeCreateNestedManyWithoutTeamInput
+    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamsUncheckedCreateWithoutActiveRequestsInput = {
+    id?: string
+    uniqueTitle: string
+    title: string
+    about: string
+    teamLeaderId: string
+    isActive?: boolean
+    link?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: UserUncheckedCreateNestedManyWithoutTeamsInput
+    tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
+    logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
+    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamsCreateOrConnectWithoutActiveRequestsInput = {
+    where: TeamsWhereUniqueInput
+    create: XOR<TeamsCreateWithoutActiveRequestsInput, TeamsUncheckedCreateWithoutActiveRequestsInput>
+  }
+
+  export type UserCreateWithoutActiveRequestsInput = {
+    userId?: string
+    firstName: string
+    lastName: string
+    email: string
+    mobileNumber: string
+    username: string
+    password: string
+    courseName?: UserCreatecourseNameInput | string[]
+    about: string
+    role?: string
+    isTeamLeader?: boolean
+    isActive?: boolean
+    twitter?: string | null
+    github?: string | null
+    linkedIn?: string | null
+    hashnode?: string | null
+    peerlist?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    designation?: $Enums.Designation | null
+    tags?: TagCreateNestedManyWithoutUsersInput
+    teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
+    teams?: TeamsCreateNestedManyWithoutMembersInput
+    TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
+    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
+    notices?: NoticeCreateNestedManyWithoutPostedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+  }
+
+  export type UserUncheckedCreateWithoutActiveRequestsInput = {
+    userId?: string
+    firstName: string
+    lastName: string
+    email: string
+    mobileNumber: string
+    username: string
+    password: string
+    courseName?: UserCreatecourseNameInput | string[]
+    about: string
+    role?: string
+    isTeamLeader?: boolean
+    isActive?: boolean
+    twitter?: string | null
+    github?: string | null
+    linkedIn?: string | null
+    hashnode?: string | null
+    peerlist?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    designation?: $Enums.Designation | null
+    tags?: TagUncheckedCreateNestedManyWithoutUsersInput
+    teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
+    teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
+    TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  }
+
+  export type UserCreateOrConnectWithoutActiveRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutActiveRequestsInput, UserUncheckedCreateWithoutActiveRequestsInput>
+  }
+
+  export type TeamsUpsertWithoutActiveRequestsInput = {
+    update: XOR<TeamsUpdateWithoutActiveRequestsInput, TeamsUncheckedUpdateWithoutActiveRequestsInput>
+    create: XOR<TeamsCreateWithoutActiveRequestsInput, TeamsUncheckedCreateWithoutActiveRequestsInput>
+    where?: TeamsWhereInput
+  }
+
+  export type TeamsUpdateToOneWithWhereWithoutActiveRequestsInput = {
+    where?: TeamsWhereInput
+    data: XOR<TeamsUpdateWithoutActiveRequestsInput, TeamsUncheckedUpdateWithoutActiveRequestsInput>
+  }
+
+  export type TeamsUpdateWithoutActiveRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    about?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
+    members?: UserUpdateManyWithoutTeamsNestedInput
+    tags?: TagUpdateManyWithoutTeamsNestedInput
+    logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    chats?: ChatUpdateManyWithoutTeamNestedInput
+    notices?: NoticeUpdateManyWithoutTeamNestedInput
+    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamsUncheckedUpdateWithoutActiveRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uniqueTitle?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    about?: StringFieldUpdateOperationsInput | string
+    teamLeaderId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
+    tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
+    logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
+    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
+  }
+
+  export type UserUpsertWithoutActiveRequestsInput = {
+    update: XOR<UserUpdateWithoutActiveRequestsInput, UserUncheckedUpdateWithoutActiveRequestsInput>
+    create: XOR<UserCreateWithoutActiveRequestsInput, UserUncheckedCreateWithoutActiveRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutActiveRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutActiveRequestsInput, UserUncheckedUpdateWithoutActiveRequestsInput>
+  }
+
+  export type UserUpdateWithoutActiveRequestsInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    courseName?: UserUpdatecourseNameInput | string[]
+    about?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    twitter?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
+    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
+    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
+    tags?: TagUpdateManyWithoutUsersNestedInput
+    teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
+    teams?: TeamsUpdateManyWithoutMembersNestedInput
+    TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
+    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
+    notices?: NoticeUpdateManyWithoutPostedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutActiveRequestsInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    courseName?: UserUpdatecourseNameInput | string[]
+    about?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    twitter?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
+    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
+    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
+    tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
+    teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
+    TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -20440,10 +22315,11 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
   }
@@ -20472,10 +22348,11 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   }
@@ -20499,6 +22376,7 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
@@ -20517,6 +22395,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
@@ -20585,10 +22464,11 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
   }
@@ -20617,10 +22497,11 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   }
@@ -20650,6 +22531,7 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
@@ -20668,6 +22550,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
@@ -20712,10 +22595,11 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
   }
@@ -20744,10 +22628,11 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   }
@@ -20771,6 +22656,7 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
   }
@@ -20789,6 +22675,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
   }
@@ -20833,10 +22720,11 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
   }
@@ -20865,10 +22753,11 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   }
@@ -20898,6 +22787,7 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
   }
@@ -20916,6 +22806,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
   }
@@ -20975,10 +22866,11 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
   }
@@ -21007,10 +22899,11 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
   }
@@ -21092,10 +22985,11 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
   }
@@ -21124,10 +23018,11 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
   }
@@ -21146,6 +23041,7 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
@@ -21164,6 +23060,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
     logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
@@ -21223,9 +23120,10 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    messages?: MessageCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -21255,9 +23153,10 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -21293,6 +23192,7 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
@@ -21311,6 +23211,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
@@ -21371,9 +23272,10 @@ export namespace Prisma {
     tags?: TagCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsCreateNestedManyWithoutMembersInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
     noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
     notices?: NoticeCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
@@ -21403,9 +23305,10 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutUsersInput
     teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
     teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
     notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
@@ -21478,9 +23381,10 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -21510,9 +23414,10 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -21562,10 +23467,9 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type MessageCreateManyUserInput = {
+  export type ActiveInvitationOrRequestCreateManyMemberInput = {
     id?: string
-    chatId: string
-    message: string
+    teamId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21583,6 +23487,14 @@ export namespace Prisma {
     id?: string
     teamId: string
     designation: $Enums.Designation
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MessageCreateManyUserInput = {
+    id?: string
+    chatId: string
+    message: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21645,6 +23557,7 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -21663,6 +23576,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -21692,6 +23606,7 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -21710,6 +23625,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -21723,6 +23639,78 @@ export namespace Prisma {
     teamLeaderId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     link?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveInvitationOrRequestUpdateWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamsEditLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamsUpdateOneRequiredWithoutLogsNestedInput
+  }
+
+  export type TeamsEditLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamsEditLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRoleInTeamUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamsUpdateOneRequiredWithoutUserRoleInTeamNestedInput
+  }
+
+  export type UserRoleInTeamUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRoleInTeamUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21779,57 +23767,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     chatId?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TeamsEditLogUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
-    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    team?: TeamsUpdateOneRequiredWithoutLogsNestedInput
-  }
-
-  export type TeamsEditLogUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
-    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TeamsEditLogUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    action?: EnumActionFieldUpdateOperationsInput | $Enums.Action
-    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserRoleInTeamUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    team?: TeamsUpdateOneRequiredWithoutUserRoleInTeamNestedInput
-  }
-
-  export type UserRoleInTeamUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserRoleInTeamUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21937,6 +23874,13 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ActiveInvitationOrRequestCreateManyTeamInput = {
+    id?: string
+    memberId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ChatCreateManyTeamInput = {
     id?: string
     title: string
@@ -21990,10 +23934,11 @@ export namespace Prisma {
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -22022,10 +23967,11 @@ export namespace Prisma {
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -22118,6 +24064,27 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveInvitationOrRequestUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    member?: UserUpdateOneRequiredWithoutActiveRequestsNestedInput
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    memberId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    memberId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22231,6 +24198,7 @@ export namespace Prisma {
     members?: UserUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
@@ -22249,6 +24217,7 @@ export namespace Prisma {
     members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
     logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
@@ -22289,10 +24258,11 @@ export namespace Prisma {
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -22321,10 +24291,11 @@ export namespace Prisma {
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
@@ -22437,9 +24408,10 @@ export namespace Prisma {
     tags?: TagUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
     notices?: NoticeUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
@@ -22469,9 +24441,10 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
     teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
     teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput

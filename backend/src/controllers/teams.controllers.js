@@ -220,7 +220,17 @@ const sendInviteToJoinTeam = async (request, response) => {
       throw new ApiError(400, "we can't proceed this request as invitee is team leader");
     }
 
-    const updateTeamEditLog = await prisma.teamsEditLog.create({
+    const sendTeamJoingInvitation = await prisma.$transaction(async (prisma) => {
+    
+    const invitation = await prisma.activeInvitationOrRequest.create({
+      data: {
+        teamId,
+        memberId: userId,
+        designation
+      }
+    });
+    
+    await prisma.teamsEditLog.create({
       data: {
         teamId,
         userId,
@@ -229,9 +239,12 @@ const sendInviteToJoinTeam = async (request, response) => {
       }
     })
 
+    return invitation;
+  })
+
     response.status(200).json(
       new ApiResponse(200, {
-        teamEditLog: updateTeamEditLog
+        invitation: sendTeamJoingInvitation
       })
     )
   } catch (error) {
@@ -245,7 +258,41 @@ const sendInviteToJoinTeam = async (request, response) => {
 
 }
 
-const cancelTeamInvitation = async (request, response) => { }
+const cancelTeamInvitation = async (request, response) => { 
+
+  try {
+
+    const teamId = request.params.teamId;
+    const { userId } = request.body;
+
+    if ( !teamId || !userId ) {
+      throw new ApiError(400, "Please provide team id and user id");
+    }
+
+    const updateTeamEditLog = await prisma.teamsEditLog.create({
+      data: {
+        teamId,
+        userId,
+        action: $Enums.Action.INVITATION_REVOKED
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teamEditLog: updateTeamEditLog
+      }, "Team joining invitation revoked successfully")
+    )
+    
+  } catch (error) {
+  
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to cancel Team invitation", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const acceptTeamInvitation = async (request, response) => { }
 

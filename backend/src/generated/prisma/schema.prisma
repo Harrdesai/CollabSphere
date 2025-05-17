@@ -141,9 +141,8 @@ model TeamsEditLog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  request ActiveInvitationOrRequest? @relation(fields: [requestId], references: [id])
-  team    Teams                      @relation(fields: [teamId], references: [id], name: "teamLogs")
-  user    User                       @relation(fields: [userId], references: [userId])
+  team Teams @relation(fields: [teamId], references: [id], name: "teamLogs")
+  user User  @relation(fields: [userId], references: [userId])
 }
 
 model ActiveInvitationOrRequest {
@@ -154,9 +153,8 @@ model ActiveInvitationOrRequest {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  team   Teams          @relation(fields: [teamId], references: [id])
-  member User           @relation(fields: [memberId], references: [userId])
-  logs   TeamsEditLog[]
+  team   Teams @relation(fields: [teamId], references: [id])
+  member User  @relation(fields: [memberId], references: [userId])
 
   @@unique([teamId, memberId, designation])
 }

@@ -17,7 +17,7 @@ teamsRoutes.post('/invite/:teamId', authMiddleware, sendInviteToJoinTeam);
 
 teamsRoutes.post('/cancel-invitation/:id', authMiddleware, cancelTeamInvitation);
 
-teamsRoutes.post('/accept-invitation', authMiddleware, acceptTeamInvitation);
+teamsRoutes.post('/accept-invitation/:id', authMiddleware, acceptTeamInvitation);
 
 teamsRoutes.post('/reject-invitation', authMiddleware, rejectTeamInvitation);
 

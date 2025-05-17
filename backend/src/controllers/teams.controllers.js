@@ -105,6 +105,14 @@ const createTeam = async (request, response) => {
 
   } catch (error) {
 
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return response.status(400).json(
+          new ApiError(400, {}, `Already invitation ${error.meta.target}`)
+        );
+      }
+    }
+    
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while creating team", {
         error: error.message
@@ -242,6 +250,7 @@ const sendInviteToJoinTeam = async (request, response) => {
         }
       });
 
+      console.log(`invitation : ${invitation.id}`);
       await prisma.teamsEditLog.create({
         data: {
           teamId: invitation.teamId,
@@ -255,21 +264,24 @@ const sendInviteToJoinTeam = async (request, response) => {
       return invitation
     })
 
+    if (!sendTeamJoingInvitation) {
+      throw new ApiError(400, "Failed the process of sending invitation in database");
+    }
+
     response.status(200).json(
       new ApiResponse(200, {
         invitation: sendTeamJoingInvitation
       })
     )
   } catch (error) {
-    
-    console.log(`error : ${error}------------${error.code}`);
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    if (error.code === 'P2002') {
-      return response.status(400).json(
-        new ApiError(400, {}, `Already invitation ${error.meta.target}`)
-      );
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return response.status(400).json(
+          new ApiError(400, {}, `Already invitation ${error.meta.target}`)
+        );
+      }
     }
-  }
 
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to send Team join invitation request", {
@@ -301,7 +313,7 @@ const cancelTeamInvitation = async (request, response) => {
       if (!invitation) {
         throw new ApiError(400, "Invitation not found");
       }
-      
+
       await prisma.teamsEditLog.create({
         data: {
           teamId: invitation.teamId,
@@ -321,6 +333,10 @@ const cancelTeamInvitation = async (request, response) => {
       return invitation;
     })
 
+    if (!cancelTeamJoiningInvitation) {
+      throw new ApiError(400, "Invitation cancellation process failed in database");
+    }
+
     response.status(200).json(
       new ApiResponse(200, {
         invitation: cancelTeamJoiningInvitation
@@ -338,7 +354,74 @@ const cancelTeamInvitation = async (request, response) => {
 
 }
 
-const acceptTeamInvitation = async (request, response) => { }
+const acceptTeamInvitation = async (request, response) => {
+
+  try {
+
+    const id = request.params.id;
+
+    if (!id) {
+      throw new ApiError(400, "Please provide invitation id");
+    }
+
+    const acceptTeamJoiningInvitation = await prisma.$transaction(async (prisma) => {
+
+      const invitation = await prisma.activeInvitationOrRequest.findUnique({
+        where: {
+          id
+        }
+      })
+
+      if (!invitation) {
+        throw new ApiError(400, "Invitation not found");
+      }
+
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: invitation.teamId,
+          userId: invitation.memberId,
+          action: $Enums.Action.INVITATION_ACCEPTED,
+          designation: invitation.designation,
+          requestId: invitation.id
+        }
+      })
+
+      await prisma.activeInvitationOrRequest.delete({
+        where: {
+          id
+        }
+      })
+
+      await prisma.userRoleInTeam.create({
+        data: {
+          teamId: invitation.teamId,
+          userId: invitation.memberId,
+          designation: invitation.designation
+        }
+      })
+
+      return invitation
+    })
+
+    if (!acceptTeamJoiningInvitation) {
+      throw new ApiError(400, "Invitation acceptance process failed in database");
+    }
+    response.status(200).json(
+      new ApiResponse(200, {
+        invitation: acceptTeamJoiningInvitation
+      }, "Invitation accepted successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to accept Team invitation", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const rejectTeamInvitation = async (request, response) => { }
 

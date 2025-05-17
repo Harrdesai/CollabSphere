@@ -6,6 +6,30 @@ import { $Enums, Prisma, PrismaClient } from "../generated/prisma/index.js";
 
 const prisma = new PrismaClient();
 
+const canUserJoinAnotherTeam = async (userId) => {
+
+  const isTeamLeader = await prisma.user.findUnique({
+    where: {
+      userId
+    },
+    select: {
+      isTeamLeader: true
+    }
+  })
+
+  if (isTeamLeader.isTeamLeader) {
+    return false
+  }
+
+  const teamMemberships = await prisma.userRoleInTeam.findMany({
+    where: { userId },
+    select: { teamId: true },
+    distinct: ['teamId'] // Only works in recent Prisma versions
+  });
+
+  return teamMemberships.length < 3;
+}
+
 const createTeam = async (request, response) => {
 
   try {
@@ -112,7 +136,7 @@ const createTeam = async (request, response) => {
         );
       }
     }
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while creating team", {
         error: error.message
@@ -215,17 +239,10 @@ const sendInviteToJoinTeam = async (request, response) => {
       throw new ApiError(400, "Please provide team id, user id and designation");
     }
 
-    const isInvitteeIsTeamLeader = await prisma.user.findUnique({
-      where: {
-        userId
-      },
-      select: {
-        isTeamLeader: true
-      }
-    })
+    const isUserEligibleToInvite = await canUserJoinAnotherTeam(userId);
 
-    if (isInvitteeIsTeamLeader.isTeamLeader) {
-      throw new ApiError(400, "we can't proceed this request as invitee is team leader");
+    if (!isUserEligibleToInvite) {
+      throw new ApiError(400, "User reached maximum team limit or is a team leader");
     }
 
     const checkIsMemberAlreayWithSameDesignation = await prisma.userRoleInTeam.findFirst({
@@ -363,17 +380,58 @@ const acceptTeamInvitation = async (request, response) => {
     if (!id) {
       throw new ApiError(400, "Please provide invitation id");
     }
+    const userId = request.user.userId
+
+    const getUserIdFromInvitation = await prisma.activeInvitationOrRequest.findUnique({
+      where: {
+        id: id
+      },
+      select: {
+        memberId: true,
+      }
+    })
+
+    console.log(`getUserIdFromInvitation : ${JSON.stringify(getUserIdFromInvitation)}`);
+
+    if (userId !== getUserIdFromInvitation.memberId) {
+      throw new ApiError(400, "you are not the invitee of this invitation, you can't accept this invitation");
+    }
+
+    const isUserEligibleToInvite = await canUserJoinAnotherTeam(userId);
+
+    if (!isUserEligibleToInvite) {
+      throw new ApiError(400, "User reached maximum team limit or is a team leader");
+    }
 
     const acceptTeamJoiningInvitation = await prisma.$transaction(async (prisma) => {
 
       const invitation = await prisma.activeInvitationOrRequest.findUnique({
-        where: {
-          id
+        where: { id },
+        select: {
+          memberId: true,
+          teamId: true,
+          designation: true
         }
       })
 
       if (!invitation) {
-        throw new ApiError(400, "Invitation not found");
+        throw new ApiError(404, "Invitation no longer exists");
+      }
+
+      if (invitation.memberId !== userId) {
+        throw new ApiError(403, "You are not authorized to accept this invitation");
+      }
+
+      const roleExists = await prisma.userRoleInTeam.findFirst({
+        where: {
+          userId: invitation.memberId,
+          teamId: invitation.teamId,
+          designation: invitation.designation
+        }
+      });
+
+      if (roleExists) {
+        throw new ApiError(400, "User already has this role in the team");
       }
 
       await prisma.teamsEditLog.create({
@@ -423,7 +481,14 @@ const acceptTeamInvitation = async (request, response) => {
 
 }
 
-const rejectTeamInvitation = async (request, response) => { }
+const rejectTeamInvitation = async (request, response) => {
+
+  try {
+
+  } catch (error) {
+
+  }
+}
 
 const getListOfPendingTeamInvitations = async (request, response) => { }
 
@@ -546,3 +611,6 @@ const getTimelineOfUser = async (request, response) => { }
 
 
 export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, leaveTeam, getTeams, getTeamDetails, updateMemberRole, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeamMembers, getTimelineOfUser };
+
+
+// verify team leader id while updating team detail

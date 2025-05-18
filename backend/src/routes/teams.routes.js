@@ -27,11 +27,11 @@ teamsRoutes.post('/:teamId/remove-members', authMiddleware, removeMemberFromTeam
 
 teamsRoutes.post('/:teamId/join', authMiddleware, sendRequestToJoinTeam);
 
-teamsRoutes.post('/cancel-join-request/:teamId', authMiddleware, cancelTeamJoiningRequest);
+teamsRoutes.post('/cancel-join-request/:id', authMiddleware, cancelTeamJoiningRequest);
 
 teamsRoutes.post('/accept-join-request', authMiddleware, acceptTeamJoiningRequest);
 
-teamsRoutes.post('/reject-join-request', authMiddleware, rejectTeamJoiningRequest);
+teamsRoutes.post('/reject-join-request/:teamId', authMiddleware, rejectTeamJoiningRequest);
 
 teamsRoutes.get('/pending-join-requests', authMiddleware, getListOfPendingTeamJoiningRequests);
 

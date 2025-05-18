@@ -889,7 +889,87 @@ const sendRequestToJoinTeam = async (request, response) => {
 
 }
 
+
 const cancelTeamJoiningRequest = async (request, response) => {
+
+  try {
+
+    const id = request.params.id;
+    const userId = request.user.userId
+
+    if (!id) {
+      throw new ApiError(400, "Please provide request id");
+    }
+
+    const cancelRequest = await prisma.$transaction(async (prisma) => {
+
+      // also include team name
+      const getDetails = await prisma.activeInvitationOrRequest.findUnique({
+        where: { id },
+        include: {
+          team: {
+            select: {
+              title: true
+            }
+          }
+        }
+      });
+
+      if (!getDetails) {
+        throw new ApiError(400, "Request not found");
+      }
+
+      if (getDetails.memberId !== userId) {
+        throw new ApiError(400, "You are not authorized to cancel this request");
+      }
+
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: getDetails.teamId,
+          userId: getDetails.memberId,
+          action: $Enums.Action.INVITATION_REVOKED,
+          designation: getDetails.designation,
+          requestId: getDetails.id
+        }
+      })
+
+      await prisma.activeInvitationOrRequest.delete({
+        where: {
+          id
+        }
+      });
+
+      return getDetails
+    })
+
+    if (!cancelRequest) {
+      throw new ApiError(400, "request cancellation process failed in database");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teamId: cancelRequest.teamId,
+        userId: cancelRequest.memberId,
+        designation: cancelRequest.designation,
+        teamName: cancelRequest.team.title
+        
+      }, "Invitation cancelled successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to cancel Team invitation", {
+        error: error.message
+      })
+    )
+  }
+
+}
+
+const acceptTeamJoiningRequest = async (request, response) => { }
+
+const rejectTeamJoiningRequest = async (request, response) => {
 
   try {
 
@@ -906,7 +986,7 @@ const cancelTeamJoiningRequest = async (request, response) => {
     const isUserTeamLeader = await isAuthorized(userId, teamId);
 
     if (!isUserTeamLeader) {
-      throw new ApiError(400, "You are a team leader");
+      throw new ApiError(400, "You are not a team leader");
     }
 
     const rejectRequest = await prisma.$transaction(async (prisma) => {
@@ -938,7 +1018,7 @@ const cancelTeamJoiningRequest = async (request, response) => {
     })
 
     if (!rejectRequest) {
-      throw new ApiError(400, "Request cancellation process failed in database");
+      throw new ApiError(400, "Request rejection process failed in database");
     }
 
     response.status(200).json(
@@ -946,23 +1026,19 @@ const cancelTeamJoiningRequest = async (request, response) => {
         teamId: rejectRequest.teamId,
         userId: rejectRequest.memberId,
         designation: rejectRequest.designation
-      }, "Request cancelled successfully")
+      }, "Request rejected successfully")
     )
 
 
   } catch (error) {
     response.status(error.statusCode || 500).json(
-      new ApiError(error.statusCode || 500, "Failed to cancel team joining request", {
+      new ApiError(error.statusCode || 500, "Failed to reject team joining request", {
         error: error.message
       })
     )
   }
 
 }
-
-const acceptTeamJoiningRequest = async (request, response) => { }
-
-const rejectTeamJoiningRequest = async (request, response) => { }
 
 const getListOfPendingTeamJoiningRequests = async (request, response) => { }
 

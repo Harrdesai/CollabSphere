@@ -104,7 +104,9 @@ export const Action: {
   ROLE_ASIGNED: 'ROLE_ASIGNED',
   ROLE_REMOVED: 'ROLE_REMOVED',
   TEAM_CREATED: 'TEAM_CREATED',
-  TEAM_DELETED: 'TEAM_DELETED'
+  TEAM_DELETED: 'TEAM_DELETED',
+  MEMBER_REMOVED: 'MEMBER_REMOVED',
+  LEAVED_TEAM: 'LEAVED_TEAM'
 };
 
 export type Action = (typeof Action)[keyof typeof Action]
@@ -6106,6 +6108,7 @@ export namespace Prisma {
     userId: string | null
     teamId: string | null
     designation: $Enums.Designation | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6115,6 +6118,7 @@ export namespace Prisma {
     userId: string | null
     teamId: string | null
     designation: $Enums.Designation | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6124,6 +6128,7 @@ export namespace Prisma {
     userId: number
     teamId: number
     designation: number
+    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6135,6 +6140,7 @@ export namespace Prisma {
     userId?: true
     teamId?: true
     designation?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6144,6 +6150,7 @@ export namespace Prisma {
     userId?: true
     teamId?: true
     designation?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6153,6 +6160,7 @@ export namespace Prisma {
     userId?: true
     teamId?: true
     designation?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6235,6 +6243,7 @@ export namespace Prisma {
     userId: string
     teamId: string
     designation: $Enums.Designation
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: UserRoleInTeamCountAggregateOutputType | null
@@ -6261,6 +6270,7 @@ export namespace Prisma {
     userId?: boolean
     teamId?: boolean
     designation?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6272,6 +6282,7 @@ export namespace Prisma {
     userId?: boolean
     teamId?: boolean
     designation?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6283,6 +6294,7 @@ export namespace Prisma {
     userId?: boolean
     teamId?: boolean
     designation?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6294,11 +6306,12 @@ export namespace Prisma {
     userId?: boolean
     teamId?: boolean
     designation?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserRoleInTeamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "teamId" | "designation" | "createdAt" | "updatedAt", ExtArgs["result"]["userRoleInTeam"]>
+  export type UserRoleInTeamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "teamId" | "designation" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["userRoleInTeam"]>
   export type UserRoleInTeamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -6323,6 +6336,7 @@ export namespace Prisma {
       userId: string
       teamId: string
       designation: $Enums.Designation
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["userRoleInTeam"]>
@@ -6754,6 +6768,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"UserRoleInTeam", 'String'>
     readonly teamId: FieldRef<"UserRoleInTeam", 'String'>
     readonly designation: FieldRef<"UserRoleInTeam", 'Designation'>
+    readonly isActive: FieldRef<"UserRoleInTeam", 'Boolean'>
     readonly createdAt: FieldRef<"UserRoleInTeam", 'DateTime'>
     readonly updatedAt: FieldRef<"UserRoleInTeam", 'DateTime'>
   }
@@ -16023,6 +16038,7 @@ export namespace Prisma {
     userId: 'userId',
     teamId: 'teamId',
     designation: 'designation',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -16584,6 +16600,7 @@ export namespace Prisma {
     userId?: StringFilter<"UserRoleInTeam"> | string
     teamId?: StringFilter<"UserRoleInTeam"> | string
     designation?: EnumDesignationFilter<"UserRoleInTeam"> | $Enums.Designation
+    isActive?: BoolFilter<"UserRoleInTeam"> | boolean
     createdAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     updatedAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -16595,6 +16612,7 @@ export namespace Prisma {
     userId?: SortOrder
     teamId?: SortOrder
     designation?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -16609,6 +16627,7 @@ export namespace Prisma {
     userId?: StringFilter<"UserRoleInTeam"> | string
     teamId?: StringFilter<"UserRoleInTeam"> | string
     designation?: EnumDesignationFilter<"UserRoleInTeam"> | $Enums.Designation
+    isActive?: BoolFilter<"UserRoleInTeam"> | boolean
     createdAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     updatedAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -16620,6 +16639,7 @@ export namespace Prisma {
     userId?: SortOrder
     teamId?: SortOrder
     designation?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserRoleInTeamCountOrderByAggregateInput
@@ -16635,6 +16655,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"UserRoleInTeam"> | string
     teamId?: StringWithAggregatesFilter<"UserRoleInTeam"> | string
     designation?: EnumDesignationWithAggregatesFilter<"UserRoleInTeam"> | $Enums.Designation
+    isActive?: BoolWithAggregatesFilter<"UserRoleInTeam"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"UserRoleInTeam"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UserRoleInTeam"> | Date | string
   }
@@ -17537,6 +17558,7 @@ export namespace Prisma {
   export type UserRoleInTeamCreateInput = {
     id?: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutUserRoleInTeamInput
@@ -17548,6 +17570,7 @@ export namespace Prisma {
     userId: string
     teamId: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17555,6 +17578,7 @@ export namespace Prisma {
   export type UserRoleInTeamUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutUserRoleInTeamNestedInput
@@ -17566,6 +17590,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17575,6 +17600,7 @@ export namespace Prisma {
     userId: string
     teamId: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17582,6 +17608,7 @@ export namespace Prisma {
   export type UserRoleInTeamUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17591,6 +17618,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18567,6 +18595,7 @@ export namespace Prisma {
     userId?: SortOrder
     teamId?: SortOrder
     designation?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18576,6 +18605,7 @@ export namespace Prisma {
     userId?: SortOrder
     teamId?: SortOrder
     designation?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18585,6 +18615,7 @@ export namespace Prisma {
     userId?: SortOrder
     teamId?: SortOrder
     designation?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20466,6 +20497,7 @@ export namespace Prisma {
   export type UserRoleInTeamCreateWithoutUserInput = {
     id?: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutUserRoleInTeamInput
@@ -20475,6 +20507,7 @@ export namespace Prisma {
     id?: string
     teamId: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20783,6 +20816,7 @@ export namespace Prisma {
     userId?: StringFilter<"UserRoleInTeam"> | string
     teamId?: StringFilter<"UserRoleInTeam"> | string
     designation?: EnumDesignationFilter<"UserRoleInTeam"> | $Enums.Designation
+    isActive?: BoolFilter<"UserRoleInTeam"> | boolean
     createdAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
     updatedAt?: DateTimeFilter<"UserRoleInTeam"> | Date | string
   }
@@ -21124,6 +21158,7 @@ export namespace Prisma {
   export type UserRoleInTeamCreateWithoutTeamInput = {
     id?: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutUserRoleInTeamInput
@@ -21133,6 +21168,7 @@ export namespace Prisma {
     id?: string
     userId: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23564,6 +23600,7 @@ export namespace Prisma {
     id?: string
     teamId: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23777,6 +23814,7 @@ export namespace Prisma {
   export type UserRoleInTeamUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutUserRoleInTeamNestedInput
@@ -23786,6 +23824,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23794,6 +23833,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23954,6 +23994,7 @@ export namespace Prisma {
     id?: string
     userId: string
     designation: $Enums.Designation
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24135,6 +24176,7 @@ export namespace Prisma {
   export type UserRoleInTeamUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutUserRoleInTeamNestedInput
@@ -24144,6 +24186,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24152,6 +24195,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

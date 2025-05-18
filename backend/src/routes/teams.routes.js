@@ -23,7 +23,7 @@ teamsRoutes.post('/reject-invitation/:id', authMiddleware, rejectTeamInvitation)
 
 teamsRoutes.get('/pending-invitations', authMiddleware, getListOfPendingTeamInvitations);
 
-teamsRoutes.post('/remove-member', authMiddleware, removeMemberFromTeam);
+teamsRoutes.post('/:teamId/remove-members', authMiddleware, removeMemberFromTeam);
 
 teamsRoutes.post('/join', authMiddleware, sendRequestToJoinTeam);
 

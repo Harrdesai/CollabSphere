@@ -30,6 +30,25 @@ const canUserJoinAnotherTeam = async (userId) => {
   return teamMemberships.length < 3;
 }
 
+const isAuthorized = async (userId, teamId) => {
+
+  const getTeamLeaderId = await prisma.teams.findUnique({
+    where: {
+      id: teamId
+    },
+    select: {
+      teamLeaderId: true
+    }
+  })
+
+  if (getTeamLeaderId.teamLeaderId === userId) {
+    return true
+  }
+
+  return false
+
+}
+
 const createTeam = async (request, response) => {
 
   try {
@@ -45,24 +64,24 @@ const createTeam = async (request, response) => {
     const isAllowed = await canUserJoinAnotherTeam(teamLeaderId);
 
     if (!isAllowed) {
-          const getListOfTeamJoined = await prisma.userRoleInTeam.findMany({
-      where: {
-        userId: teamLeaderId
-      },
-      include: {
-        team: true
-      }
-    })
+      const getListOfTeamJoined = await prisma.userRoleInTeam.findMany({
+        where: {
+          userId: teamLeaderId
+        },
+        include: {
+          team: true
+        }
+      })
 
-    // create a JSON object of designation and team title
+      // create a JSON object of designation and team title
 
-    const listOfTeamJoined = getListOfTeamJoined.map((team) => ({
-      designation: team.designation,
-      teamTitle: team.team.title
-    }))
-    
-      throw new ApiError(400, 
-      `You can't create a new team as you are already a member of 3 teams or you are a team leader of team ${listOfTeamJoined[0].teamTitle} with designation ${listOfTeamJoined[0].designation} ------------2nd team ${listOfTeamJoined[1].teamTitle} with designation ${listOfTeamJoined[1].designation} ------------3rd team ${listOfTeamJoined[2].teamTitle} with designation ${listOfTeamJoined[2].designation}------------------3rd team ${listOfTeamJoined[3].teamTitle} with designation ${listOfTeamJoined[3].designation} `);
+      const listOfTeamJoined = getListOfTeamJoined.map((team) => ({
+        designation: team.designation,
+        teamTitle: team.team.title
+      }))
+
+      throw new ApiError(400,
+        `You can't create a new team as you are already a member of 3 teams or you are a team leader of team ${listOfTeamJoined[0].teamTitle} with designation ${listOfTeamJoined[0].designation} ------------2nd team ${listOfTeamJoined[1].teamTitle} with designation ${listOfTeamJoined[1].designation} ------------3rd team ${listOfTeamJoined[2].teamTitle} with designation ${listOfTeamJoined[2].designation}------------------3rd team ${listOfTeamJoined[3].teamTitle} with designation ${listOfTeamJoined[3].designation} `);
     }
 
     const uniqueTitle = title.toLowerCase().split(" ").join("");
@@ -375,7 +394,7 @@ const cancelTeamInvitation = async (request, response) => {
       if (invitation.memberId !== userId) {
         throw new ApiError(400, "You are not authorized to cancel this invitation");
       }
-      
+
       await prisma.teamsEditLog.create({
         data: {
           teamId: invitation.teamId,
@@ -595,14 +614,14 @@ const rejectTeamInvitation = async (request, response) => {
 
 }
 
-const getListOfPendingTeamInvitations = async (request, response) => { 
+const getListOfPendingTeamInvitations = async (request, response) => {
 
   try {
-    
+
     const userId = request.user.userId;
 
     const invitations = await prisma.activeInvitationOrRequest.findMany({
-      where: {memberId: userId},
+      where: { memberId: userId },
       select: {
         id: true,
         memberId: true,
@@ -646,7 +665,7 @@ const getListOfPendingTeamInvitations = async (request, response) => {
       }, "List of pending team invitations fetched successfully")
     )
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to fetch the list of pending team invitations", {
         error: error.message
@@ -655,7 +674,101 @@ const getListOfPendingTeamInvitations = async (request, response) => {
   }
 }
 
-const removeMemberFromTeam = async (request, response) => { }
+const removeMemberFromTeam = async (request, response) => {
+  try {
+
+    const teamId = request.params.teamId
+    const userId = request.user.userId
+    const { arrayOfUserRoleInTeamIds = [] } = request.body
+
+    if (!teamId || !userId) {
+      throw new ApiError(400, "Please provide team id and user id");
+    }
+
+    const isLeader = await isAuthorized(userId, teamId);
+
+    if (!isLeader) {
+      throw new ApiError(400, "Only team leader can remove member from team");
+    }
+
+    const setOfUserRoleInTeamIds = Array.from(new Set(arrayOfUserRoleInTeamIds));
+
+    const rolesToRemove = await prisma.userRoleInTeam.findMany({
+      where: {
+        id: { in: setOfUserRoleInTeamIds },
+        teamId: teamId,
+      }
+    });
+
+    const rolesToRemoveWithoutLeader = rolesToRemove.filter(role => role.designation !== "TEAM_LEADER" && role.isActive === true)
+    console.log(`filteredRolesToRemove: ${JSON.stringify(rolesToRemoveWithoutLeader)}`);
+
+
+    if (rolesToRemoveWithoutLeader.length === 0) {
+      throw new ApiError(400, "No valid roles to remove (TEAM_LEADER role cannot be removed)");
+    }
+
+    const removeMembers = await prisma.$transaction(async (prisma) => {
+
+      await prisma.userRoleInTeam.updateMany({
+        where: {
+          id: { in: rolesToRemoveWithoutLeader.map(role => role.id) }
+        },
+        data: {
+          isActive: false
+        },
+      });
+
+      await prisma.teamsEditLog.createMany({
+        data: rolesToRemoveWithoutLeader.map(role => ({
+          teamId: role.teamId,
+          userId: role.userId,
+          action: $Enums.Action.MEMBER_REMOVED,
+          designation: role.designation,
+          requestId: role.id
+        }))
+      });
+
+      return rolesToRemoveWithoutLeader.map(role => role.id);
+    })
+
+    const getRemovedMembersNameWithTheirRole = await prisma.userRoleInTeam.findMany({
+      where: {
+        id: { in: removeMembers }
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    })
+
+    const removedMembers = getRemovedMembersNameWithTheirRole.map((member) => {
+      return {
+        firstName: member.user.firstName,
+        lastName: member.user.lastName,
+        designation: member.designation
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        removedMembers: removedMembers
+      }, "Members removed from team successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to remove members from team", {
+        error: error.message
+      })
+    )
+  }
+}
 
 const sendRequestToJoinTeam = async (request, response) => { }
 

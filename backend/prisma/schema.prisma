@@ -102,6 +102,7 @@ model UserRoleInTeam {
   userId      String
   teamId      String
   designation Designation
+  isActive    Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -128,6 +129,8 @@ enum Action {
   ROLE_REMOVED
   TEAM_CREATED
   TEAM_DELETED
+  MEMBER_REMOVED
+  LEAVED_TEAM
 }
 
 // store id of request or invitation in TeamEditLog in requestId field

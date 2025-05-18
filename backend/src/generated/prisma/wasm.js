@@ -167,6 +167,7 @@ exports.Prisma.UserRoleInTeamScalarFieldEnum = {
   userId: 'userId',
   teamId: 'teamId',
   designation: 'designation',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -294,7 +295,9 @@ exports.Action = exports.$Enums.Action = {
   ROLE_ASIGNED: 'ROLE_ASIGNED',
   ROLE_REMOVED: 'ROLE_REMOVED',
   TEAM_CREATED: 'TEAM_CREATED',
-  TEAM_DELETED: 'TEAM_DELETED'
+  TEAM_DELETED: 'TEAM_DELETED',
+  MEMBER_REMOVED: 'MEMBER_REMOVED',
+  LEAVED_TEAM: 'LEAVED_TEAM'
 };
 
 exports.Prisma.ModelName = {

@@ -889,7 +889,76 @@ const sendRequestToJoinTeam = async (request, response) => {
 
 }
 
-const cancelTeamJoiningRequest = async (request, response) => { }
+const cancelTeamJoiningRequest = async (request, response) => {
+
+  try {
+
+    const { requestId } = request.body;
+    const teamId = request.params.teamId;
+    const userId = request.user.userId
+
+    console.log(`userId: ${userId}, teamId: ${teamId}, requestId: ${requestId}`);
+
+    if (!teamId || !userId || !requestId) {
+      throw new ApiError(400, "Please provide team id, user id and request id");
+    }
+
+    const isUserTeamLeader = await isAuthorized(userId, teamId);
+
+    if (!isUserTeamLeader) {
+      throw new ApiError(400, "You are a team leader");
+    }
+
+    const rejectRequest = await prisma.$transaction(async (prisma) => {
+      const getDetails = await prisma.activeInvitationOrRequest.findUnique({
+        where: { id: requestId }
+      });
+
+      if (!getDetails) {
+        throw new ApiError(400, "Request not found");
+      }
+
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: getDetails.teamId,
+          userId: getDetails.memberId,
+          action: $Enums.Action.INVITATION_REVOKED,
+          designation: getDetails.designation,
+          requestId: requestId
+        }
+      })
+
+      await prisma.activeInvitationOrRequest.delete({
+        where: {
+          id: requestId
+        }
+      })
+
+      return getDetails;
+    })
+
+    if (!rejectRequest) {
+      throw new ApiError(400, "Request cancellation process failed in database");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teamId: rejectRequest.teamId,
+        userId: rejectRequest.memberId,
+        designation: rejectRequest.designation
+      }, "Request cancelled successfully")
+    )
+
+
+  } catch (error) {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to cancel team joining request", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const acceptTeamJoiningRequest = async (request, response) => { }
 

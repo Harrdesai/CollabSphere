@@ -27,7 +27,7 @@ teamsRoutes.post('/:teamId/remove-members', authMiddleware, removeMemberFromTeam
 
 teamsRoutes.post('/:teamId/join', authMiddleware, sendRequestToJoinTeam);
 
-teamsRoutes.post('/cancel-join-request', authMiddleware, cancelTeamJoiningRequest);
+teamsRoutes.post('/cancel-join-request/:teamId', authMiddleware, cancelTeamJoiningRequest);
 
 teamsRoutes.post('/accept-join-request', authMiddleware, acceptTeamJoiningRequest);
 

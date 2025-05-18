@@ -595,7 +595,65 @@ const rejectTeamInvitation = async (request, response) => {
 
 }
 
-const getListOfPendingTeamInvitations = async (request, response) => { }
+const getListOfPendingTeamInvitations = async (request, response) => { 
+
+  try {
+    
+    const userId = request.user.userId;
+
+    const invitations = await prisma.activeInvitationOrRequest.findMany({
+      where: {memberId: userId},
+      select: {
+        id: true,
+        memberId: true,
+        teamId: true,
+        designation: true,
+        team: {
+          select: {
+            title: true,
+            teamLeader: {
+              select: {
+                firstName: true,
+                lastName: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!invitations) {
+      throw new ApiError(404, "Invitations not found");
+    }
+
+    const invitationsJson = invitations.map((invitation) => ({
+      id: invitation.id,
+      memberId: invitation.memberId,
+      teamId: invitation.teamId,
+      designation: invitation.designation,
+      team: {
+        title: invitation.team.title,
+        teamLeader: {
+          firstName: invitation.team.teamLeader.firstName,
+          lastName: invitation.team.teamLeader.lastName
+        }
+      }
+    }))
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        invitations: invitationsJson
+      }, "List of pending team invitations fetched successfully")
+    )
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to fetch the list of pending team invitations", {
+        error: error.message
+      })
+    )
+  }
+}
 
 const removeMemberFromTeam = async (request, response) => { }
 

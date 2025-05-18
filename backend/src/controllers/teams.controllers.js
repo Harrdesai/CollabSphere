@@ -49,6 +49,19 @@ const isAuthorized = async (userId, teamId) => {
 
 }
 
+const memberCount = async (teamId) => {
+
+  const members = await prisma.userRoleInTeam.groupBy({
+    by: ['userId'],
+    where: {
+      teamId,
+      isActive: true,
+    },
+  });
+
+  return members.length >= 4;
+}
+
 const createTeam = async (request, response) => {
 
   try {
@@ -770,7 +783,111 @@ const removeMemberFromTeam = async (request, response) => {
   }
 }
 
-const sendRequestToJoinTeam = async (request, response) => { }
+const sendRequestToJoinTeam = async (request, response) => {
+
+  try {
+
+    const { designation } = request.body;
+    const teamId = request.params.teamId;
+    const userId = request.user.userId
+    const isUserTeamLeader = await isAuthorized(userId, teamId);
+
+    if (isUserTeamLeader) {
+      throw new ApiError(400, "You are a team leader");
+    }
+
+    if (!teamId || !userId || !designation) {
+      throw new ApiError(400, "Please provide team id, user id and designation");
+    }
+
+    const isUserEligibleToJoin = await canUserJoinAnotherTeam(userId);
+
+    if (!isUserEligibleToJoin) {
+      throw new ApiError(400, "You reached maximum team limit or is a team leader");
+    }
+
+    const checkIsMemberAlreayWithSameDesignation = await prisma.userRoleInTeam.findFirst({
+      where: {
+        teamId,
+        userId,
+        designation
+      }
+    })
+
+    if (checkIsMemberAlreayWithSameDesignation) {
+      throw new ApiError(400, "User is already a member with same designation");
+    }
+
+    const isMemberAlreadyInvited = await prisma.activeInvitationOrRequest.findFirst({
+      where: {
+        teamId,
+        memberId: userId,
+        designation
+      }
+    })
+
+    if (isMemberAlreadyInvited) {
+      throw new ApiError(400, "User is already invited");
+    }
+
+    const sendRequestToJoinTeam = await prisma.$transaction(async (prisma) => {
+
+      const isLimitReached = await memberCount(teamId);
+
+      if (isLimitReached) {
+        throw new ApiError(400, "Team reached maximum member limit");
+      }
+
+      const request = await prisma.activeInvitationOrRequest.create({
+        data: {
+          teamId,
+          memberId: userId,
+          designation
+        }
+      });
+
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: request.teamId,
+          userId: request.memberId,
+          action: $Enums.Action.INVITATION_SENT,
+          designation: request.designation,
+          requestId: request.id
+        }
+      })
+
+      return request;
+    })
+
+    if (!sendRequestToJoinTeam) {
+      throw new ApiError(400, "Failed the process of sending request to join team in database");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teamId: sendRequestToJoinTeam.teamId,
+        userId: sendRequestToJoinTeam.memberId,
+        designation: sendRequestToJoinTeam.designation
+      })
+    )
+  } catch (error) {
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return response.status(400).json(
+          new ApiError(400, {}, `Already invitation ${error.meta.target}`)
+        );
+      }
+    }
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to send Team join invitation request", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const cancelTeamJoiningRequest = async (request, response) => { }
 
@@ -890,3 +1007,4 @@ export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancel
 
 
 // verify team leader id while updating team detail
+// implementaion of isActive field in UserRoleInTeam

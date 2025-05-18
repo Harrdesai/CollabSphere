@@ -25,7 +25,7 @@ teamsRoutes.get('/pending-invitations', authMiddleware, getListOfPendingTeamInvi
 
 teamsRoutes.post('/:teamId/remove-members', authMiddleware, removeMemberFromTeam);
 
-teamsRoutes.post('/join', authMiddleware, sendRequestToJoinTeam);
+teamsRoutes.post('/:teamId/join', authMiddleware, sendRequestToJoinTeam);
 
 teamsRoutes.post('/cancel-join-request', authMiddleware, cancelTeamJoiningRequest);
 

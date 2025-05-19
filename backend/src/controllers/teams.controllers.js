@@ -1434,9 +1434,55 @@ const updateTag = async (request, response) => {
 }
 
 // access the list of past members
-const getTimelineOfTeamMembers = async (request, response) => { }
+const getTimelineOfTeam = async (request, response) => {
 
-const getTimelineOfUser = async (request, response) => { 
+  try {
+
+    const teamId = request.params.teamId;
+
+    if (!teamId) {
+      throw new ApiError(400, "Team id not found");
+    }
+
+    const timeline = await prisma.teamsEditLog.findMany({
+      where: {
+        teamId
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        },
+        team: {
+          select: {
+            title: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        timeline: timeline
+      }, "Timeline of team fetched successfully")
+    )
+
+  } catch (error) {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while getting timeline of team", {
+        error: error.message
+      })
+    )
+  }
+
+}
+
+const getTimelineOfUser = async (request, response) => {
 
   try {
 
@@ -1464,9 +1510,9 @@ const getTimelineOfUser = async (request, response) => {
         timeline: timeline
       }, "Timeline of user fetched successfully")
     )
-    
+
   } catch (error) {
-  
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while getting timeline of user", {
         error: error.message

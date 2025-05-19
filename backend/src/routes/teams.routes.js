@@ -29,7 +29,7 @@ teamsRoutes.post('/:teamId/join', authMiddleware, sendRequestToJoinTeam);
 
 teamsRoutes.post('/cancel-join-request/:id', authMiddleware, cancelTeamJoiningRequest);
 
-teamsRoutes.post('/accept-join-request', authMiddleware, acceptTeamJoiningRequest);
+teamsRoutes.post('/accept-join-request/:id', authMiddleware, acceptTeamJoiningRequest);
 
 teamsRoutes.post('/reject-join-request/:teamId', authMiddleware, rejectTeamJoiningRequest);
 

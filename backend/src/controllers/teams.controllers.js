@@ -863,11 +863,23 @@ const sendRequestToJoinTeam = async (request, response) => {
       throw new ApiError(400, "Failed the process of sending request to join team in database");
     }
 
+    const team = await prisma.teams.findUnique({
+      where: {
+        id: teamId
+      },
+      select: {
+        title: true
+      }
+    })
+
     response.status(200).json(
       new ApiResponse(200, {
         teamId: sendRequestToJoinTeam.teamId,
         userId: sendRequestToJoinTeam.memberId,
-        designation: sendRequestToJoinTeam.designation
+        designation: sendRequestToJoinTeam.designation,
+        team: {
+          title: team.title
+        }
       })
     )
   } catch (error) {
@@ -952,7 +964,7 @@ const cancelTeamJoiningRequest = async (request, response) => {
         userId: cancelRequest.memberId,
         designation: cancelRequest.designation,
         teamName: cancelRequest.team.title
-        
+
       }, "Invitation cancelled successfully")
     )
 
@@ -967,7 +979,134 @@ const cancelTeamJoiningRequest = async (request, response) => {
 
 }
 
-const acceptTeamJoiningRequest = async (request, response) => { }
+const acceptTeamJoiningRequest = async (request, response) => {
+
+  try {
+
+    const requestId = request.params.id;
+    const teamLeaderIdFromUser = request.user.userId
+
+    if (!requestId || !teamLeaderIdFromUser) {
+      throw new ApiError(400, "request id and team leader id not found");
+    }
+
+    const getRequestDetails = await prisma.activeInvitationOrRequest.findUnique({
+      where: {
+        id: requestId
+      },
+      include: {
+        team: {
+          select: {
+            teamLeaderId: true,
+            title: true
+          },
+        },
+        member: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    })
+
+    if (!getRequestDetails) {
+      throw new ApiError(400, "Request not found");
+    }
+
+    const { teamId, memberId, designation } = getRequestDetails;
+
+    const teamLeaderId = getRequestDetails.team.teamLeaderId; 
+
+    if (teamLeaderId !== teamLeaderIdFromUser) {
+      throw new ApiError(400, "You are not a team leader");
+    }
+
+    const acceptRequest = await prisma.$transaction(async (prisma) => {
+
+      const checkIsRequesterAlreadyMemberWithSameDesignation = await prisma.userRoleInTeam.findMany({
+        where: {
+          teamId,
+          userId: memberId,
+          isActive: true,
+          designation
+        }
+      })
+
+      if (checkIsRequesterAlreadyMemberWithSameDesignation.length > 0) {
+        throw new ApiError(400, "The user is already a member of team with same designation");
+      }
+
+      const isLimitReached = await memberCount(teamId);
+
+      if (isLimitReached) {
+        throw new ApiError(400, "Team member limit reached");
+      }
+
+      const isUserEligibleToJoinTeam = await canUserJoinAnotherTeam(memberId);
+
+      if (!isUserEligibleToJoinTeam) {
+        throw new ApiError(400, "The user is reached maximum team limit or is a team leader");
+      }
+
+      await prisma.userRoleInTeam.create({
+        data: {
+          teamId,
+          userId: memberId,
+          isActive: true,
+          designation
+        }
+      })
+
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId: getRequestDetails.teamId,
+          userId: getRequestDetails.memberId,
+          action: $Enums.Action.INVITATION_ACCEPTED,
+          designation: getRequestDetails.designation,
+          requestId: getRequestDetails.id
+        }
+      })
+
+      await prisma.activeInvitationOrRequest.delete({
+        where: {
+          id: requestId
+        }
+      })
+
+      return getRequestDetails
+    })
+
+    if (!acceptRequest) {
+      throw new ApiError(400, "Failed the process of accepting request in database");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teamName: getRequestDetails.team.title,
+        designation: getRequestDetails.designation,
+        firstName: getRequestDetails.member.firstName,
+        lastName: getRequestDetails.member.lastName
+      })
+    )
+
+  } catch (error) {
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return response.status(400).json(
+          new ApiError(400, {}, `Request already accepted ${error.meta.target}`)
+        );
+      }
+    }
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to accept the request", {
+        error: error.message
+      })
+    )
+  }
+}
 
 const rejectTeamJoiningRequest = async (request, response) => {
 

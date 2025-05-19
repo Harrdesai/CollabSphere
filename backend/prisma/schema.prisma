@@ -131,6 +131,11 @@ enum Action {
   TEAM_DELETED
   MEMBER_REMOVED
   LEAVED_TEAM
+  JOINING_REQUEST_RECEIVED
+  JOINING_REQUEST_REVOKED
+  JOINING_REQUEST_REJECTED
+  JOINING_REQUEST_ACCEPTED
+
 }
 
 // store id of request or invitation in TeamEditLog in requestId field

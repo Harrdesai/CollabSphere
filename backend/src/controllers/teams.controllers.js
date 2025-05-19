@@ -850,7 +850,7 @@ const sendRequestToJoinTeam = async (request, response) => {
         data: {
           teamId: request.teamId,
           userId: request.memberId,
-          action: $Enums.Action.INVITATION_SENT,
+          action: $Enums.Action.JOIN_REQUEST_SENT,
           designation: request.designation,
           requestId: request.id
         }
@@ -938,7 +938,7 @@ const cancelTeamJoiningRequest = async (request, response) => {
         data: {
           teamId: getDetails.teamId,
           userId: getDetails.memberId,
-          action: $Enums.Action.INVITATION_REVOKED,
+          action: $Enums.Action.JOINING_REQUEST_REVOKED,
           designation: getDetails.designation,
           requestId: getDetails.id
         }
@@ -1061,7 +1061,7 @@ const acceptTeamJoiningRequest = async (request, response) => {
         data: {
           teamId: getRequestDetails.teamId,
           userId: getRequestDetails.memberId,
-          action: $Enums.Action.INVITATION_ACCEPTED,
+          action: $Enums.Action.JOINING_REQUEST_ACCEPTED,
           designation: getRequestDetails.designation,
           requestId: getRequestDetails.id
         }
@@ -1140,7 +1140,7 @@ const rejectTeamJoiningRequest = async (request, response) => {
         data: {
           teamId: getDetails.teamId,
           userId: getDetails.memberId,
-          action: $Enums.Action.INVITATION_REVOKED,
+          action: $Enums.Action.JOINING_REQUEST_REJECTED,
           designation: getDetails.designation,
           requestId: requestId
         }
@@ -1280,7 +1280,7 @@ const resign = async (request, response) => {
         data: rolesToRemoveWithoutLeader.map(role => ({
           teamId: role.teamId,
           userId: role.userId,
-          action: $Enums.Action.MEMBER_REMOVED,
+          action: $Enums.Action.LEAVED_TEAM,
           designation: role.designation,
           requestId: role.id
         }))
@@ -1524,7 +1524,7 @@ const getTimelineOfUser = async (request, response) => {
 
 
 
-export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, updateMemberRole, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeamMembers, getTimelineOfUser };
+export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, updateMemberRole, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser };
 
 
 // verify team leader id while updating team detail

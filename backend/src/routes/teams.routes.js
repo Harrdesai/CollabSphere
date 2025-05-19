@@ -2,7 +2,7 @@
 
 import express from 'express';
 import { authMiddleware } from '../middleware/auth.middleware.js';
-import { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, updateMemberRole, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeamMembers, getTimelineOfUser } from '../controllers/teams.controllers.js'
+import { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, updateMemberRole, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser } from '../controllers/teams.controllers.js'
 
 
 const teamsRoutes = express.Router();
@@ -49,7 +49,7 @@ teamsRoutes.post('/update-tag', authMiddleware, updateTag);
 
 teamsRoutes.get('/get-team-members', authMiddleware, getListOfTeamMembers);
 
-teamsRoutes.get('/get-timeline-of-team-members', authMiddleware, getTimelineOfTeamMembers);
+teamsRoutes.get('/:teamId/get-timeline-of-team', authMiddleware, getTimelineOfTeam);
 
 teamsRoutes.get('/get-timeline-of-user', authMiddleware, getTimelineOfUser);
 

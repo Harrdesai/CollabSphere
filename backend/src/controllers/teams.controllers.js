@@ -1015,7 +1015,7 @@ const acceptTeamJoiningRequest = async (request, response) => {
 
     const { teamId, memberId, designation } = getRequestDetails;
 
-    const teamLeaderId = getRequestDetails.team.teamLeaderId; 
+    const teamLeaderId = getRequestDetails.team.teamLeaderId;
 
     if (teamLeaderId !== teamLeaderIdFromUser) {
       throw new ApiError(400, "You are not a team leader");
@@ -1178,8 +1178,8 @@ const rejectTeamJoiningRequest = async (request, response) => {
 
 }
 
-const getListOfPendingTeamJoiningRequests = async (request, response) => { 
-  
+const getListOfPendingTeamJoiningRequests = async (request, response) => {
+
   try {
 
     const userId = request.user.userId;
@@ -1238,7 +1238,103 @@ const getListOfPendingTeamJoiningRequests = async (request, response) => {
 
 }
 
-const leaveTeam = async (request, response) => { }
+const resign = async (request, response) => {
+
+  try {
+
+    const teamId = request.params.teamId
+    const userId = request.user.userId
+    const { arrayOfUserRoleInTeamIds = [] } = request.body
+
+    if (!teamId || !userId) {
+      throw new ApiError(400, "Please provide team id and user id");
+    }
+
+    const setOfUserRoleInTeamIds = Array.from(new Set(arrayOfUserRoleInTeamIds));
+
+    const rolesToRemove = await prisma.userRoleInTeam.findMany({
+      where: {
+        id: { in: setOfUserRoleInTeamIds },
+        teamId: teamId,
+      }
+    });
+
+    const rolesToRemoveWithoutLeader = rolesToRemove.filter(role => role.designation !== "TEAM_LEADER" && role.isActive === true)
+
+    if (rolesToRemoveWithoutLeader.length === 0) {
+      throw new ApiError(400, "No valid roles to remove (TEAM_LEADER role cannot be removed)");
+    }
+
+    const removeMembers = await prisma.$transaction(async (prisma) => {
+
+      await prisma.userRoleInTeam.updateMany({
+        where: {
+          id: { in: rolesToRemoveWithoutLeader.map(role => role.id) }
+        },
+        data: {
+          isActive: false
+        },
+      });
+
+      await prisma.teamsEditLog.createMany({
+        data: rolesToRemoveWithoutLeader.map(role => ({
+          teamId: role.teamId,
+          userId: role.userId,
+          action: $Enums.Action.MEMBER_REMOVED,
+          designation: role.designation,
+          requestId: role.id
+        }))
+      });
+
+      return rolesToRemoveWithoutLeader.map(role => role.id);
+    })
+
+    const getRemovedMemberRolesArray = await prisma.userRoleInTeam.findMany({
+      where: {
+        id: { in: removeMembers }
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        },
+        team: {
+          select: {
+            id: true,
+            title: true
+          }
+        }
+      }
+    })
+
+    const resignedDesignations = getRemovedMemberRolesArray.map((member) => {
+      return {
+        firstName: member.user.firstName,
+        lastName: member.user.lastName,
+        designation: member.designation,
+        teamId: member.teamId,
+        teamTitle: member.team.title
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        resignedDesignations: resignedDesignations
+      }, "Member resigned successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed the procass of resigning request", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 // Get all teams
 const getTeams = async (request, response) => { }
@@ -1344,9 +1440,10 @@ const getTimelineOfUser = async (request, response) => { }
 
 
 
-export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, leaveTeam, getTeams, getTeamDetails, updateMemberRole, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeamMembers, getTimelineOfUser };
+export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, updateMemberRole, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeamMembers, getTimelineOfUser };
 
 
 // verify team leader id while updating team detail
 // implementaion of isActive field in UserRoleInTeam
-// Remove pending request or invitation on last member accepted a request or invitation 
+// Remove pending request or invitation on last member accepted a request or invitation
+// implementation of leave multiple team desgination

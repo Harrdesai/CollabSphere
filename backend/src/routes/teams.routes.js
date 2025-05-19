@@ -33,7 +33,7 @@ teamsRoutes.post('/accept-join-request/:id', authMiddleware, acceptTeamJoiningRe
 
 teamsRoutes.post('/reject-join-request/:teamId', authMiddleware, rejectTeamJoiningRequest);
 
-teamsRoutes.get('/pending-join-requests', authMiddleware, getListOfPendingTeamJoiningRequests);
+teamsRoutes.get('/:teamId/pending-join-requests', authMiddleware, getListOfPendingTeamJoiningRequests);
 
 teamsRoutes.post('/leave', authMiddleware, leaveTeam);
 

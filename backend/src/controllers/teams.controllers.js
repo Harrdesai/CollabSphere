@@ -901,7 +901,6 @@ const sendRequestToJoinTeam = async (request, response) => {
 
 }
 
-
 const cancelTeamJoiningRequest = async (request, response) => {
 
   try {
@@ -1179,7 +1178,65 @@ const rejectTeamJoiningRequest = async (request, response) => {
 
 }
 
-const getListOfPendingTeamJoiningRequests = async (request, response) => { }
+const getListOfPendingTeamJoiningRequests = async (request, response) => { 
+  
+  try {
+
+    const userId = request.user.userId;
+    const teamId = request.params.teamId;
+
+    const teamJoiningRequests = await prisma.activeInvitationOrRequest.findMany({
+      where: {
+        teamId
+      },
+      include: {
+        team: {
+          select: {
+            title: true,
+            teamLeader: {
+              select: {
+                firstName: true,
+                lastName: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (teamJoiningRequests.length === 0) {
+      throw new ApiError(404, "No pending team joining requests found");
+    }
+
+    const requestsJson = teamJoiningRequests.map((requestsJson) => ({
+      id: requestsJson.id,
+      memberId: requestsJson.memberId,
+      teamId: requestsJson.teamId,
+      designation: requestsJson.designation,
+      team: {
+        title: requestsJson.team.title,
+        teamLeader: {
+          firstName: requestsJson.team.teamLeader.firstName,
+          lastName: requestsJson.team.teamLeader.lastName
+        }
+      }
+    }))
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        requests: requestsJson
+      }, "List of pending team joining requests fetched successfully")
+    )
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to fetch the list of pending team joining requests", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const leaveTeam = async (request, response) => { }
 
@@ -1292,3 +1349,4 @@ export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancel
 
 // verify team leader id while updating team detail
 // implementaion of isActive field in UserRoleInTeam
+// Remove pending request or invitation on last member accepted a request or invitation 

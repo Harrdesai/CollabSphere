@@ -23,6 +23,11 @@ const createNotice = async (request, response) => {
       throw new ApiError(400, "Start date must be before or equal to end date");
     }
 
+    const maxAllowedDate = new Date(Date.now() + (15 * 24 * 60 * 60 * 1000));
+    if (new Date(startDate) > maxAllowedDate) {
+      throw new ApiError(400, "Start date cannot be more than 15 days in the future");
+    }
+
     const isTeamLeader = await isAuthorized(createdById, teamId);
 
     const notice = await prisma.$transaction(async (prismaTx) => {
@@ -77,7 +82,7 @@ const createNotice = async (request, response) => {
 
 }
 
-const getNotices = async (request, response) => { 
+const getNotices = async (request, response) => {
 
   try {
     const teamId = request.params.teamId;
@@ -90,10 +95,10 @@ const getNotices = async (request, response) => {
         teamId,
         status: "APPROVED",
         OR: [{
-        startDate: isLeader ? { gte: new Date() } : { lte: new Date() },
-        endDate: {gte: new Date()}
-        },{
-          endDate: {lt: new Date(), gte: new Date(Date.now()-(historyDays*24*60*60*1000))} // 7 days history
+          startDate: isLeader ? { gte: new Date() } : { lte: new Date() },
+          endDate: { gte: new Date() }
+        }, {
+          endDate: { lt: new Date(), gte: new Date(Date.now() - (historyDays * 24 * 60 * 60 * 1000)) } // 7 days history
         }
         ]
       },
@@ -115,8 +120,8 @@ const getNotices = async (request, response) => {
     );
 
   } catch (error) {
-    
-  response.status(error.statusCode || 500).json(
+
+    response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to load the notices", {
         error: error.message
       })

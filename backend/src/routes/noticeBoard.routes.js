@@ -8,7 +8,7 @@ const noticeBoardRoutes = Router({ mergeParams: true });
 
 noticeBoardRoutes.post('/create', authMiddleware, createNotice);
 
-noticeBoardRoutes.get('/', authMiddleware, getNotices);
+noticeBoardRoutes.get('/all-notices', authMiddleware, getNotices);
 
 noticeBoardRoutes.get('/:noticeId', authMiddleware, getNotice);
 

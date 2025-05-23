@@ -77,7 +77,52 @@ const createNotice = async (request, response) => {
 
 }
 
-const getNotices = async (request, response) => { }
+const getNotices = async (request, response) => { 
+
+  try {
+    const teamId = request.params.teamId;
+    const historyDays = request.query.historyDays || 1;
+
+    const isLeader = await isAuthorized(request.user.userId, teamId);
+
+    const notices = await prisma.notice.findMany({
+      where: {
+        teamId,
+        status: "APPROVED",
+        OR: [{
+        startDate: isLeader ? { gte: new Date() } : { lte: new Date() },
+        endDate: {gte: new Date()}
+        },{
+          endDate: {lt: new Date(), gte: new Date(Date.now()-(historyDays*24*60*60*1000))} // 7 days history
+        }
+        ]
+      },
+      select: {
+        id: true,
+        title: true,
+        endDate: true,
+        createdBy: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, notices, "Notices fetched successfully")
+    );
+
+  } catch (error) {
+    
+  response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to load the notices", {
+        error: error.message
+      })
+    );
+  }
+}
 
 const getNotice = async (request, response) => { }
 

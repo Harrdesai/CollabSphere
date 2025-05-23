@@ -104,7 +104,7 @@ const getNotices = async (request, response) => {
           startDate: isLeader ? { gte: new Date() } : { lte: new Date() },
           endDate: { gte: new Date() }
         }, {
-          endDate: { lt: new Date(), gte: new Date(Date.now() - (historyDays * 24 * 60 * 60 * 1000)) } // 7 days history
+          endDate: { lt: new Date(), gte: new Date(Date.now() - (historyDays * 24 * 60 * 60 * 1000)) }
         }
         ]
       },
@@ -135,12 +135,14 @@ const getNotices = async (request, response) => {
   }
 }
 
-const getNotice = async (request, response) => { 
-  
+const getNotice = async (request, response) => {
+
   try {
-    
+
     const noticeId = request.params.noticeId;
     const teamId = request.params.teamId;
+
+    console.log(`Entered noticeId: ${noticeId}, teamId: ${teamId}`);
 
     if (!noticeId || !teamId) {
       throw new ApiError(400, "Please provide notice id and team id");
@@ -175,10 +177,10 @@ const getNotice = async (request, response) => {
   }
 }
 
-const updateNotice = async (request, response) => { 
+const updateNotice = async (request, response) => {
 
   try {
-  
+
     const noticeId = request.params.noticeId;
     const teamId = request.params.teamId;
     const userId = request.user.userId;
@@ -251,7 +253,7 @@ const updateNotice = async (request, response) => {
       new ApiResponse(200, updateNotice, "Notice updated successfully")
     );
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to update the notice", {
         error: error.message
@@ -261,10 +263,10 @@ const updateNotice = async (request, response) => {
 
 }
 
-const deleteNotice = async (request, response) => { 
+const deleteNotice = async (request, response) => {
 
   try {
-  
+
     const noticeId = request.params.noticeId;
     const teamId = request.params.teamId;
     const userId = request.user.userId;
@@ -298,7 +300,7 @@ const deleteNotice = async (request, response) => {
       if (notice.status === $Enums.Status.DELETED) {
         throw new ApiError(400, "Notice already deleted");
       }
-      
+
       const deleteNotice = await prismaTx.notice.update({
         where: {
           id: noticeId
@@ -325,7 +327,7 @@ const deleteNotice = async (request, response) => {
 
     if (!deletedNotice) {
       throw new ApiError(404, "Notice not found");
-    }    
+    }
 
     response.status(200).json(
       new ApiResponse(200, {
@@ -339,7 +341,7 @@ const deleteNotice = async (request, response) => {
     );
 
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to delete the notice", {
         error: error.message
@@ -350,9 +352,53 @@ const deleteNotice = async (request, response) => {
 }
 
 // Notice Request
-const createNoticeRequest = async (request, response) => { }
+const getNoticeRequests = async (request, response) => {
+  try {
 
-const getNoticeRequests = async (request, response) => { }
+    const teamId = request.params.teamId;
+    const userId = request.user.userId;
+    const status = Array.isArray(request.body?.status) ? request.body.status : ["PENDING"];
+    let historyDays = Number(request.body?.historyDays);
+    if (!historyDays || historyDays < 1) {
+      historyDays = 1;
+    }
+
+    if (!teamId || !userId) {
+      throw new ApiError(400, "Please provide team id and user id");
+    }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    const isMember = await isTeamMember(teamId, userId);
+
+    if (!isMember) {
+      throw new ApiError(403, "You are not a member of this team");
+    }
+    
+    // If team leader then send all data else send only acitve or future data which belongs to that user
+    const noticeRequests = await prisma.notice.findMany({
+      where: {
+        teamId: teamId,
+        status: { in: status },
+        endDate: { gte: new Date(Date.now() - (historyDays * 24 * 60 * 60 * 1000)) },
+        ...(isTeamLeader ? {} : { createdById: userId })
+        
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, noticeRequests, "List of notice requests fetched successfully")
+    );
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to get the list of notice requests", {
+        error: error.message
+      })
+    )
+  }
+}
 
 const getNoticeRequest = async (request, response) => { }
 
@@ -376,7 +422,6 @@ export {
   getNotice,
   updateNotice,
   deleteNotice,
-  createNoticeRequest,
   getNoticeRequests,
   getNoticeRequest,
   updateNoticeRequest,
@@ -387,3 +432,9 @@ export {
   getPendingNoticeRequests,
   getAcceptedNoticeRequests
 }
+
+
+// start date = 15-05-2025
+// end date = 16-05-2026
+// means end date is less than start date or end date is greater than start date
+//end date < 23-05-2025 

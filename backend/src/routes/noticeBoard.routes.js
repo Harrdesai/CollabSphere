@@ -2,7 +2,7 @@
 
 import { Router } from "express";
 import { authMiddleware } from '../middleware/auth.middleware.js';
-import { createNotice, getNotices, getNotice, updateNotice, deleteNotice, createNoticeRequest, getNoticeRequests, getNoticeRequest, updateNoticeRequest, cancelNoticeRequest, acceptNoticeRequest, deleteNoticeRequest, rejectNoticeRequest, getPendingNoticeRequests, getAcceptedNoticeRequests  } from '../controllers/noticeBoard.controllers.js';
+import { createNotice, getNotices, getNotice, updateNotice, deleteNotice, getNoticeRequests, getNoticeRequest, updateNoticeRequest, cancelNoticeRequest, acceptNoticeRequest, deleteNoticeRequest, rejectNoticeRequest, getPendingNoticeRequests, getAcceptedNoticeRequests  } from '../controllers/noticeBoard.controllers.js';
 
 const noticeBoardRoutes = Router({ mergeParams: true });
 
@@ -10,13 +10,11 @@ noticeBoardRoutes.post('/create', authMiddleware, createNotice);
 
 noticeBoardRoutes.get('/all-notices', authMiddleware, getNotices);
 
-noticeBoardRoutes.get('/:noticeId', authMiddleware, getNotice);
+noticeBoardRoutes.get('/:noticeId/details', authMiddleware, getNotice);
 
 noticeBoardRoutes.post('/:noticeId/update', authMiddleware, updateNotice);
 
 noticeBoardRoutes.post('/:noticeId/delete', authMiddleware, deleteNotice);
-
-noticeBoardRoutes.post('/requests', authMiddleware, createNoticeRequest);
 
 noticeBoardRoutes.get('/requests', authMiddleware, getNoticeRequests);
 

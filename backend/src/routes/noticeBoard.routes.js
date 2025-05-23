@@ -4,9 +4,9 @@ import { Router } from "express";
 import { authMiddleware } from '../middleware/auth.middleware.js';
 import { createNotice, getNotices, getNotice, updateNotice, deleteNotice, createNoticeRequest, getNoticeRequests, getNoticeRequest, updateNoticeRequest, cancelNoticeRequest, acceptNoticeRequest, deleteNoticeRequest, rejectNoticeRequest, getPendingNoticeRequests, getAcceptedNoticeRequests  } from '../controllers/noticeBoard.controllers.js';
 
-const noticeBoardRoutes = Router();
+const noticeBoardRoutes = Router({ mergeParams: true });
 
-noticeBoardRoutes.post('/', authMiddleware, createNotice);
+noticeBoardRoutes.post('/create', authMiddleware, createNotice);
 
 noticeBoardRoutes.get('/', authMiddleware, getNotices);
 

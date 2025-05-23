@@ -54,7 +54,6 @@ model User {
   userRoleInTeam UserRoleInTeam[]
   chats          Chat[]                      @relation("ChatMembers")
   messages       Message[]
-  noticeRequests NoticeRequest[]
   notices        Notice[]                    @relation("UserNotices")
   noticeHistory  NoticeHistory[]
 }
@@ -93,7 +92,6 @@ model Teams {
   ActiveRequests ActiveInvitationOrRequest[]
   chats          Chat[]
   notices        Notice[]
-  noticeRequests NoticeRequest[]
 }
 
 model UserRoleInTeam {
@@ -130,6 +128,10 @@ enum Action {
   TEAM_DELETED
   MEMBER_REMOVED
   LEAVED_TEAM
+  JOINING_REQUEST_RECEIVED
+  JOINING_REQUEST_REVOKED
+  JOINING_REQUEST_REJECTED
+  JOINING_REQUEST_ACCEPTED
 }
 
 // store id of request or invitation in TeamEditLog in requestId field
@@ -162,45 +164,43 @@ model ActiveInvitationOrRequest {
   @@unique([teamId, memberId, designation])
 }
 
-model Notice {
-  id         String   @id @default(uuid())
-  title      String
-  content    String
-  postedById String
-  teamId     String
-  startDate  DateTime
-  endDate    DateTime
-  isActive   Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  postedBy User            @relation("UserNotices", fields: [postedById], references: [userId])
-  team     Teams           @relation(fields: [teamId], references: [id])
-  history  NoticeHistory[]
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+  DELETED
 }
 
-model NoticeRequest {
-  id             String   @id @default(uuid())
-  memberId       String
-  teamId         String
-  requestMessage String
-  status         String   @default("pending") // pending, approved, rejected
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+model Notice {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  createdById String
+  teamId      String
+  startDate   DateTime
+  endDate     DateTime
+  status      Status
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  member User  @relation(fields: [memberId], references: [userId])
-  team   Teams @relation(fields: [teamId], references: [id])
+  createdBy User            @relation("UserNotices", fields: [createdById], references: [userId])
+  team      Teams           @relation(fields: [teamId], references: [id])
+  history   NoticeHistory[]
 }
 
 model NoticeHistory {
-  id            String   @id @default(uuid())
-  noticeId      String
-  action        String // "approved", "rejected", "updated"
-  performedById String
-  createdAt     DateTime @default(now())
+  id          String   @id @default(uuid())
+  noticeId    String
+  title       String
+  content     String
+  startDate   DateTime
+  endDate     DateTime
+  status      Status
+  createdById String
+  createdAt   DateTime @default(now())
 
-  notice      Notice @relation(fields: [noticeId], references: [id])
-  performedBy User   @relation(fields: [performedById], references: [userId])
+  notice    Notice @relation(fields: [noticeId], references: [id])
+  createdBy User   @relation(fields: [createdById], references: [userId])
 }
 
 model Chat {

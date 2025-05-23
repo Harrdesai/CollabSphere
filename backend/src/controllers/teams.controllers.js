@@ -3,64 +3,8 @@
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { $Enums, Prisma, PrismaClient } from "../generated/prisma/index.js";
-
+import { canUserJoinAnotherTeam, isAuthorized, memberCount } from "../utils/helpers.js";
 const prisma = new PrismaClient();
-
-const canUserJoinAnotherTeam = async (userId) => {
-
-  const isTeamLeader = await prisma.user.findUnique({
-    where: {
-      userId
-    },
-    select: {
-      isTeamLeader: true
-    }
-  })
-
-  if (isTeamLeader.isTeamLeader) {
-    return false
-  }
-
-  const teamMemberships = await prisma.userRoleInTeam.findMany({
-    where: { userId },
-    select: { teamId: true },
-    distinct: ['teamId']
-  });
-
-  return teamMemberships.length < 3;
-}
-
-const isAuthorized = async (userId, teamId) => {
-
-  const getTeamLeaderId = await prisma.teams.findUnique({
-    where: {
-      id: teamId
-    },
-    select: {
-      teamLeaderId: true
-    }
-  })
-
-  if (getTeamLeaderId.teamLeaderId === userId) {
-    return true
-  }
-
-  return false
-
-}
-
-const memberCount = async (teamId) => {
-
-  const members = await prisma.userRoleInTeam.groupBy({
-    by: ['userId'],
-    where: {
-      teamId,
-      isActive: true,
-    },
-  });
-
-  return members.length >= 4;
-}
 
 const createTeam = async (request, response) => {
 

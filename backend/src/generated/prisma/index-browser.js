@@ -201,20 +201,10 @@ exports.Prisma.NoticeScalarFieldEnum = {
   id: 'id',
   title: 'title',
   content: 'content',
-  postedById: 'postedById',
+  createdById: 'createdById',
   teamId: 'teamId',
   startDate: 'startDate',
   endDate: 'endDate',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.NoticeRequestScalarFieldEnum = {
-  id: 'id',
-  memberId: 'memberId',
-  teamId: 'teamId',
-  requestMessage: 'requestMessage',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -223,8 +213,12 @@ exports.Prisma.NoticeRequestScalarFieldEnum = {
 exports.Prisma.NoticeHistoryScalarFieldEnum = {
   id: 'id',
   noticeId: 'noticeId',
-  action: 'action',
-  performedById: 'performedById',
+  title: 'title',
+  content: 'content',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  createdById: 'createdById',
   createdAt: 'createdAt'
 };
 
@@ -297,7 +291,18 @@ exports.Action = exports.$Enums.Action = {
   TEAM_CREATED: 'TEAM_CREATED',
   TEAM_DELETED: 'TEAM_DELETED',
   MEMBER_REMOVED: 'MEMBER_REMOVED',
-  LEAVED_TEAM: 'LEAVED_TEAM'
+  LEAVED_TEAM: 'LEAVED_TEAM',
+  JOINING_REQUEST_RECEIVED: 'JOINING_REQUEST_RECEIVED',
+  JOINING_REQUEST_REVOKED: 'JOINING_REQUEST_REVOKED',
+  JOINING_REQUEST_REJECTED: 'JOINING_REQUEST_REJECTED',
+  JOINING_REQUEST_ACCEPTED: 'JOINING_REQUEST_ACCEPTED'
+};
+
+exports.Status = exports.$Enums.Status = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  DELETED: 'DELETED'
 };
 
 exports.Prisma.ModelName = {
@@ -309,7 +314,6 @@ exports.Prisma.ModelName = {
   TeamsEditLog: 'TeamsEditLog',
   ActiveInvitationOrRequest: 'ActiveInvitationOrRequest',
   Notice: 'Notice',
-  NoticeRequest: 'NoticeRequest',
   NoticeHistory: 'NoticeHistory',
   Chat: 'Chat',
   Message: 'Message'

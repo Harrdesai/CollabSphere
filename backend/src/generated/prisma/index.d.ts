@@ -54,11 +54,6 @@ export type ActiveInvitationOrRequest = $Result.DefaultSelection<Prisma.$ActiveI
  */
 export type Notice = $Result.DefaultSelection<Prisma.$NoticePayload>
 /**
- * Model NoticeRequest
- * 
- */
-export type NoticeRequest = $Result.DefaultSelection<Prisma.$NoticeRequestPayload>
-/**
  * Model NoticeHistory
  * 
  */
@@ -106,10 +101,24 @@ export const Action: {
   TEAM_CREATED: 'TEAM_CREATED',
   TEAM_DELETED: 'TEAM_DELETED',
   MEMBER_REMOVED: 'MEMBER_REMOVED',
-  LEAVED_TEAM: 'LEAVED_TEAM'
+  LEAVED_TEAM: 'LEAVED_TEAM',
+  JOINING_REQUEST_RECEIVED: 'JOINING_REQUEST_RECEIVED',
+  JOINING_REQUEST_REVOKED: 'JOINING_REQUEST_REVOKED',
+  JOINING_REQUEST_REJECTED: 'JOINING_REQUEST_REJECTED',
+  JOINING_REQUEST_ACCEPTED: 'JOINING_REQUEST_ACCEPTED'
 };
 
 export type Action = (typeof Action)[keyof typeof Action]
+
+
+export const Status: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  DELETED: 'DELETED'
+};
+
+export type Status = (typeof Status)[keyof typeof Status]
 
 }
 
@@ -120,6 +129,10 @@ export const Designation: typeof $Enums.Designation
 export type Action = $Enums.Action
 
 export const Action: typeof $Enums.Action
+
+export type Status = $Enums.Status
+
+export const Status: typeof $Enums.Status
 
 /**
  * ##  Prisma Client ʲˢ
@@ -325,16 +338,6 @@ export class PrismaClient<
     * ```
     */
   get notice(): Prisma.NoticeDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.noticeRequest`: Exposes CRUD operations for the **NoticeRequest** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more NoticeRequests
-    * const noticeRequests = await prisma.noticeRequest.findMany()
-    * ```
-    */
-  get noticeRequest(): Prisma.NoticeRequestDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.noticeHistory`: Exposes CRUD operations for the **NoticeHistory** model.
@@ -813,7 +816,6 @@ export namespace Prisma {
     TeamsEditLog: 'TeamsEditLog',
     ActiveInvitationOrRequest: 'ActiveInvitationOrRequest',
     Notice: 'Notice',
-    NoticeRequest: 'NoticeRequest',
     NoticeHistory: 'NoticeHistory',
     Chat: 'Chat',
     Message: 'Message'
@@ -835,7 +837,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "importCSV" | "user" | "teams" | "userRoleInTeam" | "tag" | "teamsEditLog" | "activeInvitationOrRequest" | "notice" | "noticeRequest" | "noticeHistory" | "chat" | "message"
+      modelProps: "importCSV" | "user" | "teams" | "userRoleInTeam" | "tag" | "teamsEditLog" | "activeInvitationOrRequest" | "notice" | "noticeHistory" | "chat" | "message"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1431,80 +1433,6 @@ export namespace Prisma {
           }
         }
       }
-      NoticeRequest: {
-        payload: Prisma.$NoticeRequestPayload<ExtArgs>
-        fields: Prisma.NoticeRequestFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.NoticeRequestFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.NoticeRequestFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>
-          }
-          findFirst: {
-            args: Prisma.NoticeRequestFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.NoticeRequestFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>
-          }
-          findMany: {
-            args: Prisma.NoticeRequestFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>[]
-          }
-          create: {
-            args: Prisma.NoticeRequestCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>
-          }
-          createMany: {
-            args: Prisma.NoticeRequestCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.NoticeRequestCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>[]
-          }
-          delete: {
-            args: Prisma.NoticeRequestDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>
-          }
-          update: {
-            args: Prisma.NoticeRequestUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>
-          }
-          deleteMany: {
-            args: Prisma.NoticeRequestDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.NoticeRequestUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.NoticeRequestUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>[]
-          }
-          upsert: {
-            args: Prisma.NoticeRequestUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NoticeRequestPayload>
-          }
-          aggregate: {
-            args: Prisma.NoticeRequestAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateNoticeRequest>
-          }
-          groupBy: {
-            args: Prisma.NoticeRequestGroupByArgs<ExtArgs>
-            result: $Utils.Optional<NoticeRequestGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.NoticeRequestCountArgs<ExtArgs>
-            result: $Utils.Optional<NoticeRequestCountAggregateOutputType> | number
-          }
-        }
-      }
       NoticeHistory: {
         payload: Prisma.$NoticeHistoryPayload<ExtArgs>
         fields: Prisma.NoticeHistoryFieldRefs
@@ -1819,7 +1747,6 @@ export namespace Prisma {
     teamsEditLog?: TeamsEditLogOmit
     activeInvitationOrRequest?: ActiveInvitationOrRequestOmit
     notice?: NoticeOmit
-    noticeRequest?: NoticeRequestOmit
     noticeHistory?: NoticeHistoryOmit
     chat?: ChatOmit
     message?: MessageOmit
@@ -1925,7 +1852,6 @@ export namespace Prisma {
     userRoleInTeam: number
     chats: number
     messages: number
-    noticeRequests: number
     notices: number
     noticeHistory: number
   }
@@ -1939,7 +1865,6 @@ export namespace Prisma {
     userRoleInTeam?: boolean | UserCountOutputTypeCountUserRoleInTeamArgs
     chats?: boolean | UserCountOutputTypeCountChatsArgs
     messages?: boolean | UserCountOutputTypeCountMessagesArgs
-    noticeRequests?: boolean | UserCountOutputTypeCountNoticeRequestsArgs
     notices?: boolean | UserCountOutputTypeCountNoticesArgs
     noticeHistory?: boolean | UserCountOutputTypeCountNoticeHistoryArgs
   }
@@ -2014,13 +1939,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountNoticeRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NoticeRequestWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountNoticesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NoticeWhereInput
   }
@@ -2045,7 +1963,6 @@ export namespace Prisma {
     ActiveRequests: number
     chats: number
     notices: number
-    noticeRequests: number
   }
 
   export type TeamsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2056,7 +1973,6 @@ export namespace Prisma {
     ActiveRequests?: boolean | TeamsCountOutputTypeCountActiveRequestsArgs
     chats?: boolean | TeamsCountOutputTypeCountChatsArgs
     notices?: boolean | TeamsCountOutputTypeCountNoticesArgs
-    noticeRequests?: boolean | TeamsCountOutputTypeCountNoticeRequestsArgs
   }
 
   // Custom InputTypes
@@ -2117,13 +2033,6 @@ export namespace Prisma {
    */
   export type TeamsCountOutputTypeCountNoticesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NoticeWhereInput
-  }
-
-  /**
-   * TeamsCountOutputType without action
-   */
-  export type TeamsCountOutputTypeCountNoticeRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NoticeRequestWhereInput
   }
 
 
@@ -3508,7 +3417,6 @@ export namespace Prisma {
     userRoleInTeam?: boolean | User$userRoleInTeamArgs<ExtArgs>
     chats?: boolean | User$chatsArgs<ExtArgs>
     messages?: boolean | User$messagesArgs<ExtArgs>
-    noticeRequests?: boolean | User$noticeRequestsArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -3593,7 +3501,6 @@ export namespace Prisma {
     userRoleInTeam?: boolean | User$userRoleInTeamArgs<ExtArgs>
     chats?: boolean | User$chatsArgs<ExtArgs>
     messages?: boolean | User$messagesArgs<ExtArgs>
-    noticeRequests?: boolean | User$noticeRequestsArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -3612,7 +3519,6 @@ export namespace Prisma {
       userRoleInTeam: Prisma.$UserRoleInTeamPayload<ExtArgs>[]
       chats: Prisma.$ChatPayload<ExtArgs>[]
       messages: Prisma.$MessagePayload<ExtArgs>[]
-      noticeRequests: Prisma.$NoticeRequestPayload<ExtArgs>[]
       notices: Prisma.$NoticePayload<ExtArgs>[]
       noticeHistory: Prisma.$NoticeHistoryPayload<ExtArgs>[]
     }
@@ -4039,7 +3945,6 @@ export namespace Prisma {
     userRoleInTeam<T extends User$userRoleInTeamArgs<ExtArgs> = {}>(args?: Subset<T, User$userRoleInTeamArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleInTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chats<T extends User$chatsArgs<ExtArgs> = {}>(args?: Subset<T, User$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     messages<T extends User$messagesArgs<ExtArgs> = {}>(args?: Subset<T, User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    noticeRequests<T extends User$noticeRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$noticeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notices<T extends User$noticesArgs<ExtArgs> = {}>(args?: Subset<T, User$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeHistory<T extends User$noticeHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$noticeHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -4671,30 +4576,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.noticeRequests
-   */
-  export type User$noticeRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    where?: NoticeRequestWhereInput
-    orderBy?: NoticeRequestOrderByWithRelationInput | NoticeRequestOrderByWithRelationInput[]
-    cursor?: NoticeRequestWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NoticeRequestScalarFieldEnum | NoticeRequestScalarFieldEnum[]
-  }
-
-  /**
    * User.notices
    */
   export type User$noticesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4961,7 +4842,6 @@ export namespace Prisma {
     ActiveRequests?: boolean | Teams$ActiveRequestsArgs<ExtArgs>
     chats?: boolean | Teams$chatsArgs<ExtArgs>
     notices?: boolean | Teams$noticesArgs<ExtArgs>
-    noticeRequests?: boolean | Teams$noticeRequestsArgs<ExtArgs>
     _count?: boolean | TeamsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teams"]>
 
@@ -5013,7 +4893,6 @@ export namespace Prisma {
     ActiveRequests?: boolean | Teams$ActiveRequestsArgs<ExtArgs>
     chats?: boolean | Teams$chatsArgs<ExtArgs>
     notices?: boolean | Teams$noticesArgs<ExtArgs>
-    noticeRequests?: boolean | Teams$noticeRequestsArgs<ExtArgs>
     _count?: boolean | TeamsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TeamsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5034,7 +4913,6 @@ export namespace Prisma {
       ActiveRequests: Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>[]
       chats: Prisma.$ChatPayload<ExtArgs>[]
       notices: Prisma.$NoticePayload<ExtArgs>[]
-      noticeRequests: Prisma.$NoticeRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5448,7 +5326,6 @@ export namespace Prisma {
     ActiveRequests<T extends Teams$ActiveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$ActiveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveInvitationOrRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chats<T extends Teams$chatsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notices<T extends Teams$noticesArgs<ExtArgs> = {}>(args?: Subset<T, Teams$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    noticeRequests<T extends Teams$noticeRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Teams$noticeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6048,30 +5925,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NoticeScalarFieldEnum | NoticeScalarFieldEnum[]
-  }
-
-  /**
-   * Teams.noticeRequests
-   */
-  export type Teams$noticeRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    where?: NoticeRequestWhereInput
-    orderBy?: NoticeRequestOrderByWithRelationInput | NoticeRequestOrderByWithRelationInput[]
-    cursor?: NoticeRequestWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NoticeRequestScalarFieldEnum | NoticeRequestScalarFieldEnum[]
   }
 
   /**
@@ -10442,11 +10295,11 @@ export namespace Prisma {
     id: string | null
     title: string | null
     content: string | null
-    postedById: string | null
+    createdById: string | null
     teamId: string | null
     startDate: Date | null
     endDate: Date | null
-    isActive: boolean | null
+    status: $Enums.Status | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10455,11 +10308,11 @@ export namespace Prisma {
     id: string | null
     title: string | null
     content: string | null
-    postedById: string | null
+    createdById: string | null
     teamId: string | null
     startDate: Date | null
     endDate: Date | null
-    isActive: boolean | null
+    status: $Enums.Status | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10468,11 +10321,11 @@ export namespace Prisma {
     id: number
     title: number
     content: number
-    postedById: number
+    createdById: number
     teamId: number
     startDate: number
     endDate: number
-    isActive: number
+    status: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10483,11 +10336,11 @@ export namespace Prisma {
     id?: true
     title?: true
     content?: true
-    postedById?: true
+    createdById?: true
     teamId?: true
     startDate?: true
     endDate?: true
-    isActive?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10496,11 +10349,11 @@ export namespace Prisma {
     id?: true
     title?: true
     content?: true
-    postedById?: true
+    createdById?: true
     teamId?: true
     startDate?: true
     endDate?: true
-    isActive?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10509,11 +10362,11 @@ export namespace Prisma {
     id?: true
     title?: true
     content?: true
-    postedById?: true
+    createdById?: true
     teamId?: true
     startDate?: true
     endDate?: true
-    isActive?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10595,11 +10448,11 @@ export namespace Prisma {
     id: string
     title: string
     content: string
-    postedById: string
+    createdById: string
     teamId: string
     startDate: Date
     endDate: Date
-    isActive: boolean
+    status: $Enums.Status
     createdAt: Date
     updatedAt: Date
     _count: NoticeCountAggregateOutputType | null
@@ -10625,14 +10478,14 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     content?: boolean
-    postedById?: boolean
+    createdById?: boolean
     teamId?: boolean
     startDate?: boolean
     endDate?: boolean
-    isActive?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    postedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     history?: boolean | Notice$historyArgs<ExtArgs>
     _count?: boolean | NoticeCountOutputTypeDefaultArgs<ExtArgs>
@@ -10642,14 +10495,14 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     content?: boolean
-    postedById?: boolean
+    createdById?: boolean
     teamId?: boolean
     startDate?: boolean
     endDate?: boolean
-    isActive?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    postedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notice"]>
 
@@ -10657,14 +10510,14 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     content?: boolean
-    postedById?: boolean
+    createdById?: boolean
     teamId?: boolean
     startDate?: boolean
     endDate?: boolean
-    isActive?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    postedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notice"]>
 
@@ -10672,35 +10525,35 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     content?: boolean
-    postedById?: boolean
+    createdById?: boolean
     teamId?: boolean
     startDate?: boolean
     endDate?: boolean
-    isActive?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type NoticeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "postedById" | "teamId" | "startDate" | "endDate" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["notice"]>
+  export type NoticeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdById" | "teamId" | "startDate" | "endDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["notice"]>
   export type NoticeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    postedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     history?: boolean | Notice$historyArgs<ExtArgs>
     _count?: boolean | NoticeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type NoticeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    postedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
   }
   export type NoticeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    postedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
     team?: boolean | TeamsDefaultArgs<ExtArgs>
   }
 
   export type $NoticePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Notice"
     objects: {
-      postedBy: Prisma.$UserPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
       team: Prisma.$TeamsPayload<ExtArgs>
       history: Prisma.$NoticeHistoryPayload<ExtArgs>[]
     }
@@ -10708,11 +10561,11 @@ export namespace Prisma {
       id: string
       title: string
       content: string
-      postedById: string
+      createdById: string
       teamId: string
       startDate: Date
       endDate: Date
-      isActive: boolean
+      status: $Enums.Status
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["notice"]>
@@ -11109,7 +10962,7 @@ export namespace Prisma {
    */
   export interface Prisma__NoticeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    postedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     team<T extends TeamsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamsDefaultArgs<ExtArgs>>): Prisma__TeamsClient<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     history<T extends Notice$historyArgs<ExtArgs> = {}>(args?: Subset<T, Notice$historyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -11144,11 +10997,11 @@ export namespace Prisma {
     readonly id: FieldRef<"Notice", 'String'>
     readonly title: FieldRef<"Notice", 'String'>
     readonly content: FieldRef<"Notice", 'String'>
-    readonly postedById: FieldRef<"Notice", 'String'>
+    readonly createdById: FieldRef<"Notice", 'String'>
     readonly teamId: FieldRef<"Notice", 'String'>
     readonly startDate: FieldRef<"Notice", 'DateTime'>
     readonly endDate: FieldRef<"Notice", 'DateTime'>
-    readonly isActive: FieldRef<"Notice", 'Boolean'>
+    readonly status: FieldRef<"Notice", 'Status'>
     readonly createdAt: FieldRef<"Notice", 'DateTime'>
     readonly updatedAt: FieldRef<"Notice", 'DateTime'>
   }
@@ -11590,1098 +11443,6 @@ export namespace Prisma {
 
 
   /**
-   * Model NoticeRequest
-   */
-
-  export type AggregateNoticeRequest = {
-    _count: NoticeRequestCountAggregateOutputType | null
-    _min: NoticeRequestMinAggregateOutputType | null
-    _max: NoticeRequestMaxAggregateOutputType | null
-  }
-
-  export type NoticeRequestMinAggregateOutputType = {
-    id: string | null
-    memberId: string | null
-    teamId: string | null
-    requestMessage: string | null
-    status: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type NoticeRequestMaxAggregateOutputType = {
-    id: string | null
-    memberId: string | null
-    teamId: string | null
-    requestMessage: string | null
-    status: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type NoticeRequestCountAggregateOutputType = {
-    id: number
-    memberId: number
-    teamId: number
-    requestMessage: number
-    status: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type NoticeRequestMinAggregateInputType = {
-    id?: true
-    memberId?: true
-    teamId?: true
-    requestMessage?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type NoticeRequestMaxAggregateInputType = {
-    id?: true
-    memberId?: true
-    teamId?: true
-    requestMessage?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type NoticeRequestCountAggregateInputType = {
-    id?: true
-    memberId?: true
-    teamId?: true
-    requestMessage?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type NoticeRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which NoticeRequest to aggregate.
-     */
-    where?: NoticeRequestWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NoticeRequests to fetch.
-     */
-    orderBy?: NoticeRequestOrderByWithRelationInput | NoticeRequestOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: NoticeRequestWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NoticeRequests from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NoticeRequests.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned NoticeRequests
-    **/
-    _count?: true | NoticeRequestCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: NoticeRequestMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: NoticeRequestMaxAggregateInputType
-  }
-
-  export type GetNoticeRequestAggregateType<T extends NoticeRequestAggregateArgs> = {
-        [P in keyof T & keyof AggregateNoticeRequest]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateNoticeRequest[P]>
-      : GetScalarType<T[P], AggregateNoticeRequest[P]>
-  }
-
-
-
-
-  export type NoticeRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NoticeRequestWhereInput
-    orderBy?: NoticeRequestOrderByWithAggregationInput | NoticeRequestOrderByWithAggregationInput[]
-    by: NoticeRequestScalarFieldEnum[] | NoticeRequestScalarFieldEnum
-    having?: NoticeRequestScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: NoticeRequestCountAggregateInputType | true
-    _min?: NoticeRequestMinAggregateInputType
-    _max?: NoticeRequestMaxAggregateInputType
-  }
-
-  export type NoticeRequestGroupByOutputType = {
-    id: string
-    memberId: string
-    teamId: string
-    requestMessage: string
-    status: string
-    createdAt: Date
-    updatedAt: Date
-    _count: NoticeRequestCountAggregateOutputType | null
-    _min: NoticeRequestMinAggregateOutputType | null
-    _max: NoticeRequestMaxAggregateOutputType | null
-  }
-
-  type GetNoticeRequestGroupByPayload<T extends NoticeRequestGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<NoticeRequestGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof NoticeRequestGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], NoticeRequestGroupByOutputType[P]>
-            : GetScalarType<T[P], NoticeRequestGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type NoticeRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    memberId?: boolean
-    teamId?: boolean
-    requestMessage?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    member?: boolean | UserDefaultArgs<ExtArgs>
-    team?: boolean | TeamsDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["noticeRequest"]>
-
-  export type NoticeRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    memberId?: boolean
-    teamId?: boolean
-    requestMessage?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    member?: boolean | UserDefaultArgs<ExtArgs>
-    team?: boolean | TeamsDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["noticeRequest"]>
-
-  export type NoticeRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    memberId?: boolean
-    teamId?: boolean
-    requestMessage?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    member?: boolean | UserDefaultArgs<ExtArgs>
-    team?: boolean | TeamsDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["noticeRequest"]>
-
-  export type NoticeRequestSelectScalar = {
-    id?: boolean
-    memberId?: boolean
-    teamId?: boolean
-    requestMessage?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type NoticeRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "memberId" | "teamId" | "requestMessage" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["noticeRequest"]>
-  export type NoticeRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    member?: boolean | UserDefaultArgs<ExtArgs>
-    team?: boolean | TeamsDefaultArgs<ExtArgs>
-  }
-  export type NoticeRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    member?: boolean | UserDefaultArgs<ExtArgs>
-    team?: boolean | TeamsDefaultArgs<ExtArgs>
-  }
-  export type NoticeRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    member?: boolean | UserDefaultArgs<ExtArgs>
-    team?: boolean | TeamsDefaultArgs<ExtArgs>
-  }
-
-  export type $NoticeRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "NoticeRequest"
-    objects: {
-      member: Prisma.$UserPayload<ExtArgs>
-      team: Prisma.$TeamsPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      memberId: string
-      teamId: string
-      requestMessage: string
-      status: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["noticeRequest"]>
-    composites: {}
-  }
-
-  type NoticeRequestGetPayload<S extends boolean | null | undefined | NoticeRequestDefaultArgs> = $Result.GetResult<Prisma.$NoticeRequestPayload, S>
-
-  type NoticeRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<NoticeRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: NoticeRequestCountAggregateInputType | true
-    }
-
-  export interface NoticeRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NoticeRequest'], meta: { name: 'NoticeRequest' } }
-    /**
-     * Find zero or one NoticeRequest that matches the filter.
-     * @param {NoticeRequestFindUniqueArgs} args - Arguments to find a NoticeRequest
-     * @example
-     * // Get one NoticeRequest
-     * const noticeRequest = await prisma.noticeRequest.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends NoticeRequestFindUniqueArgs>(args: SelectSubset<T, NoticeRequestFindUniqueArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one NoticeRequest that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {NoticeRequestFindUniqueOrThrowArgs} args - Arguments to find a NoticeRequest
-     * @example
-     * // Get one NoticeRequest
-     * const noticeRequest = await prisma.noticeRequest.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends NoticeRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, NoticeRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first NoticeRequest that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NoticeRequestFindFirstArgs} args - Arguments to find a NoticeRequest
-     * @example
-     * // Get one NoticeRequest
-     * const noticeRequest = await prisma.noticeRequest.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends NoticeRequestFindFirstArgs>(args?: SelectSubset<T, NoticeRequestFindFirstArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first NoticeRequest that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NoticeRequestFindFirstOrThrowArgs} args - Arguments to find a NoticeRequest
-     * @example
-     * // Get one NoticeRequest
-     * const noticeRequest = await prisma.noticeRequest.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends NoticeRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, NoticeRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more NoticeRequests that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NoticeRequestFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all NoticeRequests
-     * const noticeRequests = await prisma.noticeRequest.findMany()
-     * 
-     * // Get first 10 NoticeRequests
-     * const noticeRequests = await prisma.noticeRequest.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const noticeRequestWithIdOnly = await prisma.noticeRequest.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends NoticeRequestFindManyArgs>(args?: SelectSubset<T, NoticeRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a NoticeRequest.
-     * @param {NoticeRequestCreateArgs} args - Arguments to create a NoticeRequest.
-     * @example
-     * // Create one NoticeRequest
-     * const NoticeRequest = await prisma.noticeRequest.create({
-     *   data: {
-     *     // ... data to create a NoticeRequest
-     *   }
-     * })
-     * 
-     */
-    create<T extends NoticeRequestCreateArgs>(args: SelectSubset<T, NoticeRequestCreateArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many NoticeRequests.
-     * @param {NoticeRequestCreateManyArgs} args - Arguments to create many NoticeRequests.
-     * @example
-     * // Create many NoticeRequests
-     * const noticeRequest = await prisma.noticeRequest.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends NoticeRequestCreateManyArgs>(args?: SelectSubset<T, NoticeRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many NoticeRequests and returns the data saved in the database.
-     * @param {NoticeRequestCreateManyAndReturnArgs} args - Arguments to create many NoticeRequests.
-     * @example
-     * // Create many NoticeRequests
-     * const noticeRequest = await prisma.noticeRequest.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many NoticeRequests and only return the `id`
-     * const noticeRequestWithIdOnly = await prisma.noticeRequest.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends NoticeRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, NoticeRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a NoticeRequest.
-     * @param {NoticeRequestDeleteArgs} args - Arguments to delete one NoticeRequest.
-     * @example
-     * // Delete one NoticeRequest
-     * const NoticeRequest = await prisma.noticeRequest.delete({
-     *   where: {
-     *     // ... filter to delete one NoticeRequest
-     *   }
-     * })
-     * 
-     */
-    delete<T extends NoticeRequestDeleteArgs>(args: SelectSubset<T, NoticeRequestDeleteArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one NoticeRequest.
-     * @param {NoticeRequestUpdateArgs} args - Arguments to update one NoticeRequest.
-     * @example
-     * // Update one NoticeRequest
-     * const noticeRequest = await prisma.noticeRequest.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends NoticeRequestUpdateArgs>(args: SelectSubset<T, NoticeRequestUpdateArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more NoticeRequests.
-     * @param {NoticeRequestDeleteManyArgs} args - Arguments to filter NoticeRequests to delete.
-     * @example
-     * // Delete a few NoticeRequests
-     * const { count } = await prisma.noticeRequest.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends NoticeRequestDeleteManyArgs>(args?: SelectSubset<T, NoticeRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more NoticeRequests.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NoticeRequestUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many NoticeRequests
-     * const noticeRequest = await prisma.noticeRequest.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends NoticeRequestUpdateManyArgs>(args: SelectSubset<T, NoticeRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more NoticeRequests and returns the data updated in the database.
-     * @param {NoticeRequestUpdateManyAndReturnArgs} args - Arguments to update many NoticeRequests.
-     * @example
-     * // Update many NoticeRequests
-     * const noticeRequest = await prisma.noticeRequest.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more NoticeRequests and only return the `id`
-     * const noticeRequestWithIdOnly = await prisma.noticeRequest.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends NoticeRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, NoticeRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one NoticeRequest.
-     * @param {NoticeRequestUpsertArgs} args - Arguments to update or create a NoticeRequest.
-     * @example
-     * // Update or create a NoticeRequest
-     * const noticeRequest = await prisma.noticeRequest.upsert({
-     *   create: {
-     *     // ... data to create a NoticeRequest
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the NoticeRequest we want to update
-     *   }
-     * })
-     */
-    upsert<T extends NoticeRequestUpsertArgs>(args: SelectSubset<T, NoticeRequestUpsertArgs<ExtArgs>>): Prisma__NoticeRequestClient<$Result.GetResult<Prisma.$NoticeRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of NoticeRequests.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NoticeRequestCountArgs} args - Arguments to filter NoticeRequests to count.
-     * @example
-     * // Count the number of NoticeRequests
-     * const count = await prisma.noticeRequest.count({
-     *   where: {
-     *     // ... the filter for the NoticeRequests we want to count
-     *   }
-     * })
-    **/
-    count<T extends NoticeRequestCountArgs>(
-      args?: Subset<T, NoticeRequestCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], NoticeRequestCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a NoticeRequest.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NoticeRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends NoticeRequestAggregateArgs>(args: Subset<T, NoticeRequestAggregateArgs>): Prisma.PrismaPromise<GetNoticeRequestAggregateType<T>>
-
-    /**
-     * Group by NoticeRequest.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NoticeRequestGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends NoticeRequestGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: NoticeRequestGroupByArgs['orderBy'] }
-        : { orderBy?: NoticeRequestGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, NoticeRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNoticeRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the NoticeRequest model
-   */
-  readonly fields: NoticeRequestFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for NoticeRequest.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__NoticeRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    member<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    team<T extends TeamsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamsDefaultArgs<ExtArgs>>): Prisma__TeamsClient<$Result.GetResult<Prisma.$TeamsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the NoticeRequest model
-   */
-  interface NoticeRequestFieldRefs {
-    readonly id: FieldRef<"NoticeRequest", 'String'>
-    readonly memberId: FieldRef<"NoticeRequest", 'String'>
-    readonly teamId: FieldRef<"NoticeRequest", 'String'>
-    readonly requestMessage: FieldRef<"NoticeRequest", 'String'>
-    readonly status: FieldRef<"NoticeRequest", 'String'>
-    readonly createdAt: FieldRef<"NoticeRequest", 'DateTime'>
-    readonly updatedAt: FieldRef<"NoticeRequest", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * NoticeRequest findUnique
-   */
-  export type NoticeRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * Filter, which NoticeRequest to fetch.
-     */
-    where: NoticeRequestWhereUniqueInput
-  }
-
-  /**
-   * NoticeRequest findUniqueOrThrow
-   */
-  export type NoticeRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * Filter, which NoticeRequest to fetch.
-     */
-    where: NoticeRequestWhereUniqueInput
-  }
-
-  /**
-   * NoticeRequest findFirst
-   */
-  export type NoticeRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * Filter, which NoticeRequest to fetch.
-     */
-    where?: NoticeRequestWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NoticeRequests to fetch.
-     */
-    orderBy?: NoticeRequestOrderByWithRelationInput | NoticeRequestOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for NoticeRequests.
-     */
-    cursor?: NoticeRequestWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NoticeRequests from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NoticeRequests.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of NoticeRequests.
-     */
-    distinct?: NoticeRequestScalarFieldEnum | NoticeRequestScalarFieldEnum[]
-  }
-
-  /**
-   * NoticeRequest findFirstOrThrow
-   */
-  export type NoticeRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * Filter, which NoticeRequest to fetch.
-     */
-    where?: NoticeRequestWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NoticeRequests to fetch.
-     */
-    orderBy?: NoticeRequestOrderByWithRelationInput | NoticeRequestOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for NoticeRequests.
-     */
-    cursor?: NoticeRequestWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NoticeRequests from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NoticeRequests.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of NoticeRequests.
-     */
-    distinct?: NoticeRequestScalarFieldEnum | NoticeRequestScalarFieldEnum[]
-  }
-
-  /**
-   * NoticeRequest findMany
-   */
-  export type NoticeRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * Filter, which NoticeRequests to fetch.
-     */
-    where?: NoticeRequestWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NoticeRequests to fetch.
-     */
-    orderBy?: NoticeRequestOrderByWithRelationInput | NoticeRequestOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing NoticeRequests.
-     */
-    cursor?: NoticeRequestWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NoticeRequests from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NoticeRequests.
-     */
-    skip?: number
-    distinct?: NoticeRequestScalarFieldEnum | NoticeRequestScalarFieldEnum[]
-  }
-
-  /**
-   * NoticeRequest create
-   */
-  export type NoticeRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * The data needed to create a NoticeRequest.
-     */
-    data: XOR<NoticeRequestCreateInput, NoticeRequestUncheckedCreateInput>
-  }
-
-  /**
-   * NoticeRequest createMany
-   */
-  export type NoticeRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many NoticeRequests.
-     */
-    data: NoticeRequestCreateManyInput | NoticeRequestCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * NoticeRequest createManyAndReturn
-   */
-  export type NoticeRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * The data used to create many NoticeRequests.
-     */
-    data: NoticeRequestCreateManyInput | NoticeRequestCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * NoticeRequest update
-   */
-  export type NoticeRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * The data needed to update a NoticeRequest.
-     */
-    data: XOR<NoticeRequestUpdateInput, NoticeRequestUncheckedUpdateInput>
-    /**
-     * Choose, which NoticeRequest to update.
-     */
-    where: NoticeRequestWhereUniqueInput
-  }
-
-  /**
-   * NoticeRequest updateMany
-   */
-  export type NoticeRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update NoticeRequests.
-     */
-    data: XOR<NoticeRequestUpdateManyMutationInput, NoticeRequestUncheckedUpdateManyInput>
-    /**
-     * Filter which NoticeRequests to update
-     */
-    where?: NoticeRequestWhereInput
-    /**
-     * Limit how many NoticeRequests to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * NoticeRequest updateManyAndReturn
-   */
-  export type NoticeRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * The data used to update NoticeRequests.
-     */
-    data: XOR<NoticeRequestUpdateManyMutationInput, NoticeRequestUncheckedUpdateManyInput>
-    /**
-     * Filter which NoticeRequests to update
-     */
-    where?: NoticeRequestWhereInput
-    /**
-     * Limit how many NoticeRequests to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * NoticeRequest upsert
-   */
-  export type NoticeRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * The filter to search for the NoticeRequest to update in case it exists.
-     */
-    where: NoticeRequestWhereUniqueInput
-    /**
-     * In case the NoticeRequest found by the `where` argument doesn't exist, create a new NoticeRequest with this data.
-     */
-    create: XOR<NoticeRequestCreateInput, NoticeRequestUncheckedCreateInput>
-    /**
-     * In case the NoticeRequest was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<NoticeRequestUpdateInput, NoticeRequestUncheckedUpdateInput>
-  }
-
-  /**
-   * NoticeRequest delete
-   */
-  export type NoticeRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-    /**
-     * Filter which NoticeRequest to delete.
-     */
-    where: NoticeRequestWhereUniqueInput
-  }
-
-  /**
-   * NoticeRequest deleteMany
-   */
-  export type NoticeRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which NoticeRequests to delete
-     */
-    where?: NoticeRequestWhereInput
-    /**
-     * Limit how many NoticeRequests to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * NoticeRequest without action
-   */
-  export type NoticeRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticeRequest
-     */
-    select?: NoticeRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NoticeRequest
-     */
-    omit?: NoticeRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticeRequestInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model NoticeHistory
    */
 
@@ -12694,24 +11455,36 @@ export namespace Prisma {
   export type NoticeHistoryMinAggregateOutputType = {
     id: string | null
     noticeId: string | null
-    action: string | null
-    performedById: string | null
+    title: string | null
+    content: string | null
+    startDate: Date | null
+    endDate: Date | null
+    status: $Enums.Status | null
+    createdById: string | null
     createdAt: Date | null
   }
 
   export type NoticeHistoryMaxAggregateOutputType = {
     id: string | null
     noticeId: string | null
-    action: string | null
-    performedById: string | null
+    title: string | null
+    content: string | null
+    startDate: Date | null
+    endDate: Date | null
+    status: $Enums.Status | null
+    createdById: string | null
     createdAt: Date | null
   }
 
   export type NoticeHistoryCountAggregateOutputType = {
     id: number
     noticeId: number
-    action: number
-    performedById: number
+    title: number
+    content: number
+    startDate: number
+    endDate: number
+    status: number
+    createdById: number
     createdAt: number
     _all: number
   }
@@ -12720,24 +11493,36 @@ export namespace Prisma {
   export type NoticeHistoryMinAggregateInputType = {
     id?: true
     noticeId?: true
-    action?: true
-    performedById?: true
+    title?: true
+    content?: true
+    startDate?: true
+    endDate?: true
+    status?: true
+    createdById?: true
     createdAt?: true
   }
 
   export type NoticeHistoryMaxAggregateInputType = {
     id?: true
     noticeId?: true
-    action?: true
-    performedById?: true
+    title?: true
+    content?: true
+    startDate?: true
+    endDate?: true
+    status?: true
+    createdById?: true
     createdAt?: true
   }
 
   export type NoticeHistoryCountAggregateInputType = {
     id?: true
     noticeId?: true
-    action?: true
-    performedById?: true
+    title?: true
+    content?: true
+    startDate?: true
+    endDate?: true
+    status?: true
+    createdById?: true
     createdAt?: true
     _all?: true
   }
@@ -12817,8 +11602,12 @@ export namespace Prisma {
   export type NoticeHistoryGroupByOutputType = {
     id: string
     noticeId: string
-    action: string
-    performedById: string
+    title: string
+    content: string
+    startDate: Date
+    endDate: Date
+    status: $Enums.Status
+    createdById: string
     createdAt: Date
     _count: NoticeHistoryCountAggregateOutputType | null
     _min: NoticeHistoryMinAggregateOutputType | null
@@ -12842,66 +11631,86 @@ export namespace Prisma {
   export type NoticeHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     noticeId?: boolean
-    action?: boolean
-    performedById?: boolean
+    title?: boolean
+    content?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    status?: boolean
+    createdById?: boolean
     createdAt?: boolean
     notice?: boolean | NoticeDefaultArgs<ExtArgs>
-    performedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["noticeHistory"]>
 
   export type NoticeHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     noticeId?: boolean
-    action?: boolean
-    performedById?: boolean
+    title?: boolean
+    content?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    status?: boolean
+    createdById?: boolean
     createdAt?: boolean
     notice?: boolean | NoticeDefaultArgs<ExtArgs>
-    performedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["noticeHistory"]>
 
   export type NoticeHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     noticeId?: boolean
-    action?: boolean
-    performedById?: boolean
+    title?: boolean
+    content?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    status?: boolean
+    createdById?: boolean
     createdAt?: boolean
     notice?: boolean | NoticeDefaultArgs<ExtArgs>
-    performedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["noticeHistory"]>
 
   export type NoticeHistorySelectScalar = {
     id?: boolean
     noticeId?: boolean
-    action?: boolean
-    performedById?: boolean
+    title?: boolean
+    content?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    status?: boolean
+    createdById?: boolean
     createdAt?: boolean
   }
 
-  export type NoticeHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "noticeId" | "action" | "performedById" | "createdAt", ExtArgs["result"]["noticeHistory"]>
+  export type NoticeHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "noticeId" | "title" | "content" | "startDate" | "endDate" | "status" | "createdById" | "createdAt", ExtArgs["result"]["noticeHistory"]>
   export type NoticeHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     notice?: boolean | NoticeDefaultArgs<ExtArgs>
-    performedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NoticeHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     notice?: boolean | NoticeDefaultArgs<ExtArgs>
-    performedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NoticeHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     notice?: boolean | NoticeDefaultArgs<ExtArgs>
-    performedBy?: boolean | UserDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $NoticeHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "NoticeHistory"
     objects: {
       notice: Prisma.$NoticePayload<ExtArgs>
-      performedBy: Prisma.$UserPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       noticeId: string
-      action: string
-      performedById: string
+      title: string
+      content: string
+      startDate: Date
+      endDate: Date
+      status: $Enums.Status
+      createdById: string
       createdAt: Date
     }, ExtArgs["result"]["noticeHistory"]>
     composites: {}
@@ -13298,7 +12107,7 @@ export namespace Prisma {
   export interface Prisma__NoticeHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     notice<T extends NoticeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NoticeDefaultArgs<ExtArgs>>): Prisma__NoticeClient<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    performedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13330,8 +12139,12 @@ export namespace Prisma {
   interface NoticeHistoryFieldRefs {
     readonly id: FieldRef<"NoticeHistory", 'String'>
     readonly noticeId: FieldRef<"NoticeHistory", 'String'>
-    readonly action: FieldRef<"NoticeHistory", 'String'>
-    readonly performedById: FieldRef<"NoticeHistory", 'String'>
+    readonly title: FieldRef<"NoticeHistory", 'String'>
+    readonly content: FieldRef<"NoticeHistory", 'String'>
+    readonly startDate: FieldRef<"NoticeHistory", 'DateTime'>
+    readonly endDate: FieldRef<"NoticeHistory", 'DateTime'>
+    readonly status: FieldRef<"NoticeHistory", 'Status'>
+    readonly createdById: FieldRef<"NoticeHistory", 'String'>
     readonly createdAt: FieldRef<"NoticeHistory", 'DateTime'>
   }
     
@@ -16084,11 +14897,11 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     content: 'content',
-    postedById: 'postedById',
+    createdById: 'createdById',
     teamId: 'teamId',
     startDate: 'startDate',
     endDate: 'endDate',
-    isActive: 'isActive',
+    status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -16096,24 +14909,15 @@ export namespace Prisma {
   export type NoticeScalarFieldEnum = (typeof NoticeScalarFieldEnum)[keyof typeof NoticeScalarFieldEnum]
 
 
-  export const NoticeRequestScalarFieldEnum: {
-    id: 'id',
-    memberId: 'memberId',
-    teamId: 'teamId',
-    requestMessage: 'requestMessage',
-    status: 'status',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type NoticeRequestScalarFieldEnum = (typeof NoticeRequestScalarFieldEnum)[keyof typeof NoticeRequestScalarFieldEnum]
-
-
   export const NoticeHistoryScalarFieldEnum: {
     id: 'id',
     noticeId: 'noticeId',
-    action: 'action',
-    performedById: 'performedById',
+    title: 'title',
+    content: 'content',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    status: 'status',
+    createdById: 'createdById',
     createdAt: 'createdAt'
   };
 
@@ -16269,6 +15073,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Status'
+   */
+  export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
+    
+
+
+  /**
+   * Reference to a field of type 'Status[]'
+   */
+  export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -16365,7 +15183,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamListRelationFilter
     chats?: ChatListRelationFilter
     messages?: MessageListRelationFilter
-    noticeRequests?: NoticeRequestListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
   }
@@ -16399,7 +15216,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamOrderByRelationAggregateInput
     chats?: ChatOrderByRelationAggregateInput
     messages?: MessageOrderByRelationAggregateInput
-    noticeRequests?: NoticeRequestOrderByRelationAggregateInput
     notices?: NoticeOrderByRelationAggregateInput
     noticeHistory?: NoticeHistoryOrderByRelationAggregateInput
   }
@@ -16436,7 +15252,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamListRelationFilter
     chats?: ChatListRelationFilter
     messages?: MessageListRelationFilter
-    noticeRequests?: NoticeRequestListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
   }, "userId" | "email" | "username">
@@ -16514,7 +15329,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestListRelationFilter
     chats?: ChatListRelationFilter
     notices?: NoticeListRelationFilter
-    noticeRequests?: NoticeRequestListRelationFilter
   }
 
   export type TeamsOrderByWithRelationInput = {
@@ -16535,7 +15349,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestOrderByRelationAggregateInput
     chats?: ChatOrderByRelationAggregateInput
     notices?: NoticeOrderByRelationAggregateInput
-    noticeRequests?: NoticeRequestOrderByRelationAggregateInput
   }
 
   export type TeamsWhereUniqueInput = Prisma.AtLeast<{
@@ -16559,7 +15372,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestListRelationFilter
     chats?: ChatListRelationFilter
     notices?: NoticeListRelationFilter
-    noticeRequests?: NoticeRequestListRelationFilter
   }, "id" | "uniqueTitle">
 
   export type TeamsOrderByWithAggregationInput = {
@@ -16847,14 +15659,14 @@ export namespace Prisma {
     id?: StringFilter<"Notice"> | string
     title?: StringFilter<"Notice"> | string
     content?: StringFilter<"Notice"> | string
-    postedById?: StringFilter<"Notice"> | string
+    createdById?: StringFilter<"Notice"> | string
     teamId?: StringFilter<"Notice"> | string
     startDate?: DateTimeFilter<"Notice"> | Date | string
     endDate?: DateTimeFilter<"Notice"> | Date | string
-    isActive?: BoolFilter<"Notice"> | boolean
+    status?: EnumStatusFilter<"Notice"> | $Enums.Status
     createdAt?: DateTimeFilter<"Notice"> | Date | string
     updatedAt?: DateTimeFilter<"Notice"> | Date | string
-    postedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     history?: NoticeHistoryListRelationFilter
   }
@@ -16863,14 +15675,14 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
-    postedById?: SortOrder
+    createdById?: SortOrder
     teamId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isActive?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    postedBy?: UserOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
     team?: TeamsOrderByWithRelationInput
     history?: NoticeHistoryOrderByRelationAggregateInput
   }
@@ -16882,14 +15694,14 @@ export namespace Prisma {
     NOT?: NoticeWhereInput | NoticeWhereInput[]
     title?: StringFilter<"Notice"> | string
     content?: StringFilter<"Notice"> | string
-    postedById?: StringFilter<"Notice"> | string
+    createdById?: StringFilter<"Notice"> | string
     teamId?: StringFilter<"Notice"> | string
     startDate?: DateTimeFilter<"Notice"> | Date | string
     endDate?: DateTimeFilter<"Notice"> | Date | string
-    isActive?: BoolFilter<"Notice"> | boolean
+    status?: EnumStatusFilter<"Notice"> | $Enums.Status
     createdAt?: DateTimeFilter<"Notice"> | Date | string
     updatedAt?: DateTimeFilter<"Notice"> | Date | string
-    postedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     history?: NoticeHistoryListRelationFilter
   }, "id">
@@ -16898,11 +15710,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
-    postedById?: SortOrder
+    createdById?: SortOrder
     teamId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isActive?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: NoticeCountOrderByAggregateInput
@@ -16917,81 +15729,13 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Notice"> | string
     title?: StringWithAggregatesFilter<"Notice"> | string
     content?: StringWithAggregatesFilter<"Notice"> | string
-    postedById?: StringWithAggregatesFilter<"Notice"> | string
+    createdById?: StringWithAggregatesFilter<"Notice"> | string
     teamId?: StringWithAggregatesFilter<"Notice"> | string
     startDate?: DateTimeWithAggregatesFilter<"Notice"> | Date | string
     endDate?: DateTimeWithAggregatesFilter<"Notice"> | Date | string
-    isActive?: BoolWithAggregatesFilter<"Notice"> | boolean
+    status?: EnumStatusWithAggregatesFilter<"Notice"> | $Enums.Status
     createdAt?: DateTimeWithAggregatesFilter<"Notice"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Notice"> | Date | string
-  }
-
-  export type NoticeRequestWhereInput = {
-    AND?: NoticeRequestWhereInput | NoticeRequestWhereInput[]
-    OR?: NoticeRequestWhereInput[]
-    NOT?: NoticeRequestWhereInput | NoticeRequestWhereInput[]
-    id?: StringFilter<"NoticeRequest"> | string
-    memberId?: StringFilter<"NoticeRequest"> | string
-    teamId?: StringFilter<"NoticeRequest"> | string
-    requestMessage?: StringFilter<"NoticeRequest"> | string
-    status?: StringFilter<"NoticeRequest"> | string
-    createdAt?: DateTimeFilter<"NoticeRequest"> | Date | string
-    updatedAt?: DateTimeFilter<"NoticeRequest"> | Date | string
-    member?: XOR<UserScalarRelationFilter, UserWhereInput>
-    team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
-  }
-
-  export type NoticeRequestOrderByWithRelationInput = {
-    id?: SortOrder
-    memberId?: SortOrder
-    teamId?: SortOrder
-    requestMessage?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    member?: UserOrderByWithRelationInput
-    team?: TeamsOrderByWithRelationInput
-  }
-
-  export type NoticeRequestWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: NoticeRequestWhereInput | NoticeRequestWhereInput[]
-    OR?: NoticeRequestWhereInput[]
-    NOT?: NoticeRequestWhereInput | NoticeRequestWhereInput[]
-    memberId?: StringFilter<"NoticeRequest"> | string
-    teamId?: StringFilter<"NoticeRequest"> | string
-    requestMessage?: StringFilter<"NoticeRequest"> | string
-    status?: StringFilter<"NoticeRequest"> | string
-    createdAt?: DateTimeFilter<"NoticeRequest"> | Date | string
-    updatedAt?: DateTimeFilter<"NoticeRequest"> | Date | string
-    member?: XOR<UserScalarRelationFilter, UserWhereInput>
-    team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
-  }, "id">
-
-  export type NoticeRequestOrderByWithAggregationInput = {
-    id?: SortOrder
-    memberId?: SortOrder
-    teamId?: SortOrder
-    requestMessage?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: NoticeRequestCountOrderByAggregateInput
-    _max?: NoticeRequestMaxOrderByAggregateInput
-    _min?: NoticeRequestMinOrderByAggregateInput
-  }
-
-  export type NoticeRequestScalarWhereWithAggregatesInput = {
-    AND?: NoticeRequestScalarWhereWithAggregatesInput | NoticeRequestScalarWhereWithAggregatesInput[]
-    OR?: NoticeRequestScalarWhereWithAggregatesInput[]
-    NOT?: NoticeRequestScalarWhereWithAggregatesInput | NoticeRequestScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"NoticeRequest"> | string
-    memberId?: StringWithAggregatesFilter<"NoticeRequest"> | string
-    teamId?: StringWithAggregatesFilter<"NoticeRequest"> | string
-    requestMessage?: StringWithAggregatesFilter<"NoticeRequest"> | string
-    status?: StringWithAggregatesFilter<"NoticeRequest"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"NoticeRequest"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"NoticeRequest"> | Date | string
   }
 
   export type NoticeHistoryWhereInput = {
@@ -17000,21 +15744,29 @@ export namespace Prisma {
     NOT?: NoticeHistoryWhereInput | NoticeHistoryWhereInput[]
     id?: StringFilter<"NoticeHistory"> | string
     noticeId?: StringFilter<"NoticeHistory"> | string
-    action?: StringFilter<"NoticeHistory"> | string
-    performedById?: StringFilter<"NoticeHistory"> | string
+    title?: StringFilter<"NoticeHistory"> | string
+    content?: StringFilter<"NoticeHistory"> | string
+    startDate?: DateTimeFilter<"NoticeHistory"> | Date | string
+    endDate?: DateTimeFilter<"NoticeHistory"> | Date | string
+    status?: EnumStatusFilter<"NoticeHistory"> | $Enums.Status
+    createdById?: StringFilter<"NoticeHistory"> | string
     createdAt?: DateTimeFilter<"NoticeHistory"> | Date | string
     notice?: XOR<NoticeScalarRelationFilter, NoticeWhereInput>
-    performedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type NoticeHistoryOrderByWithRelationInput = {
     id?: SortOrder
     noticeId?: SortOrder
-    action?: SortOrder
-    performedById?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
     notice?: NoticeOrderByWithRelationInput
-    performedBy?: UserOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
   }
 
   export type NoticeHistoryWhereUniqueInput = Prisma.AtLeast<{
@@ -17023,18 +15775,26 @@ export namespace Prisma {
     OR?: NoticeHistoryWhereInput[]
     NOT?: NoticeHistoryWhereInput | NoticeHistoryWhereInput[]
     noticeId?: StringFilter<"NoticeHistory"> | string
-    action?: StringFilter<"NoticeHistory"> | string
-    performedById?: StringFilter<"NoticeHistory"> | string
+    title?: StringFilter<"NoticeHistory"> | string
+    content?: StringFilter<"NoticeHistory"> | string
+    startDate?: DateTimeFilter<"NoticeHistory"> | Date | string
+    endDate?: DateTimeFilter<"NoticeHistory"> | Date | string
+    status?: EnumStatusFilter<"NoticeHistory"> | $Enums.Status
+    createdById?: StringFilter<"NoticeHistory"> | string
     createdAt?: DateTimeFilter<"NoticeHistory"> | Date | string
     notice?: XOR<NoticeScalarRelationFilter, NoticeWhereInput>
-    performedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type NoticeHistoryOrderByWithAggregationInput = {
     id?: SortOrder
     noticeId?: SortOrder
-    action?: SortOrder
-    performedById?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
     _count?: NoticeHistoryCountOrderByAggregateInput
     _max?: NoticeHistoryMaxOrderByAggregateInput
@@ -17047,8 +15807,12 @@ export namespace Prisma {
     NOT?: NoticeHistoryScalarWhereWithAggregatesInput | NoticeHistoryScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"NoticeHistory"> | string
     noticeId?: StringWithAggregatesFilter<"NoticeHistory"> | string
-    action?: StringWithAggregatesFilter<"NoticeHistory"> | string
-    performedById?: StringWithAggregatesFilter<"NoticeHistory"> | string
+    title?: StringWithAggregatesFilter<"NoticeHistory"> | string
+    content?: StringWithAggregatesFilter<"NoticeHistory"> | string
+    startDate?: DateTimeWithAggregatesFilter<"NoticeHistory"> | Date | string
+    endDate?: DateTimeWithAggregatesFilter<"NoticeHistory"> | Date | string
+    status?: EnumStatusWithAggregatesFilter<"NoticeHistory"> | $Enums.Status
+    createdById?: StringWithAggregatesFilter<"NoticeHistory"> | string
     createdAt?: DateTimeWithAggregatesFilter<"NoticeHistory"> | Date | string
   }
 
@@ -17264,9 +16028,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -17298,9 +16061,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -17332,9 +16094,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -17366,9 +16127,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -17457,7 +16217,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateInput = {
@@ -17477,7 +16236,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUpdateInput = {
@@ -17497,7 +16255,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateInput = {
@@ -17517,7 +16274,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsCreateManyInput = {
@@ -17808,10 +16564,10 @@ export namespace Prisma {
     content: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
-    postedBy: UserCreateNestedOneWithoutNoticesInput
+    createdBy: UserCreateNestedOneWithoutNoticesInput
     team: TeamsCreateNestedOneWithoutNoticesInput
     history?: NoticeHistoryCreateNestedManyWithoutNoticeInput
   }
@@ -17820,11 +16576,11 @@ export namespace Prisma {
     id?: string
     title: string
     content: string
-    postedById: string
+    createdById: string
     teamId: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
     history?: NoticeHistoryUncheckedCreateNestedManyWithoutNoticeInput
@@ -17836,10 +16592,10 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postedBy?: UserUpdateOneRequiredWithoutNoticesNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutNoticesNestedInput
     team?: TeamsUpdateOneRequiredWithoutNoticesNestedInput
     history?: NoticeHistoryUpdateManyWithoutNoticeNestedInput
   }
@@ -17848,11 +16604,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    postedById?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     history?: NoticeHistoryUncheckedUpdateManyWithoutNoticeNestedInput
@@ -17862,11 +16618,11 @@ export namespace Prisma {
     id?: string
     title: string
     content: string
-    postedById: string
+    createdById: string
     teamId: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17877,7 +16633,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17886,134 +16642,94 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    postedById?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NoticeRequestCreateInput = {
-    id?: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    member: UserCreateNestedOneWithoutNoticeRequestsInput
-    team: TeamsCreateNestedOneWithoutNoticeRequestsInput
-  }
-
-  export type NoticeRequestUncheckedCreateInput = {
-    id?: string
-    memberId: string
-    teamId: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NoticeRequestUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    member?: UserUpdateOneRequiredWithoutNoticeRequestsNestedInput
-    team?: TeamsUpdateOneRequiredWithoutNoticeRequestsNestedInput
-  }
-
-  export type NoticeRequestUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    memberId?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NoticeRequestCreateManyInput = {
-    id?: string
-    memberId: string
-    teamId: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NoticeRequestUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NoticeRequestUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    memberId?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoticeHistoryCreateInput = {
     id?: string
-    action: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
     createdAt?: Date | string
     notice: NoticeCreateNestedOneWithoutHistoryInput
-    performedBy: UserCreateNestedOneWithoutNoticeHistoryInput
+    createdBy: UserCreateNestedOneWithoutNoticeHistoryInput
   }
 
   export type NoticeHistoryUncheckedCreateInput = {
     id?: string
     noticeId: string
-    action: string
-    performedById: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
+    createdById: string
     createdAt?: Date | string
   }
 
   export type NoticeHistoryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notice?: NoticeUpdateOneRequiredWithoutHistoryNestedInput
-    performedBy?: UserUpdateOneRequiredWithoutNoticeHistoryNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutNoticeHistoryNestedInput
   }
 
   export type NoticeHistoryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     noticeId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    performedById?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoticeHistoryCreateManyInput = {
     id?: string
     noticeId: string
-    action: string
-    performedById: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
+    createdById: string
     createdAt?: Date | string
   }
 
   export type NoticeHistoryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoticeHistoryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     noticeId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    performedById?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18300,12 +17016,6 @@ export namespace Prisma {
     none?: MessageWhereInput
   }
 
-  export type NoticeRequestListRelationFilter = {
-    every?: NoticeRequestWhereInput
-    some?: NoticeRequestWhereInput
-    none?: NoticeRequestWhereInput
-  }
-
   export type NoticeListRelationFilter = {
     every?: NoticeWhereInput
     some?: NoticeWhereInput
@@ -18348,10 +17058,6 @@ export namespace Prisma {
   }
 
   export type MessageOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type NoticeRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -18728,15 +17434,22 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
   export type NoticeCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
-    postedById?: SortOrder
+    createdById?: SortOrder
     teamId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isActive?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18745,11 +17458,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
-    postedById?: SortOrder
+    createdById?: SortOrder
     teamId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isActive?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18758,43 +17471,23 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
-    postedById?: SortOrder
+    createdById?: SortOrder
     teamId?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type NoticeRequestCountOrderByAggregateInput = {
-    id?: SortOrder
-    memberId?: SortOrder
-    teamId?: SortOrder
-    requestMessage?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type NoticeRequestMaxOrderByAggregateInput = {
-    id?: SortOrder
-    memberId?: SortOrder
-    teamId?: SortOrder
-    requestMessage?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type NoticeRequestMinOrderByAggregateInput = {
-    id?: SortOrder
-    memberId?: SortOrder
-    teamId?: SortOrder
-    requestMessage?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
+  export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
   export type NoticeScalarRelationFilter = {
@@ -18805,24 +17498,36 @@ export namespace Prisma {
   export type NoticeHistoryCountOrderByAggregateInput = {
     id?: SortOrder
     noticeId?: SortOrder
-    action?: SortOrder
-    performedById?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
   }
 
   export type NoticeHistoryMaxOrderByAggregateInput = {
     id?: SortOrder
     noticeId?: SortOrder
-    action?: SortOrder
-    performedById?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
   }
 
   export type NoticeHistoryMinOrderByAggregateInput = {
     id?: SortOrder
     noticeId?: SortOrder
-    action?: SortOrder
-    performedById?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -18958,24 +17663,17 @@ export namespace Prisma {
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
-  export type NoticeRequestCreateNestedManyWithoutMemberInput = {
-    create?: XOR<NoticeRequestCreateWithoutMemberInput, NoticeRequestUncheckedCreateWithoutMemberInput> | NoticeRequestCreateWithoutMemberInput[] | NoticeRequestUncheckedCreateWithoutMemberInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutMemberInput | NoticeRequestCreateOrConnectWithoutMemberInput[]
-    createMany?: NoticeRequestCreateManyMemberInputEnvelope
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-  }
-
-  export type NoticeCreateNestedManyWithoutPostedByInput = {
-    create?: XOR<NoticeCreateWithoutPostedByInput, NoticeUncheckedCreateWithoutPostedByInput> | NoticeCreateWithoutPostedByInput[] | NoticeUncheckedCreateWithoutPostedByInput[]
-    connectOrCreate?: NoticeCreateOrConnectWithoutPostedByInput | NoticeCreateOrConnectWithoutPostedByInput[]
-    createMany?: NoticeCreateManyPostedByInputEnvelope
+  export type NoticeCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<NoticeCreateWithoutCreatedByInput, NoticeUncheckedCreateWithoutCreatedByInput> | NoticeCreateWithoutCreatedByInput[] | NoticeUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeCreateOrConnectWithoutCreatedByInput | NoticeCreateOrConnectWithoutCreatedByInput[]
+    createMany?: NoticeCreateManyCreatedByInputEnvelope
     connect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
   }
 
-  export type NoticeHistoryCreateNestedManyWithoutPerformedByInput = {
-    create?: XOR<NoticeHistoryCreateWithoutPerformedByInput, NoticeHistoryUncheckedCreateWithoutPerformedByInput> | NoticeHistoryCreateWithoutPerformedByInput[] | NoticeHistoryUncheckedCreateWithoutPerformedByInput[]
-    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutPerformedByInput | NoticeHistoryCreateOrConnectWithoutPerformedByInput[]
-    createMany?: NoticeHistoryCreateManyPerformedByInputEnvelope
+  export type NoticeHistoryCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<NoticeHistoryCreateWithoutCreatedByInput, NoticeHistoryUncheckedCreateWithoutCreatedByInput> | NoticeHistoryCreateWithoutCreatedByInput[] | NoticeHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutCreatedByInput | NoticeHistoryCreateOrConnectWithoutCreatedByInput[]
+    createMany?: NoticeHistoryCreateManyCreatedByInputEnvelope
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
   }
 
@@ -19032,24 +17730,17 @@ export namespace Prisma {
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
-  export type NoticeRequestUncheckedCreateNestedManyWithoutMemberInput = {
-    create?: XOR<NoticeRequestCreateWithoutMemberInput, NoticeRequestUncheckedCreateWithoutMemberInput> | NoticeRequestCreateWithoutMemberInput[] | NoticeRequestUncheckedCreateWithoutMemberInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutMemberInput | NoticeRequestCreateOrConnectWithoutMemberInput[]
-    createMany?: NoticeRequestCreateManyMemberInputEnvelope
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-  }
-
-  export type NoticeUncheckedCreateNestedManyWithoutPostedByInput = {
-    create?: XOR<NoticeCreateWithoutPostedByInput, NoticeUncheckedCreateWithoutPostedByInput> | NoticeCreateWithoutPostedByInput[] | NoticeUncheckedCreateWithoutPostedByInput[]
-    connectOrCreate?: NoticeCreateOrConnectWithoutPostedByInput | NoticeCreateOrConnectWithoutPostedByInput[]
-    createMany?: NoticeCreateManyPostedByInputEnvelope
+  export type NoticeUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<NoticeCreateWithoutCreatedByInput, NoticeUncheckedCreateWithoutCreatedByInput> | NoticeCreateWithoutCreatedByInput[] | NoticeUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeCreateOrConnectWithoutCreatedByInput | NoticeCreateOrConnectWithoutCreatedByInput[]
+    createMany?: NoticeCreateManyCreatedByInputEnvelope
     connect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
   }
 
-  export type NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput = {
-    create?: XOR<NoticeHistoryCreateWithoutPerformedByInput, NoticeHistoryUncheckedCreateWithoutPerformedByInput> | NoticeHistoryCreateWithoutPerformedByInput[] | NoticeHistoryUncheckedCreateWithoutPerformedByInput[]
-    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutPerformedByInput | NoticeHistoryCreateOrConnectWithoutPerformedByInput[]
-    createMany?: NoticeHistoryCreateManyPerformedByInputEnvelope
+  export type NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<NoticeHistoryCreateWithoutCreatedByInput, NoticeHistoryUncheckedCreateWithoutCreatedByInput> | NoticeHistoryCreateWithoutCreatedByInput[] | NoticeHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutCreatedByInput | NoticeHistoryCreateOrConnectWithoutCreatedByInput[]
+    createMany?: NoticeHistoryCreateManyCreatedByInputEnvelope
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
   }
 
@@ -19183,45 +17874,31 @@ export namespace Prisma {
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
-  export type NoticeRequestUpdateManyWithoutMemberNestedInput = {
-    create?: XOR<NoticeRequestCreateWithoutMemberInput, NoticeRequestUncheckedCreateWithoutMemberInput> | NoticeRequestCreateWithoutMemberInput[] | NoticeRequestUncheckedCreateWithoutMemberInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutMemberInput | NoticeRequestCreateOrConnectWithoutMemberInput[]
-    upsert?: NoticeRequestUpsertWithWhereUniqueWithoutMemberInput | NoticeRequestUpsertWithWhereUniqueWithoutMemberInput[]
-    createMany?: NoticeRequestCreateManyMemberInputEnvelope
-    set?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    disconnect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    delete?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    update?: NoticeRequestUpdateWithWhereUniqueWithoutMemberInput | NoticeRequestUpdateWithWhereUniqueWithoutMemberInput[]
-    updateMany?: NoticeRequestUpdateManyWithWhereWithoutMemberInput | NoticeRequestUpdateManyWithWhereWithoutMemberInput[]
-    deleteMany?: NoticeRequestScalarWhereInput | NoticeRequestScalarWhereInput[]
-  }
-
-  export type NoticeUpdateManyWithoutPostedByNestedInput = {
-    create?: XOR<NoticeCreateWithoutPostedByInput, NoticeUncheckedCreateWithoutPostedByInput> | NoticeCreateWithoutPostedByInput[] | NoticeUncheckedCreateWithoutPostedByInput[]
-    connectOrCreate?: NoticeCreateOrConnectWithoutPostedByInput | NoticeCreateOrConnectWithoutPostedByInput[]
-    upsert?: NoticeUpsertWithWhereUniqueWithoutPostedByInput | NoticeUpsertWithWhereUniqueWithoutPostedByInput[]
-    createMany?: NoticeCreateManyPostedByInputEnvelope
+  export type NoticeUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<NoticeCreateWithoutCreatedByInput, NoticeUncheckedCreateWithoutCreatedByInput> | NoticeCreateWithoutCreatedByInput[] | NoticeUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeCreateOrConnectWithoutCreatedByInput | NoticeCreateOrConnectWithoutCreatedByInput[]
+    upsert?: NoticeUpsertWithWhereUniqueWithoutCreatedByInput | NoticeUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: NoticeCreateManyCreatedByInputEnvelope
     set?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
     disconnect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
     delete?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
     connect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
-    update?: NoticeUpdateWithWhereUniqueWithoutPostedByInput | NoticeUpdateWithWhereUniqueWithoutPostedByInput[]
-    updateMany?: NoticeUpdateManyWithWhereWithoutPostedByInput | NoticeUpdateManyWithWhereWithoutPostedByInput[]
+    update?: NoticeUpdateWithWhereUniqueWithoutCreatedByInput | NoticeUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: NoticeUpdateManyWithWhereWithoutCreatedByInput | NoticeUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: NoticeScalarWhereInput | NoticeScalarWhereInput[]
   }
 
-  export type NoticeHistoryUpdateManyWithoutPerformedByNestedInput = {
-    create?: XOR<NoticeHistoryCreateWithoutPerformedByInput, NoticeHistoryUncheckedCreateWithoutPerformedByInput> | NoticeHistoryCreateWithoutPerformedByInput[] | NoticeHistoryUncheckedCreateWithoutPerformedByInput[]
-    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutPerformedByInput | NoticeHistoryCreateOrConnectWithoutPerformedByInput[]
-    upsert?: NoticeHistoryUpsertWithWhereUniqueWithoutPerformedByInput | NoticeHistoryUpsertWithWhereUniqueWithoutPerformedByInput[]
-    createMany?: NoticeHistoryCreateManyPerformedByInputEnvelope
+  export type NoticeHistoryUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<NoticeHistoryCreateWithoutCreatedByInput, NoticeHistoryUncheckedCreateWithoutCreatedByInput> | NoticeHistoryCreateWithoutCreatedByInput[] | NoticeHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutCreatedByInput | NoticeHistoryCreateOrConnectWithoutCreatedByInput[]
+    upsert?: NoticeHistoryUpsertWithWhereUniqueWithoutCreatedByInput | NoticeHistoryUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: NoticeHistoryCreateManyCreatedByInputEnvelope
     set?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
     disconnect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
     delete?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
-    update?: NoticeHistoryUpdateWithWhereUniqueWithoutPerformedByInput | NoticeHistoryUpdateWithWhereUniqueWithoutPerformedByInput[]
-    updateMany?: NoticeHistoryUpdateManyWithWhereWithoutPerformedByInput | NoticeHistoryUpdateManyWithWhereWithoutPerformedByInput[]
+    update?: NoticeHistoryUpdateWithWhereUniqueWithoutCreatedByInput | NoticeHistoryUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: NoticeHistoryUpdateManyWithWhereWithoutCreatedByInput | NoticeHistoryUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
   }
 
@@ -19334,45 +18011,31 @@ export namespace Prisma {
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
-  export type NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput = {
-    create?: XOR<NoticeRequestCreateWithoutMemberInput, NoticeRequestUncheckedCreateWithoutMemberInput> | NoticeRequestCreateWithoutMemberInput[] | NoticeRequestUncheckedCreateWithoutMemberInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutMemberInput | NoticeRequestCreateOrConnectWithoutMemberInput[]
-    upsert?: NoticeRequestUpsertWithWhereUniqueWithoutMemberInput | NoticeRequestUpsertWithWhereUniqueWithoutMemberInput[]
-    createMany?: NoticeRequestCreateManyMemberInputEnvelope
-    set?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    disconnect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    delete?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    update?: NoticeRequestUpdateWithWhereUniqueWithoutMemberInput | NoticeRequestUpdateWithWhereUniqueWithoutMemberInput[]
-    updateMany?: NoticeRequestUpdateManyWithWhereWithoutMemberInput | NoticeRequestUpdateManyWithWhereWithoutMemberInput[]
-    deleteMany?: NoticeRequestScalarWhereInput | NoticeRequestScalarWhereInput[]
-  }
-
-  export type NoticeUncheckedUpdateManyWithoutPostedByNestedInput = {
-    create?: XOR<NoticeCreateWithoutPostedByInput, NoticeUncheckedCreateWithoutPostedByInput> | NoticeCreateWithoutPostedByInput[] | NoticeUncheckedCreateWithoutPostedByInput[]
-    connectOrCreate?: NoticeCreateOrConnectWithoutPostedByInput | NoticeCreateOrConnectWithoutPostedByInput[]
-    upsert?: NoticeUpsertWithWhereUniqueWithoutPostedByInput | NoticeUpsertWithWhereUniqueWithoutPostedByInput[]
-    createMany?: NoticeCreateManyPostedByInputEnvelope
+  export type NoticeUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<NoticeCreateWithoutCreatedByInput, NoticeUncheckedCreateWithoutCreatedByInput> | NoticeCreateWithoutCreatedByInput[] | NoticeUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeCreateOrConnectWithoutCreatedByInput | NoticeCreateOrConnectWithoutCreatedByInput[]
+    upsert?: NoticeUpsertWithWhereUniqueWithoutCreatedByInput | NoticeUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: NoticeCreateManyCreatedByInputEnvelope
     set?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
     disconnect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
     delete?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
     connect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
-    update?: NoticeUpdateWithWhereUniqueWithoutPostedByInput | NoticeUpdateWithWhereUniqueWithoutPostedByInput[]
-    updateMany?: NoticeUpdateManyWithWhereWithoutPostedByInput | NoticeUpdateManyWithWhereWithoutPostedByInput[]
+    update?: NoticeUpdateWithWhereUniqueWithoutCreatedByInput | NoticeUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: NoticeUpdateManyWithWhereWithoutCreatedByInput | NoticeUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: NoticeScalarWhereInput | NoticeScalarWhereInput[]
   }
 
-  export type NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput = {
-    create?: XOR<NoticeHistoryCreateWithoutPerformedByInput, NoticeHistoryUncheckedCreateWithoutPerformedByInput> | NoticeHistoryCreateWithoutPerformedByInput[] | NoticeHistoryUncheckedCreateWithoutPerformedByInput[]
-    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutPerformedByInput | NoticeHistoryCreateOrConnectWithoutPerformedByInput[]
-    upsert?: NoticeHistoryUpsertWithWhereUniqueWithoutPerformedByInput | NoticeHistoryUpsertWithWhereUniqueWithoutPerformedByInput[]
-    createMany?: NoticeHistoryCreateManyPerformedByInputEnvelope
+  export type NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<NoticeHistoryCreateWithoutCreatedByInput, NoticeHistoryUncheckedCreateWithoutCreatedByInput> | NoticeHistoryCreateWithoutCreatedByInput[] | NoticeHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: NoticeHistoryCreateOrConnectWithoutCreatedByInput | NoticeHistoryCreateOrConnectWithoutCreatedByInput[]
+    upsert?: NoticeHistoryUpsertWithWhereUniqueWithoutCreatedByInput | NoticeHistoryUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: NoticeHistoryCreateManyCreatedByInputEnvelope
     set?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
     disconnect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
     delete?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
-    update?: NoticeHistoryUpdateWithWhereUniqueWithoutPerformedByInput | NoticeHistoryUpdateWithWhereUniqueWithoutPerformedByInput[]
-    updateMany?: NoticeHistoryUpdateManyWithWhereWithoutPerformedByInput | NoticeHistoryUpdateManyWithWhereWithoutPerformedByInput[]
+    update?: NoticeHistoryUpdateWithWhereUniqueWithoutCreatedByInput | NoticeHistoryUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: NoticeHistoryUpdateManyWithWhereWithoutCreatedByInput | NoticeHistoryUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
   }
 
@@ -19429,13 +18092,6 @@ export namespace Prisma {
     connect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
   }
 
-  export type NoticeRequestCreateNestedManyWithoutTeamInput = {
-    create?: XOR<NoticeRequestCreateWithoutTeamInput, NoticeRequestUncheckedCreateWithoutTeamInput> | NoticeRequestCreateWithoutTeamInput[] | NoticeRequestUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutTeamInput | NoticeRequestCreateOrConnectWithoutTeamInput[]
-    createMany?: NoticeRequestCreateManyTeamInputEnvelope
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-  }
-
   export type UserUncheckedCreateNestedManyWithoutTeamsInput = {
     create?: XOR<UserCreateWithoutTeamsInput, UserUncheckedCreateWithoutTeamsInput> | UserCreateWithoutTeamsInput[] | UserUncheckedCreateWithoutTeamsInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTeamsInput | UserCreateOrConnectWithoutTeamsInput[]
@@ -19481,13 +18137,6 @@ export namespace Prisma {
     connectOrCreate?: NoticeCreateOrConnectWithoutTeamInput | NoticeCreateOrConnectWithoutTeamInput[]
     createMany?: NoticeCreateManyTeamInputEnvelope
     connect?: NoticeWhereUniqueInput | NoticeWhereUniqueInput[]
-  }
-
-  export type NoticeRequestUncheckedCreateNestedManyWithoutTeamInput = {
-    create?: XOR<NoticeRequestCreateWithoutTeamInput, NoticeRequestUncheckedCreateWithoutTeamInput> | NoticeRequestCreateWithoutTeamInput[] | NoticeRequestUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutTeamInput | NoticeRequestCreateOrConnectWithoutTeamInput[]
-    createMany?: NoticeRequestCreateManyTeamInputEnvelope
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput = {
@@ -19594,20 +18243,6 @@ export namespace Prisma {
     deleteMany?: NoticeScalarWhereInput | NoticeScalarWhereInput[]
   }
 
-  export type NoticeRequestUpdateManyWithoutTeamNestedInput = {
-    create?: XOR<NoticeRequestCreateWithoutTeamInput, NoticeRequestUncheckedCreateWithoutTeamInput> | NoticeRequestCreateWithoutTeamInput[] | NoticeRequestUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutTeamInput | NoticeRequestCreateOrConnectWithoutTeamInput[]
-    upsert?: NoticeRequestUpsertWithWhereUniqueWithoutTeamInput | NoticeRequestUpsertWithWhereUniqueWithoutTeamInput[]
-    createMany?: NoticeRequestCreateManyTeamInputEnvelope
-    set?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    disconnect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    delete?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    update?: NoticeRequestUpdateWithWhereUniqueWithoutTeamInput | NoticeRequestUpdateWithWhereUniqueWithoutTeamInput[]
-    updateMany?: NoticeRequestUpdateManyWithWhereWithoutTeamInput | NoticeRequestUpdateManyWithWhereWithoutTeamInput[]
-    deleteMany?: NoticeRequestScalarWhereInput | NoticeRequestScalarWhereInput[]
-  }
-
   export type UserUncheckedUpdateManyWithoutTeamsNestedInput = {
     create?: XOR<UserCreateWithoutTeamsInput, UserUncheckedCreateWithoutTeamsInput> | UserCreateWithoutTeamsInput[] | UserUncheckedCreateWithoutTeamsInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTeamsInput | UserCreateOrConnectWithoutTeamsInput[]
@@ -19702,20 +18337,6 @@ export namespace Prisma {
     update?: NoticeUpdateWithWhereUniqueWithoutTeamInput | NoticeUpdateWithWhereUniqueWithoutTeamInput[]
     updateMany?: NoticeUpdateManyWithWhereWithoutTeamInput | NoticeUpdateManyWithWhereWithoutTeamInput[]
     deleteMany?: NoticeScalarWhereInput | NoticeScalarWhereInput[]
-  }
-
-  export type NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput = {
-    create?: XOR<NoticeRequestCreateWithoutTeamInput, NoticeRequestUncheckedCreateWithoutTeamInput> | NoticeRequestCreateWithoutTeamInput[] | NoticeRequestUncheckedCreateWithoutTeamInput[]
-    connectOrCreate?: NoticeRequestCreateOrConnectWithoutTeamInput | NoticeRequestCreateOrConnectWithoutTeamInput[]
-    upsert?: NoticeRequestUpsertWithWhereUniqueWithoutTeamInput | NoticeRequestUpsertWithWhereUniqueWithoutTeamInput[]
-    createMany?: NoticeRequestCreateManyTeamInputEnvelope
-    set?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    disconnect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    delete?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    connect?: NoticeRequestWhereUniqueInput | NoticeRequestWhereUniqueInput[]
-    update?: NoticeRequestUpdateWithWhereUniqueWithoutTeamInput | NoticeRequestUpdateWithWhereUniqueWithoutTeamInput[]
-    updateMany?: NoticeRequestUpdateManyWithWhereWithoutTeamInput | NoticeRequestUpdateManyWithWhereWithoutTeamInput[]
-    deleteMany?: NoticeRequestScalarWhereInput | NoticeRequestScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutUserRoleInTeamInput = {
@@ -19912,6 +18533,10 @@ export namespace Prisma {
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
   }
 
+  export type EnumStatusFieldUpdateOperationsInput = {
+    set?: $Enums.Status
+  }
+
   export type UserUpdateOneRequiredWithoutNoticesNestedInput = {
     create?: XOR<UserCreateWithoutNoticesInput, UserUncheckedCreateWithoutNoticesInput>
     connectOrCreate?: UserCreateOrConnectWithoutNoticesInput
@@ -19954,34 +18579,6 @@ export namespace Prisma {
     update?: NoticeHistoryUpdateWithWhereUniqueWithoutNoticeInput | NoticeHistoryUpdateWithWhereUniqueWithoutNoticeInput[]
     updateMany?: NoticeHistoryUpdateManyWithWhereWithoutNoticeInput | NoticeHistoryUpdateManyWithWhereWithoutNoticeInput[]
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
-  }
-
-  export type UserCreateNestedOneWithoutNoticeRequestsInput = {
-    create?: XOR<UserCreateWithoutNoticeRequestsInput, UserUncheckedCreateWithoutNoticeRequestsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNoticeRequestsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type TeamsCreateNestedOneWithoutNoticeRequestsInput = {
-    create?: XOR<TeamsCreateWithoutNoticeRequestsInput, TeamsUncheckedCreateWithoutNoticeRequestsInput>
-    connectOrCreate?: TeamsCreateOrConnectWithoutNoticeRequestsInput
-    connect?: TeamsWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutNoticeRequestsNestedInput = {
-    create?: XOR<UserCreateWithoutNoticeRequestsInput, UserUncheckedCreateWithoutNoticeRequestsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNoticeRequestsInput
-    upsert?: UserUpsertWithoutNoticeRequestsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNoticeRequestsInput, UserUpdateWithoutNoticeRequestsInput>, UserUncheckedUpdateWithoutNoticeRequestsInput>
-  }
-
-  export type TeamsUpdateOneRequiredWithoutNoticeRequestsNestedInput = {
-    create?: XOR<TeamsCreateWithoutNoticeRequestsInput, TeamsUncheckedCreateWithoutNoticeRequestsInput>
-    connectOrCreate?: TeamsCreateOrConnectWithoutNoticeRequestsInput
-    upsert?: TeamsUpsertWithoutNoticeRequestsInput
-    connect?: TeamsWhereUniqueInput
-    update?: XOR<XOR<TeamsUpdateToOneWithWhereWithoutNoticeRequestsInput, TeamsUpdateWithoutNoticeRequestsInput>, TeamsUncheckedUpdateWithoutNoticeRequestsInput>
   }
 
   export type NoticeCreateNestedOneWithoutHistoryInput = {
@@ -20330,6 +18927,23 @@ export namespace Prisma {
     _max?: NestedEnumActionFilter<$PrismaModel>
   }
 
+  export type NestedEnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
+  export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
+  }
+
   export type TagCreateWithoutUsersInput = {
     id?: string
     name: string
@@ -20363,7 +18977,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutTeamLeaderInput = {
@@ -20382,7 +18995,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutTeamLeaderInput = {
@@ -20411,7 +19023,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutMembersInput = {
@@ -20430,7 +19041,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutMembersInput = {
@@ -20575,91 +19185,71 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NoticeRequestCreateWithoutMemberInput = {
-    id?: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    team: TeamsCreateNestedOneWithoutNoticeRequestsInput
-  }
-
-  export type NoticeRequestUncheckedCreateWithoutMemberInput = {
-    id?: string
-    teamId: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NoticeRequestCreateOrConnectWithoutMemberInput = {
-    where: NoticeRequestWhereUniqueInput
-    create: XOR<NoticeRequestCreateWithoutMemberInput, NoticeRequestUncheckedCreateWithoutMemberInput>
-  }
-
-  export type NoticeRequestCreateManyMemberInputEnvelope = {
-    data: NoticeRequestCreateManyMemberInput | NoticeRequestCreateManyMemberInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type NoticeCreateWithoutPostedByInput = {
+  export type NoticeCreateWithoutCreatedByInput = {
     id?: string
     title: string
     content: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutNoticesInput
     history?: NoticeHistoryCreateNestedManyWithoutNoticeInput
   }
 
-  export type NoticeUncheckedCreateWithoutPostedByInput = {
+  export type NoticeUncheckedCreateWithoutCreatedByInput = {
     id?: string
     title: string
     content: string
     teamId: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
     history?: NoticeHistoryUncheckedCreateNestedManyWithoutNoticeInput
   }
 
-  export type NoticeCreateOrConnectWithoutPostedByInput = {
+  export type NoticeCreateOrConnectWithoutCreatedByInput = {
     where: NoticeWhereUniqueInput
-    create: XOR<NoticeCreateWithoutPostedByInput, NoticeUncheckedCreateWithoutPostedByInput>
+    create: XOR<NoticeCreateWithoutCreatedByInput, NoticeUncheckedCreateWithoutCreatedByInput>
   }
 
-  export type NoticeCreateManyPostedByInputEnvelope = {
-    data: NoticeCreateManyPostedByInput | NoticeCreateManyPostedByInput[]
+  export type NoticeCreateManyCreatedByInputEnvelope = {
+    data: NoticeCreateManyCreatedByInput | NoticeCreateManyCreatedByInput[]
     skipDuplicates?: boolean
   }
 
-  export type NoticeHistoryCreateWithoutPerformedByInput = {
+  export type NoticeHistoryCreateWithoutCreatedByInput = {
     id?: string
-    action: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
     createdAt?: Date | string
     notice: NoticeCreateNestedOneWithoutHistoryInput
   }
 
-  export type NoticeHistoryUncheckedCreateWithoutPerformedByInput = {
+  export type NoticeHistoryUncheckedCreateWithoutCreatedByInput = {
     id?: string
     noticeId: string
-    action: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
     createdAt?: Date | string
   }
 
-  export type NoticeHistoryCreateOrConnectWithoutPerformedByInput = {
+  export type NoticeHistoryCreateOrConnectWithoutCreatedByInput = {
     where: NoticeHistoryWhereUniqueInput
-    create: XOR<NoticeHistoryCreateWithoutPerformedByInput, NoticeHistoryUncheckedCreateWithoutPerformedByInput>
+    create: XOR<NoticeHistoryCreateWithoutCreatedByInput, NoticeHistoryUncheckedCreateWithoutCreatedByInput>
   }
 
-  export type NoticeHistoryCreateManyPerformedByInputEnvelope = {
-    data: NoticeHistoryCreateManyPerformedByInput | NoticeHistoryCreateManyPerformedByInput[]
+  export type NoticeHistoryCreateManyCreatedByInputEnvelope = {
+    data: NoticeHistoryCreateManyCreatedByInput | NoticeHistoryCreateManyCreatedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -20878,49 +19468,20 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Message"> | Date | string
   }
 
-  export type NoticeRequestUpsertWithWhereUniqueWithoutMemberInput = {
-    where: NoticeRequestWhereUniqueInput
-    update: XOR<NoticeRequestUpdateWithoutMemberInput, NoticeRequestUncheckedUpdateWithoutMemberInput>
-    create: XOR<NoticeRequestCreateWithoutMemberInput, NoticeRequestUncheckedCreateWithoutMemberInput>
-  }
-
-  export type NoticeRequestUpdateWithWhereUniqueWithoutMemberInput = {
-    where: NoticeRequestWhereUniqueInput
-    data: XOR<NoticeRequestUpdateWithoutMemberInput, NoticeRequestUncheckedUpdateWithoutMemberInput>
-  }
-
-  export type NoticeRequestUpdateManyWithWhereWithoutMemberInput = {
-    where: NoticeRequestScalarWhereInput
-    data: XOR<NoticeRequestUpdateManyMutationInput, NoticeRequestUncheckedUpdateManyWithoutMemberInput>
-  }
-
-  export type NoticeRequestScalarWhereInput = {
-    AND?: NoticeRequestScalarWhereInput | NoticeRequestScalarWhereInput[]
-    OR?: NoticeRequestScalarWhereInput[]
-    NOT?: NoticeRequestScalarWhereInput | NoticeRequestScalarWhereInput[]
-    id?: StringFilter<"NoticeRequest"> | string
-    memberId?: StringFilter<"NoticeRequest"> | string
-    teamId?: StringFilter<"NoticeRequest"> | string
-    requestMessage?: StringFilter<"NoticeRequest"> | string
-    status?: StringFilter<"NoticeRequest"> | string
-    createdAt?: DateTimeFilter<"NoticeRequest"> | Date | string
-    updatedAt?: DateTimeFilter<"NoticeRequest"> | Date | string
-  }
-
-  export type NoticeUpsertWithWhereUniqueWithoutPostedByInput = {
+  export type NoticeUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: NoticeWhereUniqueInput
-    update: XOR<NoticeUpdateWithoutPostedByInput, NoticeUncheckedUpdateWithoutPostedByInput>
-    create: XOR<NoticeCreateWithoutPostedByInput, NoticeUncheckedCreateWithoutPostedByInput>
+    update: XOR<NoticeUpdateWithoutCreatedByInput, NoticeUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<NoticeCreateWithoutCreatedByInput, NoticeUncheckedCreateWithoutCreatedByInput>
   }
 
-  export type NoticeUpdateWithWhereUniqueWithoutPostedByInput = {
+  export type NoticeUpdateWithWhereUniqueWithoutCreatedByInput = {
     where: NoticeWhereUniqueInput
-    data: XOR<NoticeUpdateWithoutPostedByInput, NoticeUncheckedUpdateWithoutPostedByInput>
+    data: XOR<NoticeUpdateWithoutCreatedByInput, NoticeUncheckedUpdateWithoutCreatedByInput>
   }
 
-  export type NoticeUpdateManyWithWhereWithoutPostedByInput = {
+  export type NoticeUpdateManyWithWhereWithoutCreatedByInput = {
     where: NoticeScalarWhereInput
-    data: XOR<NoticeUpdateManyMutationInput, NoticeUncheckedUpdateManyWithoutPostedByInput>
+    data: XOR<NoticeUpdateManyMutationInput, NoticeUncheckedUpdateManyWithoutCreatedByInput>
   }
 
   export type NoticeScalarWhereInput = {
@@ -20930,29 +19491,29 @@ export namespace Prisma {
     id?: StringFilter<"Notice"> | string
     title?: StringFilter<"Notice"> | string
     content?: StringFilter<"Notice"> | string
-    postedById?: StringFilter<"Notice"> | string
+    createdById?: StringFilter<"Notice"> | string
     teamId?: StringFilter<"Notice"> | string
     startDate?: DateTimeFilter<"Notice"> | Date | string
     endDate?: DateTimeFilter<"Notice"> | Date | string
-    isActive?: BoolFilter<"Notice"> | boolean
+    status?: EnumStatusFilter<"Notice"> | $Enums.Status
     createdAt?: DateTimeFilter<"Notice"> | Date | string
     updatedAt?: DateTimeFilter<"Notice"> | Date | string
   }
 
-  export type NoticeHistoryUpsertWithWhereUniqueWithoutPerformedByInput = {
+  export type NoticeHistoryUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: NoticeHistoryWhereUniqueInput
-    update: XOR<NoticeHistoryUpdateWithoutPerformedByInput, NoticeHistoryUncheckedUpdateWithoutPerformedByInput>
-    create: XOR<NoticeHistoryCreateWithoutPerformedByInput, NoticeHistoryUncheckedCreateWithoutPerformedByInput>
+    update: XOR<NoticeHistoryUpdateWithoutCreatedByInput, NoticeHistoryUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<NoticeHistoryCreateWithoutCreatedByInput, NoticeHistoryUncheckedCreateWithoutCreatedByInput>
   }
 
-  export type NoticeHistoryUpdateWithWhereUniqueWithoutPerformedByInput = {
+  export type NoticeHistoryUpdateWithWhereUniqueWithoutCreatedByInput = {
     where: NoticeHistoryWhereUniqueInput
-    data: XOR<NoticeHistoryUpdateWithoutPerformedByInput, NoticeHistoryUncheckedUpdateWithoutPerformedByInput>
+    data: XOR<NoticeHistoryUpdateWithoutCreatedByInput, NoticeHistoryUncheckedUpdateWithoutCreatedByInput>
   }
 
-  export type NoticeHistoryUpdateManyWithWhereWithoutPerformedByInput = {
+  export type NoticeHistoryUpdateManyWithWhereWithoutCreatedByInput = {
     where: NoticeHistoryScalarWhereInput
-    data: XOR<NoticeHistoryUpdateManyMutationInput, NoticeHistoryUncheckedUpdateManyWithoutPerformedByInput>
+    data: XOR<NoticeHistoryUpdateManyMutationInput, NoticeHistoryUncheckedUpdateManyWithoutCreatedByInput>
   }
 
   export type NoticeHistoryScalarWhereInput = {
@@ -20961,8 +19522,12 @@ export namespace Prisma {
     NOT?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
     id?: StringFilter<"NoticeHistory"> | string
     noticeId?: StringFilter<"NoticeHistory"> | string
-    action?: StringFilter<"NoticeHistory"> | string
-    performedById?: StringFilter<"NoticeHistory"> | string
+    title?: StringFilter<"NoticeHistory"> | string
+    content?: StringFilter<"NoticeHistory"> | string
+    startDate?: DateTimeFilter<"NoticeHistory"> | Date | string
+    endDate?: DateTimeFilter<"NoticeHistory"> | Date | string
+    status?: EnumStatusFilter<"NoticeHistory"> | $Enums.Status
+    createdById?: StringFilter<"NoticeHistory"> | string
     createdAt?: DateTimeFilter<"NoticeHistory"> | Date | string
   }
 
@@ -20994,9 +19559,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTeamLeaderOfInput = {
@@ -21027,9 +19591,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTeamLeaderOfInput = {
@@ -21065,9 +19628,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTeamsInput = {
@@ -21098,9 +19660,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTeamsInput = {
@@ -21247,10 +19808,10 @@ export namespace Prisma {
     content: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
-    postedBy: UserCreateNestedOneWithoutNoticesInput
+    createdBy: UserCreateNestedOneWithoutNoticesInput
     history?: NoticeHistoryCreateNestedManyWithoutNoticeInput
   }
 
@@ -21258,10 +19819,10 @@ export namespace Prisma {
     id?: string
     title: string
     content: string
-    postedById: string
+    createdById: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
     history?: NoticeHistoryUncheckedCreateNestedManyWithoutNoticeInput
@@ -21274,34 +19835,6 @@ export namespace Prisma {
 
   export type NoticeCreateManyTeamInputEnvelope = {
     data: NoticeCreateManyTeamInput | NoticeCreateManyTeamInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type NoticeRequestCreateWithoutTeamInput = {
-    id?: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    member: UserCreateNestedOneWithoutNoticeRequestsInput
-  }
-
-  export type NoticeRequestUncheckedCreateWithoutTeamInput = {
-    id?: string
-    memberId: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NoticeRequestCreateOrConnectWithoutTeamInput = {
-    where: NoticeRequestWhereUniqueInput
-    create: XOR<NoticeRequestCreateWithoutTeamInput, NoticeRequestUncheckedCreateWithoutTeamInput>
-  }
-
-  export type NoticeRequestCreateManyTeamInputEnvelope = {
-    data: NoticeRequestCreateManyTeamInput | NoticeRequestCreateManyTeamInput[]
     skipDuplicates?: boolean
   }
 
@@ -21344,9 +19877,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamLeaderOfInput = {
@@ -21377,9 +19909,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutTeamsInput = {
@@ -21520,22 +20051,6 @@ export namespace Prisma {
     data: XOR<NoticeUpdateManyMutationInput, NoticeUncheckedUpdateManyWithoutTeamInput>
   }
 
-  export type NoticeRequestUpsertWithWhereUniqueWithoutTeamInput = {
-    where: NoticeRequestWhereUniqueInput
-    update: XOR<NoticeRequestUpdateWithoutTeamInput, NoticeRequestUncheckedUpdateWithoutTeamInput>
-    create: XOR<NoticeRequestCreateWithoutTeamInput, NoticeRequestUncheckedCreateWithoutTeamInput>
-  }
-
-  export type NoticeRequestUpdateWithWhereUniqueWithoutTeamInput = {
-    where: NoticeRequestWhereUniqueInput
-    data: XOR<NoticeRequestUpdateWithoutTeamInput, NoticeRequestUncheckedUpdateWithoutTeamInput>
-  }
-
-  export type NoticeRequestUpdateManyWithWhereWithoutTeamInput = {
-    where: NoticeRequestScalarWhereInput
-    data: XOR<NoticeRequestUpdateManyMutationInput, NoticeRequestUncheckedUpdateManyWithoutTeamInput>
-  }
-
   export type UserCreateWithoutUserRoleInTeamInput = {
     userId?: string
     firstName: string
@@ -21564,9 +20079,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserRoleInTeamInput = {
@@ -21597,9 +20111,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserRoleInTeamInput = {
@@ -21623,7 +20136,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutUserRoleInTeamInput = {
@@ -21642,7 +20154,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutUserRoleInTeamInput = {
@@ -21689,9 +20200,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRoleInTeamInput = {
@@ -21722,9 +20232,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TeamsUpsertWithoutUserRoleInTeamInput = {
@@ -21754,7 +20263,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutUserRoleInTeamInput = {
@@ -21773,7 +20281,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsCreateWithoutTagsInput = {
@@ -21792,7 +20299,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutTagsInput = {
@@ -21811,7 +20317,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutTagsInput = {
@@ -21847,9 +20352,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTagsInput = {
@@ -21880,9 +20384,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTagsInput = {
@@ -21938,7 +20441,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutLogsInput = {
@@ -21957,7 +20459,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutLogsInput = {
@@ -21993,9 +20494,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTeamsEditLogInput = {
@@ -22026,9 +20526,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTeamsEditLogInput = {
@@ -22063,7 +20562,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutLogsInput = {
@@ -22082,7 +20580,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type UserUpsertWithoutTeamsEditLogInput = {
@@ -22124,9 +20621,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamsEditLogInput = {
@@ -22157,9 +20653,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TeamsCreateWithoutActiveRequestsInput = {
@@ -22178,7 +20673,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutActiveRequestsInput = {
@@ -22197,7 +20691,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutActiveRequestsInput = {
@@ -22233,9 +20726,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutActiveRequestsInput = {
@@ -22266,9 +20758,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutActiveRequestsInput = {
@@ -22303,7 +20794,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutActiveRequestsInput = {
@@ -22322,7 +20812,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type UserUpsertWithoutActiveRequestsInput = {
@@ -22364,9 +20853,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActiveRequestsInput = {
@@ -22397,9 +20885,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutNoticesInput = {
@@ -22431,8 +20918,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutNoticesInput = {
@@ -22464,8 +20950,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutNoticesInput = {
@@ -22489,7 +20974,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     chats?: ChatCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutNoticesInput = {
@@ -22508,7 +20992,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutNoticesInput = {
@@ -22518,15 +21001,23 @@ export namespace Prisma {
 
   export type NoticeHistoryCreateWithoutNoticeInput = {
     id?: string
-    action: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
     createdAt?: Date | string
-    performedBy: UserCreateNestedOneWithoutNoticeHistoryInput
+    createdBy: UserCreateNestedOneWithoutNoticeHistoryInput
   }
 
   export type NoticeHistoryUncheckedCreateWithoutNoticeInput = {
     id?: string
-    action: string
-    performedById: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
+    createdById: string
     createdAt?: Date | string
   }
 
@@ -22580,8 +21071,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNoticesInput = {
@@ -22613,8 +21103,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TeamsUpsertWithoutNoticesInput = {
@@ -22644,7 +21133,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutNoticesInput = {
@@ -22663,7 +21151,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type NoticeHistoryUpsertWithWhereUniqueWithoutNoticeInput = {
@@ -22682,256 +21169,16 @@ export namespace Prisma {
     data: XOR<NoticeHistoryUpdateManyMutationInput, NoticeHistoryUncheckedUpdateManyWithoutNoticeInput>
   }
 
-  export type UserCreateWithoutNoticeRequestsInput = {
-    userId?: string
-    firstName: string
-    lastName: string
-    email: string
-    mobileNumber: string
-    username: string
-    password: string
-    courseName?: UserCreatecourseNameInput | string[]
-    about: string
-    role?: string
-    isTeamLeader?: boolean
-    isActive?: boolean
-    twitter?: string | null
-    github?: string | null
-    linkedIn?: string | null
-    hashnode?: string | null
-    peerlist?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    designation?: $Enums.Designation | null
-    tags?: TagCreateNestedManyWithoutUsersInput
-    teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
-    teams?: TeamsCreateNestedManyWithoutMembersInput
-    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
-    TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
-    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
-    chats?: ChatCreateNestedManyWithoutMembersInput
-    messages?: MessageCreateNestedManyWithoutUserInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
-  }
-
-  export type UserUncheckedCreateWithoutNoticeRequestsInput = {
-    userId?: string
-    firstName: string
-    lastName: string
-    email: string
-    mobileNumber: string
-    username: string
-    password: string
-    courseName?: UserCreatecourseNameInput | string[]
-    about: string
-    role?: string
-    isTeamLeader?: boolean
-    isActive?: boolean
-    twitter?: string | null
-    github?: string | null
-    linkedIn?: string | null
-    hashnode?: string | null
-    peerlist?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    designation?: $Enums.Designation | null
-    tags?: TagUncheckedCreateNestedManyWithoutUsersInput
-    teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
-    teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
-    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
-    TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
-    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
-    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
-  }
-
-  export type UserCreateOrConnectWithoutNoticeRequestsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutNoticeRequestsInput, UserUncheckedCreateWithoutNoticeRequestsInput>
-  }
-
-  export type TeamsCreateWithoutNoticeRequestsInput = {
-    id?: string
-    uniqueTitle: string
-    title: string
-    about: string
-    isActive?: boolean
-    link?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    teamLeader: UserCreateNestedOneWithoutTeamLeaderOfInput
-    members?: UserCreateNestedManyWithoutTeamsInput
-    tags?: TagCreateNestedManyWithoutTeamsInput
-    logs?: TeamsEditLogCreateNestedManyWithoutTeamInput
-    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
-    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
-    chats?: ChatCreateNestedManyWithoutTeamInput
-    notices?: NoticeCreateNestedManyWithoutTeamInput
-  }
-
-  export type TeamsUncheckedCreateWithoutNoticeRequestsInput = {
-    id?: string
-    uniqueTitle: string
-    title: string
-    about: string
-    teamLeaderId: string
-    isActive?: boolean
-    link?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    members?: UserUncheckedCreateNestedManyWithoutTeamsInput
-    tags?: TagUncheckedCreateNestedManyWithoutTeamsInput
-    logs?: TeamsEditLogUncheckedCreateNestedManyWithoutTeamInput
-    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
-    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
-    chats?: ChatUncheckedCreateNestedManyWithoutTeamInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-  }
-
-  export type TeamsCreateOrConnectWithoutNoticeRequestsInput = {
-    where: TeamsWhereUniqueInput
-    create: XOR<TeamsCreateWithoutNoticeRequestsInput, TeamsUncheckedCreateWithoutNoticeRequestsInput>
-  }
-
-  export type UserUpsertWithoutNoticeRequestsInput = {
-    update: XOR<UserUpdateWithoutNoticeRequestsInput, UserUncheckedUpdateWithoutNoticeRequestsInput>
-    create: XOR<UserCreateWithoutNoticeRequestsInput, UserUncheckedCreateWithoutNoticeRequestsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutNoticeRequestsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutNoticeRequestsInput, UserUncheckedUpdateWithoutNoticeRequestsInput>
-  }
-
-  export type UserUpdateWithoutNoticeRequestsInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    courseName?: UserUpdatecourseNameInput | string[]
-    about?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    twitter?: NullableStringFieldUpdateOperationsInput | string | null
-    github?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
-    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
-    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
-    tags?: TagUpdateManyWithoutUsersNestedInput
-    teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
-    teams?: TeamsUpdateManyWithoutMembersNestedInput
-    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
-    TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
-    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
-    chats?: ChatUpdateManyWithoutMembersNestedInput
-    messages?: MessageUpdateManyWithoutUserNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutNoticeRequestsInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    courseName?: UserUpdatecourseNameInput | string[]
-    about?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    twitter?: NullableStringFieldUpdateOperationsInput | string | null
-    github?: NullableStringFieldUpdateOperationsInput | string | null
-    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
-    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
-    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
-    tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
-    teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
-    teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
-    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
-    TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
-    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
-  }
-
-  export type TeamsUpsertWithoutNoticeRequestsInput = {
-    update: XOR<TeamsUpdateWithoutNoticeRequestsInput, TeamsUncheckedUpdateWithoutNoticeRequestsInput>
-    create: XOR<TeamsCreateWithoutNoticeRequestsInput, TeamsUncheckedCreateWithoutNoticeRequestsInput>
-    where?: TeamsWhereInput
-  }
-
-  export type TeamsUpdateToOneWithWhereWithoutNoticeRequestsInput = {
-    where?: TeamsWhereInput
-    data: XOR<TeamsUpdateWithoutNoticeRequestsInput, TeamsUncheckedUpdateWithoutNoticeRequestsInput>
-  }
-
-  export type TeamsUpdateWithoutNoticeRequestsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    uniqueTitle?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    about?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teamLeader?: UserUpdateOneRequiredWithoutTeamLeaderOfNestedInput
-    members?: UserUpdateManyWithoutTeamsNestedInput
-    tags?: TagUpdateManyWithoutTeamsNestedInput
-    logs?: TeamsEditLogUpdateManyWithoutTeamNestedInput
-    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
-    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
-    chats?: ChatUpdateManyWithoutTeamNestedInput
-    notices?: NoticeUpdateManyWithoutTeamNestedInput
-  }
-
-  export type TeamsUncheckedUpdateWithoutNoticeRequestsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    uniqueTitle?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    about?: StringFieldUpdateOperationsInput | string
-    teamLeaderId?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    link?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: UserUncheckedUpdateManyWithoutTeamsNestedInput
-    tags?: TagUncheckedUpdateManyWithoutTeamsNestedInput
-    logs?: TeamsEditLogUncheckedUpdateManyWithoutTeamNestedInput
-    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
-    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
-    chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-  }
-
   export type NoticeCreateWithoutHistoryInput = {
     id?: string
     title: string
     content: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
-    postedBy: UserCreateNestedOneWithoutNoticesInput
+    createdBy: UserCreateNestedOneWithoutNoticesInput
     team: TeamsCreateNestedOneWithoutNoticesInput
   }
 
@@ -22939,11 +21186,11 @@ export namespace Prisma {
     id?: string
     title: string
     content: string
-    postedById: string
+    createdById: string
     teamId: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22982,8 +21229,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutNoticeHistoryInput = {
@@ -23015,8 +21261,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutNoticeHistoryInput = {
@@ -23041,10 +21286,10 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postedBy?: UserUpdateOneRequiredWithoutNoticesNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutNoticesNestedInput
     team?: TeamsUpdateOneRequiredWithoutNoticesNestedInput
   }
 
@@ -23052,11 +21297,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    postedById?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23101,8 +21346,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNoticeHistoryInput = {
@@ -23134,8 +21378,7 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TeamsCreateWithoutChatsInput = {
@@ -23154,7 +21397,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutTeamInput
     ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutTeamInput
     notices?: NoticeCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsUncheckedCreateWithoutChatsInput = {
@@ -23173,7 +21415,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutTeamInput
     ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutTeamInput
     notices?: NoticeUncheckedCreateNestedManyWithoutTeamInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamsCreateOrConnectWithoutChatsInput = {
@@ -23235,9 +21476,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     messages?: MessageCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutChatsInput = {
@@ -23268,9 +21508,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutChatsInput = {
@@ -23305,7 +21544,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutTeamNestedInput
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutChatsInput = {
@@ -23324,7 +21562,6 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutTeamNestedInput
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type MessageUpsertWithWhereUniqueWithoutChatInput = {
@@ -23387,9 +21624,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutMembersInput
-    noticeRequests?: NoticeRequestCreateNestedManyWithoutMemberInput
-    notices?: NoticeCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutMessagesInput = {
@@ -23420,9 +21656,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
     userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
-    noticeRequests?: NoticeRequestUncheckedCreateNestedManyWithoutMemberInput
-    notices?: NoticeUncheckedCreateNestedManyWithoutPostedByInput
-    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutMessagesInput = {
@@ -23496,9 +21731,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -23529,9 +21763,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ChatUpsertWithoutMessagesInput = {
@@ -23613,31 +21846,26 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type NoticeRequestCreateManyMemberInput = {
-    id?: string
-    teamId: string
-    requestMessage: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NoticeCreateManyPostedByInput = {
+  export type NoticeCreateManyCreatedByInput = {
     id?: string
     title: string
     content: string
     teamId: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type NoticeHistoryCreateManyPerformedByInput = {
+  export type NoticeHistoryCreateManyCreatedByInput = {
     id?: string
     noticeId: string
-    action: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
     createdAt?: Date | string
   }
 
@@ -23674,7 +21902,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutTeamLeaderInput = {
@@ -23693,7 +21920,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateManyWithoutTeamLeaderInput = {
@@ -23723,7 +21949,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutMembersInput = {
@@ -23742,7 +21967,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateManyWithoutMembersInput = {
@@ -23894,89 +22118,74 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NoticeRequestUpdateWithoutMemberInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    team?: TeamsUpdateOneRequiredWithoutNoticeRequestsNestedInput
-  }
-
-  export type NoticeRequestUncheckedUpdateWithoutMemberInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NoticeRequestUncheckedUpdateManyWithoutMemberInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    teamId?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NoticeUpdateWithoutPostedByInput = {
+  export type NoticeUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutNoticesNestedInput
     history?: NoticeHistoryUpdateManyWithoutNoticeNestedInput
   }
 
-  export type NoticeUncheckedUpdateWithoutPostedByInput = {
+  export type NoticeUncheckedUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     history?: NoticeHistoryUncheckedUpdateManyWithoutNoticeNestedInput
   }
 
-  export type NoticeUncheckedUpdateManyWithoutPostedByInput = {
+  export type NoticeUncheckedUpdateManyWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NoticeHistoryUpdateWithoutPerformedByInput = {
+  export type NoticeHistoryUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notice?: NoticeUpdateOneRequiredWithoutHistoryNestedInput
   }
 
-  export type NoticeHistoryUncheckedUpdateWithoutPerformedByInput = {
+  export type NoticeHistoryUncheckedUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     noticeId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NoticeHistoryUncheckedUpdateManyWithoutPerformedByInput = {
+  export type NoticeHistoryUncheckedUpdateManyWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     noticeId?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24020,19 +22229,10 @@ export namespace Prisma {
     id?: string
     title: string
     content: string
-    postedById: string
+    createdById: string
     startDate: Date | string
     endDate: Date | string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NoticeRequestCreateManyTeamInput = {
-    id?: string
-    memberId: string
-    requestMessage: string
-    status?: string
+    status: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24065,9 +22265,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamsInput = {
@@ -24098,9 +22297,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTeamsInput = {
@@ -24261,10 +22459,10 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postedBy?: UserUpdateOneRequiredWithoutNoticesNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutNoticesNestedInput
     history?: NoticeHistoryUpdateManyWithoutNoticeNestedInput
   }
 
@@ -24272,10 +22470,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    postedById?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     history?: NoticeHistoryUncheckedUpdateManyWithoutNoticeNestedInput
@@ -24285,37 +22483,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    postedById?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NoticeRequestUpdateWithoutTeamInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    member?: UserUpdateOneRequiredWithoutNoticeRequestsNestedInput
-  }
-
-  export type NoticeRequestUncheckedUpdateWithoutTeamInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    memberId?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NoticeRequestUncheckedUpdateManyWithoutTeamInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    memberId?: StringFieldUpdateOperationsInput | string
-    requestMessage?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24336,7 +22507,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutTeamNestedInput
     chats?: ChatUpdateManyWithoutTeamNestedInput
     notices?: NoticeUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateWithoutTagsInput = {
@@ -24355,7 +22525,6 @@ export namespace Prisma {
     ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutTeamNestedInput
     chats?: ChatUncheckedUpdateManyWithoutTeamNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutTeamNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamsUncheckedUpdateManyWithoutTagsInput = {
@@ -24398,9 +22567,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTagsInput = {
@@ -24431,9 +22599,8 @@ export namespace Prisma {
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTagsInput = {
@@ -24461,29 +22628,45 @@ export namespace Prisma {
 
   export type NoticeHistoryCreateManyNoticeInput = {
     id?: string
-    action: string
-    performedById: string
+    title: string
+    content: string
+    startDate: Date | string
+    endDate: Date | string
+    status: $Enums.Status
+    createdById: string
     createdAt?: Date | string
   }
 
   export type NoticeHistoryUpdateWithoutNoticeInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    performedBy?: UserUpdateOneRequiredWithoutNoticeHistoryNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutNoticeHistoryNestedInput
   }
 
   export type NoticeHistoryUncheckedUpdateWithoutNoticeInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    performedById?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoticeHistoryUncheckedUpdateManyWithoutNoticeInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    performedById?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24547,9 +22730,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatsInput = {
@@ -24580,9 +22762,8 @@ export namespace Prisma {
     TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
     userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
-    noticeRequests?: NoticeRequestUncheckedUpdateManyWithoutMemberNestedInput
-    notices?: NoticeUncheckedUpdateManyWithoutPostedByNestedInput
-    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutChatsInput = {

@@ -261,7 +261,93 @@ const updateNotice = async (request, response) => {
 
 }
 
-const deleteNotice = async (request, response) => { }
+const deleteNotice = async (request, response) => { 
+
+  try {
+  
+    const noticeId = request.params.noticeId;
+    const teamId = request.params.teamId;
+    const userId = request.user.userId;
+
+    if (!noticeId || !teamId || !userId) {
+      throw new ApiError(400, "Please provide notice id, team id and user id");
+    }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    if (!isTeamLeader) {
+      throw new ApiError(403, "You are not authorized to delete the notice");
+    }
+
+    const deletedNotice = await prisma.$transaction(async (prismaTx) => {
+
+      const notice = await prismaTx.notice.findUnique({
+        where: {
+          id: noticeId
+        }
+      })
+
+      if (!notice) {
+        throw new ApiError(404, "Notice not found");
+      }
+
+      if (notice.teamId !== teamId) {
+        throw new ApiError(403, "Notice does not belong to this team");
+      }
+
+      if (notice.status === $Enums.Status.DELETED) {
+        throw new ApiError(400, "Notice already deleted");
+      }
+      
+      const deleteNotice = await prismaTx.notice.update({
+        where: {
+          id: noticeId
+        },
+        data: {
+          status: $Enums.Status.DELETED
+        }
+      });
+
+      await prismaTx.noticeHistory.create({
+        data: {
+          noticeId: noticeId,
+          title: notice.title,
+          content: notice.content,
+          startDate: notice.startDate,
+          endDate: notice.endDate,
+          status: $Enums.Status.DELETED,
+          createdById: userId,
+        }
+      })
+
+      return deleteNotice;
+    })
+
+    if (!deletedNotice) {
+      throw new ApiError(404, "Notice not found");
+    }    
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        notice: {
+          id: deletedNotice.id,
+          title: deletedNotice.title,
+          startDate: deletedNotice.startDate,
+          endDate: deletedNotice.endDate
+        }
+      }, "Notice deleted successfully")
+    );
+
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to delete the notice", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 // Notice Request
 const createNoticeRequest = async (request, response) => { }

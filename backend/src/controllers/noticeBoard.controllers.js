@@ -28,6 +28,10 @@ const createNotice = async (request, response) => {
       throw new ApiError(400, "Start date cannot be more than 15 days in the future");
     }
 
+    if (new Date(endDate) < new Date()) {
+      throw new ApiError(400, "End date cannot be in the past");
+    }
+
     const isTeamLeader = await isAuthorized(createdById, teamId);
 
     const notice = await prisma.$transaction(async (prismaTx) => {
@@ -374,7 +378,7 @@ const getNoticeRequests = async (request, response) => {
     if (!isMember) {
       throw new ApiError(403, "You are not a member of this team");
     }
-    
+
     // If team leader then send all data else send only acitve or future data which belongs to that user
     const noticeRequests = await prisma.notice.findMany({
       where: {

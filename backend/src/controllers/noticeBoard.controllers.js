@@ -90,6 +90,12 @@ const getNotices = async (request, response) => {
 
     const isLeader = await isAuthorized(request.user.userId, teamId);
 
+    const isMember = await isTeamMember(teamId, request.user.userId);
+
+    if (!isMember) {
+      throw new ApiError(400, "You are not a team member");
+    }
+
     const notices = await prisma.notice.findMany({
       where: {
         teamId,

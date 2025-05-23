@@ -129,7 +129,45 @@ const getNotices = async (request, response) => {
   }
 }
 
-const getNotice = async (request, response) => { }
+const getNotice = async (request, response) => { 
+  
+  try {
+    
+    const noticeId = request.params.noticeId;
+    const teamId = request.params.teamId;
+
+    if (!noticeId || !teamId) {
+      throw new ApiError(400, "Please provide notice id and team id");
+    }
+
+    const isMember = await isTeamMember(teamId, request.user.userId);
+
+    if (!isMember) {
+      throw new ApiError(400, "You are not a team member");
+    }
+
+    const notice = await prisma.notice.findUnique({
+      where: {
+        id: noticeId
+      }
+    })
+
+    if (!notice) {
+      throw new ApiError(404, "Notice not found");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, notice, "Notice fetched successfully")
+    );
+
+  } catch (error) {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to load the notice details", {
+        error: error.message
+      })
+    )
+  }
+}
 
 const updateNotice = async (request, response) => { }
 

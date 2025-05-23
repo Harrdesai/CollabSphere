@@ -12,7 +12,7 @@ noticeBoardRoutes.get('/all-notices', authMiddleware, getNotices);
 
 noticeBoardRoutes.get('/:noticeId', authMiddleware, getNotice);
 
-noticeBoardRoutes.put('/:noticeId', authMiddleware, updateNotice);
+noticeBoardRoutes.post('/:noticeId/update', authMiddleware, updateNotice);
 
 noticeBoardRoutes.delete('/:noticeId', authMiddleware, deleteNotice);
 

@@ -186,6 +186,7 @@ model Notice {
   createdBy User            @relation("UserNotices", fields: [createdById], references: [userId])
   team      Teams           @relation(fields: [teamId], references: [id])
   history   NoticeHistory[]
+  @@unique([teamId, title, startDate, endDate])
 }
 
 model NoticeHistory {

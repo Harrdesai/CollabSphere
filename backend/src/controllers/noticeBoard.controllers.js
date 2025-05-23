@@ -2,7 +2,7 @@
 
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
-import { PrismaClient } from "../generated/prisma/index.js";
+import { $Enums, PrismaClient } from "../generated/prisma/index.js";
 import { isAuthorized, isTeamMember } from "../utils/helpers.js";
 
 const prisma = new PrismaClient();
@@ -175,7 +175,91 @@ const getNotice = async (request, response) => {
   }
 }
 
-const updateNotice = async (request, response) => { }
+const updateNotice = async (request, response) => { 
+
+  try {
+  
+    const noticeId = request.params.noticeId;
+    const teamId = request.params.teamId;
+    const userId = request.user.userId;
+
+    if (!noticeId || !teamId || !userId) {
+      throw new ApiError(400, "Please provide notice id, team id and user id");
+    }
+
+    if (request.body.startDate && request.body.endDate) {
+      if (new Date(request.body.endDate) <= new Date(request.body.startDate)) {
+        throw new ApiError(400, "End date should be greater than start date");
+      }
+    }
+
+    if (request.body.startDate && new Date(request.body.startDate) > new Date(Date.now() + (15 * 24 * 60 * 60 * 1000))) {
+      throw new ApiError(400, "Start date cannot be more than 15 days in the future");
+    }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    if (!isTeamLeader) {
+      throw new ApiError(403, "You are not authorized to update the notice");
+    }
+
+    const updateNotice = await prisma.$transaction(async (prismaTx) => {
+
+      const notice = await prismaTx.notice.findUnique({
+        where: {
+          id: noticeId
+        }
+      })
+
+      if (!notice) {
+        throw new ApiError(404, "Notice not found");
+      }
+
+      if (notice.teamId !== teamId) {
+        throw new ApiError(403, "Notice does not belong to this team");
+      }
+
+      const updatedNotice = await prismaTx.notice.update({
+        where: {
+          id: noticeId
+        },
+        data: {
+          title: request.body.title,
+          content: request.body.content,
+          ...(request.body.startDate && { startDate: new Date(request.body.startDate) }),
+          ...(request.body.endDate && { endDate: new Date(request.body.endDate) }),
+          status: $Enums.Status.APPROVED
+        }
+      });
+
+      await prismaTx.noticeHistory.create({
+        data: {
+          noticeId: noticeId,
+          title: request.body.title,
+          content: request.body.content,
+          startDate: request.body.startDate ? new Date(request.body.startDate) : notice.startDate,
+          endDate: request.body.endDate ? new Date(request.body.endDate) : notice.endDate,
+          status: $Enums.Status.APPROVED,
+          createdById: userId,
+        }
+      })
+
+      return updatedNotice;
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, updateNotice, "Notice updated successfully")
+    );
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to update the notice", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const deleteNotice = async (request, response) => { }
 

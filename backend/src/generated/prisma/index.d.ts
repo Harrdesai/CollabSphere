@@ -15689,6 +15689,7 @@ export namespace Prisma {
 
   export type NoticeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    teamId_title_startDate_endDate?: NoticeTeamIdTitleStartDateEndDateCompoundUniqueInput
     AND?: NoticeWhereInput | NoticeWhereInput[]
     OR?: NoticeWhereInput[]
     NOT?: NoticeWhereInput | NoticeWhereInput[]
@@ -15704,7 +15705,7 @@ export namespace Prisma {
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     history?: NoticeHistoryListRelationFilter
-  }, "id">
+  }, "id" | "teamId_title_startDate_endDate">
 
   export type NoticeOrderByWithAggregationInput = {
     id?: SortOrder
@@ -17439,6 +17440,13 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
+  export type NoticeTeamIdTitleStartDateEndDateCompoundUniqueInput = {
+    teamId: string
+    title: string
+    startDate: Date | string
+    endDate: Date | string
   }
 
   export type NoticeCountOrderByAggregateInput = {

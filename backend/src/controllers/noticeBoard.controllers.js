@@ -193,6 +193,12 @@ const updateNotice = async (request, response) => {
       throw new ApiError(400, "Please provide notice id, team id and user id");
     }
 
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    if (!isTeamLeader) {
+      throw new ApiError(403, "You are not authorized to update the notice");
+    }
+
     if (request.body.startDate && request.body.endDate) {
       if (new Date(request.body.endDate) <= new Date(request.body.startDate)) {
         throw new ApiError(400, "End date should be greater than start date");
@@ -203,10 +209,8 @@ const updateNotice = async (request, response) => {
       throw new ApiError(400, "Start date cannot be more than 15 days in the future");
     }
 
-    const isTeamLeader = await isAuthorized(userId, teamId);
-
-    if (!isTeamLeader) {
-      throw new ApiError(403, "You are not authorized to update the notice");
+    if (request.body.endDate && new Date(request.body.endDate) < new Date()) {
+      throw new ApiError(400, "End date cannot be in the past");
     }
 
     const updateNotice = await prisma.$transaction(async (prismaTx) => {

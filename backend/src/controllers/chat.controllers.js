@@ -238,7 +238,75 @@ const sendMessage = async (request, response) => {
 
 }
 
-const updateMessage = async (request, response) => { }
+const updateMessage = async (request, response) => {
+
+  try {
+
+    const messageId = request.params.messageId;
+    const { message } = request.body;
+    const userId = request.user.userId;
+
+    if (!messageId || !message || !userId) {
+      throw new ApiError(400, "Please provide message id, message and user id");
+    }
+
+    const isMessageOwner = await prisma.message.findUnique({
+      where: {
+        id: messageId,
+        userId: userId
+      }
+    })
+
+    if (!isMessageOwner) {
+      throw new ApiError(403, "You are not the owner of this message");
+    }
+
+    const updatedMessage = await prisma.$transaction(async (prismaTx) => {
+      
+      const isMember = await isTeamMember(isMessageOwner.teamId, userId);
+
+      if (!isMember) {
+        throw new ApiError(403, "You are not a member of this team");
+      }
+
+    const currentTime = new Date();
+    const messageTime = new Date(isMessageOwner.createdAt);
+
+    if (currentTime - messageTime > 5 * 60 * 1000) {
+      throw new ApiError(400, "Message is older than 5 minutes");
+    }
+
+    const updatedMessage = await prismaTx.message.update({
+      where: {
+        id: messageId
+      },
+      data: {
+        message: message
+      }
+    })
+
+    return updatedMessage
+    })
+
+    if (!updatedMessage) {
+      throw new ApiError(500, "Failed to update message");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        message: updatedMessage
+      }, "Message updated successfully")
+    )
+    
+  } catch (error) {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error updating message", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const deleteMessage = async (request, response) => { }
 

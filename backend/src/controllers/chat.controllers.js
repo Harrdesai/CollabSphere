@@ -3,7 +3,7 @@
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { PrismaClient } from "../generated/prisma/index.js";
-import { isAuthorized } from "../utils/helpers.js";
+import { isAuthorized, isTeamMember } from "../utils/helpers.js";
 
 const prisma = new PrismaClient();
 
@@ -169,15 +169,74 @@ const deleteChatRoom = async (request, response) => {
 
 }
 
-const archiveChatRoom = async (request, response) => { }
-
 const getUserChats = async (request, response) => { }
 
 const getTeamChats = async (request, response) => { }
 
 const getChatDetails = async (request, response) => { }
 
-const sendMessage = async (request, response) => { }
+const sendMessage = async (request, response) => {
+
+  try {
+  
+    const chatRoomId = request.params.chatRoomId;
+    const { message } = request.body;
+    const userId = request.user.userId;
+
+    if (!chatRoomId || !message || !userId) {
+      throw new ApiError(400, "Please provide chat room id, message and user id");
+    }
+
+    const createMessage = await prisma.$transaction(async (prismaTx) => {
+
+      const chatRoom = await prismaTx.chat.findUnique({
+        where: {
+          id: chatRoomId,
+          isActive: true
+        }
+      })
+
+      if (!chatRoom) {
+        throw new ApiError(404, "Chat room not found");
+      }
+
+      const isMember = await isTeamMember(chatRoom.teamId, userId);
+
+      if (!isMember) {
+        throw new ApiError(403, "You are not a member of this team");
+      }
+
+      const newMessage = await prismaTx.message.create({
+        data: {
+          chatId: chatRoomId,
+          userId: userId,
+          message: message
+        }
+      })
+
+      return newMessage;
+    })
+
+    if (!createMessage) {
+      throw new ApiError(500, "Failed to send message");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        message: createMessage  
+      }, "Message sent successfully")
+    )
+
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to send message", {
+        error: error.message
+      })
+    );
+  }
+
+}
 
 const updateMessage = async (request, response) => { }
 
@@ -195,7 +254,6 @@ export {
   createChatRoom,
   updateChatRoomDetails,
   deleteChatRoom,
-  archiveChatRoom,
   getUserChats,
   getTeamChats,
   getChatDetails,

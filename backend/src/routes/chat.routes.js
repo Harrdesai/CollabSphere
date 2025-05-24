@@ -3,8 +3,7 @@ import { authMiddleware } from '../middleware/auth.middleware.js';
 import { 
   createChatRoom, 
   updateChatRoomDetails, 
-  deleteChatRoom, 
-  archiveChatRoom, 
+  deleteChatRoom,
   getUserChats, 
   getTeamChats, 
   getChatDetails, 
@@ -23,9 +22,7 @@ chatRoutes.post('/create', authMiddleware, createChatRoom);
 
 chatRoutes.post('/update/:chatRoomId', authMiddleware, updateChatRoomDetails);
 
-chatRoutes.delete('/delete/:chatRoomId', authMiddleware, deleteChatRoom);
-
-chatRoutes.post('/archive/:chatRoomId', authMiddleware, archiveChatRoom);
+chatRoutes.post('/:chatRoomId/delete', authMiddleware, deleteChatRoom);
 
 chatRoutes.get('/user', authMiddleware, getUserChats);
 
@@ -33,7 +30,7 @@ chatRoutes.get('/team/:teamId', authMiddleware, getTeamChats);
 
 chatRoutes.get('/:chatRoomId', authMiddleware, getChatDetails);
 
-chatRoutes.post('/:chatRoomId/messages', authMiddleware, sendMessage);
+chatRoutes.post('/:chatRoomId/send-message', authMiddleware, sendMessage);
 
 chatRoutes.put('/messages/:messageId', authMiddleware, updateMessage);
 

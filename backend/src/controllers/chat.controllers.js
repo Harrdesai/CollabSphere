@@ -93,7 +93,7 @@ const updateChatRoomDetails = async (request, response) => {
         chatRoom: chatRoom
       }, "Chat room details updated successfully")
     );
-    
+
   } catch (error) {
     
     response.status(error.statusCode || 500).json(
@@ -105,7 +105,54 @@ const updateChatRoomDetails = async (request, response) => {
 
 }
 
-const deleteChatRoom = async (request, response) => { }
+const deleteChatRoom = async (request, response) => {
+
+  try {
+    
+    const chatRoomId = request.params.chatRoomId;
+    const userId = request.user.userId;
+    const teamId = request.params.teamId;
+
+    if (!chatRoomId || !userId || !teamId) {
+      throw new ApiError(400, "Please provide chat room id, user id and team id");
+    }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    if (!isTeamLeader) {
+      throw new ApiError(403, "You are not authorized to delete the chat room");
+    }
+
+    const deleteChatRoom = await prisma.chat.update({
+
+      where: {
+        id: chatRoomId
+      },
+      data: {
+        isActive: false
+      }
+    })
+
+    if (!deleteChatRoom) {
+      throw new ApiError(500, "Failed to delete chat room");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        chatRoom: deleteChatRoom
+      }, "Chat room deleted successfully")
+    );
+    
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error deleting chat room", {
+        error: error.message
+      })
+    );
+  }
+
+}
 
 const archiveChatRoom = async (request, response) => { }
 

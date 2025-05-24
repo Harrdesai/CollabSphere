@@ -4,7 +4,6 @@ import {
   createChatRoom, 
   updateChatRoomDetails, 
   deleteChatRoom,
-  getUserChats, 
   getTeamChatRooms, 
   getChatDetails, 
   sendMessage, 
@@ -21,11 +20,9 @@ chatRoutes.post('/update/:chatRoomId', authMiddleware, updateChatRoomDetails);
 
 chatRoutes.post('/:chatRoomId/delete', authMiddleware, deleteChatRoom);
 
-chatRoutes.get('/user', authMiddleware, getUserChats);
-
 chatRoutes.get('/chat-rooms', authMiddleware, getTeamChatRooms);
 
-chatRoutes.get('/:chatRoomId', authMiddleware, getChatDetails);
+chatRoutes.get('/:chatRoomId/details', authMiddleware, getChatDetails);
 
 chatRoutes.post('/:chatRoomId/send-message', authMiddleware, sendMessage);
 

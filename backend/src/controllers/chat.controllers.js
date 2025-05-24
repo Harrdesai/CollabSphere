@@ -169,8 +169,6 @@ const deleteChatRoom = async (request, response) => {
 
 }
 
-const getUserChats = async (request, response) => { }
-
 // list of chatrooms of a team
 const getTeamChatRooms = async (request, response) => {
 
@@ -235,7 +233,64 @@ const getTeamChatRooms = async (request, response) => {
 
 }
 
-const getChatDetails = async (request, response) => { }
+const getChatDetails = async (request, response) => {
+
+  try {
+
+    const chatRoomId = request.params.chatRoomId;
+    const userId = request.user.userId;
+    const teamId = request.params.teamId;
+
+    console.log(`chatRoomId: ${chatRoomId}, userId: ${userId}, teamId: ${teamId}`);
+
+    if (!chatRoomId || !userId || !teamId) {
+      throw new ApiError(400, "Please provide chat room id, user id and team id");
+    }
+
+    const chatRoomDetails = await prisma.$transaction(async (prismaTx) => {
+
+      const isMember = await isTeamMember(teamId, userId);
+
+      if (!isMember) {
+        throw new ApiError(403, "You are not a member of this team");
+      }
+
+      const isTeamLeader = await isAuthorized(userId, teamId);
+
+      const chatRoom = await prismaTx.chat.findUnique({
+        where: {
+          id: chatRoomId,
+          ...(isTeamLeader ? {} : { isActive: true })
+        }
+      })
+
+      if (!chatRoom) {
+        throw new ApiError(404, "Chat room not found");
+      }
+
+      return chatRoom;
+    })
+
+    if (!chatRoomDetails) {
+      throw new ApiError(500, "Failed to get chat details");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        chatRoomDetails: chatRoomDetails
+      }, "Chat details fetched successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to get chat details", {
+        error: error.message
+      })
+    );
+  }
+
+}
 
 const sendMessage = async (request, response) => {
 
@@ -519,7 +574,6 @@ export {
   createChatRoom,
   updateChatRoomDetails,
   deleteChatRoom,
-  getUserChats,
   getTeamChatRooms,
   getChatDetails,
   sendMessage,

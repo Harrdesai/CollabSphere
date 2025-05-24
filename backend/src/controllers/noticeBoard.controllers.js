@@ -146,8 +146,6 @@ const getNotice = async (request, response) => {
     const noticeId = request.params.noticeId;
     const teamId = request.params.teamId;
 
-    console.log(`Entered noticeId: ${noticeId}, teamId: ${teamId}`);
-
     if (!noticeId || !teamId) {
       throw new ApiError(400, "Please provide notice id and team id");
     }
@@ -408,7 +406,58 @@ const getNoticeRequests = async (request, response) => {
   }
 }
 
-const getNoticeRequest = async (request, response) => { }
+const getNoticeRequest = async (request, response) => { 
+
+  try {
+
+    const requestId = request.params.requestId;
+    const teamId = request.params.teamId;
+    const userId = request.user.userId;
+
+    if (!requestId || !teamId || !userId) {
+      throw new ApiError(400, "Please provide request id, team id and user id");
+    }
+
+    const isMember = await isTeamMember(teamId, userId);
+
+    if (!isMember) {
+      throw new ApiError(403, "You are not a member of this team");
+    }
+
+    const noticeRequest = await prisma.notice.findUnique({
+      where: {
+        id: requestId
+      }
+    })
+
+    if (!noticeRequest) {
+      throw new ApiError(404, "Notice request not found");
+    }
+
+    if (noticeRequest.teamId !== teamId) {
+      throw new ApiError(403, "Notice request does not belong to this team");
+    }
+
+    const isLeader = (await isAuthorized(userId, teamId))
+
+    if (!isLeader && noticeRequest.createdById !== userId) {
+      throw new ApiError(403, "You are not authorized to view this notice request");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, noticeRequest, "Notice request details fetched successfully")
+    );
+    
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to get the notice request details", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const updateNoticeRequest = async (request, response) => { }
 

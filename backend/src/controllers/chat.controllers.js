@@ -54,7 +54,56 @@ const createChatRoom = async (request, response) => {
   }
 }
 
-const updateChatRoomDetails = async (request, response) => { }
+const updateChatRoomDetails = async (request, response) => {
+
+  try {
+  
+    const chatRoomId = request.params.chatRoomId;
+    const { title, about } = request.body;
+    const userId = request.user.userId;
+    const teamId = request.params.teamId;
+
+    if (!chatRoomId || !title || !about || !userId || !teamId) {
+      throw new ApiError(400, "Please provide chat room id, title, about, user id and team id");
+    }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    if (!isTeamLeader) {
+      throw new ApiError(403, "You are not a team leader");
+    }
+
+    const chatRoom = await prisma.chat.update({
+      
+      where: {
+        id: chatRoomId
+      },
+      data: {
+        title: title,
+        about: about
+      }
+    })
+
+    if (!chatRoom) {
+      throw new ApiError(500, "Failed to update chat room details");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        chatRoom: chatRoom
+      }, "Chat room details updated successfully")
+    );
+    
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error updating chat room details", {
+        error: error.message
+      })
+    );
+  }
+
+}
 
 const deleteChatRoom = async (request, response) => { }
 

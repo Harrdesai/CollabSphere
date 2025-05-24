@@ -21,7 +21,7 @@ const chatRoutes = Router({ mergeParams: true });
 
 chatRoutes.post('/create', authMiddleware, createChatRoom);
 
-chatRoutes.put('/update/:chatRoomId', authMiddleware, updateChatRoomDetails);
+chatRoutes.post('/update/:chatRoomId', authMiddleware, updateChatRoomDetails);
 
 chatRoutes.delete('/delete/:chatRoomId', authMiddleware, deleteChatRoom);
 

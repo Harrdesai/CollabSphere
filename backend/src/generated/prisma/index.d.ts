@@ -15848,6 +15848,7 @@ export namespace Prisma {
 
   export type ChatWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    teamId_title?: ChatTeamIdTitleCompoundUniqueInput
     AND?: ChatWhereInput | ChatWhereInput[]
     OR?: ChatWhereInput[]
     NOT?: ChatWhereInput | ChatWhereInput[]
@@ -15860,7 +15861,7 @@ export namespace Prisma {
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
     messages?: MessageListRelationFilter
     members?: UserListRelationFilter
-  }, "id">
+  }, "id" | "teamId_title">
 
   export type ChatOrderByWithAggregationInput = {
     id?: SortOrder
@@ -16738,7 +16739,7 @@ export namespace Prisma {
     id?: string
     title: string
     about: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutChatsInput
@@ -16751,7 +16752,7 @@ export namespace Prisma {
     title: string
     about: string
     teamId: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     messages?: MessageUncheckedCreateNestedManyWithoutChatInput
@@ -16787,7 +16788,7 @@ export namespace Prisma {
     title: string
     about: string
     teamId: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17537,6 +17538,11 @@ export namespace Prisma {
     status?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type ChatTeamIdTitleCompoundUniqueInput = {
+    teamId: string
+    title: string
   }
 
   export type ChatCountOrderByAggregateInput = {
@@ -19144,7 +19150,7 @@ export namespace Prisma {
     id?: string
     title: string
     about: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutChatsInput
@@ -19156,7 +19162,7 @@ export namespace Prisma {
     title: string
     about: string
     teamId: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     messages?: MessageUncheckedCreateNestedManyWithoutChatInput
@@ -19782,7 +19788,7 @@ export namespace Prisma {
     id?: string
     title: string
     about: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     messages?: MessageCreateNestedManyWithoutChatInput
@@ -19793,7 +19799,7 @@ export namespace Prisma {
     id?: string
     title: string
     about: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     messages?: MessageUncheckedCreateNestedManyWithoutChatInput
@@ -21677,7 +21683,7 @@ export namespace Prisma {
     id?: string
     title: string
     about: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutChatsInput
@@ -21689,7 +21695,7 @@ export namespace Prisma {
     title: string
     about: string
     teamId: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: UserUncheckedCreateNestedManyWithoutChatsInput
@@ -22228,7 +22234,7 @@ export namespace Prisma {
     id?: string
     title: string
     about: string
-    isActive: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }

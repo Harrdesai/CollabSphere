@@ -56,6 +56,6 @@ app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/import-data", importDataRouter)
 app.use("/api/v1/teams", teamsRoutes)
 app.use("/api/v1/:teamId/notice", noticeBoardRoutes)
-app.use("/api/v1/chat", chatRoutes)
+app.use("/api/v1/:teamId/chat", chatRoutes)
 
 export default app;

@@ -17,7 +17,7 @@ import {
   leaveChatRoom 
 } from '../controllers/chat.controllers.js';
 
-const chatRoutes = Router();
+const chatRoutes = Router({ mergeParams: true });
 
 chatRoutes.post('/create', authMiddleware, createChatRoom);
 

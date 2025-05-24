@@ -210,7 +210,7 @@ model Chat {
   title    String
   about    String
   teamId   String
-  isActive Boolean
+  isActive Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -218,6 +218,8 @@ model Chat {
   team     Teams     @relation(fields: [teamId], references: [id])
   messages Message[]
   members  User[]    @relation("ChatMembers")
+
+  @@unique([teamId, title])
 }
 
 model Message {

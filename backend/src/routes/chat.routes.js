@@ -10,7 +10,7 @@ import {
   sendMessage, 
   updateMessage, 
   deleteMessage, 
-  getMessagesInChat, 
+  getMessages, 
   addUserToChat, 
   removeUserFromChat, 
   leaveChatRoom 
@@ -36,7 +36,7 @@ chatRoutes.post('/:chatRoomId/update-message/:messageId', authMiddleware, update
 
 chatRoutes.delete('/:chatRoomId/delete-message/:messageId', authMiddleware, deleteMessage);
 
-chatRoutes.get('/:chatRoomId/messages', authMiddleware, getMessagesInChat);
+chatRoutes.get('/:chatRoomId/messages', authMiddleware, getMessages);
 
 chatRoutes.post('/:chatRoomId/users', authMiddleware, addUserToChat);
 

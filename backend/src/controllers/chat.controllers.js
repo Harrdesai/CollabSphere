@@ -377,7 +377,81 @@ const deleteMessage = async (request, response) => {
 
 }
 
-const getMessagesInChat = async (request, response) => { }
+// pagination with limit of 20 messages
+const getMessages = async (request, response) => {
+
+  try {
+
+    const chatRoomId = request.params.chatRoomId;
+    const userId = request.user.userId;
+    const teamId = request.params.teamId;
+
+    if (!chatRoomId) {
+      throw new ApiError(400, "Please provide chat room id");
+    }
+
+    const messages = await prisma.$transaction(async (prismaTx) => {
+
+
+
+      const isMember = await isTeamMember(teamId, userId);
+
+      if (!isMember) {
+        throw new ApiError(403, "You are not a member of this team");
+      }
+
+      const isChatRoomActive = await prismaTx.chat.findUnique({
+        where: {
+          id: chatRoomId,
+          isActive: true
+        }
+      })
+
+      if (!isChatRoomActive) {
+        throw new ApiError(404, "Chat room not found");
+      }
+
+      const messages = await prismaTx.message.findMany({
+        where: {
+          chatId: chatRoomId,
+        },
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true
+            }
+          }
+        },
+        orderBy: {
+          createdAt: "desc"
+        },
+        take: 20
+      })
+      
+      return messages
+    })
+
+    if (!messages) {
+      throw new ApiError(500, "Failed to get messages in chat");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        messages: messages
+      }, "Messages fetched successfully")
+    )
+    
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to get messages in chat", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const addUserToChat = async (request, response) => { }
 
@@ -395,7 +469,7 @@ export {
   sendMessage,
   updateMessage,
   deleteMessage,
-  getMessagesInChat,
+  getMessages,
   addUserToChat,
   removeUserFromChat,
   leaveChatRoom

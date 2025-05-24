@@ -32,9 +32,9 @@ chatRoutes.get('/:chatRoomId', authMiddleware, getChatDetails);
 
 chatRoutes.post('/:chatRoomId/send-message', authMiddleware, sendMessage);
 
-chatRoutes.put('/messages/:messageId', authMiddleware, updateMessage);
+chatRoutes.post('/:chatRoomId/update-message/:messageId', authMiddleware, updateMessage);
 
-chatRoutes.delete('/messages/:messageId', authMiddleware, deleteMessage);
+chatRoutes.delete('/:chatRoomId/delete-message/:messageId', authMiddleware, deleteMessage);
 
 chatRoutes.get('/:chatRoomId/messages', authMiddleware, getMessagesInChat);
 

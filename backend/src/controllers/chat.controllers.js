@@ -238,6 +238,7 @@ const sendMessage = async (request, response) => {
 
 }
 
+// You can modify the message when it is send in last 5 minutes
 const updateMessage = async (request, response) => {
 
   try {
@@ -273,7 +274,7 @@ const updateMessage = async (request, response) => {
     const messageTime = new Date(isMessageOwner.createdAt);
 
     if (currentTime - messageTime > 5 * 60 * 1000) {
-      throw new ApiError(400, "Message is older than 5 minutes");
+      throw new ApiError(400, "Message is older than 5 minutes, now you can't update it");
     }
 
     const updatedMessage = await prismaTx.message.update({
@@ -308,7 +309,73 @@ const updateMessage = async (request, response) => {
 
 }
 
-const deleteMessage = async (request, response) => { }
+// Delete message which is send in last 2 minutes
+const deleteMessage = async (request, response) => {
+
+  try {
+
+    const messageId = request.params.messageId;
+    const userId = request.user.userId;
+
+    if (!messageId || !userId) {
+      throw new ApiError(400, "Please provide message id and user id");
+    }
+
+    const isMessageOwner = await prisma.message.findUnique({
+      where: {
+        id: messageId,
+        userId: userId
+      }
+    })
+
+    if (!isMessageOwner) {
+      throw new ApiError(403, "You are not the owner of this message");
+    }
+
+    const deletedMessage = await prisma.$transaction(async (prismaTx) => {
+
+      const isMember = await isTeamMember(isMessageOwner.teamId, userId);
+
+      if (!isMember) {
+        throw new ApiError(403, "You are not a member of this team");
+      }
+
+      const currentTime = new Date();
+      const messageTime = new Date(isMessageOwner.createdAt);
+
+      if (currentTime - messageTime > 2 * 60 * 1000) {
+        throw new ApiError(400, "Message is older than 2 minutes, you cannot delete it");
+      }
+
+      const deletedMessage = await prismaTx.message.delete({
+        where: {
+          id: messageId
+        }
+      })
+
+      return deletedMessage
+    })
+
+    if (!deletedMessage) {
+      throw new ApiError(500, "Failed to delete message");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        message: deletedMessage
+      }, "Message deleted successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to delete message", {
+        error: error.message
+      })
+    )  
+  }
+
+}
 
 const getMessagesInChat = async (request, response) => { }
 

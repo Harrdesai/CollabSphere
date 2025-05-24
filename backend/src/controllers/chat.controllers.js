@@ -73,21 +73,36 @@ const updateChatRoomDetails = async (request, response) => {
       throw new ApiError(403, "You are not a team leader");
     }
 
-    const chatRoom = await prisma.chat.update({
-      
-      where: {
-        id: chatRoomId
-      },
-      data: {
-        title: title,
-        about: about
+    const chatRoom = await prisma.$transaction(async (prismaTx) => {
+
+      const chatRoom = await prismaTx.chat.findUnique({
+        where: {
+          id: chatRoomId,
+          isActive: true
+        }
+      })
+
+      if (!chatRoom) {
+        throw new ApiError(404, "Chat room not found");
       }
+
+      const updatedChatRoomDetails = await prismaTx.chat.update({
+        where: {
+          id: chatRoomId
+        },
+        data: {
+          title: title,
+          about: about
+        }
+      })
+
+      return updatedChatRoomDetails;
     })
 
     if (!chatRoom) {
       throw new ApiError(500, "Failed to update chat room details");
     }
-
+    
     response.status(200).json(
       new ApiResponse(200, {
         chatRoom: chatRoom
@@ -142,7 +157,7 @@ const deleteChatRoom = async (request, response) => {
         chatRoom: deleteChatRoom
       }, "Chat room deleted successfully")
     );
-    
+
   } catch (error) {
     
     response.status(error.statusCode || 500).json(

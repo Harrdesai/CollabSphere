@@ -33,7 +33,7 @@ const createChatRoom = async (request, response) => {
         about: about
       }
     });
-    
+
     if (!chatRoom) {
       throw new ApiError(500, "Failed to create chat room");
     }
@@ -45,7 +45,7 @@ const createChatRoom = async (request, response) => {
     );
 
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error creating chat room", {
         error: error.message
@@ -57,7 +57,7 @@ const createChatRoom = async (request, response) => {
 const updateChatRoomDetails = async (request, response) => {
 
   try {
-  
+
     const chatRoomId = request.params.chatRoomId;
     const { title, about } = request.body;
     const userId = request.user.userId;
@@ -102,7 +102,7 @@ const updateChatRoomDetails = async (request, response) => {
     if (!chatRoom) {
       throw new ApiError(500, "Failed to update chat room details");
     }
-    
+
     response.status(200).json(
       new ApiResponse(200, {
         chatRoom: chatRoom
@@ -110,7 +110,7 @@ const updateChatRoomDetails = async (request, response) => {
     );
 
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error updating chat room details", {
         error: error.message
@@ -123,7 +123,7 @@ const updateChatRoomDetails = async (request, response) => {
 const deleteChatRoom = async (request, response) => {
 
   try {
-    
+
     const chatRoomId = request.params.chatRoomId;
     const userId = request.user.userId;
     const teamId = request.params.teamId;
@@ -159,7 +159,7 @@ const deleteChatRoom = async (request, response) => {
     );
 
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error deleting chat room", {
         error: error.message
@@ -171,14 +171,76 @@ const deleteChatRoom = async (request, response) => {
 
 const getUserChats = async (request, response) => { }
 
-const getTeamChats = async (request, response) => { }
+// list of chatrooms of a team
+const getTeamChatRooms = async (request, response) => {
+
+  try {
+
+    const teamId = request.params.teamId;
+    const userId = request.user.userId;
+
+    if (!teamId || !userId) {
+      throw new ApiError(400, "Please provide team id and user id");
+    }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    const teamChats = await prisma.$transaction(async (prismaTx) => {
+
+      const isMember = await isTeamMember(teamId, userId);
+
+      if (!isMember) {
+        throw new ApiError(403, "You are not a member of this team");
+      }
+
+      const team = await prismaTx.teams.findUnique({
+        where: {
+          id: teamId,
+          isActive: true
+        },
+        include: {
+          chats: isTeamLeader ? true : {
+            where: {
+              isActive: true
+            }
+          }
+        }
+      })
+
+      if (!team) {
+        throw new ApiError(404, "Team not found");
+      }
+
+      return team.chats;
+    })
+
+    if (!teamChats) {
+      throw new ApiError(500, "Failed to get team chats");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teamChats: teamChats
+      }, "Team chats fetched successfully")
+    );
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to get team chatrooms", {
+        error: error.message
+      })
+    );
+  }
+
+}
 
 const getChatDetails = async (request, response) => { }
 
 const sendMessage = async (request, response) => {
 
   try {
-  
+
     const chatRoomId = request.params.chatRoomId;
     const { message } = request.body;
     const userId = request.user.userId;
@@ -223,12 +285,12 @@ const sendMessage = async (request, response) => {
 
     response.status(200).json(
       new ApiResponse(200, {
-        message: createMessage  
+        message: createMessage
       }, "Message sent successfully")
     )
 
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to send message", {
         error: error.message
@@ -263,30 +325,30 @@ const updateMessage = async (request, response) => {
     }
 
     const updatedMessage = await prisma.$transaction(async (prismaTx) => {
-      
+
       const isMember = await isTeamMember(isMessageOwner.teamId, userId);
 
       if (!isMember) {
         throw new ApiError(403, "You are not a member of this team");
       }
 
-    const currentTime = new Date();
-    const messageTime = new Date(isMessageOwner.createdAt);
+      const currentTime = new Date();
+      const messageTime = new Date(isMessageOwner.createdAt);
 
-    if (currentTime - messageTime > 5 * 60 * 1000) {
-      throw new ApiError(400, "Message is older than 5 minutes, now you can't update it");
-    }
-
-    const updatedMessage = await prismaTx.message.update({
-      where: {
-        id: messageId
-      },
-      data: {
-        message: message
+      if (currentTime - messageTime > 5 * 60 * 1000) {
+        throw new ApiError(400, "Message is older than 5 minutes, now you can't update it");
       }
-    })
 
-    return updatedMessage
+      const updatedMessage = await prismaTx.message.update({
+        where: {
+          id: messageId
+        },
+        data: {
+          message: message
+        }
+      })
+
+      return updatedMessage
     })
 
     if (!updatedMessage) {
@@ -298,7 +360,7 @@ const updateMessage = async (request, response) => {
         message: updatedMessage
       }, "Message updated successfully")
     )
-    
+
   } catch (error) {
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error updating message", {
@@ -372,7 +434,7 @@ const deleteMessage = async (request, response) => {
       new ApiError(error.statusCode || 500, "Failed to delete message", {
         error: error.message
       })
-    )  
+    )
   }
 
 }
@@ -428,7 +490,7 @@ const getMessages = async (request, response) => {
         },
         take: 20
       })
-      
+
       return messages
     })
 
@@ -441,9 +503,9 @@ const getMessages = async (request, response) => {
         messages: messages
       }, "Messages fetched successfully")
     )
-    
+
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to get messages in chat", {
         error: error.message
@@ -453,24 +515,15 @@ const getMessages = async (request, response) => {
 
 }
 
-const addUserToChat = async (request, response) => { }
-
-const removeUserFromChat = async (request, response) => { }
-
-const leaveChatRoom = async (request, response) => { }
-
 export {
   createChatRoom,
   updateChatRoomDetails,
   deleteChatRoom,
   getUserChats,
-  getTeamChats,
+  getTeamChatRooms,
   getChatDetails,
   sendMessage,
   updateMessage,
   deleteMessage,
   getMessages,
-  addUserToChat,
-  removeUserFromChat,
-  leaveChatRoom
 };

@@ -37,7 +37,7 @@ teamsRoutes.get('/:teamId/pending-join-requests', authMiddleware, getListOfPendi
 
 teamsRoutes.post('/:teamId/resign', authMiddleware, resign);
 
-teamsRoutes.get('/get-teams', authMiddleware, getTeams);
+teamsRoutes.get('/list-of-teams', authMiddleware, getTeams);
 
 teamsRoutes.get('/:teamId/get-team-details', authMiddleware, getTeamDetails);
 

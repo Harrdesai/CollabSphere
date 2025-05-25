@@ -1281,7 +1281,44 @@ const resign = async (request, response) => {
 }
 
 // Get all teams
-const getTeams = async (request, response) => { }
+const getTeams = async (request, response) => {
+
+  try {
+    
+    const teams = await prisma.teams.findMany({
+      where: {
+        isActive: true
+      },
+      include: {
+        teamLeader: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    })
+
+    if (!teams) {
+      throw new ApiError(404, "Teams not found");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        teams: teams
+      }, "List of teams fetched successfully")
+    )
+
+  } catch (error) {
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to fetch the list of teams", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 // Get team details
 const getTeamDetails = async (request, response) => {

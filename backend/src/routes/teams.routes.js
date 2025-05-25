@@ -11,7 +11,7 @@ teamsRoutes.post('/create', authMiddleware, createTeam);
 
 teamsRoutes.post('/update/:teamId', authMiddleware, modifyTeamDetails);
 
-teamsRoutes.post('/delete/:teamId', authMiddleware, deleteTeam);
+teamsRoutes.post('/:teamId/delete', authMiddleware, deleteTeam);
 
 teamsRoutes.post('/invite/:teamId', authMiddleware, sendInviteToJoinTeam);
 

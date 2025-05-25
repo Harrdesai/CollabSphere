@@ -7,6 +7,8 @@ import { isAuthorized, isTeamMember } from "../utils/helpers.js";
 
 const prisma = new PrismaClient();
 
+// TODO: make sure that any operation perform only if team is active
+
 const createNotice = async (request, response) => {
 
   try {
@@ -489,9 +491,3 @@ export {
   getPendingNoticeRequests,
   getAcceptedNoticeRequests
 }
-
-
-// start date = 15-05-2025
-// end date = 16-05-2026
-// means end date is less than start date or end date is greater than start date
-//end date < 23-05-2025 

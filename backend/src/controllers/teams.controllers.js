@@ -224,8 +224,144 @@ const modifyTeamDetails = async (request, response) => {
 
   }
 }
+// TODO:
+const deleteTeam = async (request, response) => {
 
-const deleteTeam = async (request, response) => { }
+  try {
+
+    const teamId = request.params.teamId;
+    const userId = request.user.userId;
+
+    if (!teamId || !userId) {
+      throw new ApiError(400, "Please provide team id and user id");
+    }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
+
+    if (!isTeamLeader) {
+      throw new ApiError(403, "You can't perform this action because you are not a team leader");
+    }
+
+    const deleteTeam = await prisma.$transaction(async (prisma) => {
+
+      const isTeam = await prisma.teams.findUnique({
+        where: {
+          id: teamId,
+          isActive: true
+        }
+      })
+
+      if (!isTeam) {
+
+        const isAlreadyDeleted = await prisma.teams.findUnique({
+          where: {
+            id: teamId,
+            isActive: false
+          }
+        })
+
+        if (isAlreadyDeleted) {
+          throw new ApiError(400, "Team already deleted");
+        }
+
+        throw new ApiError(404, "Team not found");
+      }
+
+      // in ActiveInvitationOrRequest table, make isActive = false for all invitations which match the teamId
+      const removeRequest = await prisma.activeInvitationOrRequest.findMany({
+        where: {
+          teamId
+        }
+      })
+
+      await prisma.teamsEditLog.createMany({
+        data: removeRequest.map((request) => ({
+          teamId: request.teamId,
+          userId: request.userId,
+          action: $Enums.Action.TEAM_DELETED,
+          designation: $Enums.Designation.TEAM_MEMBER,
+          requestId: request.id
+        }))
+      })
+
+      // in chats table, make isActive = false for all chats which match the teamId
+      await prisma.chat.updateMany({
+        where: {
+          teamId
+        },
+        data: {
+          isActive: false
+        }
+      })
+
+      // in userRoleInTeam table, make isActive = false for all userRoleInTeam which match the teamId
+      await prisma.userRoleInTeam.updateMany({
+        where: {
+          teamId
+        },
+        data: {
+          isActive: false
+        }
+      })
+
+      // in teams table, make isActive = false
+      await prisma.teams.update({
+        where: {
+          id: teamId
+        },
+        data: {
+          isActive: false
+        }
+      })
+
+
+      // in teamsEditLog table, make entry that in action = TEAM_DELETED and in designation = TEAM_LEADER
+      await prisma.teamsEditLog.create({
+        data: {
+          teamId,
+          userId,
+          action: $Enums.Action.TEAM_DELETED,
+          designation: $Enums.Designation.TEAM_LEADER
+        }
+      })
+
+      // in User table, make isTeamLeader = false
+      await prisma.user.update({
+        where: {
+          userId
+        },
+        data: {
+          isTeamLeader: false
+        }
+      })
+
+      return isTeam
+    })
+
+    if (!deleteTeam) {
+      throw new ApiError(404, "Team not found");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        team: {
+          id: deleteTeam.id,
+          title: deleteTeam.title,
+          about: deleteTeam.about
+        }
+      }, "Team deleted successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to delete the team, please try again", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const sendInviteToJoinTeam = async (request, response) => {
 
@@ -1284,7 +1420,7 @@ const resign = async (request, response) => {
 const getTeams = async (request, response) => {
 
   try {
-    
+
     const teams = await prisma.teams.findMany({
       where: {
         isActive: true
@@ -1310,7 +1446,7 @@ const getTeams = async (request, response) => {
     )
 
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to fetch the list of teams", {
         error: error.message
@@ -1324,7 +1460,7 @@ const getTeams = async (request, response) => {
 const getTeamDetails = async (request, response) => {
 
   try {
-    
+
     const teamId = request.params.teamId;
     const userId = request.user.userId;
 
@@ -1391,11 +1527,11 @@ const getTeamDetails = async (request, response) => {
         details: details
       }, "Team details fetched successfully")
     )
-            
+
   } catch (error) {
 
-    
-    
+
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to fetch team details", {
         error: error.message
@@ -1469,21 +1605,21 @@ const assignNewRoleToExistingMember = async (request, response) => {
       }, "Role assigned successfully")
     )
 
-    } catch (error) {
+  } catch (error) {
 
-      response.status(error.statusCode || 500).json(
-        new ApiError(error.statusCode || 500, "Error while assigning new role to team member", {
-          error: error.message
-        })
-      )
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while assigning new role to team member", {
+        error: error.message
+      })
+    )
 
-    }
+  }
 }
 
 const getListOfTeamMembers = async (request, response) => {
 
   try {
-    
+
     const teamId = request.params.teamId;
 
 
@@ -1536,185 +1672,185 @@ const getListOfTeamMembers = async (request, response) => {
 
 }
 
-  const createTag = async (request, response) => {
+const createTag = async (request, response) => {
 
-    try {
+  try {
 
-      const { tagName } = request.body;
+    const { tagName } = request.body;
 
-      if (!tagName) {
-        throw new ApiError(400, "Tag is required");
-      }
-
-      const isTagAlreadyCreated = await prisma.tag.findFirst({
-        where: {
-          name: tagName.toLowerCase().trim().split(" ").join("")
-        }
-      })
-
-      if (isTagAlreadyCreated) {
-        throw new ApiError(400, "Tag already exists");
-      }
-
-      const newTag = await prisma.tag.create({
-        data: {
-          name: tagName.toLowerCase().trim().split(" ").join("")
-        }
-      })
-
-      response.status(200).json(
-        new ApiResponse(200, {
-          tag: newTag
-        }, `Tag : ${tagName} created successfully`)
-      )
-
-    } catch (error) {
-
-      response.status(error.statusCode || 500).json(
-        new ApiError(error.statusCode || 500, "Error while creating tag", {
-          error: error.message
-        })
-      )
-
+    if (!tagName) {
+      throw new ApiError(400, "Tag is required");
     }
-  }
 
-  const updateTag = async (request, response) => {
-
-    try {
-
-      const { updatedName, oldName } = request.body;
-
-      if (!updatedName || !oldName) {
-        throw new ApiError(400, "new name and tag is required");
+    const isTagAlreadyCreated = await prisma.tag.findFirst({
+      where: {
+        name: tagName.toLowerCase().trim().split(" ").join("")
       }
+    })
 
-      const tagId = await prisma.tag.findUnique({
-        where: {
-          name: oldName.toLowerCase().trim().split(" ").join("")
-        },
-        select: {
-          id: true
-        }
-      })
-      const updatedTag = await prisma.tag.update({
-        where: {
-          id: tagId.id
-        },
-        data: {
-          name: updatedName.toLowerCase().trim().split(" ").join("")
-        }
-      })
-
-      response.status(200).json(
-        new ApiResponse(200, {
-          tag: updatedTag
-        }, `Tag : ${updatedName} updated successfully`)
-      )
-
-    } catch (error) {
-
-      response.status(error.statusCode || 500).json(
-        new ApiError(error.statusCode || 500, "Error while updating tag", {
-          error: error.message
-        })
-      )
-
+    if (isTagAlreadyCreated) {
+      throw new ApiError(400, "Tag already exists");
     }
-  }
 
-  // access the list of past members
-  const getTimelineOfTeam = async (request, response) => {
-
-    try {
-
-      const teamId = request.params.teamId;
-
-      if (!teamId) {
-        throw new ApiError(400, "Team id not found");
+    const newTag = await prisma.tag.create({
+      data: {
+        name: tagName.toLowerCase().trim().split(" ").join("")
       }
+    })
 
-      const timeline = await prisma.teamsEditLog.findMany({
-        where: {
-          teamId
-        },
-        include: {
-          user: {
-            select: {
-              firstName: true,
-              lastName: true
-            }
-          },
-          team: {
-            select: {
-              title: true
-            }
+    response.status(200).json(
+      new ApiResponse(200, {
+        tag: newTag
+      }, `Tag : ${tagName} created successfully`)
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while creating tag", {
+        error: error.message
+      })
+    )
+
+  }
+}
+
+const updateTag = async (request, response) => {
+
+  try {
+
+    const { updatedName, oldName } = request.body;
+
+    if (!updatedName || !oldName) {
+      throw new ApiError(400, "new name and tag is required");
+    }
+
+    const tagId = await prisma.tag.findUnique({
+      where: {
+        name: oldName.toLowerCase().trim().split(" ").join("")
+      },
+      select: {
+        id: true
+      }
+    })
+    const updatedTag = await prisma.tag.update({
+      where: {
+        id: tagId.id
+      },
+      data: {
+        name: updatedName.toLowerCase().trim().split(" ").join("")
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        tag: updatedTag
+      }, `Tag : ${updatedName} updated successfully`)
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while updating tag", {
+        error: error.message
+      })
+    )
+
+  }
+}
+
+// access the list of past members
+const getTimelineOfTeam = async (request, response) => {
+
+  try {
+
+    const teamId = request.params.teamId;
+
+    if (!teamId) {
+      throw new ApiError(400, "Team id not found");
+    }
+
+    const timeline = await prisma.teamsEditLog.findMany({
+      where: {
+        teamId
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true
           }
         },
-        orderBy: {
-          createdAt: "desc"
-        }
-      })
-
-      response.status(200).json(
-        new ApiResponse(200, {
-          timeline: timeline
-        }, "Timeline of team fetched successfully")
-      )
-
-    } catch (error) {
-      response.status(error.statusCode || 500).json(
-        new ApiError(error.statusCode || 500, "Error while getting timeline of team", {
-          error: error.message
-        })
-      )
-    }
-
-  }
-
-  const getTimelineOfUser = async (request, response) => {
-
-    try {
-
-      const userId = request.user.userId;
-
-      if (!userId) {
-        throw new ApiError(400, "User id not found");
-      }
-
-      const timeline = await prisma.teamsEditLog.findMany({
-        where: {
-          userId
-        },
-        include: {
-          team: {
-            select: {
-              title: true
-            }
+        team: {
+          select: {
+            title: true
           }
         }
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        timeline: timeline
+      }, "Timeline of team fetched successfully")
+    )
+
+  } catch (error) {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while getting timeline of team", {
+        error: error.message
       })
-
-      response.status(200).json(
-        new ApiResponse(200, {
-          timeline: timeline
-        }, "Timeline of user fetched successfully")
-      )
-
-    } catch (error) {
-
-      response.status(error.statusCode || 500).json(
-        new ApiError(error.statusCode || 500, "Error while getting timeline of user", {
-          error: error.message
-        })
-      )
-    }
-
+    )
   }
 
+}
+
+const getTimelineOfUser = async (request, response) => {
+
+  try {
+
+    const userId = request.user.userId;
+
+    if (!userId) {
+      throw new ApiError(400, "User id not found");
+    }
+
+    const timeline = await prisma.teamsEditLog.findMany({
+      where: {
+        userId
+      },
+      include: {
+        team: {
+          select: {
+            title: true
+          }
+        }
+      }
+    })
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        timeline: timeline
+      }, "Timeline of user fetched successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while getting timeline of user", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 
-  export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser };
+
+export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser };
 
 
 // verify team leader id while updating team detail

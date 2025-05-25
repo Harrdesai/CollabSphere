@@ -1361,7 +1361,61 @@ const assignNewRoleToExistingMember = async (request, response) => {
     }
 }
 
-const getListOfTeamMembers = async (request, response) => { }
+const getListOfTeamMembers = async (request, response) => {
+
+  try {
+    
+    const teamId = request.params.teamId;
+
+
+    if (!teamId) {
+      throw new ApiError(400, "Please provide team id");
+    }
+
+    const teamMembers = await prisma.userRoleInTeam.findMany({
+      where: {
+        teamId: teamId,
+        isActive: true
+      },
+      include: {
+        user: {
+          select: {
+            userId: true,
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    })
+
+    if (!teamMembers) {
+      throw new ApiError(404, "Team members not found");
+    }
+
+    const members = teamMembers.map((member) => {
+      return {
+        userId: member.user.userId,
+        firstName: member.user.firstName,
+        lastName: member.user.lastName,
+        designation: member.designation
+      }
+    })
+    response.status(200).json(
+      new ApiResponse(200, {
+        members
+      }, "List of team members fetched successfully")
+    )
+
+
+  } catch (error) {
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error while getting list of team members", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
   const createTag = async (request, response) => {
 

@@ -47,7 +47,7 @@ teamsRoutes.post('/create-tag', authMiddleware, createTag);
 
 teamsRoutes.post('/update-tag', authMiddleware, updateTag);
 
-teamsRoutes.get('/get-team-members', authMiddleware, getListOfTeamMembers);
+teamsRoutes.get('/:teamId/get-team-members', authMiddleware, getListOfTeamMembers);
 
 teamsRoutes.get('/:teamId/get-timeline-of-team', authMiddleware, getTimelineOfTeam);
 

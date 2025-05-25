@@ -3,7 +3,7 @@
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { $Enums, Prisma, PrismaClient } from "../generated/prisma/index.js";
-import { canUserJoinAnotherTeam, isAuthorized, memberCount } from "../utils/helpers.js";
+import { canUserJoinAnotherTeam, isAuthorized, isTeamMember, memberCount } from "../utils/helpers.js";
 const prisma = new PrismaClient();
 
 const createTeam = async (request, response) => {
@@ -1284,7 +1284,89 @@ const resign = async (request, response) => {
 const getTeams = async (request, response) => { }
 
 // Get team details
-const getTeamDetails = async (request, response) => { }
+const getTeamDetails = async (request, response) => {
+
+  try {
+    
+    const teamId = request.params.teamId;
+    const userId = request.user.userId;
+
+    console.log(`userId: ${userId}, teamId: ${teamId}`);
+    if (!teamId || !userId) {
+      throw new ApiError(400, "Please provide team id and user id");
+    }
+
+    const details = await prisma.$transaction(async (prismaTx) => {
+
+      const isMember = await isTeamMember(teamId, userId);
+
+      const isTeamLeader = await isAuthorized(userId, teamId);
+
+      const team = await prismaTx.teams.findUnique({
+        where: {
+          id: teamId
+        },
+        include: {
+          userRoleInTeam: {
+            where: isTeamLeader ? {} : { isActive: true },
+            select: {
+              id: true,
+              userId: true,
+              designation: true,
+              isActive: true,
+              user: {
+                select: {
+                  firstName: true,
+                  lastName: true
+                }
+              }
+            }
+          },
+          ...(isMember ? {
+            notices: {
+              select: {
+                id: true,
+                title: true
+              }
+            },
+            chats: {
+              select: {
+                id: true,
+                title: true,
+                about: true
+              }
+            }
+          } : {})
+        }
+      })
+
+      return {
+        team: team
+      }
+    })
+
+    if (!details) {
+      throw new ApiError(404, "Team details not found");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, {
+        details: details
+      }, "Team details fetched successfully")
+    )
+            
+  } catch (error) {
+
+    
+    
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to fetch team details", {
+        error: error.message
+      })
+    )
+  }
+
+}
 
 const assignNewRoleToExistingMember = async (request, response) => {
 

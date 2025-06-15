@@ -200,17 +200,21 @@ const loginUser = async (request, response) => {
 
   try {
 
-    const { email, password, username } = request.body;
+    const { emailOrUsername, password } = request.body;
+
+    console.log(`emailOrUsername: ${emailOrUsername}, password: ${password}`);
 
     // eighter email or username
-    if (!email && !username || !password) {
+    if (!emailOrUsername || !password) {
       throw new ApiError(400, "Please provide email or username and password");
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: {
-        email: email.toLowerCase(),
-        username: username.toLowerCase()
+        OR: [
+          { email: emailOrUsername.toLowerCase() },
+          { username: emailOrUsername.toLowerCase() }
+        ]
       }
     })
 

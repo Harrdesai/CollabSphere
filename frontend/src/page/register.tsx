@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 
-interface RegisterProps {
+export interface RegisterProps {
   firstName: string;
   lastName: string;
   email: string;
@@ -73,7 +73,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <Card className="w-2/5">
+    <Card className="w-2/5 mt-4">
       <CardHeader className="flex text-3xl justify-center">Register</CardHeader>
       <CardContent>
         <Form {...form}>

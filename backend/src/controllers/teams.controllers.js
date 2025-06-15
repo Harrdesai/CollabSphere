@@ -224,7 +224,7 @@ const modifyTeamDetails = async (request, response) => {
 
   }
 }
-// TODO:
+
 const deleteTeam = async (request, response) => {
 
   try {

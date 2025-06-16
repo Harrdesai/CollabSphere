@@ -13,10 +13,10 @@ const createNotice = async (request, response) => {
 
   try {
 
-    const { title, content, startDate, endDate } = request.body
-    const teamId = request.params.teamId
+    const { teamId, title, content, startDate, endDate } = request.body
     const createdById = request.user.userId
 
+    console.log(`teamId`, teamId, `title`, title, `content`, content, `startDate`, startDate, `endDate`, endDate, `createdById`, createdById);
     if (!teamId || !title || !content || !createdById || !startDate || !endDate) {
       throw new ApiError(400, "Please provide team id, title, content, created by id, start date and end date");
     }
@@ -34,11 +34,13 @@ const createNotice = async (request, response) => {
       throw new ApiError(400, "End date cannot be in the past");
     }
 
+    const teamIds = teamId.split();
+
     const isTeamLeader = await isAuthorized(createdById, teamId);
 
     const notice = await prisma.$transaction(async (prismaTx) => {
 
-      const isMember = await isTeamMember(teamId, createdById);
+      const isMember = await isTeamMember(teamIds, createdById);
 
       if (!isMember) {
         throw new ApiError(400, "You are not a team member");
@@ -91,41 +93,63 @@ const createNotice = async (request, response) => {
 const getNotices = async (request, response) => {
 
   try {
-    const teamId = request.params.teamId;
+    const { teamId } = request.query;  
+    const teamIds = teamId.split(",");
+
     const historyDays = request.query.historyDays || 1;
 
-    const isLeader = await isAuthorized(request.user.userId, teamId);
+    let isLeader = false;
+    if(teamIds.length = 1) {
 
-    const isMember = await isTeamMember(teamId, request.user.userId);
+      const id = teamIds[0];
+      isLeader = await isAuthorized(request.user.userId, id);
+
+    }
+
+    const isMember = await isTeamMember(teamIds, request.user.userId);
 
     if (!isMember) {
       throw new ApiError(400, "You are not a team member");
     }
 
-    const notices = await prisma.notice.findMany({
+    const notices = await prisma.teams.findMany({
       where: {
-        teamId,
-        status: "APPROVED",
-        OR: [{
-          startDate: isLeader ? { gte: new Date() } : { lte: new Date() },
-          endDate: { gte: new Date() }
-        }, {
-          endDate: { lt: new Date(), gte: new Date(Date.now() - (historyDays * 24 * 60 * 60 * 1000)) }
-        }
-        ]
+        id: { in: teamIds }
       },
       select: {
-        id: true,
         title: true,
-        endDate: true,
-        createdBy: {
+        id: true,
+        notices: {
+          where: {
+            status: "APPROVED",
+            OR: [{
+              startDate: isLeader ? { gte: new Date() } : { lte: new Date() },
+              endDate: { gte: new Date() }
+            }, {
+              endDate: { lt: new Date(), gte: new Date(Date.now() - (historyDays * 24 * 60 * 60 * 1000)) }
+            }
+            ]
+          },
           select: {
-            firstName: true,
-            lastName: true
+            id: true,
+            title: true,
+            content: true,
+            startDate: true,
+            endDate: true,
+            createdBy: {
+              select: {
+                firstName: true,
+                lastName: true
+              }
+            }
           }
         }
       }
     })
+
+    if (!notices) {
+      throw new ApiError(404, "Notices not found");
+    };
 
     response.status(200).json(
       new ApiResponse(200, notices, "Notices fetched successfully")

@@ -342,14 +342,20 @@ const getMe = async (request, response) => {
         github: true,
         linkedIn: true,
         hashnode: true,
-        peerlist: true
+        peerlist: true,
+        teams: {
+          select: {
+            id: true,
+            title: true,
+          }
+        }
       }
     })
 
     response.status(200).json(
       new ApiResponse(200, {
         user: {
-          id: user.id,
+          id: user.userId,
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -361,7 +367,8 @@ const getMe = async (request, response) => {
           github: user.github,
           linkedIn: user.linkedIn,
           hashnode: user.hashnode,
-          peerlist: user.peerlist
+          peerlist: user.peerlist,
+          teams: user.teams
         }
       }, "User data fetched successfully")
     )

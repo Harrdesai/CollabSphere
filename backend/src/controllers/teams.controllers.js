@@ -1137,6 +1137,34 @@ const acceptTeamJoiningRequest = async (request, response) => {
         }
       })
 
+      const isAlreadyMember = await prisma.teams.findUnique({
+        where: {
+          id: teamId
+        },
+        select: {
+          members: {
+            where: {
+              userId: memberId
+            }
+          }
+        }
+      })
+
+      if (isAlreadyMember.members.length === 0) {
+        await prisma.teams.update({
+          where: {
+            id: teamId
+          },
+          data: {
+            members: {
+              connect: {
+                userId: memberId
+              }
+            }
+          }
+        })
+      }
+
       await prisma.teamsEditLog.create({
         data: {
           teamId: getRequestDetails.teamId,
@@ -1633,13 +1661,7 @@ const getListOfTeamMembers = async (request, response) => {
         isActive: true
       },
       include: {
-        user: {
-          select: {
-            userId: true,
-            firstName: true,
-            lastName: true
-          }
-        }
+        user:true
       }
     })
 

@@ -60,11 +60,15 @@ const memberCount = async (teamId) => {
 
 const isTeamMember = async (teamId, userId) => {
 
-  const isMember = await prisma.userRoleInTeam.findFirst({
+  const isMember = await prisma.teams.findMany({
     where: {
-      teamId: teamId,
-      userId: userId,
-      isActive: true
+      id: {in: teamId },
+      userRoleInTeam: {
+        some: {
+          userId,
+          isActive: true
+        }
+      }
     }
   })
 

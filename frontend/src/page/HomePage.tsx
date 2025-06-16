@@ -1,8 +1,19 @@
+// src/page/HomePage.tsx
 import moment from "moment";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/store/useAuthStore";
 import useNoticeBoardStore from "@/store/useNoticeBoard.store";
 import { useEffect, useState } from "react";
+import NoticeDetailModal from "@/components/Notice/noticeDetail";
+
+export interface NoticeProps {
+  id: string;
+  title: string;
+  content: string;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+}
 
 const HomePage = () => {
   const { authUser } = useAuthStore();
@@ -17,6 +28,8 @@ const HomePage = () => {
   }, []);
 
   const { teamsNotices } = useNoticeBoardStore();
+  const [ noticeDetailModalOpem, setNoticeDetailModalOpen ] = useState(false);
+  const [ selectedNoticeDetail, setSelectedNoticeDetail ] = useState<NoticeProps | null>(null);
 
   useEffect(() => {
     const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
@@ -45,6 +58,11 @@ const HomePage = () => {
     return `${d} d ${h} h ${m} m ${s} s`;
   };
 
+  const handleNoticeDetail = (notice: NoticeProps) => {
+    setSelectedNoticeDetail(notice);
+    setNoticeDetailModalOpen(true);
+  }
+
   return (
     <Card className="flex w-full flex-col items-center justify-center p-2">
       {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
@@ -63,6 +81,7 @@ const HomePage = () => {
                 </CardTitle>
                 {team.notices?.map((notice: any) => (
                   <Card
+                    onClick={() => handleNoticeDetail(notice)}
                     className="flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl"
                     key={notice.id}
                   >
@@ -79,6 +98,13 @@ const HomePage = () => {
         </CardContent>
       </Card>
       {JSON.stringify(teamsNotices, null, 2)}
+
+      {/* Modal */}
+      <NoticeDetailModal
+        isOpen={noticeDetailModalOpem}
+        onClose={() => setNoticeDetailModalOpen(false)}
+        notice={selectedNoticeDetail ?? {} as NoticeProps}
+      />
     </Card>
   );
 };

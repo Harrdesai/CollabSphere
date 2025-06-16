@@ -17,10 +17,11 @@ const canUserJoinAnotherTeam = async (userId) => {
     return false
   }
 
-  const teamMemberships = await prisma.userRoleInTeam.findMany({
+  const teamMemberships = await prisma.user.findMany({
     where: { userId },
-    select: { teamId: true },
-    distinct: ['teamId']
+    include:{
+      teams: true
+    }
   });
 
   return teamMemberships.length < 3;

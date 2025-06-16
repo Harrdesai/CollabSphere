@@ -16,7 +16,6 @@ const createNotice = async (request, response) => {
     const { teamId, title, content, startDate, endDate } = request.body
     const createdById = request.user.userId
 
-    console.log(`teamId`, teamId, `title`, title, `content`, content, `startDate`, startDate, `endDate`, endDate, `createdById`, createdById);
     if (!teamId || !title || !content || !createdById || !startDate || !endDate) {
       throw new ApiError(400, "Please provide team id, title, content, created by id, start date and end date");
     }
@@ -105,9 +104,9 @@ const getNotices = async (request, response) => {
       isLeader = await isAuthorized(request.user.userId, id);
 
     }
-
     const isMember = await isTeamMember(teamIds, request.user.userId);
-
+    
+    console.log(`isLeader ----- ${isLeader} isMember ----- ${isMember}`);
     if (!isMember) {
       throw new ApiError(400, "You are not a team member");
     }
@@ -123,7 +122,7 @@ const getNotices = async (request, response) => {
           where: {
             status: "APPROVED",
             OR: [{
-              startDate: isLeader ? { gte: new Date() } : { lte: new Date() },
+              startDate: isLeader ? { lte: new Date() } : { lte: new Date() },
               endDate: { gte: new Date() }
             }, {
               endDate: { lt: new Date(), gte: new Date(Date.now() - (historyDays * 24 * 60 * 60 * 1000)) }
@@ -164,6 +163,9 @@ const getNotices = async (request, response) => {
     );
   }
 }
+
+// TODO: startDate: isLeader ? { gte: new Date() } : { lte: new Date() }, 
+// we have to solve the issue
 
 const getNotice = async (request, response) => {
 

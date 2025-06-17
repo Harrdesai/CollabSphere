@@ -86,6 +86,7 @@ const isUsernameAvailable = async (request, response) => {
   }
 
 }
+
 const registerUser = async (request, response) => {
 
   try {
@@ -352,6 +353,12 @@ const getMe = async (request, response) => {
       }
     })
 
+    if (!user) {
+      throw new ApiError(404, "No user details found");
+    }
+
+    console.log(`hitting`)
+
     response.status(200).json(
       new ApiResponse(200, {
         user: {
@@ -373,6 +380,68 @@ const getMe = async (request, response) => {
       }, "User data fetched successfully")
     )
 
+  } catch (error) {
+
+    console.error("Error fetching user:", error);
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Error fetching user", {
+        error: error.message
+      })
+    )
+  }
+}
+
+
+const getMeInDetails = async (request, response) => {
+
+  try {
+
+    if (!request.user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    const userId = request.cookies.userId;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        userId
+      },
+      include: {
+        teams: {
+          include: {
+            chats: {
+              include: {
+                messages: {
+                  include: {
+                    user: {
+                      select: {
+                        firstName: true,
+                        lastName: true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            userRoleInTeam: true,
+            notices: true,
+            tags: true
+          }
+        },
+        password: false
+      }
+    })
+
+    if (!user) {
+      throw new ApiError(404, "No user details found");
+    }
+
+    console.log('hit');
+
+    response.status(200).json(
+      new ApiResponse(200, user, "User data fetched successfully")
+    )
+    
   } catch (error) {
 
     console.error("Error fetching user:", error);
@@ -580,6 +649,7 @@ export {
   loginUser,
   logoutUser,
   getMe,
+  getMeInDetails,
   forgetUsername,
   resetPassword,
   updateProfile

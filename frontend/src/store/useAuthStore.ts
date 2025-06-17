@@ -8,10 +8,12 @@ import type { LoginProps } from "@/page/login";
 
 interface AuthState {
   authUser: any;
+  authUserDetails: any;
   isSigninUp: boolean;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
   checkAuth: () => Promise<void>;
+  getUserDetails: () => Promise<void>;
   signup: (data: RegisterProps) => Promise<void>;
   login: (data: LoginProps) => Promise<void>;
   logout: () => Promise<void>;
@@ -20,6 +22,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   
   authUser: null,
+  authUserDetails: null,
   isSigninUp: false,
   isLoggingIn: false,
   isCheckingAuth: false,
@@ -29,14 +32,31 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isCheckingAuth: true });
     try {
       const res = await axiosInstance.get("/auth/me");
-      console.log("checkauth response", res.data.data.user);
 
       set({ authUser: res.data.data.user });
-      console.log(`user data from store`, res.data.data.user);
 
     } catch (error) {
       console.log("❌ Error checking auth:", error);
       set({ authUser: null });
+    } finally {
+      set({ isCheckingAuth: false });
+    }
+  },
+
+  getUserDetails: async () => {
+    set({ isCheckingAuth: true });
+
+    try {
+      
+      const response = await axiosInstance.get("/auth/userFullDetails");
+      set({ authUserDetails: response.data.data });
+      console.log(response.data);
+
+    } catch (error) {
+
+      console.log("❌ Error checking auth:", error);
+      set({ authUserDetails: null });
+
     } finally {
       set({ isCheckingAuth: false });
     }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { isUserAvailableInImportedCSV, isUsernameAvailable, registerUser, loginUser, logoutUser, getMe, forgetUsername, resetPassword, updateProfile } from '../controllers/auth.controllers.js';
+import { isUserAvailableInImportedCSV, isUsernameAvailable, registerUser, loginUser, logoutUser, getMe,getMeInDetails, forgetUsername, resetPassword, updateProfile } from '../controllers/auth.controllers.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const authRoutes = express.Router();
@@ -15,6 +15,8 @@ authRoutes.post('/login', loginUser);
 authRoutes.post('/logout', authMiddleware, logoutUser);
 
 authRoutes.get('/me', authMiddleware, getMe);
+
+authRoutes.get('/userFullDetails', authMiddleware, getMeInDetails);
 
 authRoutes.get('/get-username', forgetUsername);
 

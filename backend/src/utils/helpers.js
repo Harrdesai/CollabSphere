@@ -61,6 +61,10 @@ const memberCount = async (teamId) => {
 
 const isTeamMember = async (teamId, userId) => {
 
+  if (typeof teamId === 'string') {
+    teamId = [teamId]
+  }
+  
   const isMember = await prisma.teams.findMany({
     where: {
       id: {in: teamId },

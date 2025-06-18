@@ -1459,6 +1459,13 @@ const getTeams = async (request, response) => {
             firstName: true,
             lastName: true
           }
+        },
+        members: {
+          select: {
+            userId: true,
+            firstName: true,
+            lastName: true  
+          }
         }
       }
     })

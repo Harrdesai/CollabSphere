@@ -2,9 +2,11 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import HomePage from './page/HomePage'
 import LoginPage from './page/login'
 import Register from './page/register';
+import Teams from './page/Teams';
 import { useAuthStore } from './store/useAuthStore';
 import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
+
 
 function App() {
 
@@ -29,6 +31,8 @@ function App() {
           <Route index path="/" element={authUser ? <HomePage/> : <Navigate to="/login" />} />
           <Route path="/register" element={ !authUser ? <Register/> : <Navigate to="/" />} />
           <Route path="/login" element={ !authUser ? <LoginPage/> : <Navigate to="/" />} />
+
+          <Route path="/teams" element={authUser ? <Teams/> : <Navigate to="/login" />} />
         </Routes>
       </div>
   )

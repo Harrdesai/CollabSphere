@@ -28,7 +28,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const dateFormat = (date: any) => {
@@ -96,6 +96,7 @@ const HomePage = () => {
             ))}
           </Card>
         </CardContent>
+        {JSON.stringify(teamsData.map((team: any) => team.chats))}
       </Card>
       <Card className="flex w-1/3 gap-2 p-2">
         {teamsData.map((team: any) => (

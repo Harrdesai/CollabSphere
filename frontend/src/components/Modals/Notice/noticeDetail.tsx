@@ -1,7 +1,8 @@
-// src/components/Notice/noticeDetail.tsx
+// src/components/Modals/Notice/noticeDetail.tsx
+
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import moment from "moment";
 import type { NoticeProps } from "@/page/HomePage";
 

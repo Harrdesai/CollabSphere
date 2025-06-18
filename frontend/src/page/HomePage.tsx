@@ -3,7 +3,7 @@ import moment from "moment";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
-import NoticeDetailModal from "@/components/Notice/noticeDetail";
+import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
 
 export interface NoticeProps {
   id: string;

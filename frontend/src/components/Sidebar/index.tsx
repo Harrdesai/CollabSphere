@@ -1,6 +1,6 @@
 // src/components/Sidebar/index.tsx
 
-import { HomeIcon, LogOutIcon, SearchIcon } from "lucide-react"
+import { HomeIcon, LogOutIcon, SearchIcon, UserSearchIcon } from "lucide-react"
 import { useAuthStore } from "@/store/useAuthStore"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import { Link } from "react-router-dom"
@@ -20,6 +20,18 @@ const Sidebar = () => {
             </TooltipTrigger>
             <TooltipContent>
               <p>Home</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        <div>
+          <Tooltip>
+            <TooltipTrigger>
+              <Link to="/search-members">
+                <UserSearchIcon/>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Search Members</p>
             </TooltipContent>
           </Tooltip>
         </div>

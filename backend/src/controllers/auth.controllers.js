@@ -91,7 +91,7 @@ const registerUser = async (request, response) => {
 
   try {
 
-    const { firstName, lastName, email, mobileNumber, username, password, courseName, about, twitter, github, linkedIn, hashnode, peerlist } = request.body
+    const { firstName, lastName, email, mobileNumber, username, password, courseName, about, twitter, github, linkedIn, hashnode, peerlist, ArrayOfTagIds = [] } = request.body
 
     if (!firstName || !lastName || !email || !mobileNumber || !username || !password || !about) {
       throw new ApiError(400, "Please provide all required fields",);
@@ -147,7 +147,10 @@ const registerUser = async (request, response) => {
         github,
         linkedIn,
         hashnode,
-        peerlist
+        peerlist,
+        tags: {
+            connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
+          }
       }
     })
 
@@ -556,7 +559,7 @@ const updateProfile = async (request, response) => {
 
     const userId = request.cookies.userId;
 
-    const { firstName, lastName, username, about, twitter, github, linkedIn, hashnode, peerlist } = request.body
+    const { firstName, lastName, username, about, twitter, github, linkedIn, hashnode, peerlist, ArrayOfTagIds = [] } = request.body
 
     if(!userId || !firstName || !lastName || !username || !about) {
       throw new ApiError(400, "Please provide all required fields");
@@ -580,7 +583,7 @@ const updateProfile = async (request, response) => {
         github: true,
         linkedIn: true,
         hashnode: true,
-        peerlist: true
+        peerlist: true,
       }
     })
 
@@ -608,7 +611,10 @@ const updateProfile = async (request, response) => {
         github,
         linkedIn,
         hashnode,
-        peerlist
+        peerlist,
+        tags: {
+          connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
+        }
       }
     })
 

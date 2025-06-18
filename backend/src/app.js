@@ -1,3 +1,5 @@
+// app.js
+
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -47,6 +49,7 @@ app.use((err, req, res, next) => {
 import healthCheckRouter from './routes/healthcheck.routes.js';
 import authRouter from './routes/auth.routes.js';
 import importDataRouter from './routes/importData.route.js';
+import userRoutes from './routes/users.routes.js';
 import teamsRoutes from './routes/teams.routes.js';
 import noticeBoardRoutes from './routes/noticeBoard.routes.js'
 import chatRoutes from './routes/chat.routes.js'
@@ -54,6 +57,7 @@ import chatRoutes from './routes/chat.routes.js'
 app.use("/api/v1/healthcheck", healthCheckRouter)
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/import-data", importDataRouter)
+app.use("/api/v1/users", userRoutes)
 app.use("/api/v1/teams", teamsRoutes)
 app.use("/api/v1/notice", noticeBoardRoutes)
 app.use("/api/v1/:teamId/chat", chatRoutes)

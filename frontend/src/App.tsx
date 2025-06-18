@@ -1,11 +1,16 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router'
+import { Loader2 } from 'lucide-react';
+import { useEffect } from 'react';
+
+// functions
+import { useAuthStore } from './store/useAuthStore';
+
+// pages
 import HomePage from './page/HomePage'
 import LoginPage from './page/login'
 import Register from './page/register';
-import Teams from './page/Teams';
-import { useAuthStore } from './store/useAuthStore';
-import { useEffect } from 'react';
-import { Loader2 } from 'lucide-react';
+import Teams from './page/TeamsList';
+import MembersList from './page/MembersList';
 
 
 function App() {
@@ -33,6 +38,7 @@ function App() {
           <Route path="/login" element={ !authUser ? <LoginPage/> : <Navigate to="/" />} />
 
           <Route path="/teams" element={authUser ? <Teams/> : <Navigate to="/login" />} />
+          <Route path="/search-members" element={authUser ? <MembersList/> : <Navigate to="/login" />} />
         </Routes>
       </div>
   )

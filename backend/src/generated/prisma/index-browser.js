@@ -241,6 +241,13 @@ exports.Prisma.MessageScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.UserVisitingTrackScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -316,7 +323,8 @@ exports.Prisma.ModelName = {
   Notice: 'Notice',
   NoticeHistory: 'NoticeHistory',
   Chat: 'Chat',
-  Message: 'Message'
+  Message: 'Message',
+  UserVisitingTrack: 'UserVisitingTrack'
 };
 
 /**

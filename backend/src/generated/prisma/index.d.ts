@@ -68,6 +68,11 @@ export type Chat = $Result.DefaultSelection<Prisma.$ChatPayload>
  * 
  */
 export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
+/**
+ * Model UserVisitingTrack
+ * 
+ */
+export type UserVisitingTrack = $Result.DefaultSelection<Prisma.$UserVisitingTrackPayload>
 
 /**
  * Enums
@@ -368,6 +373,16 @@ export class PrismaClient<
     * ```
     */
   get message(): Prisma.MessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userVisitingTrack`: Exposes CRUD operations for the **UserVisitingTrack** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserVisitingTracks
+    * const userVisitingTracks = await prisma.userVisitingTrack.findMany()
+    * ```
+    */
+  get userVisitingTrack(): Prisma.UserVisitingTrackDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -818,7 +833,8 @@ export namespace Prisma {
     Notice: 'Notice',
     NoticeHistory: 'NoticeHistory',
     Chat: 'Chat',
-    Message: 'Message'
+    Message: 'Message',
+    UserVisitingTrack: 'UserVisitingTrack'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -837,7 +853,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "importCSV" | "user" | "teams" | "userRoleInTeam" | "tag" | "teamsEditLog" | "activeInvitationOrRequest" | "notice" | "noticeHistory" | "chat" | "message"
+      modelProps: "importCSV" | "user" | "teams" | "userRoleInTeam" | "tag" | "teamsEditLog" | "activeInvitationOrRequest" | "notice" | "noticeHistory" | "chat" | "message" | "userVisitingTrack"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1655,6 +1671,80 @@ export namespace Prisma {
           }
         }
       }
+      UserVisitingTrack: {
+        payload: Prisma.$UserVisitingTrackPayload<ExtArgs>
+        fields: Prisma.UserVisitingTrackFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserVisitingTrackFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserVisitingTrackFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>
+          }
+          findFirst: {
+            args: Prisma.UserVisitingTrackFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserVisitingTrackFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>
+          }
+          findMany: {
+            args: Prisma.UserVisitingTrackFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>[]
+          }
+          create: {
+            args: Prisma.UserVisitingTrackCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>
+          }
+          createMany: {
+            args: Prisma.UserVisitingTrackCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserVisitingTrackCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>[]
+          }
+          delete: {
+            args: Prisma.UserVisitingTrackDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>
+          }
+          update: {
+            args: Prisma.UserVisitingTrackUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserVisitingTrackDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserVisitingTrackUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserVisitingTrackUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserVisitingTrackUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserVisitingTrackPayload>
+          }
+          aggregate: {
+            args: Prisma.UserVisitingTrackAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserVisitingTrack>
+          }
+          groupBy: {
+            args: Prisma.UserVisitingTrackGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserVisitingTrackGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserVisitingTrackCountArgs<ExtArgs>
+            result: $Utils.Optional<UserVisitingTrackCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1750,6 +1840,7 @@ export namespace Prisma {
     noticeHistory?: NoticeHistoryOmit
     chat?: ChatOmit
     message?: MessageOmit
+    userVisitingTrack?: UserVisitingTrackOmit
   }
 
   /* Types for Logging */
@@ -1854,6 +1945,7 @@ export namespace Prisma {
     messages: number
     notices: number
     noticeHistory: number
+    userVisitingTrack: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1867,6 +1959,7 @@ export namespace Prisma {
     messages?: boolean | UserCountOutputTypeCountMessagesArgs
     notices?: boolean | UserCountOutputTypeCountNoticesArgs
     noticeHistory?: boolean | UserCountOutputTypeCountNoticeHistoryArgs
+    userVisitingTrack?: boolean | UserCountOutputTypeCountUserVisitingTrackArgs
   }
 
   // Custom InputTypes
@@ -1948,6 +2041,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountNoticeHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NoticeHistoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUserVisitingTrackArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserVisitingTrackWhereInput
   }
 
 
@@ -3419,6 +3519,7 @@ export namespace Prisma {
     messages?: boolean | User$messagesArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
+    userVisitingTrack?: boolean | User$userVisitingTrackArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3503,6 +3604,7 @@ export namespace Prisma {
     messages?: boolean | User$messagesArgs<ExtArgs>
     notices?: boolean | User$noticesArgs<ExtArgs>
     noticeHistory?: boolean | User$noticeHistoryArgs<ExtArgs>
+    userVisitingTrack?: boolean | User$userVisitingTrackArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3521,6 +3623,7 @@ export namespace Prisma {
       messages: Prisma.$MessagePayload<ExtArgs>[]
       notices: Prisma.$NoticePayload<ExtArgs>[]
       noticeHistory: Prisma.$NoticeHistoryPayload<ExtArgs>[]
+      userVisitingTrack: Prisma.$UserVisitingTrackPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
@@ -3947,6 +4050,7 @@ export namespace Prisma {
     messages<T extends User$messagesArgs<ExtArgs> = {}>(args?: Subset<T, User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notices<T extends User$noticesArgs<ExtArgs> = {}>(args?: Subset<T, User$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noticeHistory<T extends User$noticeHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$noticeHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NoticeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userVisitingTrack<T extends User$userVisitingTrackArgs<ExtArgs> = {}>(args?: Subset<T, User$userVisitingTrackArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4621,6 +4725,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NoticeHistoryScalarFieldEnum | NoticeHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.userVisitingTrack
+   */
+  export type User$userVisitingTrackArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    where?: UserVisitingTrackWhereInput
+    orderBy?: UserVisitingTrackOrderByWithRelationInput | UserVisitingTrackOrderByWithRelationInput[]
+    cursor?: UserVisitingTrackWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserVisitingTrackScalarFieldEnum | UserVisitingTrackScalarFieldEnum[]
   }
 
   /**
@@ -14782,6 +14910,1051 @@ export namespace Prisma {
 
 
   /**
+   * Model UserVisitingTrack
+   */
+
+  export type AggregateUserVisitingTrack = {
+    _count: UserVisitingTrackCountAggregateOutputType | null
+    _min: UserVisitingTrackMinAggregateOutputType | null
+    _max: UserVisitingTrackMaxAggregateOutputType | null
+  }
+
+  export type UserVisitingTrackMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    date: Date | null
+    createdAt: Date | null
+  }
+
+  export type UserVisitingTrackMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    date: Date | null
+    createdAt: Date | null
+  }
+
+  export type UserVisitingTrackCountAggregateOutputType = {
+    id: number
+    userId: number
+    date: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type UserVisitingTrackMinAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    createdAt?: true
+  }
+
+  export type UserVisitingTrackMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    createdAt?: true
+  }
+
+  export type UserVisitingTrackCountAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type UserVisitingTrackAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserVisitingTrack to aggregate.
+     */
+    where?: UserVisitingTrackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVisitingTracks to fetch.
+     */
+    orderBy?: UserVisitingTrackOrderByWithRelationInput | UserVisitingTrackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserVisitingTrackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVisitingTracks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVisitingTracks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserVisitingTracks
+    **/
+    _count?: true | UserVisitingTrackCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserVisitingTrackMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserVisitingTrackMaxAggregateInputType
+  }
+
+  export type GetUserVisitingTrackAggregateType<T extends UserVisitingTrackAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserVisitingTrack]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserVisitingTrack[P]>
+      : GetScalarType<T[P], AggregateUserVisitingTrack[P]>
+  }
+
+
+
+
+  export type UserVisitingTrackGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserVisitingTrackWhereInput
+    orderBy?: UserVisitingTrackOrderByWithAggregationInput | UserVisitingTrackOrderByWithAggregationInput[]
+    by: UserVisitingTrackScalarFieldEnum[] | UserVisitingTrackScalarFieldEnum
+    having?: UserVisitingTrackScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserVisitingTrackCountAggregateInputType | true
+    _min?: UserVisitingTrackMinAggregateInputType
+    _max?: UserVisitingTrackMaxAggregateInputType
+  }
+
+  export type UserVisitingTrackGroupByOutputType = {
+    id: string
+    userId: string
+    date: Date
+    createdAt: Date
+    _count: UserVisitingTrackCountAggregateOutputType | null
+    _min: UserVisitingTrackMinAggregateOutputType | null
+    _max: UserVisitingTrackMaxAggregateOutputType | null
+  }
+
+  type GetUserVisitingTrackGroupByPayload<T extends UserVisitingTrackGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserVisitingTrackGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserVisitingTrackGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserVisitingTrackGroupByOutputType[P]>
+            : GetScalarType<T[P], UserVisitingTrackGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserVisitingTrackSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userVisitingTrack"]>
+
+  export type UserVisitingTrackSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userVisitingTrack"]>
+
+  export type UserVisitingTrackSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userVisitingTrack"]>
+
+  export type UserVisitingTrackSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    createdAt?: boolean
+  }
+
+  export type UserVisitingTrackOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "createdAt", ExtArgs["result"]["userVisitingTrack"]>
+  export type UserVisitingTrackInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserVisitingTrackIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserVisitingTrackIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $UserVisitingTrackPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserVisitingTrack"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      date: Date
+      createdAt: Date
+    }, ExtArgs["result"]["userVisitingTrack"]>
+    composites: {}
+  }
+
+  type UserVisitingTrackGetPayload<S extends boolean | null | undefined | UserVisitingTrackDefaultArgs> = $Result.GetResult<Prisma.$UserVisitingTrackPayload, S>
+
+  type UserVisitingTrackCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserVisitingTrackFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserVisitingTrackCountAggregateInputType | true
+    }
+
+  export interface UserVisitingTrackDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserVisitingTrack'], meta: { name: 'UserVisitingTrack' } }
+    /**
+     * Find zero or one UserVisitingTrack that matches the filter.
+     * @param {UserVisitingTrackFindUniqueArgs} args - Arguments to find a UserVisitingTrack
+     * @example
+     * // Get one UserVisitingTrack
+     * const userVisitingTrack = await prisma.userVisitingTrack.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserVisitingTrackFindUniqueArgs>(args: SelectSubset<T, UserVisitingTrackFindUniqueArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserVisitingTrack that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserVisitingTrackFindUniqueOrThrowArgs} args - Arguments to find a UserVisitingTrack
+     * @example
+     * // Get one UserVisitingTrack
+     * const userVisitingTrack = await prisma.userVisitingTrack.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserVisitingTrackFindUniqueOrThrowArgs>(args: SelectSubset<T, UserVisitingTrackFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserVisitingTrack that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVisitingTrackFindFirstArgs} args - Arguments to find a UserVisitingTrack
+     * @example
+     * // Get one UserVisitingTrack
+     * const userVisitingTrack = await prisma.userVisitingTrack.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserVisitingTrackFindFirstArgs>(args?: SelectSubset<T, UserVisitingTrackFindFirstArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserVisitingTrack that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVisitingTrackFindFirstOrThrowArgs} args - Arguments to find a UserVisitingTrack
+     * @example
+     * // Get one UserVisitingTrack
+     * const userVisitingTrack = await prisma.userVisitingTrack.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserVisitingTrackFindFirstOrThrowArgs>(args?: SelectSubset<T, UserVisitingTrackFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserVisitingTracks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVisitingTrackFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserVisitingTracks
+     * const userVisitingTracks = await prisma.userVisitingTrack.findMany()
+     * 
+     * // Get first 10 UserVisitingTracks
+     * const userVisitingTracks = await prisma.userVisitingTrack.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userVisitingTrackWithIdOnly = await prisma.userVisitingTrack.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserVisitingTrackFindManyArgs>(args?: SelectSubset<T, UserVisitingTrackFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserVisitingTrack.
+     * @param {UserVisitingTrackCreateArgs} args - Arguments to create a UserVisitingTrack.
+     * @example
+     * // Create one UserVisitingTrack
+     * const UserVisitingTrack = await prisma.userVisitingTrack.create({
+     *   data: {
+     *     // ... data to create a UserVisitingTrack
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserVisitingTrackCreateArgs>(args: SelectSubset<T, UserVisitingTrackCreateArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserVisitingTracks.
+     * @param {UserVisitingTrackCreateManyArgs} args - Arguments to create many UserVisitingTracks.
+     * @example
+     * // Create many UserVisitingTracks
+     * const userVisitingTrack = await prisma.userVisitingTrack.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserVisitingTrackCreateManyArgs>(args?: SelectSubset<T, UserVisitingTrackCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserVisitingTracks and returns the data saved in the database.
+     * @param {UserVisitingTrackCreateManyAndReturnArgs} args - Arguments to create many UserVisitingTracks.
+     * @example
+     * // Create many UserVisitingTracks
+     * const userVisitingTrack = await prisma.userVisitingTrack.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserVisitingTracks and only return the `id`
+     * const userVisitingTrackWithIdOnly = await prisma.userVisitingTrack.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserVisitingTrackCreateManyAndReturnArgs>(args?: SelectSubset<T, UserVisitingTrackCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserVisitingTrack.
+     * @param {UserVisitingTrackDeleteArgs} args - Arguments to delete one UserVisitingTrack.
+     * @example
+     * // Delete one UserVisitingTrack
+     * const UserVisitingTrack = await prisma.userVisitingTrack.delete({
+     *   where: {
+     *     // ... filter to delete one UserVisitingTrack
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserVisitingTrackDeleteArgs>(args: SelectSubset<T, UserVisitingTrackDeleteArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserVisitingTrack.
+     * @param {UserVisitingTrackUpdateArgs} args - Arguments to update one UserVisitingTrack.
+     * @example
+     * // Update one UserVisitingTrack
+     * const userVisitingTrack = await prisma.userVisitingTrack.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserVisitingTrackUpdateArgs>(args: SelectSubset<T, UserVisitingTrackUpdateArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserVisitingTracks.
+     * @param {UserVisitingTrackDeleteManyArgs} args - Arguments to filter UserVisitingTracks to delete.
+     * @example
+     * // Delete a few UserVisitingTracks
+     * const { count } = await prisma.userVisitingTrack.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserVisitingTrackDeleteManyArgs>(args?: SelectSubset<T, UserVisitingTrackDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserVisitingTracks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVisitingTrackUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserVisitingTracks
+     * const userVisitingTrack = await prisma.userVisitingTrack.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserVisitingTrackUpdateManyArgs>(args: SelectSubset<T, UserVisitingTrackUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserVisitingTracks and returns the data updated in the database.
+     * @param {UserVisitingTrackUpdateManyAndReturnArgs} args - Arguments to update many UserVisitingTracks.
+     * @example
+     * // Update many UserVisitingTracks
+     * const userVisitingTrack = await prisma.userVisitingTrack.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserVisitingTracks and only return the `id`
+     * const userVisitingTrackWithIdOnly = await prisma.userVisitingTrack.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserVisitingTrackUpdateManyAndReturnArgs>(args: SelectSubset<T, UserVisitingTrackUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserVisitingTrack.
+     * @param {UserVisitingTrackUpsertArgs} args - Arguments to update or create a UserVisitingTrack.
+     * @example
+     * // Update or create a UserVisitingTrack
+     * const userVisitingTrack = await prisma.userVisitingTrack.upsert({
+     *   create: {
+     *     // ... data to create a UserVisitingTrack
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserVisitingTrack we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserVisitingTrackUpsertArgs>(args: SelectSubset<T, UserVisitingTrackUpsertArgs<ExtArgs>>): Prisma__UserVisitingTrackClient<$Result.GetResult<Prisma.$UserVisitingTrackPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserVisitingTracks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVisitingTrackCountArgs} args - Arguments to filter UserVisitingTracks to count.
+     * @example
+     * // Count the number of UserVisitingTracks
+     * const count = await prisma.userVisitingTrack.count({
+     *   where: {
+     *     // ... the filter for the UserVisitingTracks we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserVisitingTrackCountArgs>(
+      args?: Subset<T, UserVisitingTrackCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserVisitingTrackCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserVisitingTrack.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVisitingTrackAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserVisitingTrackAggregateArgs>(args: Subset<T, UserVisitingTrackAggregateArgs>): Prisma.PrismaPromise<GetUserVisitingTrackAggregateType<T>>
+
+    /**
+     * Group by UserVisitingTrack.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserVisitingTrackGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserVisitingTrackGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserVisitingTrackGroupByArgs['orderBy'] }
+        : { orderBy?: UserVisitingTrackGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserVisitingTrackGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserVisitingTrackGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserVisitingTrack model
+   */
+  readonly fields: UserVisitingTrackFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserVisitingTrack.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserVisitingTrackClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserVisitingTrack model
+   */
+  interface UserVisitingTrackFieldRefs {
+    readonly id: FieldRef<"UserVisitingTrack", 'String'>
+    readonly userId: FieldRef<"UserVisitingTrack", 'String'>
+    readonly date: FieldRef<"UserVisitingTrack", 'DateTime'>
+    readonly createdAt: FieldRef<"UserVisitingTrack", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserVisitingTrack findUnique
+   */
+  export type UserVisitingTrackFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVisitingTrack to fetch.
+     */
+    where: UserVisitingTrackWhereUniqueInput
+  }
+
+  /**
+   * UserVisitingTrack findUniqueOrThrow
+   */
+  export type UserVisitingTrackFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVisitingTrack to fetch.
+     */
+    where: UserVisitingTrackWhereUniqueInput
+  }
+
+  /**
+   * UserVisitingTrack findFirst
+   */
+  export type UserVisitingTrackFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVisitingTrack to fetch.
+     */
+    where?: UserVisitingTrackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVisitingTracks to fetch.
+     */
+    orderBy?: UserVisitingTrackOrderByWithRelationInput | UserVisitingTrackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserVisitingTracks.
+     */
+    cursor?: UserVisitingTrackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVisitingTracks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVisitingTracks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserVisitingTracks.
+     */
+    distinct?: UserVisitingTrackScalarFieldEnum | UserVisitingTrackScalarFieldEnum[]
+  }
+
+  /**
+   * UserVisitingTrack findFirstOrThrow
+   */
+  export type UserVisitingTrackFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVisitingTrack to fetch.
+     */
+    where?: UserVisitingTrackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVisitingTracks to fetch.
+     */
+    orderBy?: UserVisitingTrackOrderByWithRelationInput | UserVisitingTrackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserVisitingTracks.
+     */
+    cursor?: UserVisitingTrackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVisitingTracks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVisitingTracks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserVisitingTracks.
+     */
+    distinct?: UserVisitingTrackScalarFieldEnum | UserVisitingTrackScalarFieldEnum[]
+  }
+
+  /**
+   * UserVisitingTrack findMany
+   */
+  export type UserVisitingTrackFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserVisitingTracks to fetch.
+     */
+    where?: UserVisitingTrackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserVisitingTracks to fetch.
+     */
+    orderBy?: UserVisitingTrackOrderByWithRelationInput | UserVisitingTrackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserVisitingTracks.
+     */
+    cursor?: UserVisitingTrackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserVisitingTracks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserVisitingTracks.
+     */
+    skip?: number
+    distinct?: UserVisitingTrackScalarFieldEnum | UserVisitingTrackScalarFieldEnum[]
+  }
+
+  /**
+   * UserVisitingTrack create
+   */
+  export type UserVisitingTrackCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserVisitingTrack.
+     */
+    data: XOR<UserVisitingTrackCreateInput, UserVisitingTrackUncheckedCreateInput>
+  }
+
+  /**
+   * UserVisitingTrack createMany
+   */
+  export type UserVisitingTrackCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserVisitingTracks.
+     */
+    data: UserVisitingTrackCreateManyInput | UserVisitingTrackCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserVisitingTrack createManyAndReturn
+   */
+  export type UserVisitingTrackCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserVisitingTracks.
+     */
+    data: UserVisitingTrackCreateManyInput | UserVisitingTrackCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserVisitingTrack update
+   */
+  export type UserVisitingTrackUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserVisitingTrack.
+     */
+    data: XOR<UserVisitingTrackUpdateInput, UserVisitingTrackUncheckedUpdateInput>
+    /**
+     * Choose, which UserVisitingTrack to update.
+     */
+    where: UserVisitingTrackWhereUniqueInput
+  }
+
+  /**
+   * UserVisitingTrack updateMany
+   */
+  export type UserVisitingTrackUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserVisitingTracks.
+     */
+    data: XOR<UserVisitingTrackUpdateManyMutationInput, UserVisitingTrackUncheckedUpdateManyInput>
+    /**
+     * Filter which UserVisitingTracks to update
+     */
+    where?: UserVisitingTrackWhereInput
+    /**
+     * Limit how many UserVisitingTracks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserVisitingTrack updateManyAndReturn
+   */
+  export type UserVisitingTrackUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * The data used to update UserVisitingTracks.
+     */
+    data: XOR<UserVisitingTrackUpdateManyMutationInput, UserVisitingTrackUncheckedUpdateManyInput>
+    /**
+     * Filter which UserVisitingTracks to update
+     */
+    where?: UserVisitingTrackWhereInput
+    /**
+     * Limit how many UserVisitingTracks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserVisitingTrack upsert
+   */
+  export type UserVisitingTrackUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserVisitingTrack to update in case it exists.
+     */
+    where: UserVisitingTrackWhereUniqueInput
+    /**
+     * In case the UserVisitingTrack found by the `where` argument doesn't exist, create a new UserVisitingTrack with this data.
+     */
+    create: XOR<UserVisitingTrackCreateInput, UserVisitingTrackUncheckedCreateInput>
+    /**
+     * In case the UserVisitingTrack was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserVisitingTrackUpdateInput, UserVisitingTrackUncheckedUpdateInput>
+  }
+
+  /**
+   * UserVisitingTrack delete
+   */
+  export type UserVisitingTrackDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+    /**
+     * Filter which UserVisitingTrack to delete.
+     */
+    where: UserVisitingTrackWhereUniqueInput
+  }
+
+  /**
+   * UserVisitingTrack deleteMany
+   */
+  export type UserVisitingTrackDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserVisitingTracks to delete
+     */
+    where?: UserVisitingTrackWhereInput
+    /**
+     * Limit how many UserVisitingTracks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserVisitingTrack without action
+   */
+  export type UserVisitingTrackDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserVisitingTrack
+     */
+    select?: UserVisitingTrackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserVisitingTrack
+     */
+    omit?: UserVisitingTrackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserVisitingTrackInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14947,6 +16120,16 @@ export namespace Prisma {
   };
 
   export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+  export const UserVisitingTrackScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    date: 'date',
+    createdAt: 'createdAt'
+  };
+
+  export type UserVisitingTrackScalarFieldEnum = (typeof UserVisitingTrackScalarFieldEnum)[keyof typeof UserVisitingTrackScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -15185,6 +16368,7 @@ export namespace Prisma {
     messages?: MessageListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
+    userVisitingTrack?: UserVisitingTrackListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -15218,6 +16402,7 @@ export namespace Prisma {
     messages?: MessageOrderByRelationAggregateInput
     notices?: NoticeOrderByRelationAggregateInput
     noticeHistory?: NoticeHistoryOrderByRelationAggregateInput
+    userVisitingTrack?: UserVisitingTrackOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -15254,6 +16439,7 @@ export namespace Prisma {
     messages?: MessageListRelationFilter
     notices?: NoticeListRelationFilter
     noticeHistory?: NoticeHistoryListRelationFilter
+    userVisitingTrack?: UserVisitingTrackListRelationFilter
   }, "userId" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -15952,6 +17138,57 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Message"> | Date | string
   }
 
+  export type UserVisitingTrackWhereInput = {
+    AND?: UserVisitingTrackWhereInput | UserVisitingTrackWhereInput[]
+    OR?: UserVisitingTrackWhereInput[]
+    NOT?: UserVisitingTrackWhereInput | UserVisitingTrackWhereInput[]
+    id?: StringFilter<"UserVisitingTrack"> | string
+    userId?: StringFilter<"UserVisitingTrack"> | string
+    date?: DateTimeFilter<"UserVisitingTrack"> | Date | string
+    createdAt?: DateTimeFilter<"UserVisitingTrack"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type UserVisitingTrackOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserVisitingTrackWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_date?: UserVisitingTrackUserIdDateCompoundUniqueInput
+    AND?: UserVisitingTrackWhereInput | UserVisitingTrackWhereInput[]
+    OR?: UserVisitingTrackWhereInput[]
+    NOT?: UserVisitingTrackWhereInput | UserVisitingTrackWhereInput[]
+    userId?: StringFilter<"UserVisitingTrack"> | string
+    date?: DateTimeFilter<"UserVisitingTrack"> | Date | string
+    createdAt?: DateTimeFilter<"UserVisitingTrack"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_date">
+
+  export type UserVisitingTrackOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    _count?: UserVisitingTrackCountOrderByAggregateInput
+    _max?: UserVisitingTrackMaxOrderByAggregateInput
+    _min?: UserVisitingTrackMinOrderByAggregateInput
+  }
+
+  export type UserVisitingTrackScalarWhereWithAggregatesInput = {
+    AND?: UserVisitingTrackScalarWhereWithAggregatesInput | UserVisitingTrackScalarWhereWithAggregatesInput[]
+    OR?: UserVisitingTrackScalarWhereWithAggregatesInput[]
+    NOT?: UserVisitingTrackScalarWhereWithAggregatesInput | UserVisitingTrackScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserVisitingTrack"> | string
+    userId?: StringWithAggregatesFilter<"UserVisitingTrack"> | string
+    date?: DateTimeWithAggregatesFilter<"UserVisitingTrack"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"UserVisitingTrack"> | Date | string
+  }
+
   export type ImportCSVCreateInput = {
     id?: string
     email: string
@@ -16032,6 +17269,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -16065,6 +17303,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -16098,6 +17337,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -16131,6 +17371,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -16873,6 +18114,54 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserVisitingTrackCreateInput = {
+    id?: string
+    date: Date | string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutUserVisitingTrackInput
+  }
+
+  export type UserVisitingTrackUncheckedCreateInput = {
+    id?: string
+    userId: string
+    date: Date | string
+    createdAt?: Date | string
+  }
+
+  export type UserVisitingTrackUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserVisitingTrackNestedInput
+  }
+
+  export type UserVisitingTrackUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserVisitingTrackCreateManyInput = {
+    id?: string
+    userId: string
+    date: Date | string
+    createdAt?: Date | string
+  }
+
+  export type UserVisitingTrackUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserVisitingTrackUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -17030,6 +18319,12 @@ export namespace Prisma {
     none?: NoticeHistoryWhereInput
   }
 
+  export type UserVisitingTrackListRelationFilter = {
+    every?: UserVisitingTrackWhereInput
+    some?: UserVisitingTrackWhereInput
+    none?: UserVisitingTrackWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -17068,6 +18363,10 @@ export namespace Prisma {
   }
 
   export type NoticeHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserVisitingTrackOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17607,6 +18906,32 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type UserVisitingTrackUserIdDateCompoundUniqueInput = {
+    userId: string
+    date: Date | string
+  }
+
+  export type UserVisitingTrackCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserVisitingTrackMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserVisitingTrackMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type ImportCSVCreatecourseNameInput = {
     set: string[]
   }
@@ -17691,6 +19016,13 @@ export namespace Prisma {
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
   }
 
+  export type UserVisitingTrackCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserVisitingTrackCreateWithoutUserInput, UserVisitingTrackUncheckedCreateWithoutUserInput> | UserVisitingTrackCreateWithoutUserInput[] | UserVisitingTrackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserVisitingTrackCreateOrConnectWithoutUserInput | UserVisitingTrackCreateOrConnectWithoutUserInput[]
+    createMany?: UserVisitingTrackCreateManyUserInputEnvelope
+    connect?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+  }
+
   export type TagUncheckedCreateNestedManyWithoutUsersInput = {
     create?: XOR<TagCreateWithoutUsersInput, TagUncheckedCreateWithoutUsersInput> | TagCreateWithoutUsersInput[] | TagUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: TagCreateOrConnectWithoutUsersInput | TagCreateOrConnectWithoutUsersInput[]
@@ -17756,6 +19088,13 @@ export namespace Prisma {
     connectOrCreate?: NoticeHistoryCreateOrConnectWithoutCreatedByInput | NoticeHistoryCreateOrConnectWithoutCreatedByInput[]
     createMany?: NoticeHistoryCreateManyCreatedByInputEnvelope
     connect?: NoticeHistoryWhereUniqueInput | NoticeHistoryWhereUniqueInput[]
+  }
+
+  export type UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserVisitingTrackCreateWithoutUserInput, UserVisitingTrackUncheckedCreateWithoutUserInput> | UserVisitingTrackCreateWithoutUserInput[] | UserVisitingTrackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserVisitingTrackCreateOrConnectWithoutUserInput | UserVisitingTrackCreateOrConnectWithoutUserInput[]
+    createMany?: UserVisitingTrackCreateManyUserInputEnvelope
+    connect?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
   }
 
   export type UserUpdatecourseNameInput = {
@@ -17916,6 +19255,20 @@ export namespace Prisma {
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
   }
 
+  export type UserVisitingTrackUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserVisitingTrackCreateWithoutUserInput, UserVisitingTrackUncheckedCreateWithoutUserInput> | UserVisitingTrackCreateWithoutUserInput[] | UserVisitingTrackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserVisitingTrackCreateOrConnectWithoutUserInput | UserVisitingTrackCreateOrConnectWithoutUserInput[]
+    upsert?: UserVisitingTrackUpsertWithWhereUniqueWithoutUserInput | UserVisitingTrackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserVisitingTrackCreateManyUserInputEnvelope
+    set?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    disconnect?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    delete?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    connect?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    update?: UserVisitingTrackUpdateWithWhereUniqueWithoutUserInput | UserVisitingTrackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserVisitingTrackUpdateManyWithWhereWithoutUserInput | UserVisitingTrackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserVisitingTrackScalarWhereInput | UserVisitingTrackScalarWhereInput[]
+  }
+
   export type TagUncheckedUpdateManyWithoutUsersNestedInput = {
     create?: XOR<TagCreateWithoutUsersInput, TagUncheckedCreateWithoutUsersInput> | TagCreateWithoutUsersInput[] | TagUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: TagCreateOrConnectWithoutUsersInput | TagCreateOrConnectWithoutUsersInput[]
@@ -18051,6 +19404,20 @@ export namespace Prisma {
     update?: NoticeHistoryUpdateWithWhereUniqueWithoutCreatedByInput | NoticeHistoryUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: NoticeHistoryUpdateManyWithWhereWithoutCreatedByInput | NoticeHistoryUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: NoticeHistoryScalarWhereInput | NoticeHistoryScalarWhereInput[]
+  }
+
+  export type UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserVisitingTrackCreateWithoutUserInput, UserVisitingTrackUncheckedCreateWithoutUserInput> | UserVisitingTrackCreateWithoutUserInput[] | UserVisitingTrackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserVisitingTrackCreateOrConnectWithoutUserInput | UserVisitingTrackCreateOrConnectWithoutUserInput[]
+    upsert?: UserVisitingTrackUpsertWithWhereUniqueWithoutUserInput | UserVisitingTrackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserVisitingTrackCreateManyUserInputEnvelope
+    set?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    disconnect?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    delete?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    connect?: UserVisitingTrackWhereUniqueInput | UserVisitingTrackWhereUniqueInput[]
+    update?: UserVisitingTrackUpdateWithWhereUniqueWithoutUserInput | UserVisitingTrackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserVisitingTrackUpdateManyWithWhereWithoutUserInput | UserVisitingTrackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserVisitingTrackScalarWhereInput | UserVisitingTrackScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTeamLeaderOfInput = {
@@ -18745,6 +20112,20 @@ export namespace Prisma {
     update?: XOR<XOR<ChatUpdateToOneWithWhereWithoutMessagesInput, ChatUpdateWithoutMessagesInput>, ChatUncheckedUpdateWithoutMessagesInput>
   }
 
+  export type UserCreateNestedOneWithoutUserVisitingTrackInput = {
+    create?: XOR<UserCreateWithoutUserVisitingTrackInput, UserUncheckedCreateWithoutUserVisitingTrackInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserVisitingTrackInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutUserVisitingTrackNestedInput = {
+    create?: XOR<UserCreateWithoutUserVisitingTrackInput, UserUncheckedCreateWithoutUserVisitingTrackInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserVisitingTrackInput
+    upsert?: UserUpsertWithoutUserVisitingTrackInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserVisitingTrackInput, UserUpdateWithoutUserVisitingTrackInput>, UserUncheckedUpdateWithoutUserVisitingTrackInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -19267,6 +20648,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserVisitingTrackCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    createdAt?: Date | string
+  }
+
+  export type UserVisitingTrackUncheckedCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    createdAt?: Date | string
+  }
+
+  export type UserVisitingTrackCreateOrConnectWithoutUserInput = {
+    where: UserVisitingTrackWhereUniqueInput
+    create: XOR<UserVisitingTrackCreateWithoutUserInput, UserVisitingTrackUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserVisitingTrackCreateManyUserInputEnvelope = {
+    data: UserVisitingTrackCreateManyUserInput | UserVisitingTrackCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TagUpsertWithWhereUniqueWithoutUsersInput = {
     where: TagWhereUniqueInput
     update: XOR<TagUpdateWithoutUsersInput, TagUncheckedUpdateWithoutUsersInput>
@@ -19545,6 +20948,32 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"NoticeHistory"> | Date | string
   }
 
+  export type UserVisitingTrackUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserVisitingTrackWhereUniqueInput
+    update: XOR<UserVisitingTrackUpdateWithoutUserInput, UserVisitingTrackUncheckedUpdateWithoutUserInput>
+    create: XOR<UserVisitingTrackCreateWithoutUserInput, UserVisitingTrackUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserVisitingTrackUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserVisitingTrackWhereUniqueInput
+    data: XOR<UserVisitingTrackUpdateWithoutUserInput, UserVisitingTrackUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserVisitingTrackUpdateManyWithWhereWithoutUserInput = {
+    where: UserVisitingTrackScalarWhereInput
+    data: XOR<UserVisitingTrackUpdateManyMutationInput, UserVisitingTrackUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserVisitingTrackScalarWhereInput = {
+    AND?: UserVisitingTrackScalarWhereInput | UserVisitingTrackScalarWhereInput[]
+    OR?: UserVisitingTrackScalarWhereInput[]
+    NOT?: UserVisitingTrackScalarWhereInput | UserVisitingTrackScalarWhereInput[]
+    id?: StringFilter<"UserVisitingTrack"> | string
+    userId?: StringFilter<"UserVisitingTrack"> | string
+    date?: DateTimeFilter<"UserVisitingTrack"> | Date | string
+    createdAt?: DateTimeFilter<"UserVisitingTrack"> | Date | string
+  }
+
   export type UserCreateWithoutTeamLeaderOfInput = {
     userId?: string
     firstName: string
@@ -19575,6 +21004,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeamLeaderOfInput = {
@@ -19607,6 +21037,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeamLeaderOfInput = {
@@ -19644,6 +21075,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeamsInput = {
@@ -19676,6 +21108,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeamsInput = {
@@ -19893,6 +21326,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamLeaderOfInput = {
@@ -19925,6 +21359,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutTeamsInput = {
@@ -20095,6 +21530,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserRoleInTeamInput = {
@@ -20127,6 +21563,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserRoleInTeamInput = {
@@ -20216,6 +21653,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRoleInTeamInput = {
@@ -20248,6 +21686,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TeamsUpsertWithoutUserRoleInTeamInput = {
@@ -20368,6 +21807,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTagsInput = {
@@ -20400,6 +21840,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTagsInput = {
@@ -20510,6 +21951,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeamsEditLogInput = {
@@ -20542,6 +21984,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeamsEditLogInput = {
@@ -20637,6 +22080,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamsEditLogInput = {
@@ -20669,6 +22113,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TeamsCreateWithoutActiveRequestsInput = {
@@ -20742,6 +22187,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActiveRequestsInput = {
@@ -20774,6 +22220,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActiveRequestsInput = {
@@ -20869,6 +22316,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActiveRequestsInput = {
@@ -20901,6 +22349,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNoticesInput = {
@@ -20933,6 +22382,7 @@ export namespace Prisma {
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNoticesInput = {
@@ -20965,6 +22415,7 @@ export namespace Prisma {
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNoticesInput = {
@@ -21086,6 +22537,7 @@ export namespace Prisma {
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNoticesInput = {
@@ -21118,6 +22570,7 @@ export namespace Prisma {
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TeamsUpsertWithoutNoticesInput = {
@@ -21244,6 +22697,7 @@ export namespace Prisma {
     chats?: ChatCreateNestedManyWithoutMembersInput
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNoticeHistoryInput = {
@@ -21276,6 +22730,7 @@ export namespace Prisma {
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNoticeHistoryInput = {
@@ -21361,6 +22816,7 @@ export namespace Prisma {
     chats?: ChatUpdateManyWithoutMembersNestedInput
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNoticeHistoryInput = {
@@ -21393,6 +22849,7 @@ export namespace Prisma {
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TeamsCreateWithoutChatsInput = {
@@ -21492,6 +22949,7 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutUserInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatsInput = {
@@ -21524,6 +22982,7 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutUserInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatsInput = {
@@ -21640,6 +23099,7 @@ export namespace Prisma {
     chats?: ChatCreateNestedManyWithoutMembersInput
     notices?: NoticeCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMessagesInput = {
@@ -21672,6 +23132,7 @@ export namespace Prisma {
     chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
     notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
     noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    userVisitingTrack?: UserVisitingTrackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMessagesInput = {
@@ -21747,6 +23208,7 @@ export namespace Prisma {
     chats?: ChatUpdateManyWithoutMembersNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -21779,6 +23241,7 @@ export namespace Prisma {
     chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ChatUpsertWithoutMessagesInput = {
@@ -21812,6 +23275,154 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: UserUncheckedUpdateManyWithoutChatsNestedInput
+  }
+
+  export type UserCreateWithoutUserVisitingTrackInput = {
+    userId?: string
+    firstName: string
+    lastName: string
+    email: string
+    mobileNumber: string
+    username: string
+    password: string
+    courseName?: UserCreatecourseNameInput | string[]
+    about: string
+    role?: string
+    isTeamLeader?: boolean
+    isActive?: boolean
+    twitter?: string | null
+    github?: string | null
+    linkedIn?: string | null
+    hashnode?: string | null
+    peerlist?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    designation?: $Enums.Designation | null
+    tags?: TagCreateNestedManyWithoutUsersInput
+    teamLeaderOf?: TeamsCreateNestedManyWithoutTeamLeaderInput
+    teams?: TeamsCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestCreateNestedManyWithoutMemberInput
+    TeamsEditLog?: TeamsEditLogCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutMembersInput
+    messages?: MessageCreateNestedManyWithoutUserInput
+    notices?: NoticeCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutUserVisitingTrackInput = {
+    userId?: string
+    firstName: string
+    lastName: string
+    email: string
+    mobileNumber: string
+    username: string
+    password: string
+    courseName?: UserCreatecourseNameInput | string[]
+    about: string
+    role?: string
+    isTeamLeader?: boolean
+    isActive?: boolean
+    twitter?: string | null
+    github?: string | null
+    linkedIn?: string | null
+    hashnode?: string | null
+    peerlist?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    designation?: $Enums.Designation | null
+    tags?: TagUncheckedCreateNestedManyWithoutUsersInput
+    teamLeaderOf?: TeamsUncheckedCreateNestedManyWithoutTeamLeaderInput
+    teams?: TeamsUncheckedCreateNestedManyWithoutMembersInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedCreateNestedManyWithoutMemberInput
+    TeamsEditLog?: TeamsEditLogUncheckedCreateNestedManyWithoutUserInput
+    userRoleInTeam?: UserRoleInTeamUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutMembersInput
+    messages?: MessageUncheckedCreateNestedManyWithoutUserInput
+    notices?: NoticeUncheckedCreateNestedManyWithoutCreatedByInput
+    noticeHistory?: NoticeHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutUserVisitingTrackInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUserVisitingTrackInput, UserUncheckedCreateWithoutUserVisitingTrackInput>
+  }
+
+  export type UserUpsertWithoutUserVisitingTrackInput = {
+    update: XOR<UserUpdateWithoutUserVisitingTrackInput, UserUncheckedUpdateWithoutUserVisitingTrackInput>
+    create: XOR<UserCreateWithoutUserVisitingTrackInput, UserUncheckedCreateWithoutUserVisitingTrackInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserVisitingTrackInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserVisitingTrackInput, UserUncheckedUpdateWithoutUserVisitingTrackInput>
+  }
+
+  export type UserUpdateWithoutUserVisitingTrackInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    courseName?: UserUpdatecourseNameInput | string[]
+    about?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    twitter?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
+    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
+    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
+    tags?: TagUpdateManyWithoutUsersNestedInput
+    teamLeaderOf?: TeamsUpdateManyWithoutTeamLeaderNestedInput
+    teams?: TeamsUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUpdateManyWithoutMemberNestedInput
+    TeamsEditLog?: TeamsEditLogUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutMembersNestedInput
+    messages?: MessageUpdateManyWithoutUserNestedInput
+    notices?: NoticeUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserVisitingTrackInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    courseName?: UserUpdatecourseNameInput | string[]
+    about?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    isTeamLeader?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    twitter?: NullableStringFieldUpdateOperationsInput | string | null
+    github?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
+    hashnode?: NullableStringFieldUpdateOperationsInput | string | null
+    peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
+    tags?: TagUncheckedUpdateManyWithoutUsersNestedInput
+    teamLeaderOf?: TeamsUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    teams?: TeamsUncheckedUpdateManyWithoutMembersNestedInput
+    ActiveRequests?: ActiveInvitationOrRequestUncheckedUpdateManyWithoutMemberNestedInput
+    TeamsEditLog?: TeamsEditLogUncheckedUpdateManyWithoutUserNestedInput
+    userRoleInTeam?: UserRoleInTeamUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutMembersNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
+    notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
+    noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TeamsCreateManyTeamLeaderInput = {
@@ -21880,6 +23491,12 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     status: $Enums.Status
+    createdAt?: Date | string
+  }
+
+  export type UserVisitingTrackCreateManyUserInput = {
+    id?: string
+    date: Date | string
     createdAt?: Date | string
   }
 
@@ -22203,6 +23820,24 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserVisitingTrackUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserVisitingTrackUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserVisitingTrackUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TeamsEditLogCreateManyTeamInput = {
     id?: string
     requestId?: string | null
@@ -22281,6 +23916,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamsInput = {
@@ -22313,6 +23949,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTeamsInput = {
@@ -22583,6 +24220,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTagsInput = {
@@ -22615,6 +24253,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTagsInput = {
@@ -22746,6 +24385,7 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutUserNestedInput
     notices?: NoticeUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatsInput = {
@@ -22778,6 +24418,7 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutUserNestedInput
     notices?: NoticeUncheckedUpdateManyWithoutCreatedByNestedInput
     noticeHistory?: NoticeHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    userVisitingTrack?: UserVisitingTrackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutChatsInput = {

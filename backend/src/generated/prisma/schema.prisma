@@ -45,17 +45,18 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  designation    Designation?
-  tags           Tag[]                       @relation("UserTags")
-  teamLeaderOf   Teams[]                     @relation("TeamLeader")
-  teams          Teams[]                     @relation("teamMembers")
-  ActiveRequests ActiveInvitationOrRequest[]
-  TeamsEditLog   TeamsEditLog[]
-  userRoleInTeam UserRoleInTeam[]
-  chats          Chat[]                      @relation("ChatMembers")
-  messages       Message[]
-  notices        Notice[]                    @relation("UserNotices")
-  noticeHistory  NoticeHistory[]
+  designation       Designation?
+  tags              Tag[]                       @relation("UserTags")
+  teamLeaderOf      Teams[]                     @relation("TeamLeader")
+  teams             Teams[]                     @relation("teamMembers")
+  ActiveRequests    ActiveInvitationOrRequest[]
+  TeamsEditLog      TeamsEditLog[]
+  userRoleInTeam    UserRoleInTeam[]
+  chats             Chat[]                      @relation("ChatMembers")
+  messages          Message[]
+  notices           Notice[]                    @relation("UserNotices")
+  noticeHistory     NoticeHistory[]
+  userVisitingTrack UserVisitingTrack[]
 }
 
 enum Designation {
@@ -233,4 +234,14 @@ model Message {
 
   user User @relation(fields: [userId], references: [userId])
   chat Chat @relation(fields: [chatId], references: [id])
+}
+
+model UserVisitingTrack {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [userId])
+  date      DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([userId, date])
 }

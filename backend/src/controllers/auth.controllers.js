@@ -394,8 +394,10 @@ const getMe = async (request, response) => {
   }
 }
 
-
 const getMeInDetails = async (request, response) => {
+
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
 
   try {
 
@@ -405,7 +407,8 @@ const getMeInDetails = async (request, response) => {
 
     const userId = request.cookies.userId;
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.$transaction(async (prisma) => {
+    const userDetails = await prisma.user.findUnique({
       where: {
         userId
       },
@@ -428,18 +431,39 @@ const getMeInDetails = async (request, response) => {
             },
             userRoleInTeam: true,
             notices: true,
-            tags: true
+            tags: true,
           }
         },
-        password: false
+        password: false,
+        _count: {
+          select: {
+            teams: true,
+            userVisitingTrack: true
+          }
+        }
       }
+    })
+
+    await prisma.userVisitingTrack.upsert({
+      where: {
+        userId_date: {
+          userId,
+          date: today
+        }
+      },
+      update: {},
+      create: {
+        userId,
+        date: today
+      }
+    })
+
+    return userDetails
     })
 
     if (!user) {
       throw new ApiError(404, "No user details found");
     }
-
-    console.log('hit');
 
     response.status(200).json(
       new ApiResponse(200, user, "User data fetched successfully")

@@ -1,3 +1,5 @@
+// src/App.tsx
+
 import { Routes, Route, Navigate } from 'react-router'
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
@@ -11,6 +13,8 @@ import LoginPage from './page/login'
 import Register from './page/register';
 import Teams from './page/TeamsList';
 import MembersList from './page/MembersList';
+// src/App.tsx
+import MembersProfile from './page/MembersProfile';
 
 
 function App() {
@@ -39,6 +43,7 @@ function App() {
 
           <Route path="/teams" element={authUser ? <Teams/> : <Navigate to="/login" />} />
           <Route path="/search-members" element={authUser ? <MembersList/> : <Navigate to="/login" />} />
+          <Route path="/members/:id" element={authUser ? <MembersProfile/> : <Navigate to="/login" />} />
         </Routes>
       </div>
   )

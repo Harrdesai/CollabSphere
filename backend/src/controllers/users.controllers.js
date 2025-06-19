@@ -6,6 +6,33 @@ import { $Enums, Prisma, PrismaClient } from "../generated/prisma/index.js";
 
 const prisma = new PrismaClient();
 
+const userTagLists = async (request, response) => {
+
+  try {
+
+    const tags = await prisma.tag.findMany({
+      where: {
+        users: {
+          some: {
+            isActive: true
+          }
+        }
+      }
+    });
+
+    if (tags.length === 0) {
+      return response.status(200).json(new ApiResponse(200, [], "No tags found"));
+    }
+    
+    response.status(200).json(new ApiResponse(200, tags, "Tags found successfully"));
+
+  } catch (error) {
+
+    console.error("Error searching users:", error);
+    response.status(500).json(new ApiError(500, "Error searching users", { error: error.message }));
+  }
+}
+
 const searchedUserLists = async (request, response) => {
 
   const searchKeyWord = request.query.search?.toString().trim() || '';
@@ -99,25 +126,58 @@ const searchedUserLists = async (request, response) => {
   }
 }
 
-const userTagLists = async (request, response) => {
+const userProfile = async (request, response) => {
+  
+  const userId = request.params.userId;
+  console.log(`userId: ${userId}`);
+
+  if (!userId) {
+    throw new ApiError(400, "No Member ID provided");
+  }
 
   try {
-
-    const tags = await prisma.tag.findMany({
+    
+    const member = await prisma.user.findUnique({
       where: {
-        users: {
-          some: {
-            isActive: true
+        userId
+      },
+      include: {
+        tags: {
+          select: {
+            name: true,
+            id: true
+          },
+        },
+        mobileNumber: false,
+        username: false,
+        password: false,
+        role: false,
+        isActive: false,
+        updatedAt: false,
+        designation: false,
+        teams: {
+          select: {
+            title: true,
+            about: true,
+            createdAt: true,
+            teamLeaderId: true,
+            members: {
+              select: {
+                userId: true,
+                firstName: true,
+                lastName: true
+              }
+            }
           }
-        }
+        },
       }
     });
 
-    if (tags.length === 0) {
-      return response.status(200).json(new ApiResponse(200, [], "No tags found"));
+    if (!member) {
+      throw new ApiError(404, "Member details not found");
     }
-    
-    response.status(200).json(new ApiResponse(200, tags, "Tags found successfully"));
+
+    response.status(200).json(new ApiResponse(200, member, "Member details found successfully"));
 
   } catch (error) {
 
@@ -125,4 +185,4 @@ const userTagLists = async (request, response) => {
     response.status(500).json(new ApiError(500, "Error searching users", { error: error.message }));
   }
 }
-export { searchedUserLists, userTagLists };
+export { userTagLists, searchedUserLists, userProfile };

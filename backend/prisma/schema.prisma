@@ -41,6 +41,10 @@ model User {
   linkedIn     String?
   hashnode     String?
   peerlist     String?
+  visitStreak          Int      @default(0)
+  lastVisitDate        DateTime?
+  longestStreak        Int      @default(0)
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -115,6 +119,7 @@ model Tag {
 
   teams Teams[] @relation("TeamTags")
   users User[]  @relation("UserTags")
+
 }
 
 enum Action {

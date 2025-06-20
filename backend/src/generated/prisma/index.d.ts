@@ -3235,8 +3235,20 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    visitStreak: number | null
+    longestStreak: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    visitStreak: number | null
+    longestStreak: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -3256,6 +3268,9 @@ export namespace Prisma {
     linkedIn: string | null
     hashnode: string | null
     peerlist: string | null
+    visitStreak: number | null
+    lastVisitDate: Date | null
+    longestStreak: number | null
     createdAt: Date | null
     updatedAt: Date | null
     designation: $Enums.Designation | null
@@ -3278,6 +3293,9 @@ export namespace Prisma {
     linkedIn: string | null
     hashnode: string | null
     peerlist: string | null
+    visitStreak: number | null
+    lastVisitDate: Date | null
+    longestStreak: number | null
     createdAt: Date | null
     updatedAt: Date | null
     designation: $Enums.Designation | null
@@ -3301,12 +3319,25 @@ export namespace Prisma {
     linkedIn: number
     hashnode: number
     peerlist: number
+    visitStreak: number
+    lastVisitDate: number
+    longestStreak: number
     createdAt: number
     updatedAt: number
     designation: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    visitStreak?: true
+    longestStreak?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    visitStreak?: true
+    longestStreak?: true
+  }
 
   export type UserMinAggregateInputType = {
     userId?: true
@@ -3325,6 +3356,9 @@ export namespace Prisma {
     linkedIn?: true
     hashnode?: true
     peerlist?: true
+    visitStreak?: true
+    lastVisitDate?: true
+    longestStreak?: true
     createdAt?: true
     updatedAt?: true
     designation?: true
@@ -3347,6 +3381,9 @@ export namespace Prisma {
     linkedIn?: true
     hashnode?: true
     peerlist?: true
+    visitStreak?: true
+    lastVisitDate?: true
+    longestStreak?: true
     createdAt?: true
     updatedAt?: true
     designation?: true
@@ -3370,6 +3407,9 @@ export namespace Prisma {
     linkedIn?: true
     hashnode?: true
     peerlist?: true
+    visitStreak?: true
+    lastVisitDate?: true
+    longestStreak?: true
     createdAt?: true
     updatedAt?: true
     designation?: true
@@ -3414,6 +3454,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -3444,6 +3496,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -3466,10 +3520,15 @@ export namespace Prisma {
     linkedIn: string | null
     hashnode: string | null
     peerlist: string | null
+    visitStreak: number
+    lastVisitDate: Date | null
+    longestStreak: number
     createdAt: Date
     updatedAt: Date
     designation: $Enums.Designation | null
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -3506,6 +3565,9 @@ export namespace Prisma {
     linkedIn?: boolean
     hashnode?: boolean
     peerlist?: boolean
+    visitStreak?: boolean
+    lastVisitDate?: boolean
+    longestStreak?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     designation?: boolean
@@ -3541,6 +3603,9 @@ export namespace Prisma {
     linkedIn?: boolean
     hashnode?: boolean
     peerlist?: boolean
+    visitStreak?: boolean
+    lastVisitDate?: boolean
+    longestStreak?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     designation?: boolean
@@ -3564,6 +3629,9 @@ export namespace Prisma {
     linkedIn?: boolean
     hashnode?: boolean
     peerlist?: boolean
+    visitStreak?: boolean
+    lastVisitDate?: boolean
+    longestStreak?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     designation?: boolean
@@ -3587,12 +3655,15 @@ export namespace Prisma {
     linkedIn?: boolean
     hashnode?: boolean
     peerlist?: boolean
+    visitStreak?: boolean
+    lastVisitDate?: boolean
+    longestStreak?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     designation?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "email" | "mobileNumber" | "username" | "password" | "courseName" | "about" | "role" | "isTeamLeader" | "isActive" | "twitter" | "github" | "linkedIn" | "hashnode" | "peerlist" | "createdAt" | "updatedAt" | "designation", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "firstName" | "lastName" | "email" | "mobileNumber" | "username" | "password" | "courseName" | "about" | "role" | "isTeamLeader" | "isActive" | "twitter" | "github" | "linkedIn" | "hashnode" | "peerlist" | "visitStreak" | "lastVisitDate" | "longestStreak" | "createdAt" | "updatedAt" | "designation", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tags?: boolean | User$tagsArgs<ExtArgs>
     teamLeaderOf?: boolean | User$teamLeaderOfArgs<ExtArgs>
@@ -3643,6 +3714,9 @@ export namespace Prisma {
       linkedIn: string | null
       hashnode: string | null
       peerlist: string | null
+      visitStreak: number
+      lastVisitDate: Date | null
+      longestStreak: number
       createdAt: Date
       updatedAt: Date
       designation: $Enums.Designation | null
@@ -4097,6 +4171,9 @@ export namespace Prisma {
     readonly linkedIn: FieldRef<"User", 'String'>
     readonly hashnode: FieldRef<"User", 'String'>
     readonly peerlist: FieldRef<"User", 'String'>
+    readonly visitStreak: FieldRef<"User", 'Int'>
+    readonly lastVisitDate: FieldRef<"User", 'DateTime'>
+    readonly longestStreak: FieldRef<"User", 'Int'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly designation: FieldRef<"User", 'Designation'>
@@ -15996,6 +16073,9 @@ export namespace Prisma {
     linkedIn: 'linkedIn',
     hashnode: 'hashnode',
     peerlist: 'peerlist',
+    visitStreak: 'visitStreak',
+    lastVisitDate: 'lastVisitDate',
+    longestStreak: 'longestStreak',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     designation: 'designation'
@@ -16200,6 +16280,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -16270,16 +16364,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'Float'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
 
 
   /**
-   * Reference to a field of type 'Int[]'
+   * Reference to a field of type 'Float[]'
    */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -16355,6 +16449,9 @@ export namespace Prisma {
     linkedIn?: StringNullableFilter<"User"> | string | null
     hashnode?: StringNullableFilter<"User"> | string | null
     peerlist?: StringNullableFilter<"User"> | string | null
+    visitStreak?: IntFilter<"User"> | number
+    lastVisitDate?: DateTimeNullableFilter<"User"> | Date | string | null
+    longestStreak?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     designation?: EnumDesignationNullableFilter<"User"> | $Enums.Designation | null
@@ -16389,6 +16486,9 @@ export namespace Prisma {
     linkedIn?: SortOrderInput | SortOrder
     hashnode?: SortOrderInput | SortOrder
     peerlist?: SortOrderInput | SortOrder
+    visitStreak?: SortOrder
+    lastVisitDate?: SortOrderInput | SortOrder
+    longestStreak?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     designation?: SortOrderInput | SortOrder
@@ -16426,6 +16526,9 @@ export namespace Prisma {
     linkedIn?: StringNullableFilter<"User"> | string | null
     hashnode?: StringNullableFilter<"User"> | string | null
     peerlist?: StringNullableFilter<"User"> | string | null
+    visitStreak?: IntFilter<"User"> | number
+    lastVisitDate?: DateTimeNullableFilter<"User"> | Date | string | null
+    longestStreak?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     designation?: EnumDesignationNullableFilter<"User"> | $Enums.Designation | null
@@ -16460,12 +16563,17 @@ export namespace Prisma {
     linkedIn?: SortOrderInput | SortOrder
     hashnode?: SortOrderInput | SortOrder
     peerlist?: SortOrderInput | SortOrder
+    visitStreak?: SortOrder
+    lastVisitDate?: SortOrderInput | SortOrder
+    longestStreak?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     designation?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -16489,6 +16597,9 @@ export namespace Prisma {
     linkedIn?: StringNullableWithAggregatesFilter<"User"> | string | null
     hashnode?: StringNullableWithAggregatesFilter<"User"> | string | null
     peerlist?: StringNullableWithAggregatesFilter<"User"> | string | null
+    visitStreak?: IntWithAggregatesFilter<"User"> | number
+    lastVisitDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    longestStreak?: IntWithAggregatesFilter<"User"> | number
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     designation?: EnumDesignationNullableWithAggregatesFilter<"User"> | $Enums.Designation | null
@@ -17159,7 +17270,7 @@ export namespace Prisma {
 
   export type UserVisitingTrackWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    userId_date?: UserVisitingTrackUserIdDateCompoundUniqueInput
+    userId_date?: UserVisitingTrackUserId_dateCompoundUniqueInput
     AND?: UserVisitingTrackWhereInput | UserVisitingTrackWhereInput[]
     OR?: UserVisitingTrackWhereInput[]
     NOT?: UserVisitingTrackWhereInput | UserVisitingTrackWhereInput[]
@@ -17256,6 +17367,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -17290,6 +17404,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -17324,6 +17441,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -17358,6 +17478,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -17392,6 +17515,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -17415,6 +17541,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -17438,6 +17567,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -18247,6 +18379,28 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -18388,9 +18542,17 @@ export namespace Prisma {
     linkedIn?: SortOrder
     hashnode?: SortOrder
     peerlist?: SortOrder
+    visitStreak?: SortOrder
+    lastVisitDate?: SortOrder
+    longestStreak?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     designation?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    visitStreak?: SortOrder
+    longestStreak?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -18410,6 +18572,9 @@ export namespace Prisma {
     linkedIn?: SortOrder
     hashnode?: SortOrder
     peerlist?: SortOrder
+    visitStreak?: SortOrder
+    lastVisitDate?: SortOrder
+    longestStreak?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     designation?: SortOrder
@@ -18432,9 +18597,17 @@ export namespace Prisma {
     linkedIn?: SortOrder
     hashnode?: SortOrder
     peerlist?: SortOrder
+    visitStreak?: SortOrder
+    lastVisitDate?: SortOrder
+    longestStreak?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     designation?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    visitStreak?: SortOrder
+    longestStreak?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -18461,6 +18634,36 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -18906,7 +19109,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UserVisitingTrackUserIdDateCompoundUniqueInput = {
+  export type UserVisitingTrackUserId_dateCompoundUniqueInput = {
     userId: string
     date: Date | string
   }
@@ -19108,6 +19311,18 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -20187,6 +20402,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -20239,6 +20465,47 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -20992,6 +21259,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21025,6 +21295,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21063,6 +21336,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21096,6 +21372,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21314,6 +21593,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -21347,6 +21629,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -21399,6 +21684,9 @@ export namespace Prisma {
     linkedIn?: StringNullableFilter<"User"> | string | null
     hashnode?: StringNullableFilter<"User"> | string | null
     peerlist?: StringNullableFilter<"User"> | string | null
+    visitStreak?: IntFilter<"User"> | number
+    lastVisitDate?: DateTimeNullableFilter<"User"> | Date | string | null
+    longestStreak?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     designation?: EnumDesignationNullableFilter<"User"> | $Enums.Designation | null
@@ -21518,6 +21806,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21551,6 +21842,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21641,6 +21935,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -21674,6 +21971,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -21795,6 +22095,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21828,6 +22131,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21939,6 +22245,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -21972,6 +22281,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22068,6 +22380,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22101,6 +22416,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22175,6 +22493,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22208,6 +22529,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22304,6 +22628,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22337,6 +22664,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22370,6 +22700,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22403,6 +22736,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22525,6 +22861,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22558,6 +22897,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22685,6 +23027,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22718,6 +23063,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22804,6 +23152,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22837,6 +23188,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -22937,6 +23291,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -22970,6 +23327,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -23087,6 +23447,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -23120,6 +23483,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -23196,6 +23562,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -23229,6 +23598,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -23295,6 +23667,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -23328,6 +23703,9 @@ export namespace Prisma {
     linkedIn?: string | null
     hashnode?: string | null
     peerlist?: string | null
+    visitStreak?: number
+    lastVisitDate?: Date | string | null
+    longestStreak?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     designation?: $Enums.Designation | null
@@ -23377,6 +23755,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -23410,6 +23791,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -23904,6 +24288,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -23937,6 +24324,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -23970,6 +24360,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -24208,6 +24601,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -24241,6 +24637,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -24274,6 +24673,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -24373,6 +24775,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -24406,6 +24811,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null
@@ -24439,6 +24847,9 @@ export namespace Prisma {
     linkedIn?: NullableStringFieldUpdateOperationsInput | string | null
     hashnode?: NullableStringFieldUpdateOperationsInput | string | null
     peerlist?: NullableStringFieldUpdateOperationsInput | string | null
+    visitStreak?: IntFieldUpdateOperationsInput | number
+    lastVisitDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    longestStreak?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     designation?: NullableEnumDesignationFieldUpdateOperationsInput | $Enums.Designation | null

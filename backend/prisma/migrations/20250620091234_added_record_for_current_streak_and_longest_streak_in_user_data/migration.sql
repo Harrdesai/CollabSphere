@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "lastVisitDate" TIMESTAMP(3),
+ADD COLUMN     "longestStreak" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "visitStreak" INTEGER NOT NULL DEFAULT 0;

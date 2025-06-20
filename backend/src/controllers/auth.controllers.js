@@ -53,7 +53,7 @@ const isUserAvailableInImportedCSV = async (request, response) => {
 const isUsernameAvailable = async (request, response) => {
 
   try {
-    
+
     const { username } = request.body;
 
     if (!username) {
@@ -69,7 +69,7 @@ const isUsernameAvailable = async (request, response) => {
     if (checkUsernameExists) {
       throw new ApiError(400, "Username already in use, please choose another username");
     }
-    
+
     response.status(200).json(
       new ApiResponse(201, {
         username
@@ -77,7 +77,7 @@ const isUsernameAvailable = async (request, response) => {
     )
 
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while checking availability of username", {
         error: error.message
@@ -149,8 +149,8 @@ const registerUser = async (request, response) => {
         hashnode,
         peerlist,
         tags: {
-            connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
-          }
+          connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
+        }
       }
     })
 
@@ -396,8 +396,9 @@ const getMe = async (request, response) => {
 
 const getMeInDetails = async (request, response) => {
 
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
+  const today = (new Date()).setUTCHours(0, 0, 0, 0);
+
+  const yesterday = (new Date()).setUTCHours(0, 0, 0, 0) - (24 * 60 * 60 * 1000);
 
   try {
 
@@ -408,57 +409,100 @@ const getMeInDetails = async (request, response) => {
     const userId = request.cookies.userId;
 
     const user = await prisma.$transaction(async (prisma) => {
-    const userDetails = await prisma.user.findUnique({
-      where: {
-        userId
-      },
-      include: {
-        teams: {
-          include: {
-            chats: {
-              include: {
-                messages: {
-                  include: {
-                    user: {
-                      select: {
-                        firstName: true,
-                        lastName: true
+      const userDetails = await prisma.user.findUnique({
+        where: {
+          userId
+        },
+        include: {
+          teams: {
+            include: {
+              chats: {
+                include: {
+                  messages: {
+                    include: {
+                      user: {
+                        select: {
+                          firstName: true,
+                          lastName: true
+                        }
                       }
                     }
                   }
                 }
-              }
+              },
+              userRoleInTeam: true,
+              notices: true,
+              tags: true,
+            }
+          },
+          userVisitingTrack: true,
+          password: false,
+          _count: {
+            select: {
+              teams: true,
+              userVisitingTrack: true
+            }
+          }
+        }
+      })
+
+      if (!userDetails.lastVisitDate || userDetails.lastVisitDate <= yesterday) {
+
+        if (userDetails.visitStreak && userDetails.lastVisitDate < yesterday) {
+
+          await prisma.user.update({
+            where: {
+              userId
             },
-            userRoleInTeam: true,
-            notices: true,
-            tags: true,
-          }
-        },
-        password: false,
-        _count: {
-          select: {
-            teams: true,
-            userVisitingTrack: true
+            data: {
+              lastVisitDate: new Date(today),
+              visitStreak: 1
+            }
+          })
+        } else {
+
+
+          if (userDetails.visitStreak === userDetails.longestStreak) {
+
+            await prisma.user.update({
+              where: {
+                userId
+              },
+              data: {
+                longestStreak: {
+                  increment: 1,
+                },
+                visitStreak: {
+                  increment: 1,
+                },
+                lastVisitDate: new Date(today),
+              }
+            })
+          } else {
+
+            await prisma.user.update({
+              where: {
+                userId
+              },
+              data: {
+                visitStreak: {
+                  increment: 1,
+                },
+                lastVisitDate: new Date(today),
+              }
+            })
           }
         }
-      }
-    })
 
-    await prisma.userVisitingTrack.upsert({
-      where: {
-        userId_date: {
-          userId,
-          date: today
-        }
-      },
-      update: {},
-      create: {
-        userId,
-        date: today
+        await prisma.userVisitingTrack.create({
+          data: {
+            userId,
+            date: new Date(today),
+          }
+        })
       }
-    })
 
-    return userDetails
+      return userDetails
     })
 
     if (!user) {
@@ -468,7 +512,7 @@ const getMeInDetails = async (request, response) => {
     response.status(200).json(
       new ApiResponse(200, user, "User data fetched successfully")
     )
-    
+
   } catch (error) {
 
     console.error("Error fetching user:", error);
@@ -485,22 +529,22 @@ const forgetUsername = async (request, response) => {
   try {
 
     const { email, mobileNumber } = request.body;
-  
+
     if (!email || !mobileNumber) {
       throw new ApiError(400, "Please provide email and mobile number");
     }
-  
+
     const findUser = await prisma.user.findUnique({
       where: {
         email: email.toLowerCase(),
         mobileNumber
       }
     })
-  
+
     if (!findUser) {
       throw new ApiError(404, "User not found");
     }
-  
+
     response.status(200).json(
       new ApiResponse(200, {
         user: {
@@ -512,7 +556,7 @@ const forgetUsername = async (request, response) => {
     )
 
   } catch (error) {
-    
+
     console.error("Error fetching user:", error);
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error while checking user in imported CSV table", {
@@ -523,10 +567,10 @@ const forgetUsername = async (request, response) => {
 
 }
 
-const resetPassword = async (request, response) => { 
+const resetPassword = async (request, response) => {
 
   try {
-    
+
     const { email, mobileNumber, newPassword } = request.body;
 
     if (!email || !mobileNumber || !newPassword) {
@@ -543,7 +587,7 @@ const resetPassword = async (request, response) => {
     if (!findUser) {
       throw new ApiError(404, "User not found");
     }
-    
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await prisma.user.update({
@@ -567,7 +611,7 @@ const resetPassword = async (request, response) => {
       }, "Password reset successfully")
     )
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to reset password", {
         error: error.message
@@ -577,7 +621,7 @@ const resetPassword = async (request, response) => {
   }
 }
 
-const updateProfile = async (request, response) => { 
+const updateProfile = async (request, response) => {
 
   try {
 
@@ -585,7 +629,7 @@ const updateProfile = async (request, response) => {
 
     const { firstName, lastName, username, about, twitter, github, linkedIn, hashnode, peerlist, ArrayOfTagIds = [] } = request.body
 
-    if(!userId || !firstName || !lastName || !username || !about) {
+    if (!userId || !firstName || !lastName || !username || !about) {
       throw new ApiError(400, "Please provide all required fields");
     }
 
@@ -661,9 +705,9 @@ const updateProfile = async (request, response) => {
         }
       }, "Profile updated successfully")
     )
-    
+
   } catch (error) {
-    
+
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Error updating profile", {
         error: error.message

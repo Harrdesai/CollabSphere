@@ -145,6 +145,9 @@ exports.Prisma.UserScalarFieldEnum = {
   linkedIn: 'linkedIn',
   hashnode: 'hashnode',
   peerlist: 'peerlist',
+  visitStreak: 'visitStreak',
+  lastVisitDate: 'lastVisitDate',
+  longestStreak: 'longestStreak',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   designation: 'designation'

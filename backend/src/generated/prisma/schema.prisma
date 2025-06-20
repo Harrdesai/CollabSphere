@@ -24,23 +24,26 @@ model ImportCSV {
 }
 
 model User {
-  userId       String   @id @default(uuid())
-  firstName    String
-  lastName     String
-  email        String   @unique
-  mobileNumber String
-  username     String   @unique
-  password     String
-  courseName   String[]
-  about        String
-  role         String   @default("user")
-  isTeamLeader Boolean  @default(false)
-  isActive     Boolean  @default(true)
-  twitter      String?
-  github       String?
-  linkedIn     String?
-  hashnode     String?
-  peerlist     String?
+  userId        String    @id @default(uuid())
+  firstName     String
+  lastName      String
+  email         String    @unique
+  mobileNumber  String
+  username      String    @unique
+  password      String
+  courseName    String[]
+  about         String
+  role          String    @default("user")
+  isTeamLeader  Boolean   @default(false)
+  isActive      Boolean   @default(true)
+  twitter       String?
+  github        String?
+  linkedIn      String?
+  hashnode      String?
+  peerlist      String?
+  visitStreak   Int       @default(0)
+  lastVisitDate DateTime?
+  longestStreak Int       @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -243,5 +246,5 @@ model UserVisitingTrack {
   date      DateTime
   createdAt DateTime @default(now())
 
-  @@unique([userId, date])
+  @@unique([userId, date], name: "userId_date")
 }

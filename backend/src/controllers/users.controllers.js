@@ -105,7 +105,8 @@ const searchedUserLists = async (request, response) => {
         designation: false,
         _count: {
           select: {
-            teams: true
+            teams: true,
+            userVisitingTrack: true
           }
         }
         },
@@ -170,6 +171,11 @@ const userProfile = async (request, response) => {
             }
           }
         },
+        _count: {
+          select: {
+            userVisitingTrack: true
+          }
+        }
       }
     });
 

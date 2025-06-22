@@ -2,11 +2,10 @@
 
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import useTeamStore from "@/store/useTeam.store";
 import { Loader2Icon } from "lucide-react";
-
 import { useEffect } from "react";
 
+import useTeamStore from "@/store/useTeam.store";
 const Teams = () => {
 
   const { fetchAllTeams, teams, isLoading } = useTeamStore();

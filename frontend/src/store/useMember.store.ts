@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { axiosInstance } from "@/lib/axios";
+import type { AxiosError } from "axios";
 
 interface MemberState {
   members: any;
@@ -12,6 +13,8 @@ interface MemberState {
   fetchSearchedMembersList: (search: string, tagsIdArray: string[]) => Promise<void>;
   fetchUsedTags: () => Promise<void>;
   setMembers: (newMembers: any[]) => void;
+  fetchMemberProfile: (userId: string) => Promise<void>;
+  memberProfile: any
 }
 
 const useMemberStore = create<MemberState>((set) => ({
@@ -21,6 +24,7 @@ const useMemberStore = create<MemberState>((set) => ({
   isLoading: false,
   statusCode: 0,
   error: null,
+  memberProfile: {},
   setMembers: (newMembers: any[]) => set({ members: newMembers }),
   fetchSearchedMembersList: async (search, tagsIdArray) => {
     set({ isLoading: true });
@@ -53,6 +57,25 @@ const useMemberStore = create<MemberState>((set) => ({
     } catch (error) {
       console.log("❌ Error fetching tags", error);
       set({ tags: [] });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchMemberProfile: async(userId: string) => {
+    set({ isLoading: true})
+    try {
+
+      const response = await axiosInstance.get(`/users/${userId}/details`);
+
+      set({ memberProfile: response.data.data });
+      set({statusCode: response.data.status});
+      
+    } catch (error: AxiosError | any) {
+
+      console.log("❌ Error fetching member profile", error);
+      set({ memberProfile: [] });
+      set({statusCode: error.response.status});
     } finally {
       set({ isLoading: false });
     }

@@ -23,7 +23,7 @@ const userTagLists = async (request, response) => {
     if (tags.length === 0) {
       return response.status(200).json(new ApiResponse(200, [], "No tags found"));
     }
-    
+
     response.status(200).json(new ApiResponse(200, tags, "Tags found successfully"));
 
   } catch (error) {
@@ -69,17 +69,16 @@ const searchedUserLists = async (request, response) => {
           },
           ...(searchTagIds.length > 0
             ? [
-                {
-                  tags: {
-                    some: {
-                      id: {
-                        in: searchTagIds,
-                        mode: 'insensitive'
-                      }
+              {
+                tags: {
+                  some: {
+                    id: {
+                      in: searchTagIds
                     }
                   }
                 }
-              ]
+              }
+            ]
             : [])
         ]
       },
@@ -97,19 +96,20 @@ const searchedUserLists = async (request, response) => {
         role: false,
         isActive: false,
         twitter: false,
-        github: false,
         linkedIn: false,
         hashnode: false,
         peerlist: false,
         updatedAt: false,
         designation: false,
+        visitStreak: false,
+        lastVisitDate: false,
         _count: {
           select: {
             teams: true,
             userVisitingTrack: true
           }
         }
-        },
+      },
       skip,
       take: limit
     });
@@ -117,7 +117,7 @@ const searchedUserLists = async (request, response) => {
     if (users.length === 0) {
       return response.status(200).json(new ApiResponse(200, [], "No users found"));
     }
-    
+
     response.status(200).json(new ApiResponse(200, users, "Users found successfully"));
 
   } catch (error) {
@@ -128,7 +128,7 @@ const searchedUserLists = async (request, response) => {
 }
 
 const userProfile = async (request, response) => {
-  
+
   const userId = request.params.userId;
   console.log(`userId: ${userId}`);
 
@@ -137,7 +137,7 @@ const userProfile = async (request, response) => {
   }
 
   try {
-    
+
     const member = await prisma.user.findUnique({
       where: {
         userId
@@ -163,17 +163,26 @@ const userProfile = async (request, response) => {
             createdAt: true,
             teamLeaderId: true,
             members: {
-              select: {
-                userId: true,
-                firstName: true,
-                lastName: true
+              include: {
+                _count: {
+                  select: {
+                    teams: true,
+                    userVisitingTrack: true
+                  }
+                }
               }
             }
           }
         },
+        userVisitingTrack: {
+          select: {
+            userId: true,
+            date: true
+          }
+        },
         _count: {
           select: {
-            userVisitingTrack: true
+            teams: true,
           }
         }
       }

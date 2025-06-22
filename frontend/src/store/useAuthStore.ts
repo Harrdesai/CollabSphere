@@ -3,8 +3,8 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
-import type { RegisterProps } from "../page/register";
-import type { LoginProps } from "@/page/login";
+import type { RegisterProps } from "../page/Register";
+import type { LoginProps } from "@/page/Login";
 
 interface AuthState {
   authUser: any;

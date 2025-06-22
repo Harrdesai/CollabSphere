@@ -1,15 +1,14 @@
 // src/components/Sidebar/index.tsx
 
-import { HomeIcon, LogOutIcon, SearchIcon, UserSearchIcon } from "lucide-react"
+import { HomeIcon, LogOutIcon, UserSearchIcon } from "lucide-react"
 import { useAuthStore } from "@/store/useAuthStore"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import { Link } from "react-router-dom"
-
-// sidebar on mousehover sidebar will appear else it show's only icon
+import teamLogo from "@/assets/team.svg";
 const Sidebar = () => {
   const { logout } = useAuthStore()
   return (
-      <div className={`w-min sticky top-16 m-2 ml-4 rounded-3xl p-2 space-y-2 h-min bg-stone-300`}>
+      <div className={`w-min sticky top-18 m-2 ml-4 rounded-3xl p-2 space-y-2 h-min bg-stone-300`}>
         {/* route to "/" */}
         <div>
           <Tooltip>
@@ -39,7 +38,7 @@ const Sidebar = () => {
           <Tooltip>
             <TooltipTrigger>
               <Link to="/teams">
-                <SearchIcon/>
+                <img src={teamLogo} alt="teams" className="font-bold" />
               </Link>
             </TooltipTrigger>
             <TooltipContent>

@@ -9,8 +9,8 @@ import { useAuthStore } from './store/useAuthStore';
 
 // pages
 import HomePage from './page/HomePage'
-import LoginPage from './page/login'
-import Register from './page/register';
+import LoginPage from './page/Login'
+import Register from './page/Register';
 import Teams from './page/TeamsList';
 import MembersList from './page/MembersList';
 // src/App.tsx

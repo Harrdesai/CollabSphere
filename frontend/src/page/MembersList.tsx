@@ -53,9 +53,9 @@ const MembersList = () => {
           />
           <div className="flex flex-wrap gap-2 w-full">
             {tags.map((tag: any) => (
-              <label
+              <Label
                 key={tag.id}
-                className="flex items-center gap-2 border-2 rounded-full pl-2 pr-2 pb-0.5 cursor-pointer"
+                className="flex items-center h-6 bg-muted text-muted-foreground gap-2 border-2 rounded-full pl-2 pr-2 pb-0.5 cursor-pointer"
               >
                 <input
                   type="checkbox"
@@ -72,7 +72,7 @@ const MembersList = () => {
                   </div>
                 )}
                 <span className="whitespace-nowrap">{tag.name}</span>
-              </label>
+              </Label>
             ))}
           </div>
         </CardHeader>
@@ -82,17 +82,17 @@ const MembersList = () => {
           members.map((member: any) => (
             <Card
               key={member.userId}
-              className="m-0 p-2 max-w-full gap-2 hover:shadow-2xl hover:bg-stone-100"
+              className="m-0 p-2 max-w-full gap-2 bg-muted cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
               onClick={() => navigate(`/members/${member.userId}`)}
             >
               <CardHeader className="flex flex-row items-center gap-2 pl-0">
-                <Avatar className="w-12 h-12">
-                  <AvatarFallback className="text-xl">
+                <Avatar className="w-12 h-12 border-2">
+                  <AvatarFallback className="text-xl bg-neutral-200 font-semibold dark:bg-neutral-700">
                     {member.firstName.charAt(0).toUpperCase() + member.lastName.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <CardTitle>
-                  <div className="flex gap-2 text-xl text-muted-foreground">
+                <CardTitle className="bg-transparent dark:bg-transparent">
+                  <div className="flex gap-2 text-xl">
                   {member.firstName} {member.lastName}
                   {member.isTeamLeader && (
                 <Label className="border-2 rounded-full px-2 w-32 bg-muted py-1 h-6 m-1">

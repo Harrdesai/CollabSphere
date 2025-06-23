@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { Label } from "@/components/ui/label";
 import { BadgeInfoIcon, Building2, GitCompareArrowsIcon, Shield } from "lucide-react";
 import { userActiveness } from "@/lib/helper";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -34,8 +34,8 @@ const MembersProfile = () => {
     <Card className="flex w-full flex-row rounded-3xl items-center gap-2 p-2 h-[88vh]">
       {memberProfile && (
         <Card className="flex w-full flex-col gap-2 p-0 h-full overflow-y-auto border-none shadow-none">
-          <Card className="flex flex-col w-full gap-2 p-2">
-            <CardTitle className="flex gap-2 pl-4 text-2xl text-muted-foreground">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
+            <CardTitle className="flex gap-2 pl-4 pb-0 pr-1 text-2xl text-primary">
               {memberProfile.firstName} {memberProfile.lastName}
               {memberProfile.isTeamLeader && (
                 <Label className="border-2 rounded-full bg-muted px-2 py-1 h-6 m-1">
@@ -55,20 +55,23 @@ const MembersProfile = () => {
             )}
 
             {/* Ohter details */}
-            <Label className="text-xl">
-              Email: <span className="font-normal">{memberProfile.email} </span>
+            <Label className="text-xl font-normal text-primary mt-2">
+              Email:{" "}
+              <span className="font-light text-primary">
+                {memberProfile.email}{" "}
+              </span>
             </Label>
-            <Label className="text-xl">
-              Git Commits: <span className="font-normal"> 0 </span>
+            <Label className="text-xl font-normal text-primary">
+              Git Commits: <span className="font-light text-primary"> 0 </span>
             </Label>
-            <Label className="text-xl flex items-center gap-1 flex-wrap sm:flex-nowrap">
+            <Label className="text-xl flex items-center gap-1 flex-wrap sm:flex-nowrap font-normal text-primary">
               Activeness:{" "}
-              <span className="font-normal">
-                <span className="font-semibold">
+              <span className="font-light text-primary">
+                <span className="font-normal">
                   {memberProfile._count?.userVisitingTrack}{" "}
                 </span>{" "}
                 Day(s) out of{" "}
-                <span className="font-semibold">
+                <span className="font-normal">
                   {
                     userActiveness(
                       memberProfile.createdAt,
@@ -79,19 +82,19 @@ const MembersProfile = () => {
                 Days from joined{" "}
               </span>
             </Label>
-            <Label className="text-xl">
+            <Label className="text-xl font-normal text-primary">
               Part of:{" "}
-              <span className="font-semibold">
+              <span className="font-normal">
                 {memberProfile._count?.teams}{" "}
-                <span className="font-normal"> Teams </span>
+                <span className="font-light text-primary"> Teams </span>
               </span>
             </Label>
-            <Label className="text-xl">
-              Masterji Score: <span className="font-semibold">544</span>
-              <span className="font-normal"> Points </span>
+            <Label className="text-xl font-normal text-primary">
+              Masterji Score: <span className="font-normal">544</span>
+              <span className="font-light text-primary"> Points </span>
             </Label>
           </Card>
-          <CardTitle className="flex w-full gap-2 pl-4 text-2xl text-muted-foreground">
+          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Team Details
           </CardTitle>
           <Card className="flex flex-col w-full gap-2 p-2">
@@ -101,147 +104,152 @@ const MembersProfile = () => {
                 return (
                   <Card
                     key={team.createdAt}
-                    className="flex flex-col w-full gap-2 p-2"
+                    className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent border-3 border-dashed"
                   >
-                    <Label className="text-xl">
+                    <Label className="text-xl font-normal text-primary">
                       Team Title:
-                      <span className="font-normal text-wrap">
-                        {team.title}
+                      <span className="font-light text-wrap">{team.title}</span>
+                    </Label>
+                    <Label className="text-xl font-normal text-primary">
+                      About the Team:
+                      <span className="font-light">{team.about}</span>
+                    </Label>
+                    <Label className="text-xl font-normal text-primary">
+                      Established on:
+                      <span className="font-light">
+                        {moment(team.createdAt).format("MMM DD, YYYY")}
                       </span>
                     </Label>
-                    <Label className="text-xl">
-                      About the Team:
-                      <span className="font-normal">{team.about}</span>
-                    </Label>
-                    <Label className="text-xl">
-                      Established on:
-                      <span className="font-normal">{moment(team.createdAt).format("MMM DD, YYYY")}</span>
-                    </Label>
-                    <Label className="text-xl font-semibold">
+                    <Label className="text-xl font-normal text-primary">
                       Members of the team:
                     </Label>
                     {team.members.length > 0 &&
                       team.members.map((member: any) => (
-                        
-            <Card
-              key={member.userId}
-              className="m-0 p-2 max-w-full gap-2 hover:shadow-2xl hover:bg-stone-100"
-              onClick={() => navigate(`/members/${member.userId}`)}
-            >
-              <CardHeader className="flex flex-row items-center gap-2 pl-0">
-                <Avatar className="w-12 h-12">
-                  <AvatarFallback className="text-xl">
-                    {member.firstName.charAt(0).toUpperCase() + member.lastName.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <CardTitle>
-                  <div className="flex gap-2 text-xl text-muted-foreground">
-                  {member.firstName} {member.lastName}
-                  {member.isTeamLeader && (
-                <Label className="border-2 rounded-full px-2 w-32 bg-muted py-1 md:h-6 m-1">
-                  <Shield className="h-4 w-4" />
-                  Team Leader
-                </Label>
-              )}
-              </div>
-                  {member.about?.length > 200 ? (
-                    <ExpandableText text={member.about}/>
-                  ) : (
-                    <CardDescription className="font-normal my-2">{member.about}</CardDescription>
-                  )
-                  }
-                </CardTitle>
-              </CardHeader>
-              <CardFooter className="gap-4 pl-0 text-muted-foreground">
-                <Label className="border-2 rounded-full px-2 bg-muted py-1">
-                  <HoverCard>
-                    <HoverCardTrigger>
-                      <BadgeInfoIcon className="size-4 mr-2" />
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      <span className="font-bold">
-                        {member._count?.userVisitingTrack}{" "}
-                      </span>{" "}
-                      Day(s) active on the plateform outof <br />
-                      <span className="font-bold">
-                        {
-                          userActiveness(
-                            member.createdAt,
-                            member._count?.userVisitingTrack
-                          ).noOfDaysUserOld
-                        }{" "}
-                      </span>{" "}
-                      Days from joined
-                    </HoverCardContent>
-                  </HoverCard>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      {member._count?.userVisitingTrack} /{" "}
-                      {
-                        userActiveness(
-                          member.createdAt,
-                          member._count?.userVisitingTrack
-                        ).noOfDaysUserOld
-                      }
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      User Activeness on Platefrom
-                    </TooltipContent>
-                  </Tooltip>
-                </Label>
-                <Label className="border-2 rounded-full px-2 bg-muted py-1">
-                  <Tooltip>
-                    <TooltipTrigger className="flex">
-                      <GitCompareArrowsIcon className="size-4 mr-2" />
-                      56
-                    </TooltipTrigger>
-                    <TooltipContent>Git comit</TooltipContent>
-                  </Tooltip>
-                </Label>
-                <Label className="border-2 rounded-full px-2 bg-muted py-1">
-                  <Tooltip>
-                    <TooltipTrigger className="flex">
-                      <Building2 className="size-4 mr-2" />
-                      {member._count?.teams}
-                    </TooltipTrigger>
-                    <TooltipContent>Teams Joined</TooltipContent>
-                  </Tooltip>
-                </Label>
-                <Label className="border-2 rounded-full px-2 bg-muted py-1">
-                  <Tooltip>
-                    <TooltipTrigger className="flex">423</TooltipTrigger>
-                    <TooltipContent>Masterji Points / ranking</TooltipContent>
-                  </Tooltip>
-                </Label>
-              </CardFooter>
-            </Card>
+                        <Card
+                          key={member.userId}
+                          className="m-0 p-2 max-w-full gap-2 bg-muted cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
+                          onClick={() => navigate(`/members/${member.userId}`)}
+                        >
+                          <CardHeader className="flex flex-row items-center gap-2 pl-0">
+                            <Avatar className="w-12 h-12 border-2">
+                              <AvatarFallback className="text-xl bg-neutral-200 font-semibold dark:bg-neutral-700">
+                                {member.firstName.charAt(0).toUpperCase() +
+                                  member.lastName.charAt(0).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <CardTitle className="bg-transparent dark:bg-transparent">
+                              <div className="flex gap-2 text-xl">
+                                {member.firstName} {member.lastName}
+                                {member.isTeamLeader && (
+                                  <Label className="border-2 rounded-full px-2 w-32 bg-muted py-1 h-6 m-1">
+                                    <Shield className="h-4 w-4" />
+                                    Team Leader
+                                  </Label>
+                                )}
+                              </div>
+                              {member.about?.length > 200 ? (
+                                <ExpandableText text={member.about} />
+                              ) : (
+                                <CardDescription className="font-normal my-2">
+                                  {member.about}
+                                </CardDescription>
+                              )}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardFooter className="gap-4 pl-0 text-muted-foreground">
+                            <Label className="border-2 rounded-full px-2 bg-muted py-1">
+                              <HoverCard>
+                                <HoverCardTrigger>
+                                  <BadgeInfoIcon className="size-4 mr-2" />
+                                </HoverCardTrigger>
+                                <HoverCardContent>
+                                  <span className="font-bold">
+                                    {member._count.userVisitingTrack}{" "}
+                                  </span>{" "}
+                                  Day(s) active on the plateform outof <br />
+                                  <span className="font-bold">
+                                    {
+                                      userActiveness(
+                                        member.createdAt,
+                                        member._count.userVisitingTrack
+                                      ).noOfDaysUserOld
+                                    }{" "}
+                                  </span>{" "}
+                                  Days from joined
+                                </HoverCardContent>
+                              </HoverCard>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  {member._count.userVisitingTrack} /{" "}
+                                  {
+                                    userActiveness(
+                                      member.createdAt,
+                                      member._count.userVisitingTrack
+                                    ).noOfDaysUserOld
+                                  }
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  User Activeness on Platefrom
+                                </TooltipContent>
+                              </Tooltip>
+                            </Label>
+                            <Label className="border-2 rounded-full px-2 bg-muted py-1">
+                              <Tooltip>
+                                <TooltipTrigger className="flex">
+                                  <GitCompareArrowsIcon className="size-4 mr-2" />
+                                  56
+                                </TooltipTrigger>
+                                <TooltipContent>Git comit</TooltipContent>
+                              </Tooltip>
+                            </Label>
+                            <Label className="border-2 rounded-full px-2 bg-muted py-1">
+                              <Tooltip>
+                                <TooltipTrigger className="flex">
+                                  <Building2 className="size-4 mr-2" />
+                                  {member._count.teams}
+                                </TooltipTrigger>
+                                <TooltipContent>Teams Joined</TooltipContent>
+                              </Tooltip>
+                            </Label>
+                            <Label className="border-2 rounded-full px-2 bg-muted py-1">
+                              <Tooltip>
+                                <TooltipTrigger className="flex">
+                                  423
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  Masterji Points / ranking
+                                </TooltipContent>
+                              </Tooltip>
+                            </Label>
+                          </CardFooter>
+                        </Card>
                       ))}
                   </Card>
                 );
               })}
           </Card>
-          <CardTitle className="flex w-full gap-2 pl-4 text-2xl text-muted-foreground">
+          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Team Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
             <p>team</p>
             <p>team</p>
             <p>team</p>
             <p>team</p>
           </Card>
-          <CardTitle className="flex w-full gap-2 pl-4 text-2xl text-muted-foreground">
+          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Git Commit Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
             <p>git</p>
             <p>git</p>
             <p>git</p>
             <p>git</p>
           </Card>
-          <CardTitle className="flex w-full gap-2 pl-4 text-2xl text-muted-foreground">
+          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Masterji Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
             <p>masterji</p>
             <p>masterji</p>
             <p>masterji</p>

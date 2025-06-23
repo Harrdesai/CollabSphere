@@ -183,6 +183,7 @@ const userProfile = async (request, response) => {
         _count: {
           select: {
             teams: true,
+            userVisitingTrack: true
           }
         }
       }

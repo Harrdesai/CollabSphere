@@ -2,8 +2,7 @@
 
 import express from 'express';
 import { authMiddleware } from '../middleware/auth.middleware.js';
-import { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser } from '../controllers/teams.controllers.js'
-
+import { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser, getTeamDetail } from '../controllers/teams.controllers.js'
 
 const teamsRoutes = express.Router();
 
@@ -52,5 +51,7 @@ teamsRoutes.get('/:teamId/get-team-members', authMiddleware, getListOfTeamMember
 teamsRoutes.get('/:teamId/get-timeline-of-team', authMiddleware, getTimelineOfTeam);
 
 teamsRoutes.get('/get-timeline-of-user', authMiddleware, getTimelineOfUser);
+
+teamsRoutes.get('/:teamId/get-detail', authMiddleware, getTeamDetail)
 
 export default teamsRoutes;

@@ -34,7 +34,7 @@ const MembersProfile = () => {
     <Card className="flex w-full flex-row rounded-3xl items-center gap-2 p-2 h-[88vh]">
       {memberProfile && (
         <Card className="flex w-full flex-col gap-2 p-0 h-full overflow-y-auto border-none shadow-none">
-          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
             <CardTitle className="flex gap-2 pl-4 pb-0 pr-1 text-2xl text-primary">
               {memberProfile.firstName} {memberProfile.lastName}
               {memberProfile.isTeamLeader && (
@@ -231,7 +231,7 @@ const MembersProfile = () => {
           <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Team Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
             <p>team</p>
             <p>team</p>
             <p>team</p>
@@ -240,7 +240,7 @@ const MembersProfile = () => {
           <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Git Commit Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
             <p>git</p>
             <p>git</p>
             <p>git</p>
@@ -249,7 +249,7 @@ const MembersProfile = () => {
           <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Masterji Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
             <p>masterji</p>
             <p>masterji</p>
             <p>masterji</p>

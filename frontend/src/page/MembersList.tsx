@@ -19,7 +19,6 @@ const MembersList = () => {
 
   useEffect(() => {
     fetchUsedTags();
-    console.log(`tags`, tags);
   }, [fetchUsedTags]);
 
   const [searchKeyWord, setSearchKeyWord] = useState("");

@@ -74,7 +74,7 @@ const useMemberStore = create<MemberState>((set) => ({
     } catch (error: AxiosError | any) {
 
       console.log("❌ Error fetching member profile", error);
-      set({ memberProfile: [] });
+      set({ memberProfile: {} });
       set({statusCode: error.response.status});
     } finally {
       set({ isLoading: false });

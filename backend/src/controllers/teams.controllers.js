@@ -1454,17 +1454,18 @@ const getTeams = async (request, response) => {
         isActive: true
       },
       include: {
-        teamLeader: {
+        tags: {
           select: {
-            firstName: true,
-            lastName: true
+            id: true,
+            name: true
           }
         },
         members: {
           select: {
             userId: true,
             firstName: true,
-            lastName: true  
+            lastName: true,
+            isTeamLeader: true
           }
         }
       }
@@ -1548,9 +1549,7 @@ const getTeamDetails = async (request, response) => {
         }
       })
 
-      return {
-        team: team
-      }
+      return team
     })
 
     if (!details) {
@@ -1558,9 +1557,7 @@ const getTeamDetails = async (request, response) => {
     }
 
     response.status(200).json(
-      new ApiResponse(200, {
-        details: details
-      }, "Team details fetched successfully")
+      new ApiResponse(200, details, "Team details fetched successfully")
     )
 
   } catch (error) {
@@ -1877,9 +1874,80 @@ const getTimelineOfUser = async (request, response) => {
 
 }
 
+const getTeamDetail = async (request, response) => {
 
+  try {
 
-export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser };
+    const teamId = request.params.teamId;
+
+    console.log(`team ${teamId}`)
+    
+    if ( !teamId ) {
+      throw new ApiError(400, "Please provide team id");
+    }
+
+    const details = await prisma.$transaction(async (prismaTx) => {
+
+      const team = await prismaTx.teams.findUnique({
+        where: {
+          id: teamId
+        },
+        include: {
+          members: {
+            include: {
+              mobileNumber: false,
+              username: false,
+              password:false,
+              email: false,
+              isTeamLeader: false,
+              role: false,
+              twitter: false,
+              peerlist: false,
+              hashnode: false,
+              linkedIn: false,
+              github: false,
+              isActive: false,
+              lastVisitDate: false,
+              designation: false,
+              updatedAt: false,
+              _count: {
+                select: {
+                  teams: true,
+                  userVisitingTrack: true
+                }
+              }
+            }
+          },
+          uniqueTitle: false,
+          teamLeaderId: false,
+          link:false,
+          updatedAt:false
+        }
+      })
+
+      return team
+    })
+
+    if (!details) {
+      throw new ApiError(404, "Team details not found");
+    }
+
+    response.status(200).json(
+      new ApiResponse(200, details, "Team details fetched successfully")
+    )
+
+  } catch (error) {
+
+    response.status(error.statusCode || 500).json(
+      new ApiError(error.statusCode || 500, "Failed to fetch team details", {
+        error: error.message
+      })
+    )
+  }
+
+}
+
+export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser, getTeamDetail };
 
 
 // verify team leader id while updating team detail

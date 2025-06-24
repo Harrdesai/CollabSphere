@@ -6,9 +6,11 @@ import toast from "react-hot-toast";
 
 interface TeamState {
   teams: any;
+  teamDetail: any;
   isLoading: boolean;
   statusCode: number;
   fetchAllTeams: () => Promise<void>;
+  fetchTeamDetails: (teamId: string) => Promise<void>;
 }
 
 const useTeamStore = create<TeamState>((set) => ({
@@ -17,6 +19,7 @@ const useTeamStore = create<TeamState>((set) => ({
   isLoading: false,
   statusCode: 0,
   error: null,
+  teamDetail: {},
 
   fetchAllTeams: async () => {
 
@@ -36,6 +39,29 @@ const useTeamStore = create<TeamState>((set) => ({
       
     } finally {
       
+      set({ isLoading: false });
+      
+    }
+  },
+
+  fetchTeamDetails: async (teamId: string) => {
+    
+    set({ isLoading: true});
+    try {
+      
+      const response = await axiosInstance.get(`/teams/${teamId}/get-detail`); 
+      set({ teamDetail: response.data.data });
+      set({ statusCode: response.data.status });
+
+      console.log(`response`, response);
+      
+    } catch (error) {
+      
+      console.log("❌ Error fetching team details", error);
+      toast.error("❌ Error fetching team details");
+      set({ teamDetail: null });
+      
+    } finally {
       set({ isLoading: false });
       
     }

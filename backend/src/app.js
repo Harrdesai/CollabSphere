@@ -53,6 +53,7 @@ import userRoutes from './routes/users.routes.js';
 import teamsRoutes from './routes/teams.routes.js';
 import noticeBoardRoutes from './routes/noticeBoard.routes.js'
 import chatRoutes from './routes/chat.routes.js'
+import tagRoutes from './routes/tags.route.js'
 
 app.use("/api/v1/healthcheck", healthCheckRouter)
 app.use("/api/v1/auth", authRouter)
@@ -61,5 +62,6 @@ app.use("/api/v1/users", userRoutes)
 app.use("/api/v1/teams", teamsRoutes)
 app.use("/api/v1/notice", noticeBoardRoutes)
 app.use("/api/v1/:teamId/chat", chatRoutes)
+app.use("/api/v1/tags", tagRoutes)
 
 export default app;

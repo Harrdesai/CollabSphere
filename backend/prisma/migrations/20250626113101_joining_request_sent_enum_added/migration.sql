@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "Action" ADD VALUE 'JOINING_REQUEST_SENT';

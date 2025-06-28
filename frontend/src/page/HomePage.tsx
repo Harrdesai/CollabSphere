@@ -7,6 +7,8 @@ import moment from "moment";
 
 import { useAuthStore } from "@/store/useAuthStore";
 import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
+import NoticeCreateModal from "@/components/Modals/Notice/createNotice";
+import CreateTeamModal from "@/components/Modals/Teams/createTeam";
 
 export interface NoticeProps {
   id: string;
@@ -24,11 +26,12 @@ const HomePage = () => {
     getUserDetails();
   }, [getUserDetails]);
 
-  const [_, forceUpdate] = useState(0);
+  const [_, forceUpdate ] = useState(0);
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
-  const [selectedNoticeDetail, setSelectedNoticeDetail] =
-    useState<NoticeProps | null>(null);
+  const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
   const [expanded, setExpanded] = useState(false);
+  const [ createNoticeModalOpen, setCreateNoticeModalOpen ] = useState(false);
+  const [createTeamModalOpen, setCreateTeamModalOpen] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
@@ -62,10 +65,20 @@ const HomePage = () => {
     setNoticeDetailModalOpen(true);
   };
 
+  const handleCreateNotice = () => {
+    setCreateNoticeModalOpen(true);
+  };
+  
+  const handleCreateTeam = () => {
+    setCreateTeamModalOpen(true);
+    console.log(`clicked`);
+  }
+
   if (!authUserDetails) {
     return <div>Loading...</div>;
   }
   const teamsData = authUserDetails.teams;
+  
   return (
     <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
       {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
@@ -82,18 +95,24 @@ const HomePage = () => {
               const visibleNotices = expanded
                 ? team.notices
                 : team.notices?.slice(0, 3);
-
               return (
                 <Card
                   className="flex flex-col w-full p-2 border-2 shadow-none gap-2 m-0"
                   key={team.id}
                 >
-                  <CardTitle className="pl-4 text-xl bg-accent w-fit rounded-full dark:bg-accent pr-4 pb-1">
+                  <div className="flex justify-between">
+                    <CardTitle className="pl-4 text-xl bg-accent w-fit rounded-full dark:bg-accent pr-4 pb-1">
                     {team.title}
                   </CardTitle>
-
+                  <Button
+                    className="text-3xl px-2 pb-1"
+                    onClick={() => handleCreateNotice()}
+                  >
+                    +
+                  </Button>
+                  </div>
                   {team.notices?.length > 0 && (
-                    <CardDescription>
+                    <CardDescription className="pl-8">
                       Here is a notice of {team.title}
                     </CardDescription>
                   )}
@@ -144,7 +163,15 @@ const HomePage = () => {
         </ScrollArea>
         {/* {JSON.stringify(teamsData.map((team: any) => team.chats))} */}
       </Card>
-      <Card className="flex w-1/3 gap-2 p-2">
+      <Card className="flex w-1/3 gap-2 p-2 border-0 pt-0 justify-between h-full ">
+      <Button
+        onClick={() => handleCreateTeam()}
+        className="text-xl px-2 pb-1"
+      >
+        Create Team
+      </Button>
+      <Card className="flex w-full gap-2 p-2">
+      
         {teamsData.map((team: any) => (
           <Card
             key={team.id}
@@ -192,11 +219,23 @@ const HomePage = () => {
           </Card>
         ))}
       </Card>
+      </Card>
       {/* Modal */}
+
+      <NoticeCreateModal
+        isOpen={createNoticeModalOpen}
+        onClose={() => setCreateNoticeModalOpen(false)}
+      />
+
       <NoticeDetailModal
         isOpen={noticeDetailModalOpem}
         onClose={() => setNoticeDetailModalOpen(false)}
         notice={selectedNoticeDetail ?? ({} as NoticeProps)}
+      />
+
+      <CreateTeamModal
+        isOpen={createTeamModalOpen}
+        onClose={() => setCreateTeamModalOpen(false)}
       />
     </Card>
   );

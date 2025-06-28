@@ -1,11 +1,11 @@
 // src/components/Modals/Notice/noticeDetail.tsx
 
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "../../ui/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+
 import moment from "moment";
 import type { NoticeProps } from "@/page/HomePage";
-
 export interface NoticeDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,17 +25,21 @@ const NoticeDetailModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{notice.title}</DialogTitle>
-        </DialogHeader>
-          <DialogDescription />
-        <Card>
-          <CardContent>
-            <Card>{notice.content}</Card>
-            {dateFormat(notice.startDate)} - {dateFormat(notice.endDate)}
-          </CardContent>
-        </Card>
+      <DialogContent className="rounded-3xl">
+        <DialogTitle className="text-neutral-800 dark:text-neutral-50 dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 p-1 px-4 w-fit rounded-full">
+          {notice.title}
+        </DialogTitle>
+        <DialogDescription className="pl-8">
+          {notice.content}
+        </DialogDescription>
+        <Label className="text-base font-normal text-primary">
+          Published On: 
+          <span className="font-light">{dateFormat(notice.startDate)} </span>
+        </Label>
+        <Label className="text-base font-normal text-primary">
+          Expires On: 
+          <span className="font-light">{dateFormat(notice.endDate)} </span>
+        </Label>
         <DialogFooter className="flex flex-col gap-4">
           <DialogClose asChild>
             <Button type="button" variant="secondary">

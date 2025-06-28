@@ -10,7 +10,9 @@ const createTeam = async (request, response) => {
 
   try {
 
-    const { title, about, link = [], ArrayOfTagIds = [] } = request.body;
+    const { title, about, link = [], tags: ArrayOfTagIds = [] } = request.body;
+
+    console.log(`title: ${title}, about: ${about}, link: ${link}, tags: ${ArrayOfTagIds}`);
 
     const teamLeaderId = request.user.userId;
 
@@ -50,7 +52,7 @@ const createTeam = async (request, response) => {
     })
 
     if (isTeamAlreadyCreated) {
-      throw new ApiError(400, "Team already exists");
+      throw new ApiError(400, "Team already exists with same title");
     }
 
     const team = await prisma.$transaction(async (prisma) => {
@@ -64,6 +66,11 @@ const createTeam = async (request, response) => {
           link,
           tags: {
             connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
+          },
+          members: {
+            connect: {
+              userId: teamLeaderId
+            }
           }
         }
       });
@@ -304,13 +311,25 @@ const deleteTeam = async (request, response) => {
         }
       })
 
+      const teamMembers = await prisma.teams.findUnique({
+        where: { id: teamId },
+        select: {
+          members: {
+            select: { userId: true }
+          }
+        }
+      });
       // in teams table, make isActive = false
       await prisma.teams.update({
         where: {
           id: teamId
         },
         data: {
-          isActive: false
+          isActive: false,
+          members: {
+            disconnect: 
+              teamMembers.members.map((member) => ({ userId: member.userId }))
+          }
         }
       })
 
@@ -370,6 +389,7 @@ const sendInviteToJoinTeam = async (request, response) => {
     const { userId, designation } = request.body;
     const teamId = request.params.teamId;
     const teamLeaderIdFromUser = request.user.userId
+
 
     if (!teamId || !userId || !designation || !teamLeaderIdFromUser) {
       throw new ApiError(400, "Please provide team id, user id and designation");
@@ -548,8 +568,6 @@ const acceptTeamInvitation = async (request, response) => {
       }
     })
 
-    console.log(`getUserIdFromInvitation : ${JSON.stringify(getUserIdFromInvitation)}`);
-
     if (userId !== getUserIdFromInvitation.memberId) {
       throw new ApiError(400, "you are not the invitee of this invitation, you can't accept this invitation");
     }
@@ -570,6 +588,8 @@ const acceptTeamInvitation = async (request, response) => {
           designation: true
         }
       })
+
+      console.log(`invitation----------- : ${JSON.stringify(invitation)}`);
 
       if (!invitation) {
         throw new ApiError(404, "Invitation no longer exists");
@@ -614,6 +634,34 @@ const acceptTeamInvitation = async (request, response) => {
           designation: invitation.designation
         }
       })
+
+      const isAlreadyMember = await prisma.teams.findUnique({
+        where: {
+          id: invitation.teamId
+        },
+        select: {
+          members: {
+            where: {
+              userId: invitation.memberId
+            }
+          }
+        }
+      })
+
+      if (isAlreadyMember.members.length === 0) {
+        await prisma.teams.update({
+          where: {
+            id: invitation.teamId
+          },
+          data: {
+            members: {
+              connect: {
+                userId: invitation.memberId
+              }
+            }
+          }
+        })
+      }
 
       return invitation
     })
@@ -930,7 +978,7 @@ const sendRequestToJoinTeam = async (request, response) => {
         data: {
           teamId: request.teamId,
           userId: request.memberId,
-          action: $Enums.Action.JOIN_REQUEST_SENT,
+          action: $Enums.Action.JOINING_REQUEST_SENT,
           designation: request.designation,
           requestId: request.id
         }
@@ -1665,7 +1713,7 @@ const getListOfTeamMembers = async (request, response) => {
         isActive: true
       },
       include: {
-        user:true
+        user: true
       }
     })
 
@@ -1881,8 +1929,8 @@ const getTeamDetail = async (request, response) => {
     const teamId = request.params.teamId;
 
     console.log(`team ${teamId}`)
-    
-    if ( !teamId ) {
+
+    if (!teamId) {
       throw new ApiError(400, "Please provide team id");
     }
 
@@ -1897,7 +1945,7 @@ const getTeamDetail = async (request, response) => {
             include: {
               mobileNumber: false,
               username: false,
-              password:false,
+              password: false,
               email: false,
               isTeamLeader: false,
               role: false,
@@ -1920,8 +1968,8 @@ const getTeamDetail = async (request, response) => {
           },
           uniqueTitle: false,
           teamLeaderId: false,
-          link:false,
-          updatedAt:false
+          link: false,
+          updatedAt: false
         }
       })
 

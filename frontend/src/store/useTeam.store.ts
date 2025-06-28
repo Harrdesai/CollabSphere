@@ -3,12 +3,14 @@
 import { create } from "zustand";
 import { axiosInstance } from "@/lib/axios";
 import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 
 interface TeamState {
   teams: any;
   teamDetail: any;
   isLoading: boolean;
   statusCode: number;
+  createTeam: (createTeamData: TeamState) => Promise<any>;
   fetchAllTeams: () => Promise<void>;
   fetchTeamDetails: (teamId: string) => Promise<void>;
 }
@@ -20,6 +22,28 @@ const useTeamStore = create<TeamState>((set) => ({
   statusCode: 0,
   error: null,
   teamDetail: {},
+
+  createTeam: async (createTeamData: TeamState) => {
+    
+    set ({ isLoading: true});
+    try {
+      
+      const response = await axiosInstance.post("/teams/create", createTeamData);
+      console.log(`response`, response);
+      return response.status;
+
+    } catch (error: AxiosError | any) {
+      
+      console.log("❌ Error creating team", error);
+      toast.error("❌ Error creating team");
+      return error.response.data;
+      
+    } finally {
+      
+      set({ isLoading: false });
+      
+    }
+  },
 
   fetchAllTeams: async () => {
 

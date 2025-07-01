@@ -1,24 +1,34 @@
 //src/page/MembersProfile.tsx
 
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Label } from "@/components/ui/label";
-import { BadgeInfoIcon, Building2, GitCompareArrowsIcon, Shield } from "lucide-react";
+import { BadgeInfoIcon, Building2, GitCompareArrowsIcon, PlusCircle, Shield } from "lucide-react";
 import { userActiveness } from "@/lib/helper";
 import { useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import moment from "moment";
 
 import useMemberStore from "@/store/useMember.store";
 import ExpandableText from "@/components/ExpandableText";
+import SendInvitationModal from "@/components/Modals/sendInvitationModal";
 
 const MembersProfile = () => {
-  const { id } = useParams<{ id: string }>();
-  const { memberProfile, isLoading, fetchMemberProfile } = useMemberStore();
   const navigate = useNavigate();
+  
+  const { id } = useParams<{ id: string }>();
+  
+  const { memberProfile, isLoading, fetchMemberProfile } = useMemberStore();
+  const [isSendInvitationModalOpen, setIsSendInvitationModalOpen] = useState(false);
+  const [showInviteButton, setShowInviteButton] = useState(true);
+
+  const handleModalOpen = () => {
+    setIsSendInvitationModalOpen(true);
+  };
 
   useEffect(() => {
     if (id) {
@@ -26,10 +36,18 @@ const MembersProfile = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (memberProfile) {
+      const shouldHideInviteButton =
+        memberProfile._count?.teams > 2 || memberProfile.isTeamLeader;
+      setShowInviteButton(!shouldHideInviteButton);
+    }
+  }, [memberProfile]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  
   return (
     <Card className="flex w-full flex-row rounded-3xl items-center gap-2 p-2 h-[88vh]">
       {memberProfile && (
@@ -44,13 +62,17 @@ const MembersProfile = () => {
                 </Label>
               )}
             </CardTitle>
+            {showInviteButton && (
+              <Button variant={"secondary"} onClick={handleModalOpen}>
+                <PlusCircle />
+                Invite to Join Team
+              </Button>
+            )}
             {memberProfile.about?.length > 200 ? (
               <ExpandableText text={memberProfile.about} />
             ) : (
               <CardDescription className="pl-4 text-muted-foreground">
-                {`${(
-                  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                )} ${memberProfile.about}`}
+                {`${memberProfile.about}`}
               </CardDescription>
             )}
 
@@ -257,6 +279,13 @@ const MembersProfile = () => {
           </Card>
         </Card>
       )}
+
+      <SendInvitationModal
+        isOpen={isSendInvitationModalOpen}
+        onClose={() => setIsSendInvitationModalOpen(false)}
+        userId={id!}
+        memberName={`${memberProfile.firstName} ${memberProfile.lastName}`}
+      />
     </Card>
   );
 };

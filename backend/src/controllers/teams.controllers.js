@@ -390,7 +390,6 @@ const sendInviteToJoinTeam = async (request, response) => {
     const teamId = request.params.teamId;
     const teamLeaderIdFromUser = request.user.userId
 
-
     if (!teamId || !userId || !designation || !teamLeaderIdFromUser) {
       throw new ApiError(400, "Please provide team id, user id and designation");
     }

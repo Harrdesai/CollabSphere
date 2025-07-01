@@ -1,5 +1,6 @@
 import express from 'express';
 import { isUserAvailableInImportedCSV, isUsernameAvailable, registerUser, loginUser, logoutUser, getMe,getMeInDetails, forgetUsername, resetPassword, updateProfile } from '../controllers/auth.controllers.js';
+
 import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const authRoutes = express.Router();

@@ -7,6 +7,7 @@ export interface NoticeProps {
   startDate: Date;
   endDate: Date;
 }
+
 const noticeSchema: z.ZodSchema<NoticeProps> = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters long" }),
   content: z.string().min(3, { message: "Content must be at least 3 characters long" }),

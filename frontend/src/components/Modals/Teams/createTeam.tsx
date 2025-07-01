@@ -67,7 +67,7 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
   const onSubmit = async (data: any) => {
     console.log(`Data: ${JSON.stringify(data)}`);
 
-  const response = await createTeam(data);
+    const response = await createTeam(data);
 
     console.log(`response from create team`, response);
     if (response === 200) {

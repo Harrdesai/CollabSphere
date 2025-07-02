@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import useInvitationStore from "@/store/useInvitation.store";
 import DeleteConfirmationModal from "@/components/Modals/deleteConfirmationModal";
+import RejectConfirmationModal from "@/components/Modals/rejectConfirmationModal";
 
 export interface NoticeProps {
   id: string;
@@ -32,7 +33,7 @@ export interface NoticeProps {
 
 const TeamLeaderHomePage = () => {
   const { authUserDetails, getUserDetails } = useAuthStore();
-  const { fetchPendingInvitations, pendingInvitations } = useInvitationStore();
+  const { fetchPendingInvitations, pendingInvitations, acceptTeamJoiningRequest, isLoading } = useInvitationStore();
 
   useEffect(() => {
     getUserDetails();
@@ -48,6 +49,7 @@ const TeamLeaderHomePage = () => {
   const [includeInactive, setIncludeInactive] = useState(false);
   const [deleteConfirmationModalOpen, setDeleteConfirmationModalOpen] = useState(false);
   const [invitationDetails, setInvitationDetails] = useState<any>(null);
+  const [rejectConfirmationModalOpen, setRejectConfirmationModalOpen] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
@@ -94,6 +96,24 @@ const TeamLeaderHomePage = () => {
     setDeleteConfirmationModalOpen(true);
     setInvitationDetails(data);
   }
+
+  const handleAcceptJoinRequest = async (id: string) => {
+
+    await acceptTeamJoiningRequest(id);
+    fetchPendingInvitations(teamsData[0].id);
+  }
+
+  const handleRejectConfirmation = (data: any) => {
+    setRejectConfirmationModalOpen(true);
+    setInvitationDetails(data);
+  }
+
+  useEffect(() => {
+
+    if (!deleteConfirmationModalOpen && !rejectConfirmationModalOpen) {
+      fetchPendingInvitations(teamsData[0].id);
+    }
+  }, [deleteConfirmationModalOpen, rejectConfirmationModalOpen]);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -245,7 +265,6 @@ const TeamLeaderHomePage = () => {
                 Invitations and Team Join Requests
               </CardTitle>
             </CardHeader>
-
             <ScrollArea className="rounded-2xl max-h-[75vh] border-0">
               <Card className="flex flex-col w-full border-none p-2">
                 {/* {JSON.stringify(pendingInvitations)} */}
@@ -266,10 +285,15 @@ const TeamLeaderHomePage = () => {
                         </Button>
                       ) : (
                         <div>
-                        <Button className="w-min" variant={"outline"}>
+                        <Button className="w-min" variant={"outline"}
+                          onClick={() => { handleAcceptJoinRequest(invitation.id) }}
+                          disabled={isLoading}
+                        >
                           Accept
                         </Button>
-                        <Button className="w-min" variant={"destructive"}>
+                        <Button className="w-min" variant={"destructive"}
+                          onClick={() => {handleRejectConfirmation(invitation) }}
+                        >
                           Decline
                         </Button>
                         </div>
@@ -406,6 +430,12 @@ const TeamLeaderHomePage = () => {
       <DeleteConfirmationModal
         isOpen={deleteConfirmationModalOpen}
         onClose={() => setDeleteConfirmationModalOpen(false)}
+        data={invitationDetails}
+      />
+
+      <RejectConfirmationModal
+        isOpen={rejectConfirmationModalOpen}
+        onClose={() => setRejectConfirmationModalOpen(false)}
         data={invitationDetails}
       />
     </Card>

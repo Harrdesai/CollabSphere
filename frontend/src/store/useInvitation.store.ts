@@ -18,7 +18,12 @@ interface InvitationState {
   pendingInvitations: [];
 
   cancelInvitation: (id: string) => Promise<any>;
+
+  acceptTeamJoiningRequest: (id: string) => Promise<any>;
+
+  rejectTeamJoiningRequest: (id: string, teamId: string) => Promise<any>;
 }
+
 const useInvitationStore = create<InvitationState>((set) => ({
   isLoading: false,
   statusCode: 0,
@@ -53,9 +58,10 @@ const useInvitationStore = create<InvitationState>((set) => ({
       const response = await axiosInstance.get(`/teams/${teamId}/pending-join-requests`);
 
       set({ pendingInvitations: response.data.data.requests });
-      console.log(`response ----------`, response.data.data.requests);
+
     } catch (error: AxiosError | any) {
       console.log("❌ Error fetching pending invitations", error);
+
       if (error.response.data.statusCode === 404) {
         set({ pendingInvitations: [] });
       }
@@ -71,7 +77,7 @@ const useInvitationStore = create<InvitationState>((set) => ({
 
     try {
       const response = await axiosInstance.post(`/teams/cancel-invitation/${id}`);
-      console.log(`response`, response);
+
       return response
 
     } catch (error: AxiosError | any) {
@@ -81,7 +87,45 @@ const useInvitationStore = create<InvitationState>((set) => ({
     } finally {
       set({ isLoading: false });
     }
-  }
+  },
+  
+  acceptTeamJoiningRequest: async (id: string) => {
+    
+    set ({ isLoading: true });
+    try {
+      console.log(`id`, id);
+      
+      const response = await axiosInstance.post(`/teams/accept-join-request/${id}`); 
+      return response;
+      
+    } catch (error: AxiosError | any) {
+      
+      console.log("❌ Error accepting team joining request", error);
+      return error.response.data;
+      
+    } finally {
+      set ({ isLoading: false });
+    }
+  },
+
+  rejectTeamJoiningRequest: async (id: string, teamId: string) => {
+    
+    set ({ isLoading: true });
+    try {
+      console.log(`id`, id);
+      
+      const response = await axiosInstance.post(`/teams/reject-join-request/${teamId}`, {requestId: id}); 
+      return response;
+      console.log(`response`, response);
+    } catch (error: AxiosError | any) {
+      
+      console.log("❌ Error accepting team joining request", error);
+      return error.response.data;
+      
+    } finally {
+      set ({ isLoading: false });
+    }
+  },
 
 }));
 

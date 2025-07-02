@@ -46,15 +46,17 @@ const isAuthorized = async (userId, teamId) => {
 
 }
 
-const memberCount = async (teamId) => {
+const memberCount = async (teamId, memberId) => {
 
-  const members = await prisma.userRoleInTeam.groupBy({
+  let members = await prisma.userRoleInTeam.groupBy({
     by: ['userId'],
     where: {
       teamId,
       isActive: true,
     },
   });
+
+  members = members.filter((member) => member.userId !== memberId);
 
   return members.length >= 4;
 }

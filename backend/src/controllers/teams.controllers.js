@@ -956,7 +956,7 @@ const sendRequestToJoinTeam = async (request, response) => {
 
     const sendRequestToJoinTeam = await prisma.$transaction(async (prisma) => {
 
-      const isLimitReached = await memberCount(teamId);
+      const isLimitReached = await memberCount(teamId, userId);
 
       if (isLimitReached) {
         throw new ApiError(400, "Team reached maximum member limit");
@@ -1110,8 +1110,6 @@ const acceptTeamJoiningRequest = async (request, response) => {
     const requestId = request.params.id;
     const teamLeaderIdFromUser = request.user.userId
 
-    console.log(`requestId: ${requestId}, teamLeaderIdFromUser: ${teamLeaderIdFromUser}`);
-
     if (!requestId || !teamLeaderIdFromUser) {
       throw new ApiError(400, "request id and team leader id not found");
     }
@@ -1136,7 +1134,7 @@ const acceptTeamJoiningRequest = async (request, response) => {
       }
     })
 
-    if (!getRequestDetails || getRequestDetails.isInvitation === false) {
+    if (!getRequestDetails || getRequestDetails.isInvitation === true) {
       throw new ApiError(400, "Request not found");
     }
 
@@ -1163,7 +1161,7 @@ const acceptTeamJoiningRequest = async (request, response) => {
         throw new ApiError(400, "The user is already a member of team with same designation");
       }
 
-      const isLimitReached = await memberCount(teamId);
+      const isLimitReached = await memberCount(teamId, memberId);
 
       if (isLimitReached) {
         throw new ApiError(400, "Team member limit reached");
@@ -1270,8 +1268,7 @@ const rejectTeamJoiningRequest = async (request, response) => {
     const teamId = request.params.teamId;
     const userId = request.user.userId
 
-    console.log(`userId: ${userId}, teamId: ${teamId}, requestId: ${requestId}`);
-
+    console.log(`requestId`, request.body);
     if (!teamId || !userId || !requestId) {
       throw new ApiError(400, "Please provide team id, user id and request id");
     }

@@ -111,7 +111,7 @@ const SendInvitationModal = ({
                 </FormItem>
               )}
             />
-            <Button type="submit">Send</Button>
+            <Button type="submit" disabled={!(authUser.isTeamLeader)}>Send Invitation</Button>
           </form>
         </Form>
       </DialogContent>

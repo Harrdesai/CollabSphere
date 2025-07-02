@@ -156,12 +156,13 @@ model TeamsEditLog {
 }
 
 model ActiveInvitationOrRequest {
-  id          String      @id @default(uuid())
-  teamId      String
-  memberId    String
-  designation Designation
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id           String      @id @default(uuid())
+  teamId       String
+  memberId     String
+  designation  Designation
+  isInvitation Boolean
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   team   Teams @relation(fields: [teamId], references: [id])
   member User  @relation(fields: [memberId], references: [userId])

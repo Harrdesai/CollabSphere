@@ -9,11 +9,11 @@ import { useAuthStore } from './store/useAuthStore';
 
 // pages
 import HomePage from './page/HomePage'
+import TeamLeaderHomePage from './page/TeamLeaderHomePage'
 import LoginPage from './page/Login'
 import Register from './page/Register';
 import Teams from './page/TeamsList';
 import MembersList from './page/MembersList';
-// src/App.tsx
 import MembersProfile from './page/MembersProfile';
 
 
@@ -37,7 +37,7 @@ function App() {
   return (
       <div className='flex flex-col items-center justify-start'>
         <Routes>
-          <Route index path="/" element={authUser ? <HomePage/> : <Navigate to="/login" />} />
+          <Route index path="/" element={authUser ? (authUser?.isTeamLeader ? <TeamLeaderHomePage/> : <HomePage/>) : <Navigate to="/login" />} />
           <Route path="/register" element={ !authUser ? <Register/> : <Navigate to="/" />} />
           <Route path="/login" element={ !authUser ? <LoginPage/> : <Navigate to="/" />} />
 

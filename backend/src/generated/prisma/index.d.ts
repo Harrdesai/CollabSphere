@@ -9423,6 +9423,7 @@ export namespace Prisma {
     teamId: string | null
     memberId: string | null
     designation: $Enums.Designation | null
+    isInvitation: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9432,6 +9433,7 @@ export namespace Prisma {
     teamId: string | null
     memberId: string | null
     designation: $Enums.Designation | null
+    isInvitation: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9441,6 +9443,7 @@ export namespace Prisma {
     teamId: number
     memberId: number
     designation: number
+    isInvitation: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -9452,6 +9455,7 @@ export namespace Prisma {
     teamId?: true
     memberId?: true
     designation?: true
+    isInvitation?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9461,6 +9465,7 @@ export namespace Prisma {
     teamId?: true
     memberId?: true
     designation?: true
+    isInvitation?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9470,6 +9475,7 @@ export namespace Prisma {
     teamId?: true
     memberId?: true
     designation?: true
+    isInvitation?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9552,6 +9558,7 @@ export namespace Prisma {
     teamId: string
     memberId: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt: Date
     updatedAt: Date
     _count: ActiveInvitationOrRequestCountAggregateOutputType | null
@@ -9578,6 +9585,7 @@ export namespace Prisma {
     teamId?: boolean
     memberId?: boolean
     designation?: boolean
+    isInvitation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -9589,6 +9597,7 @@ export namespace Prisma {
     teamId?: boolean
     memberId?: boolean
     designation?: boolean
+    isInvitation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -9600,6 +9609,7 @@ export namespace Prisma {
     teamId?: boolean
     memberId?: boolean
     designation?: boolean
+    isInvitation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     team?: boolean | TeamsDefaultArgs<ExtArgs>
@@ -9611,11 +9621,12 @@ export namespace Prisma {
     teamId?: boolean
     memberId?: boolean
     designation?: boolean
+    isInvitation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ActiveInvitationOrRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "memberId" | "designation" | "createdAt" | "updatedAt", ExtArgs["result"]["activeInvitationOrRequest"]>
+  export type ActiveInvitationOrRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "memberId" | "designation" | "isInvitation" | "createdAt" | "updatedAt", ExtArgs["result"]["activeInvitationOrRequest"]>
   export type ActiveInvitationOrRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     team?: boolean | TeamsDefaultArgs<ExtArgs>
     member?: boolean | UserDefaultArgs<ExtArgs>
@@ -9640,6 +9651,7 @@ export namespace Prisma {
       teamId: string
       memberId: string
       designation: $Enums.Designation
+      isInvitation: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["activeInvitationOrRequest"]>
@@ -10071,6 +10083,7 @@ export namespace Prisma {
     readonly teamId: FieldRef<"ActiveInvitationOrRequest", 'String'>
     readonly memberId: FieldRef<"ActiveInvitationOrRequest", 'String'>
     readonly designation: FieldRef<"ActiveInvitationOrRequest", 'Designation'>
+    readonly isInvitation: FieldRef<"ActiveInvitationOrRequest", 'Boolean'>
     readonly createdAt: FieldRef<"ActiveInvitationOrRequest", 'DateTime'>
     readonly updatedAt: FieldRef<"ActiveInvitationOrRequest", 'DateTime'>
   }
@@ -16140,6 +16153,7 @@ export namespace Prisma {
     teamId: 'teamId',
     memberId: 'memberId',
     designation: 'designation',
+    isInvitation: 'isInvitation',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -16894,6 +16908,7 @@ export namespace Prisma {
     teamId?: StringFilter<"ActiveInvitationOrRequest"> | string
     memberId?: StringFilter<"ActiveInvitationOrRequest"> | string
     designation?: EnumDesignationFilter<"ActiveInvitationOrRequest"> | $Enums.Designation
+    isInvitation?: BoolFilter<"ActiveInvitationOrRequest"> | boolean
     createdAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
     updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
@@ -16905,6 +16920,7 @@ export namespace Prisma {
     teamId?: SortOrder
     memberId?: SortOrder
     designation?: SortOrder
+    isInvitation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     team?: TeamsOrderByWithRelationInput
@@ -16920,6 +16936,7 @@ export namespace Prisma {
     teamId?: StringFilter<"ActiveInvitationOrRequest"> | string
     memberId?: StringFilter<"ActiveInvitationOrRequest"> | string
     designation?: EnumDesignationFilter<"ActiveInvitationOrRequest"> | $Enums.Designation
+    isInvitation?: BoolFilter<"ActiveInvitationOrRequest"> | boolean
     createdAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
     updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
     team?: XOR<TeamsScalarRelationFilter, TeamsWhereInput>
@@ -16931,6 +16948,7 @@ export namespace Prisma {
     teamId?: SortOrder
     memberId?: SortOrder
     designation?: SortOrder
+    isInvitation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ActiveInvitationOrRequestCountOrderByAggregateInput
@@ -16946,6 +16964,7 @@ export namespace Prisma {
     teamId?: StringWithAggregatesFilter<"ActiveInvitationOrRequest"> | string
     memberId?: StringWithAggregatesFilter<"ActiveInvitationOrRequest"> | string
     designation?: EnumDesignationWithAggregatesFilter<"ActiveInvitationOrRequest"> | $Enums.Designation
+    isInvitation?: BoolWithAggregatesFilter<"ActiveInvitationOrRequest"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"ActiveInvitationOrRequest"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ActiveInvitationOrRequest"> | Date | string
   }
@@ -17876,6 +17895,7 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestCreateInput = {
     id?: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutActiveRequestsInput
@@ -17887,6 +17907,7 @@ export namespace Prisma {
     teamId: string
     memberId: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17894,6 +17915,7 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput
@@ -17905,6 +17927,7 @@ export namespace Prisma {
     teamId?: StringFieldUpdateOperationsInput | string
     memberId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17914,6 +17937,7 @@ export namespace Prisma {
     teamId: string
     memberId: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17921,6 +17945,7 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17930,6 +17955,7 @@ export namespace Prisma {
     teamId?: StringFieldUpdateOperationsInput | string
     memberId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18917,6 +18943,7 @@ export namespace Prisma {
     teamId?: SortOrder
     memberId?: SortOrder
     designation?: SortOrder
+    isInvitation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18926,6 +18953,7 @@ export namespace Prisma {
     teamId?: SortOrder
     memberId?: SortOrder
     designation?: SortOrder
+    isInvitation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18935,6 +18963,7 @@ export namespace Prisma {
     teamId?: SortOrder
     memberId?: SortOrder
     designation?: SortOrder
+    isInvitation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20714,6 +20743,7 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestCreateWithoutMemberInput = {
     id?: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     team: TeamsCreateNestedOneWithoutActiveRequestsInput
@@ -20723,6 +20753,7 @@ export namespace Prisma {
     id?: string
     teamId: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21033,6 +21064,7 @@ export namespace Prisma {
     teamId?: StringFilter<"ActiveInvitationOrRequest"> | string
     memberId?: StringFilter<"ActiveInvitationOrRequest"> | string
     designation?: EnumDesignationFilter<"ActiveInvitationOrRequest"> | $Enums.Designation
+    isInvitation?: BoolFilter<"ActiveInvitationOrRequest"> | boolean
     createdAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
     updatedAt?: DateTimeFilter<"ActiveInvitationOrRequest"> | Date | string
   }
@@ -21474,6 +21506,7 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestCreateWithoutTeamInput = {
     id?: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     member: UserCreateNestedOneWithoutActiveRequestsInput
@@ -21483,6 +21516,7 @@ export namespace Prisma {
     id?: string
     memberId: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23825,6 +23859,7 @@ export namespace Prisma {
     id?: string
     teamId: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24000,6 +24035,7 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestUpdateWithoutMemberInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     team?: TeamsUpdateOneRequiredWithoutActiveRequestsNestedInput
@@ -24009,6 +24045,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24017,6 +24054,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     teamId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24246,6 +24284,7 @@ export namespace Prisma {
     id?: string
     memberId: string
     designation: $Enums.Designation
+    isInvitation: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24446,6 +24485,7 @@ export namespace Prisma {
   export type ActiveInvitationOrRequestUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     member?: UserUpdateOneRequiredWithoutActiveRequestsNestedInput
@@ -24455,6 +24495,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     memberId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24463,6 +24504,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     memberId?: StringFieldUpdateOperationsInput | string
     designation?: EnumDesignationFieldUpdateOperationsInput | $Enums.Designation
+    isInvitation?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

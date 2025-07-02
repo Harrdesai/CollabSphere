@@ -196,6 +196,7 @@ exports.Prisma.ActiveInvitationOrRequestScalarFieldEnum = {
   teamId: 'teamId',
   memberId: 'memberId',
   designation: 'designation',
+  isInvitation: 'isInvitation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -162,6 +162,7 @@ model ActiveInvitationOrRequest {
   teamId      String
   memberId    String
   designation Designation
+  isInvitation Boolean
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 

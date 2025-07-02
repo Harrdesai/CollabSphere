@@ -417,7 +417,7 @@ const sendInviteToJoinTeam = async (request, response) => {
       where: {
         teamId,
         userId,
-        designation
+        designation,
       }
     })
 
@@ -431,7 +431,8 @@ const sendInviteToJoinTeam = async (request, response) => {
         data: {
           teamId,
           memberId: userId,
-          designation
+          designation,
+          isInvitation: true
         }
       });
 
@@ -495,15 +496,21 @@ const cancelTeamInvitation = async (request, response) => {
         select: {
           teamId: true,
           memberId: true,
-          designation: true
+          designation: true,
+          isInvitation: true,
+          team: {
+            select: {
+              teamLeaderId: true
+            }
+          }
         }
       });
 
-      if (!invitation) {
+      if (!invitation || invitation.isInvitation === false) {
         throw new ApiError(400, "Invitation not found");
       }
 
-      if (invitation.memberId !== userId) {
+      if (invitation.team.teamLeaderId !== userId) {
         throw new ApiError(400, "You are not authorized to cancel this invitation");
       }
 
@@ -564,8 +571,13 @@ const acceptTeamInvitation = async (request, response) => {
       },
       select: {
         memberId: true,
+        isInvitation: true
       }
     })
+
+    if (!getUserIdFromInvitation || getUserIdFromInvitation.isInvitation === false) {
+      throw new ApiError(400, "Invitation not found");
+    }
 
     if (userId !== getUserIdFromInvitation.memberId) {
       throw new ApiError(400, "you are not the invitee of this invitation, you can't accept this invitation");
@@ -767,6 +779,7 @@ const getListOfPendingTeamInvitations = async (request, response) => {
         memberId: true,
         teamId: true,
         designation: true,
+        isInvitation: true,
         team: {
           select: {
             title: true,
@@ -785,24 +798,8 @@ const getListOfPendingTeamInvitations = async (request, response) => {
       throw new ApiError(404, "Invitations not found");
     }
 
-    const invitationsJson = invitations.map((invitation) => ({
-      id: invitation.id,
-      memberId: invitation.memberId,
-      teamId: invitation.teamId,
-      designation: invitation.designation,
-      team: {
-        title: invitation.team.title,
-        teamLeader: {
-          firstName: invitation.team.teamLeader.firstName,
-          lastName: invitation.team.teamLeader.lastName
-        }
-      }
-    }))
-
     response.status(200).json(
-      new ApiResponse(200, {
-        invitations: invitationsJson
-      }, "List of pending team invitations fetched successfully")
+      new ApiResponse(200, invitations, "List of pending team invitations fetched successfully")
     )
   } catch (error) {
 
@@ -969,7 +966,8 @@ const sendRequestToJoinTeam = async (request, response) => {
         data: {
           teamId,
           memberId: userId,
-          designation
+          designation,
+          isInvitation: false
         }
       });
 
@@ -1053,7 +1051,7 @@ const cancelTeamJoiningRequest = async (request, response) => {
         }
       });
 
-      if (!getDetails) {
+      if (!getDetails || getDetails.isInvitation === true) {
         throw new ApiError(400, "Request not found");
       }
 
@@ -1112,6 +1110,8 @@ const acceptTeamJoiningRequest = async (request, response) => {
     const requestId = request.params.id;
     const teamLeaderIdFromUser = request.user.userId
 
+    console.log(`requestId: ${requestId}, teamLeaderIdFromUser: ${teamLeaderIdFromUser}`);
+
     if (!requestId || !teamLeaderIdFromUser) {
       throw new ApiError(400, "request id and team leader id not found");
     }
@@ -1136,7 +1136,7 @@ const acceptTeamJoiningRequest = async (request, response) => {
       }
     })
 
-    if (!getRequestDetails) {
+    if (!getRequestDetails || getRequestDetails.isInvitation === false) {
       throw new ApiError(400, "Request not found");
     }
 
@@ -1287,7 +1287,7 @@ const rejectTeamJoiningRequest = async (request, response) => {
         where: { id: requestId }
       });
 
-      if (!getDetails) {
+      if (!getDetails || getDetails.isInvitation === true) {
         throw new ApiError(400, "Request not found");
       }
 
@@ -1345,41 +1345,36 @@ const getListOfPendingTeamJoiningRequests = async (request, response) => {
         teamId
       },
       include: {
+        member: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        },
         team: {
           select: {
             title: true,
-            teamLeader: {
-              select: {
-                firstName: true,
-                lastName: true
-              }
-            }
+            teamLeaderId: true,
           }
         }
-      }
+      },
     })
 
     if (teamJoiningRequests.length === 0) {
       throw new ApiError(404, "No pending team joining requests found");
     }
 
-    const requestsJson = teamJoiningRequests.map((requestsJson) => ({
-      id: requestsJson.id,
-      memberId: requestsJson.memberId,
-      teamId: requestsJson.teamId,
-      designation: requestsJson.designation,
-      team: {
-        title: requestsJson.team.title,
-        teamLeader: {
-          firstName: requestsJson.team.teamLeader.firstName,
-          lastName: requestsJson.team.teamLeader.lastName
-        }
-      }
-    }))
+    if (userId !== teamJoiningRequests[0].team.teamLeaderId) {
+      throw new ApiError(403, "You are not a team leader");
+    }
+
+    if (teamJoiningRequests.length === 0) {
+      throw new ApiError(404, "No pending team joining requests found");
+    }
 
     response.status(200).json(
       new ApiResponse(200, {
-        requests: requestsJson
+        requests: teamJoiningRequests
       }, "List of pending team joining requests fetched successfully")
     )
   } catch (error) {
@@ -1745,6 +1740,7 @@ const getListOfTeamMembers = async (request, response) => {
 
 }
 
+// Tags controllers
 const createTag = async (request, response) => {
 
   try {

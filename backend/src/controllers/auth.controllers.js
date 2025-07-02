@@ -332,6 +332,7 @@ const getMe = async (request, response) => {
         userId
       },
       select: {
+        isTeamLeader: true,
         userId: true,
         email: true,
         firstName: true,
@@ -365,6 +366,7 @@ const getMe = async (request, response) => {
     response.status(200).json(
       new ApiResponse(200, {
         user: {
+          isTeamLeader: user.isTeamLeader,
           id: user.userId,
           email: user.email,
           firstName: user.firstName,
@@ -430,7 +432,22 @@ const getMeInDetails = async (request, response) => {
                   }
                 }
               },
-              userRoleInTeam: true,
+              members: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  isActive: true,
+                  isTeamLeader: true,
+                  userId: true,
+                  userRoleInTeam: {
+                    select: {
+                      id: true,
+                      designation: true,
+                      isActive: true
+                    }
+                  }
+                }
+              },
               notices: true,
               tags: true,
             }

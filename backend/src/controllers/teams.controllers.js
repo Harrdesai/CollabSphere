@@ -818,6 +818,7 @@ const removeMemberFromTeam = async (request, response) => {
     const userId = request.user.userId
     const { arrayOfUserRoleInTeamIds = [] } = request.body
 
+    console.log(`arrayOfUserRoleInTeamIds`, arrayOfUserRoleInTeamIds);
     if (!teamId || !userId) {
       throw new ApiError(400, "Please provide team id and user id");
     }
@@ -830,6 +831,7 @@ const removeMemberFromTeam = async (request, response) => {
 
     const setOfUserRoleInTeamIds = Array.from(new Set(arrayOfUserRoleInTeamIds));
 
+    console.log(`setOfUserRoleInTeamIds`, setOfUserRoleInTeamIds);
     const rolesToRemove = await prisma.userRoleInTeam.findMany({
       where: {
         id: { in: setOfUserRoleInTeamIds },
@@ -837,6 +839,7 @@ const removeMemberFromTeam = async (request, response) => {
       }
     });
 
+    console.log(`rolesToRemove: ${JSON.stringify(rolesToRemove)}`);
     const rolesToRemoveWithoutLeader = rolesToRemove.filter(role => role.designation !== "TEAM_LEADER" && role.isActive === true)
     console.log(`filteredRolesToRemove: ${JSON.stringify(rolesToRemoveWithoutLeader)}`);
 

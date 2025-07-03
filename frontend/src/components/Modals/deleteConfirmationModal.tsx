@@ -9,7 +9,7 @@ interface DeleteConfirmationModalProps {
 
 const DeleteConfirmationModal = ({isOpen, onClose, data}: DeleteConfirmationModalProps) => {
 
-  const { cancelInvitation, fetchPendingInvitations, isLoading } = useInvitationStore();
+  const { cancelInvitation, isLoading } = useInvitationStore();
 
   const handleDelete = async (id: string) => {
     const response = await cancelInvitation(id);

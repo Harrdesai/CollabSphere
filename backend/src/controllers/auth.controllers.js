@@ -442,6 +442,7 @@ const getMeInDetails = async (request, response) => {
                   userRoleInTeam: {
                     select: {
                       id: true,
+                      teamId: true,
                       designation: true,
                       isActive: true
                     }

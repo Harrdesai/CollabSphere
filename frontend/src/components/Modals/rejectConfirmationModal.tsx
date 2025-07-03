@@ -10,7 +10,7 @@ interface rejectConfirmationModalProps {
 
 const RejectConfirmationModal = ({isOpen, onClose, data}: rejectConfirmationModalProps) => {
 
-  const { rejectTeamJoiningRequest, fetchPendingInvitations, isLoading } = useInvitationStore();
+  const { rejectTeamJoiningRequest, isLoading } = useInvitationStore();
 
   const handleRejectJoinRequest = async (id: string, teamId: string) => {
 

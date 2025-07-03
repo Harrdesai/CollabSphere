@@ -1,16 +1,10 @@
 // src/page/HomePage.tsx
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { IdCard, Mail, Shield, StickyNote } from "lucide-react";
+import { IdCard, Mail, Shield, StickyNote, Trash2 } from "lucide-react";
 import {} from "@/components/ui/alert-dialog";
 
 import { useAuthStore } from "@/store/useAuthStore";
@@ -21,6 +15,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import useInvitationStore from "@/store/useInvitation.store";
 import DeleteConfirmationModal from "@/components/Modals/deleteConfirmationModal";
 import RejectConfirmationModal from "@/components/Modals/rejectConfirmationModal";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import RemoveMemberModal from "@/components/Modals/removeMemberModal";
 
 export interface NoticeProps {
   id: string;
@@ -42,14 +38,15 @@ const TeamLeaderHomePage = () => {
   const [activeTab, setActiveTab] = useState("noticeBoard");
   const [_, forceUpdate] = useState(0);
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
-  const [selectedNoticeDetail, setSelectedNoticeDetail] =
-    useState<NoticeProps | null>(null);
+  const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [createNoticeModalOpen, setCreateNoticeModalOpen] = useState(false);
   const [includeInactive, setIncludeInactive] = useState(false);
   const [deleteConfirmationModalOpen, setDeleteConfirmationModalOpen] = useState(false);
   const [invitationDetails, setInvitationDetails] = useState<any>(null);
   const [rejectConfirmationModalOpen, setRejectConfirmationModalOpen] = useState(false);
+  const [removeMemberModalOpen, setRemoveMemberModalOpen] = useState(false);
+  const [memberDetail, setMemberDetail] = useState<any>(null);
 
   useEffect(() => {
     const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
@@ -108,13 +105,18 @@ const TeamLeaderHomePage = () => {
     setInvitationDetails(data);
   }
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (!deleteConfirmationModalOpen && !rejectConfirmationModalOpen) {
-      fetchPendingInvitations(teamsData[0].id);
-    }
-  }, [deleteConfirmationModalOpen, rejectConfirmationModalOpen]);
+  //   if (!deleteConfirmationModalOpen && !rejectConfirmationModalOpen) {
+  //     fetchPendingInvitations(teamsData[0].id);
+  //   }
+  // }, [deleteConfirmationModalOpen, rejectConfirmationModalOpen]);
 
+  const handleRemoveMember = async (member: any) => {
+    console.log('RemoveMemberModal re-rendered');
+    setMemberDetail(member);
+    setRemoveMemberModalOpen(true);
+  }
   const renderTabContent = () => {
     switch (activeTab) {
       case "noticeBoard":
@@ -125,7 +127,7 @@ const TeamLeaderHomePage = () => {
                 Notice Board
               </CardTitle>
             </CardHeader>
-            <ScrollArea className="rounded-2xl max-h-[75vh] border">
+            <ScrollArea className="rounded-2xl max-h-[68vh] border">
               <Card className="flex flex-col w-full border-none p-0">
                 {teamsData.map((team: any) => {
                   const isExpandable = team.notices?.length > 3;
@@ -205,7 +207,7 @@ const TeamLeaderHomePage = () => {
         );
       case "membersWithDesignation":
         return (
-          <Card className="flex gap-2 p-2 h-full">
+          <Card className="flex gap-2 p-2 h-[79vh]">
             <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
               <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
                 Members with Designations
@@ -219,8 +221,7 @@ const TeamLeaderHomePage = () => {
               />
               Include Inactive Roles
             </Label>
-            <ScrollArea className="rounded-2xl max-h-[75vh] border">
-              <Card className="flex flex-col w-full border-none p-2">
+            <ScrollArea className="rounded-2xl max-h-[62vh] border">
                 {teamsData[0]?.members?.map((member: any, index: number) => {
                   return (
                     <CardHeader key={member.userId}>
@@ -232,9 +233,20 @@ const TeamLeaderHomePage = () => {
                             Team Leader
                           </Label>
                         )}
+                        <Tooltip>
+                          <TooltipTrigger>  
+                            <Trash2
+                              className="h-5 w-5 text-destructive"
+                              onClick={() => handleRemoveMember(member)}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Remove Member or Role</p>
+                          </TooltipContent>
+                        </Tooltip>
                       </Label>
                       <div className="flex gap-2 flex-col">
-                        {member?.userRoleInTeam?.map((role: any) =>
+                        {member?.userRoleInTeam?.filter((role: any) => role.teamId === teamsData[0]?.id).map((role: any) =>
                           role.designation !== "TEAM_LEADER" &&
                           (includeInactive || role.isActive) ? (
                             <Label
@@ -253,7 +265,6 @@ const TeamLeaderHomePage = () => {
                     </CardHeader>
                   );
                 })}
-              </Card>
             </ScrollArea>
           </Card>
         );
@@ -325,11 +336,11 @@ const TeamLeaderHomePage = () => {
   return (
     <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
       {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
-      <Card className="flex w-2/3 gap-2 p-2 h-full">
+      <Card className="flex w-2/3 gap-2 p-2 h-full rounded-b-lg">
         <CardHeader className="flex w-full">
           <Button
             className={`gap-2 ${
-              activeTab === "noticeBoard" ? "tab-active" : ""
+              activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
             onClick={() => setActiveTab("noticeBoard")}
             variant="link"
@@ -339,7 +350,7 @@ const TeamLeaderHomePage = () => {
           </Button>
           <Button
             className={`tab gap-2 ${
-              activeTab === "membersWithDesignation" ? "tab-active" : ""
+              activeTab === "membersWithDesignation" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
             onClick={() => setActiveTab("membersWithDesignation")}
             variant="link"
@@ -349,7 +360,7 @@ const TeamLeaderHomePage = () => {
           </Button>
           <Button
             className={`tab gap-2 ${
-              activeTab === "invitationsAndJoinRequests" ? "tab-active" : ""
+              activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
             onClick={() => {setActiveTab("invitationsAndJoinRequests");
                             fetchPendingInvitations(teamsData[0].id)}}
@@ -437,6 +448,13 @@ const TeamLeaderHomePage = () => {
         isOpen={rejectConfirmationModalOpen}
         onClose={() => setRejectConfirmationModalOpen(false)}
         data={invitationDetails}
+      />
+
+      <RemoveMemberModal
+        isOpen={removeMemberModalOpen}
+        onClose={() => setRemoveMemberModalOpen(false)}
+        member={memberDetail}
+        teamId={teamsData[0].id}
       />
     </Card>
   );

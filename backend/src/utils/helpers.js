@@ -9,7 +9,8 @@ const canUserJoinAnotherTeam = async (userId) => {
       userId
     },
     select: {
-      isTeamLeader: true
+      isTeamLeader: true,
+      teams: true
     }
   })
 
@@ -17,14 +18,8 @@ const canUserJoinAnotherTeam = async (userId) => {
     return false
   }
 
-  const teamMemberships = await prisma.user.findMany({
-    where: { userId },
-    include:{
-      teams: true
-    }
-  });
+  return isTeamLeader.teams.length < 3
 
-  return teamMemberships.length < 3;
 }
 
 const isAuthorized = async (userId, teamId) => {

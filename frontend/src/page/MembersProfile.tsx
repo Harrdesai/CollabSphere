@@ -16,6 +16,7 @@ import moment from "moment";
 import useMemberStore from "@/store/useMember.store";
 import ExpandableText from "@/components/ExpandableText";
 import SendInvitationModal from "@/components/Modals/sendInvitationModal";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const MembersProfile = () => {
   const navigate = useNavigate();
@@ -51,9 +52,10 @@ const MembersProfile = () => {
   return (
     <Card className="flex w-full flex-row rounded-3xl items-center gap-2 p-2 h-[88vh]">
       {memberProfile && (
-        <Card className="flex w-full flex-col gap-2 p-0 h-full overflow-y-auto border-none shadow-none">
+        <ScrollArea className="flex w-full flex-col h-full border-none shadow-none">
           <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
-            <CardTitle className="flex gap-2 pl-4 pb-0 pr-1 text-2xl text-primary">
+            <CardHeader className="flex w-full p-0">
+            <CardTitle className="flex gap-2 pl-4 pb-0 pr-4 text-2xl text-primary">
               {memberProfile.firstName} {memberProfile.lastName}
               {memberProfile.isTeamLeader && (
                 <Label className="border-2 rounded-full bg-muted px-2 py-1 h-6 m-1">
@@ -63,11 +65,12 @@ const MembersProfile = () => {
               )}
             </CardTitle>
             {showInviteButton && (
-              <Button variant={"secondary"} onClick={handleModalOpen}>
+              <Button className="py-4 items-center" onClick={handleModalOpen}>
                 <PlusCircle />
                 Invite to Join Team
               </Button>
             )}
+            </CardHeader>
             {memberProfile.about?.length > 200 ? (
               <ExpandableText text={memberProfile.about} />
             ) : (
@@ -116,7 +119,7 @@ const MembersProfile = () => {
               <span className="font-light text-primary"> Points </span>
             </Label>
           </Card>
-          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
+          <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Team Details
           </CardTitle>
           <Card className="flex flex-col w-full gap-2 p-2">
@@ -149,7 +152,7 @@ const MembersProfile = () => {
                       team.members.map((member: any) => (
                         <Card
                           key={member.userId}
-                          className="m-0 p-2 max-w-full gap-2 bg-muted cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
+                          className="m-0 p-2 max-w-full gap-2 bg-muted cursor-pointer hover:scale-98 transition-all duration-300 ease-in-out"
                           onClick={() => navigate(`/members/${member.userId}`)}
                         >
                           <CardHeader className="flex flex-row items-center gap-2 pl-0">
@@ -250,7 +253,7 @@ const MembersProfile = () => {
                 );
               })}
           </Card>
-          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
+          <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Team Contributions
           </CardTitle>
           <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
@@ -259,7 +262,7 @@ const MembersProfile = () => {
             <p>team</p>
             <p>team</p>
           </Card>
-          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
+          <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Git Commit Contributions
           </CardTitle>
           <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
@@ -268,7 +271,7 @@ const MembersProfile = () => {
             <p>git</p>
             <p>git</p>
           </Card>
-          <CardTitle className="flex w-fit gap-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
+          <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Masterji Contributions
           </CardTitle>
           <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
@@ -277,7 +280,7 @@ const MembersProfile = () => {
             <p>masterji</p>
             <p>masterji</p>
           </Card>
-        </Card>
+        </ScrollArea>
       )}
 
       <SendInvitationModal

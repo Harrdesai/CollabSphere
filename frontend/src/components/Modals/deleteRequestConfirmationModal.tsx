@@ -1,18 +1,19 @@
+// src/components/Modals/deleteRequestConfirmationModal.tsx
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import useInvitationStore from "@/store/useInvitation.store";
 
-interface DeleteConfirmationModalProps {
+interface DeleteRequestConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void
   data: any
 }
 
-const DeleteConfirmationModal = ({isOpen, onClose, data}: DeleteConfirmationModalProps) => {
+const DeleteRequestConfirmationModal = ({isOpen, onClose, data}: DeleteRequestConfirmationModalProps) => {
 
-  const { cancelInvitation, isLoading } = useInvitationStore();
+  const { cancelTeamJoinRequest, isLoading } = useInvitationStore();
 
   const handleDelete = async (id: string) => {
-    const response = await cancelInvitation(id);
+    const response = await cancelTeamJoinRequest(id);
 
     if (response.statusCode === 200) {
       onClose();
@@ -24,7 +25,7 @@ const DeleteConfirmationModal = ({isOpen, onClose, data}: DeleteConfirmationModa
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription className="text-base">
-            This action will permanently delete this invitation sended to <strong className="text-foreground border-b pb-1 border-foreground"> {data?.member?.firstName} {data?.member?.lastName}</strong> wth designation of <strong className="text-foreground border-b pb-0.5 border-foreground">{data?.designation}</strong>
+            This action will permanently delete this request sended to <strong className="text-foreground border-b pb-0.5 border-foreground"> {data?.team?.title}</strong> wth designation of <strong className="text-foreground border-b pb-1 border-foreground">{data?.designation}</strong>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -38,4 +39,4 @@ const DeleteConfirmationModal = ({isOpen, onClose, data}: DeleteConfirmationModa
     </AlertDialog>
   )
 }
-export default DeleteConfirmationModal
+export default DeleteRequestConfirmationModal

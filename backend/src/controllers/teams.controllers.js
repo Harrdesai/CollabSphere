@@ -12,8 +12,6 @@ const createTeam = async (request, response) => {
 
     const { title, about, link = [], tags: ArrayOfTagIds = [] } = request.body;
 
-    console.log(`title: ${title}, about: ${about}, link: ${link}, tags: ${ArrayOfTagIds}`);
-
     const teamLeaderId = request.user.userId;
 
     if (!title || !about || !teamLeaderId) {
@@ -381,7 +379,7 @@ const deleteTeam = async (request, response) => {
   }
 
 }
-
+// true
 const sendInviteToJoinTeam = async (request, response) => {
 
   try {
@@ -418,11 +416,25 @@ const sendInviteToJoinTeam = async (request, response) => {
         teamId,
         userId,
         designation,
+        isActive: true
       }
     })
 
     if (checkIsMemberAlreayWithSameDesignation) {
       throw new ApiError(400, "User is already a member with same designation");
+    }
+
+    const isRequestAlreadySent = await prisma.activeInvitationOrRequest.findFirst({
+      where: {
+        teamId,
+        memberId: userId,
+        isInvitation: true,
+        designation
+      }
+    })
+
+    if (isRequestAlreadySent) {
+      throw new ApiError(400, "Request already sent");
     }
 
     const sendTeamJoingInvitation = await prisma.$transaction(async (prisma) => {
@@ -436,7 +448,6 @@ const sendInviteToJoinTeam = async (request, response) => {
         }
       });
 
-      console.log(`invitation : ${invitation.id}`);
       await prisma.teamsEditLog.create({
         data: {
           teamId: invitation.teamId,
@@ -477,7 +488,7 @@ const sendInviteToJoinTeam = async (request, response) => {
   }
 
 }
-
+// true
 const cancelTeamInvitation = async (request, response) => {
 
   try {
@@ -553,7 +564,7 @@ const cancelTeamInvitation = async (request, response) => {
   }
 
 }
-
+// true
 const acceptTeamInvitation = async (request, response) => {
 
   try {
@@ -600,8 +611,6 @@ const acceptTeamInvitation = async (request, response) => {
         }
       })
 
-      console.log(`invitation----------- : ${JSON.stringify(invitation)}`);
-
       if (!invitation) {
         throw new ApiError(404, "Invitation no longer exists");
       }
@@ -614,7 +623,8 @@ const acceptTeamInvitation = async (request, response) => {
         where: {
           userId: invitation.memberId,
           teamId: invitation.teamId,
-          designation: invitation.designation
+          designation: invitation.designation,
+          isActive: true
         }
       });
 
@@ -674,6 +684,28 @@ const acceptTeamInvitation = async (request, response) => {
         })
       }
 
+      const partOfTeam = await prisma.user.findUnique({
+        where: {
+          userId: invitation.memberId
+        },
+        select: {
+          _count: {
+                select: {
+                  teams: true,
+                }
+            }
+        }
+      })
+
+      if (partOfTeam._count.teams === 3) {
+        await prisma.activeInvitationOrRequest.deleteMany({
+          where: {
+            memberId: invitation.memberId,
+            teamId: !invitation.teamId
+          }
+        })
+      }
+
       return invitation
     })
 
@@ -696,7 +728,7 @@ const acceptTeamInvitation = async (request, response) => {
   }
 
 }
-
+// true
 const rejectTeamInvitation = async (request, response) => {
 
   try {
@@ -715,11 +747,12 @@ const rejectTeamInvitation = async (request, response) => {
         select: {
           memberId: true,
           teamId: true,
-          designation: true
+          designation: true,
+          isInvitation: true
         }
       })
 
-      if (!invitation) {
+      if (!invitation || invitation.isInvitation === false) {
         throw new ApiError(404, "Invitation no longer exists");
       }
 
@@ -818,7 +851,6 @@ const removeMemberFromTeam = async (request, response) => {
     const userId = request.user.userId
     const { arrayOfUserRoleInTeamIds = [] } = request.body
 
-    console.log(`arrayOfUserRoleInTeamIds`, arrayOfUserRoleInTeamIds);
     if (!teamId || !userId) {
       throw new ApiError(400, "Please provide team id and user id");
     }
@@ -831,7 +863,6 @@ const removeMemberFromTeam = async (request, response) => {
 
     const setOfUserRoleInTeamIds = Array.from(new Set(arrayOfUserRoleInTeamIds));
 
-    console.log(`setOfUserRoleInTeamIds`, setOfUserRoleInTeamIds);
     const rolesToRemove = await prisma.userRoleInTeam.findMany({
       where: {
         id: { in: setOfUserRoleInTeamIds },
@@ -839,10 +870,7 @@ const removeMemberFromTeam = async (request, response) => {
       }
     });
 
-    console.log(`rolesToRemove: ${JSON.stringify(rolesToRemove)}`);
     const rolesToRemoveWithoutLeader = rolesToRemove.filter(role => role.designation !== "TEAM_LEADER" && role.isActive === true)
-    console.log(`filteredRolesToRemove: ${JSON.stringify(rolesToRemoveWithoutLeader)}`);
-
 
     if (rolesToRemoveWithoutLeader.length === 0) {
       throw new ApiError(400, "No valid roles to remove (TEAM_LEADER role cannot be removed)");
@@ -909,7 +937,7 @@ const removeMemberFromTeam = async (request, response) => {
     )
   }
 }
-
+// false
 const sendRequestToJoinTeam = async (request, response) => {
 
   try {
@@ -937,7 +965,8 @@ const sendRequestToJoinTeam = async (request, response) => {
       where: {
         teamId,
         userId,
-        designation
+        designation,
+        isActive: true
       }
     })
 
@@ -950,6 +979,9 @@ const sendRequestToJoinTeam = async (request, response) => {
         teamId,
         memberId: userId,
         designation
+      },
+      select: {
+        isInvitation: true
       }
     })
 
@@ -1028,7 +1060,7 @@ const sendRequestToJoinTeam = async (request, response) => {
   }
 
 }
-
+// false
 const cancelTeamJoiningRequest = async (request, response) => {
 
   try {
@@ -1105,7 +1137,7 @@ const cancelTeamJoiningRequest = async (request, response) => {
   }
 
 }
-
+// false
 const acceptTeamJoiningRequest = async (request, response) => {
 
   try {
@@ -1229,6 +1261,28 @@ const acceptTeamJoiningRequest = async (request, response) => {
         }
       })
 
+      const partOfTeam = await prisma.user.findUnique({
+        where: {
+          userId: invitation.memberId
+        },
+        select: {
+          _count: {
+                select: {
+                  teams: true,
+                }
+            }
+        }
+      })
+
+      if (partOfTeam._count.teams === 3) {
+        await prisma.activeInvitationOrRequest.deleteMany({
+          where: {
+            memberId: invitation.memberId,
+            teamId: !invitation.teamId
+          }
+        })
+      }
+
       return getRequestDetails
     })
 
@@ -1262,7 +1316,7 @@ const acceptTeamJoiningRequest = async (request, response) => {
     )
   }
 }
-
+// false
 const rejectTeamJoiningRequest = async (request, response) => {
 
   try {
@@ -1271,7 +1325,6 @@ const rejectTeamJoiningRequest = async (request, response) => {
     const teamId = request.params.teamId;
     const userId = request.user.userId
 
-    console.log(`requestId`, request.body);
     if (!teamId || !userId || !requestId) {
       throw new ApiError(400, "Please provide team id, user id and request id");
     }
@@ -1542,7 +1595,6 @@ const getTeamDetails = async (request, response) => {
     const teamId = request.params.teamId;
     const userId = request.user.userId;
 
-    console.log(`userId: ${userId}, teamId: ${teamId}`);
     if (!teamId || !userId) {
       throw new ApiError(400, "Please provide team id and user id");
     }
@@ -1922,8 +1974,6 @@ const getTeamDetail = async (request, response) => {
   try {
 
     const teamId = request.params.teamId;
-
-    console.log(`team ${teamId}`)
 
     if (!teamId) {
       throw new ApiError(400, "Please provide team id");

@@ -9,6 +9,11 @@ import { useAuthStore } from "@/store/useAuthStore";
 import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
 import NoticeCreateModal from "@/components/Modals/Notice/createNotice";
 import CreateTeamModal from "@/components/Modals/Teams/createTeam";
+import { IdCard, Mail, StickyNote } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import useInvitationStore from "@/store/useInvitation.store";
+import DeleteRequestConfirmationModal from "@/components/Modals/deleteRequestConfirmationModal";
+import RejectInvitationConfirmationModal from "@/components/Modals/rejectInvitationConfirmationModal";
 
 export interface NoticeProps {
   id: string;
@@ -21,22 +26,28 @@ export interface NoticeProps {
 
 const HomePage = () => {
   const { authUserDetails, getUserDetails } = useAuthStore();
+  const { fetchPendingJoinRequests, pendingInvitations, acceptTeamInvitation, isLoading } = useInvitationStore();
+
 
   useEffect(() => {
     getUserDetails();
-  }, [getUserDetails]);
+  }, []);
 
-  const [_, forceUpdate ] = useState(0);
+  const [activeTab, setActiveTab] = useState("noticeBoard");
+  // const [_, forceUpdate ] = useState(0);
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
   const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [ createNoticeModalOpen, setCreateNoticeModalOpen ] = useState(false);
   const [createTeamModalOpen, setCreateTeamModalOpen] = useState(false);
+  const [deleteRequestConfirmationModalOpen, setDeleteRequestConfirmationModalOpen] = useState(false);
+  const [rejectInvitationConfirmationModalOpen, setRejectInvitationConfirmationModalOpen] = useState(false);
+  const [invitationDetails, setInvitationDetails] = useState<any>(null);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   const dateFormat = (date: any) => {
     const formattedDate = moment(date)
@@ -74,15 +85,39 @@ const HomePage = () => {
     console.log(`clicked`);
   }
 
+  const handleDeleteConfirmation = (invitation: any) => {
+    console.log(`invitation`, invitation);
+    setInvitationDetails(invitation);
+    setDeleteRequestConfirmationModalOpen(true);
+  }
+
+  const handleAcceptJoiningInvitation = async (invitationId: string) => {
+    await acceptTeamInvitation(invitationId);
+    fetchPendingJoinRequests();
+  }
+
+  const handleRejectJoiningInvitation = async (invitation: any) => {
+    setInvitationDetails(invitation);
+    setRejectInvitationConfirmationModalOpen(true);
+  }
+
+  useEffect(() => {
+    
+    if (!deleteRequestConfirmationModalOpen) {
+      fetchPendingJoinRequests();
+    }
+  }, [ deleteRequestConfirmationModalOpen ]);
+
   if (!authUserDetails) {
     return <div>Loading...</div>;
   }
   const teamsData = authUserDetails.teams;
   
-  return (
-    <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
-      {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
-      <Card className="flex w-2/3 gap-2 p-2 h-full">
+const renderTabContent = () => {
+    switch (activeTab) {
+      case "noticeBoard":
+        return (
+          <Card className="flex w-full gap-2 p-2 h-full">
         <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
           <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
             Notice Board
@@ -163,6 +198,111 @@ const HomePage = () => {
         </ScrollArea>
         {/* {JSON.stringify(teamsData.map((team: any) => team.chats))} */}
       </Card>
+    );
+  case "invitationsAndJoinRequests":
+        return (
+          <Card className="flex gap-2 p-2 h-full">
+            <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r h-10 dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
+              <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
+                Invitations and Team Join Requests
+              </CardTitle>
+            </CardHeader>
+            <ScrollArea className="rounded-2xl max-h-[75vh] border-0">
+              <Card className="flex flex-col w-full border-none p-2">
+                {/* {JSON.stringify(pendingInvitations)} */}
+                
+                {pendingInvitations?.map((invitation: any) => {
+                  return (
+                    <Card key={invitation.id} className="p-2 gap-0">
+                      <CardHeader className="flex justify-between flex-wrap px-0">
+                      <CardTitle>
+                        {invitation?.team?.title}
+                      </CardTitle>
+                      {invitation?.isInvitation ? (
+                        <div>
+                        <Button className="w-min" variant={"outline"}
+                          onClick={() => { handleAcceptJoiningInvitation(invitation.id) }}
+                          disabled={isLoading}
+                        >
+                          Accept
+                        </Button>
+                        <Button className="w-min" variant={"destructive"}
+                          onClick={() => {handleRejectJoiningInvitation(invitation) }}
+                        >
+                          Decline
+                        </Button>
+                        </div>
+                      ) : (
+                        <Button className="w-min" variant={"destructive"} 
+                          onClick={() => { handleDeleteConfirmation(invitation) }}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                      </CardHeader>
+                      <Label className="text-xl font-normal text-primary mt-2">
+                        Role:{" "}
+                        <span className="font-light text-primary">
+                          {invitation.designation}
+                        </span>
+                      </Label>
+
+                      <Label className="text-xl font-normal text-primary mt-2">
+                        Requested On: {" "}
+                        <span className="font-light text-primary">
+                          {moment(invitation.createdAt).local().format("LLL")}
+                        </span>
+                      </Label>
+                    </Card>
+                  );
+                })}
+              </Card>
+            </ScrollArea>
+          </Card>
+        );
+    }
+  };
+
+  return (
+    <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
+      {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
+      <Card className="flex w-2/3 gap-2 p-2 h-full">
+        <CardHeader className="flex w-full">
+          <Button
+            className={`gap-2 ${
+              activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
+            } w-min`}
+            onClick={() => setActiveTab("noticeBoard")}
+            variant="link"
+          >
+            <StickyNote className="w-4 h-4" />
+            Notice Board
+          </Button>
+          <Button
+            className={`tab gap-2 ${
+              activeTab === "membersWithDesignation" ? "bg-muted-foreground text-secondary" : ""
+            } w-min`}
+            onClick={() => setActiveTab("membersWithDesignation")}
+            variant="link"
+          >
+            <IdCard className="w-4 h-4" />
+            Members Roles
+          </Button>
+          <Button
+            className={`tab gap-2 ${
+              activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
+            } w-min`}
+            onClick={() => {setActiveTab("invitationsAndJoinRequests");
+                            fetchPendingJoinRequests();
+                          }}
+            variant="link"
+          >
+            <Mail className="w-4 h-4" />
+            Invitations & Join Requests
+          </Button>
+        </CardHeader>
+        {renderTabContent()}
+      </Card>
       <Card className="flex w-1/3 gap-2 p-2 border-0 pt-0 justify-between h-full ">
       <Button
         onClick={() => handleCreateTeam()}
@@ -236,6 +376,18 @@ const HomePage = () => {
       <CreateTeamModal
         isOpen={createTeamModalOpen}
         onClose={() => setCreateTeamModalOpen(false)}
+      />
+
+      <DeleteRequestConfirmationModal
+        isOpen={deleteRequestConfirmationModalOpen}
+        onClose={() => setDeleteRequestConfirmationModalOpen(false)}
+        data={invitationDetails}
+      />
+
+      <RejectInvitationConfirmationModal
+        isOpen={rejectInvitationConfirmationModalOpen}
+        onClose={() => setRejectInvitationConfirmationModalOpen(false)}
+        data={invitationDetails}
       />
     </Card>
   );

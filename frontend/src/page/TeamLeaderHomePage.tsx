@@ -36,7 +36,7 @@ const TeamLeaderHomePage = () => {
   }, []);
 
   const [activeTab, setActiveTab] = useState("noticeBoard");
-  const [_, forceUpdate] = useState(0);
+  // const [_, forceUpdate] = useState(0);
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
   const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -48,10 +48,10 @@ const TeamLeaderHomePage = () => {
   const [removeMemberModalOpen, setRemoveMemberModalOpen] = useState(false);
   const [memberDetail, setMemberDetail] = useState<any>(null);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   const dateFormat = (date: any) => {
     const formattedDate = moment(date)
@@ -104,7 +104,7 @@ const TeamLeaderHomePage = () => {
     setRejectConfirmationModalOpen(true);
     setInvitationDetails(data);
   }
-
+console.log(`teamsData`, teamsData);
   // useEffect(() => {
 
   //   if (!deleteConfirmationModalOpen && !rejectConfirmationModalOpen) {

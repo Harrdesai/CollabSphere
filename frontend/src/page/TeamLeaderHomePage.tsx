@@ -1,10 +1,10 @@
-// src/page/HomePage.tsx
+// src/page/TeamLeaderHomePage.tsx
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { IdCard, Mail, Shield, StickyNote, Trash2 } from "lucide-react";
+import { Calendar, IdCard, Mail, Shield, StickyNote, Trash2 } from "lucide-react";
 import {} from "@/components/ui/alert-dialog";
 
 import { useAuthStore } from "@/store/useAuthStore";
@@ -17,6 +17,9 @@ import DeleteConfirmationModal from "@/components/Modals/deleteConfirmationModal
 import RejectConfirmationModal from "@/components/Modals/rejectConfirmationModal";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import RemoveMemberModal from "@/components/Modals/removeMemberModal";
+import useTimelineStore from "@/store/useTimeline.store";
+import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export interface NoticeProps {
   id: string;
@@ -30,7 +33,7 @@ export interface NoticeProps {
 const TeamLeaderHomePage = () => {
   const { authUserDetails, getUserDetails } = useAuthStore();
   const { fetchPendingInvitations, pendingInvitations, acceptTeamJoiningRequest, isLoading } = useInvitationStore();
-
+  const { fetchTimeline, timelineDetails, isTimelineLoading } = useTimelineStore();
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -104,7 +107,7 @@ const TeamLeaderHomePage = () => {
     setRejectConfirmationModalOpen(true);
     setInvitationDetails(data);
   }
-console.log(`teamsData`, teamsData);
+  
   // useEffect(() => {
 
   //   if (!deleteConfirmationModalOpen && !rejectConfirmationModalOpen) {
@@ -330,6 +333,69 @@ console.log(`teamsData`, teamsData);
             </ScrollArea>
           </Card>
         );
+      case "timeline":
+        if(isTimelineLoading) return <div>Loading...</div>;
+        return (
+          <ScrollArea className="flex max-h-[73vh]">
+            <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r h-10 dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
+              <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
+                Timeline
+              </CardTitle>
+            </CardHeader>
+            {Object.keys(timelineDetails.timelineData).map((yearWise: any) => (
+              <Collapsible
+                key={yearWise}
+              >
+                <CollapsibleTrigger className="w-fit mt-4 px-6 bg-foreground text-xl text-background rounded-full mb-2">
+                {yearWise}
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  {Object.keys(timelineDetails.timelineData[yearWise]).map((monthWise: any, index: number) => (
+                    <Collapsible
+                      key={monthWise}
+                    >
+                      <CollapsibleTrigger className="w-28 bg-muted-foreground text-xl text-background rounded-full mb-2 ml-4">{monthWise}</CollapsibleTrigger>
+                      <CollapsibleContent>
+                        {Object.keys(timelineDetails.timelineData[yearWise][monthWise]).map((dayWise: any, index: number) => (
+                          <Collapsible
+                            className="flex w-full p-2 pt-0"
+                            key={dayWise}
+                          >
+                            <CollapsibleTrigger className="flex h-fit w-fill justify-end m-2 mb-0 mt-0 text-xl bg-secondary rounded-2xl lg:rounded-full px-3 pb-0.5 hover:font-bold hover:underline ">
+                              {moment(`${monthWise} ${dayWise}, ${yearWise}`, 'MMMM DD, YYYY').format('YYYY MMMM Do')}
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="flex flex-col min-w-2/3 p-2 pt-0 rounded-2xl">
+                              {Array.isArray(timelineDetails.timelineData[yearWise][monthWise][dayWise]) &&
+                                timelineDetails.timelineData[yearWise][monthWise][dayWise].map((event: any) => (
+                                  <CardHeader
+                                    className="border-2 m-2 mt-0 w-full p-2 rounded-3xl text-muted-foreground"
+                                    key={event.id}
+                                  >
+                                    <CardTitle className="font-normal rounded-xl lg:rounded-full">
+                                      <span className="text-foreground">Member Name: </span>
+                                      {event.user.firstName} {event.user.lastName}
+                                    </CardTitle>
+                                    <CardTitle className="font-normal rounded-xl lg:rounded-full">
+                                      <span className="text-foreground">Designation: </span>
+                                      {designationLabelConvert(event.designation)}
+                                    </CardTitle>
+                                    <CardTitle className="font-normal rounded-xl lg:rounded-full">
+                                      <span className="text-foreground">Action: </span>
+                                      {actionLabelConvert(event.action)}
+                                    </CardTitle>
+                                  </CardHeader>
+                                ))}
+                            </CollapsibleContent>
+                          </Collapsible>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            ))}
+          </ScrollArea>
+        );
     }
   };
 
@@ -337,7 +403,7 @@ console.log(`teamsData`, teamsData);
     <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
       {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
       <Card className="flex w-2/3 gap-2 p-2 h-full rounded-b-lg">
-        <CardHeader className="flex w-full">
+        <CardHeader className="flex flex-wrap w-full">
           <Button
             className={`gap-2 ${
               activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
@@ -359,7 +425,7 @@ console.log(`teamsData`, teamsData);
             Members Roles
           </Button>
           <Button
-            className={`tab gap-2 ${
+            className={`gap-2 ${
               activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
             onClick={() => {setActiveTab("invitationsAndJoinRequests");
@@ -368,6 +434,17 @@ console.log(`teamsData`, teamsData);
           >
             <Mail className="w-4 h-4" />
             Invitations & Join Requests
+          </Button>
+          <Button
+          className={`gap-2 ${
+            activeTab === "timeline" ? "bg-muted-foreground text-secondary" : ""
+          } w-min`}
+          onClick={() => {setActiveTab("timeline");
+                          fetchTimeline(teamsData[0].id)}}
+          variant="link"
+          >
+            <Calendar className="w-4 h-4" />
+            Timeline
           </Button>
         </CardHeader>
         {renderTabContent()}

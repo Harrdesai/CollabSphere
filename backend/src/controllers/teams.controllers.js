@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { $Enums, Prisma, PrismaClient } from "../generated/prisma/index.js";
 import { canUserJoinAnotherTeam, isAuthorized, isTeamMember, memberCount } from "../utils/helpers.js";
+import moment from "moment";
 const prisma = new PrismaClient();
 
 const createTeam = async (request, response) => {
@@ -1913,9 +1914,29 @@ const getTimelineOfTeam = async (request, response) => {
       }
     })
 
+    const startDate = timeline.length ? timeline[timeline.length - 1].createdAt : null;
+    const endDate = timeline.length ? timeline[0].createdAt : null;
+
+    const timelineData = {}
+
+    timeline.forEach((entry) => {
+      const date = moment(entry.createdAt);
+      const year = date.format('YYYY');
+      const month = date.format('MMMM');
+      const day = date.format('DD');
+
+      if (!timelineData[year]) timelineData[year] = {};
+      if (!timelineData[year][month]) timelineData[year][month] = {};
+      if (!timelineData[year][month][day]) timelineData[year][month][day] = [];
+
+      timelineData[year][month][day].push(entry);
+    })
+
     response.status(200).json(
       new ApiResponse(200, {
-        timeline: timeline
+        startDate,
+        endDate,
+        timelineData
       }, "Timeline of team fetched successfully")
     )
 

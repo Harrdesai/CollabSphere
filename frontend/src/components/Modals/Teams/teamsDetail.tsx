@@ -14,6 +14,7 @@ import { userActiveness } from "@/lib/helper";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import useTeamStore from "@/store/useTeam.store";
 import { useEffect } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export interface TeamDetailModalProps {
   isOpen: boolean;
@@ -41,14 +42,15 @@ const TeamDetailModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose} >
-      <DialogContent className="flex flex-col gap-4 w-full lg:min-w-2/3 lg:max-2/3 min-w-full rounded-3xl">
+      <DialogContent className="flex flex-col gap-4 w-full lg:min-w-2/3 lg:max-2/3 min-w-full h-4/5 rounded-3xl">
         <DialogTitle className="text-neutral-800 dark:text-neutral-50 dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 p-1 px-4 w-fit rounded-full">
           {teamDetail.title}
         </DialogTitle>
         <DialogDescription className="pl-8">
           {teamDetail.about}
         </DialogDescription>
-        <CardContent className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent border-2 rounded-3xl">
+        <ScrollArea className="rounded-2xl h-3/4 border">
+        <CardContent className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent border-2 rounded-3xl h-auto">
           <Label className="text-xl font-normal text-primary">
             Established on:
             <span className="font-light">
@@ -158,6 +160,7 @@ const TeamDetailModal = ({
             </Card>
           ))}
         </CardContent>
+        </ScrollArea>
         <DialogFooter className="flex flex-col gap-4">
           <DialogClose asChild>
             <Button type="button" variant="secondary">

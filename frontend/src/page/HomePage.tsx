@@ -9,7 +9,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
 import NoticeCreateModal from "@/components/Modals/Notice/createNotice";
 import CreateTeamModal from "@/components/Modals/Teams/createTeam";
-import { IdCard, Mail, StickyNote } from "lucide-react";
+import { IdCard, Mail, Shield, StickyNote } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import useInvitationStore from "@/store/useInvitation.store";
 import DeleteRequestConfirmationModal from "@/components/Modals/deleteRequestConfirmationModal";
@@ -112,94 +112,144 @@ const HomePage = () => {
     return <div>Loading...</div>;
   }
   const teamsData = authUserDetails.teams;
-  
-const renderTabContent = () => {
+
+  const renderTabContent = () => {
     switch (activeTab) {
       case "noticeBoard":
         return (
           <Card className="flex w-full gap-2 p-2 h-full">
-        <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
-          <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
-            Notice Board
-          </CardTitle>
-        </CardHeader>
-        <ScrollArea className="rounded-2xl max-h-[75vh] border">
-          <Card className="flex flex-col w-full border-none p-0">
-            {teamsData.map((team: any) => {
-              const isExpandable = team.notices?.length > 3;
-              const visibleNotices = expanded
-                ? team.notices
-                : team.notices?.slice(0, 3);
-              return (
-                <Card
-                  className="flex flex-col w-full p-2 border-2 shadow-none gap-2 m-0"
-                  key={team.id}
-                >
-                  <div className="flex justify-between">
-                    <CardTitle className="pl-4 text-xl bg-accent w-fit rounded-full dark:bg-accent pr-4 pb-1">
-                    {team.title}
-                  </CardTitle>
-                  <Button
-                    className="text-3xl px-2 pb-1"
-                    onClick={() => handleCreateNotice()}
-                  >
-                    +
-                  </Button>
-                  </div>
-                  {team.notices?.length > 0 && (
-                    <CardDescription className="pl-8">
-                      Here is a notice of {team.title}
-                    </CardDescription>
-                  )}
-
-                  {visibleNotices?.map((notice: any, index: number) => {
-                    const isThirdNotice =
-                      index === 2 && !expanded && isExpandable;
-                    return (
-                      <div className="relative" key={notice.id}>
-                        <Card
-                          onClick={() => handleNoticeDetail(notice)}
-                          className={`flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl dark:bg-neutral-800 text-primary border-dashed ${
-                            isThirdNotice ? "blur-sm" : ""
-                          }`}
-                        >
-                          {notice.title}
-                          <CardFooter className="flex pl-0 pr-0 justify-between text-xs">
-                            <p>Expires in {countdown(notice.endDate)}</p>
-                            <p>Published on {dateFormat(notice.startDate)}</p>
-                          </CardFooter>
-                        </Card>
-
-                        {/* 🔽 Overlay Button only on 3rd card */}
-                        {isThirdNotice && (
-                          <div className="absolute inset-0 flex justify-center items-center bg-gradient-to-t from-neutral-100/90 dark:from-neutral-800/90 to-transparent rounded-2xl">
-                            <Button onClick={() => setExpanded(true)}>
-                              Expand All
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-
-                  {/* Collapse button after all notices */}
-                  {expanded && isExpandable && (
-                    <Button
-                      onClick={() => setExpanded(false)}
-                      className="mt-2 self-center w-full"
+            <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
+              <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
+                Notice Board
+              </CardTitle>
+            </CardHeader>
+            <ScrollArea className="rounded-2xl max-h-[75vh] border">
+              <Card className="flex flex-col w-full border-none p-0">
+                {teamsData.map((team: any) => {
+                  const isExpandable = team.notices?.length > 3;
+                  const visibleNotices = expanded
+                    ? team.notices
+                    : team.notices?.slice(0, 3);
+                  return (
+                    <Card
+                      className="flex flex-col w-full p-2 border-2 shadow-none gap-2 m-0"
+                      key={team.id}
                     >
-                      Collapse
-                    </Button>
-                  )}
-                </Card>
-              );
-            })}
+                      <div className="flex justify-between">
+                        <CardTitle className="pl-4 text-xl bg-accent w-fit rounded-full dark:bg-accent pr-4 pb-1">
+                        {team.title}
+                      </CardTitle>
+                      <Button
+                        className="text-3xl px-2 pb-1"
+                        onClick={() => handleCreateNotice()}
+                      >
+                        +
+                      </Button>
+                      </div>
+                      {team.notices?.length > 0 && (
+                        <CardDescription className="pl-8">
+                          Here is a notice of {team.title}
+                        </CardDescription>
+                      )}
+
+                      {visibleNotices?.map((notice: any, index: number) => {
+                        const isThirdNotice =
+                          index === 2 && !expanded && isExpandable;
+                        return (
+                          <div className="relative" key={notice.id}>
+                            <Card
+                              onClick={() => handleNoticeDetail(notice)}
+                              className={`flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl dark:bg-neutral-800 text-primary border-dashed ${
+                                isThirdNotice ? "blur-sm" : ""
+                              }`}
+                            >
+                              {notice.title}
+                              <CardFooter className="flex pl-0 pr-0 justify-between text-xs">
+                                <p>Expires in {countdown(notice.endDate)}</p>
+                                <p>Published on {dateFormat(notice.startDate)}</p>
+                              </CardFooter>
+                            </Card>
+
+                            {/* 🔽 Overlay Button only on 3rd card */}
+                            {isThirdNotice && (
+                              <div className="absolute inset-0 flex justify-center items-center bg-gradient-to-t from-neutral-100/90 dark:from-neutral-800/90 to-transparent rounded-2xl">
+                                <Button onClick={() => setExpanded(true)}>
+                                  Expand All
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+
+                      {/* Collapse button after all notices */}
+                      {expanded && isExpandable && (
+                        <Button
+                          onClick={() => setExpanded(false)}
+                          className="mt-2 self-center w-full"
+                        >
+                          Collapse
+                        </Button>
+                      )}
+                    </Card>
+                  );
+                })}
+              </Card>
+            </ScrollArea>
+            {/* {JSON.stringify(teamsData.map((team: any) => team.chats))} */}
           </Card>
-        </ScrollArea>
-        {/* {JSON.stringify(teamsData.map((team: any) => team.chats))} */}
-      </Card>
-    );
-  case "invitationsAndJoinRequests":
+        );
+      case "teamsJoined":
+        return (
+          <Card className="flex w-full gap-2 p-2 h-full">
+            <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
+              <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
+                List of Teams
+              </CardTitle>
+            </CardHeader>
+            <ScrollArea className="rounded-2xl max-h-[75vh] border-none">
+              <Card className="flex flex-col gap-2 w-full border-none p-0">
+                {teamsData.map((team: any) => {
+                  return (
+                    <Card
+                      className="flex flex-col w-full p-2 border-2 shadow-none gap-2 m-0"
+                      key={team.id}
+                    >
+                      <div className="flex justify-between">
+                        <CardTitle className="pl-4 text-xl bg-accent w-fit rounded-full dark:bg-accent pr-4 pb-1">
+                          {team.title}
+                        </CardTitle>
+                        {/* {JSON.stringify(team)} */}
+                        <Button variant={"destructive"}>
+                          Leave Team
+                        </Button>
+                      </div>
+                      <CardDescription className="ml-8">
+                        {team.about}
+                        {console.log(team)}
+                      </CardDescription>
+                      <Label className="text-xl text-primary ml-2">Team Members :</Label>
+                      {team.members.filter((member:any) => member.userId !== authUserDetails.userId).map((member: any, index: number) => (
+                        <Label className="text-base font-normal text-primary ml-6"
+                          key={member.userId}
+                        >
+                          {`(${index + 1})`} {member.firstName} {member.lastName}{" "}
+                          {member.isTeamLeader === true && (
+                            <Label className="border-2 rounded-full px-2 w-32 bg-muted py-1 h-6 m-1">
+                              <Shield className="h-4 w-4" />
+                              Team Leader
+                            </Label>
+                          )}
+                        </Label>
+                      ))}
+                    </Card>
+                  );
+                })}
+              </Card>
+            </ScrollArea>
+          </Card>
+        );
+      case "invitationsAndJoinRequests":
         return (
           <Card className="flex gap-2 p-2 h-full">
             <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r h-10 dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
@@ -280,13 +330,13 @@ const renderTabContent = () => {
           </Button>
           <Button
             className={`tab gap-2 ${
-              activeTab === "membersWithDesignation" ? "bg-muted-foreground text-secondary" : ""
+              activeTab === "teamsJoined" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
-            onClick={() => setActiveTab("membersWithDesignation")}
+            onClick={() => setActiveTab("teamsJoined")}
             variant="link"
           >
             <IdCard className="w-4 h-4" />
-            Members Roles
+            Teams Joined
           </Button>
           <Button
             className={`tab gap-2 ${

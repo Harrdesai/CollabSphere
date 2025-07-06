@@ -33,13 +33,14 @@ export interface NoticeProps {
 const TeamLeaderHomePage = () => {
   const { authUserDetails, getUserDetails } = useAuthStore();
   const { fetchPendingInvitations, pendingInvitations, acceptTeamJoiningRequest, isLoading } = useInvitationStore();
-  const { fetchTimeline, timelineDetails, isTimelineLoading } = useTimelineStore();
+  const { fetchTimelineOfTeam, timelineDetails, isTimelineLoading } = useTimelineStore();
   useEffect(() => {
     getUserDetails();
   }, []);
 
   const [activeTab, setActiveTab] = useState("noticeBoard");
   // const [_, forceUpdate] = useState(0);
+  const [passTeamId, setPassTeamId] = useState("");
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
   const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -83,7 +84,8 @@ const TeamLeaderHomePage = () => {
     setNoticeDetailModalOpen(true);
   };
 
-  const handleCreateNotice = () => {
+  const handleCreateNotice = (teamId: string) => {
+    setPassTeamId(teamId);
     setCreateNoticeModalOpen(true);
   };
 
@@ -148,7 +150,7 @@ const TeamLeaderHomePage = () => {
                         </CardTitle>
                         <Button
                           className="text-3xl px-2 pb-1"
-                          onClick={() => handleCreateNotice()}
+                          onClick={() => handleCreateNotice(team.id)}
                         >
                           +
                         </Button>
@@ -367,23 +369,23 @@ const TeamLeaderHomePage = () => {
                             <CollapsibleContent className="flex flex-col min-w-2/3 p-2 pt-0 rounded-2xl">
                               {Array.isArray(timelineDetails.timelineData[yearWise][monthWise][dayWise]) &&
                                 timelineDetails.timelineData[yearWise][monthWise][dayWise].map((event: any) => (
-                                  <CardHeader
-                                    className="border-2 m-2 mt-0 w-full p-2 rounded-3xl text-muted-foreground"
+                                  <Card
+                                    className="border-none m-2 mt-0 w-full gap-2 p-2 pt-0 rounded-3xl text-muted-foreground"
                                     key={event.id}
                                   >
                                     <CardTitle className="font-normal rounded-xl lg:rounded-full">
                                       <span className="text-foreground">Member Name: </span>
                                       {event.user.firstName} {event.user.lastName}
                                     </CardTitle>
-                                    <CardTitle className="font-normal rounded-xl lg:rounded-full">
+                                    <CardDescription className="font-normal rounded-xl lg:rounded-full ml-4">
                                       <span className="text-foreground">Designation: </span>
                                       {designationLabelConvert(event.designation)}
-                                    </CardTitle>
-                                    <CardTitle className="font-normal rounded-xl lg:rounded-full">
+                                    </CardDescription>
+                                    <CardDescription className="font-normal rounded-xl lg:rounded-full ml-4">
                                       <span className="text-foreground">Action: </span>
                                       {actionLabelConvert(event.action)}
-                                    </CardTitle>
-                                  </CardHeader>
+                                    </CardDescription>
+                                  </Card>
                                 ))}
                             </CollapsibleContent>
                           </Collapsible>
@@ -440,7 +442,7 @@ const TeamLeaderHomePage = () => {
             activeTab === "timeline" ? "bg-muted-foreground text-secondary" : ""
           } w-min`}
           onClick={() => {setActiveTab("timeline");
-                          fetchTimeline(teamsData[0].id)}}
+                          fetchTimelineOfTeam(teamsData[0].id)}}
           variant="link"
           >
             <Calendar className="w-4 h-4" />
@@ -505,6 +507,7 @@ const TeamLeaderHomePage = () => {
       {/* Modal */}
 
       <NoticeCreateModal
+        id={passTeamId!}
         isOpen={createNoticeModalOpen}
         onClose={() => setCreateNoticeModalOpen(false)}
       />

@@ -32,7 +32,8 @@ interface TimelineState {
   isTimelineLoading: boolean;
   statusCode: number;
   error: any;
-  fetchTimeline: (teamId: string) => Promise<void>;
+  fetchTimelineOfTeam: (teamId: string) => Promise<void>;
+  fetchTimelineOfUser: () => Promise<void>;
 }
 
 const useTimelineStore = create<TimelineState>((set) => ({
@@ -41,13 +42,30 @@ const useTimelineStore = create<TimelineState>((set) => ({
   statusCode: 0,
   error: null,
 
-  fetchTimeline: async (teamId: string) => {
+  fetchTimelineOfTeam: async (teamId: string) => {
 
     ({ isTimelineLoading: true });
 
     try {
       console.log(`teamId`, teamId);
       const response = await axiosInstance.get(`/teams/${teamId}/get-timeline-of-team`);
+      set({ timelineDetails: response.data.data });
+
+    } catch (error: AxiosError | any) {
+      console.log("❌ Error fetching timeline", error);
+      // set({ timelineDetails: [] });
+      
+    } finally {
+      set({ isTimelineLoading: false });
+    }
+  },
+// teamsRoutes.get('/get-timeline-of-user', authMiddleware, getTimelineOfUser);
+  fetchTimelineOfUser: async () => {
+
+    ({ isTimelineLoading: true });
+
+    try {
+      const response = await axiosInstance.get(`/teams/get-timeline-of-user`);
       set({ timelineDetails: response.data.data });
 
       console.log(`response`, response);

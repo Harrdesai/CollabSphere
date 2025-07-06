@@ -16,6 +16,7 @@ interface MemberState {
   fetchMemberProfile: (userId: string) => Promise<void>;
   memberProfile: any
   removeMemberFromTeam: (data: object[], teamId: string) => Promise<any>;
+  resignFromTeam: (data: object[], teamId: string) => Promise<any>;
 }
 
 const useMemberStore = create<MemberState>((set) => ({
@@ -93,6 +94,25 @@ const useMemberStore = create<MemberState>((set) => ({
     } catch (error: AxiosError | any) {
       
       console.log("❌ Error removing member from team", error);
+      return error.response.data;
+      
+    } finally {
+      set ({ isLoading: false });
+    }
+  },
+// teamsRoutes.post('/:teamId/resign', authMiddleware, resign);
+
+  resignFromTeam: async (data: object[], teamId: string) => {
+    
+    set ({ isLoading: true });
+    try {
+      
+      const response = await axiosInstance.post(`/teams/${teamId}/resign`, data);
+      console.log(`response`, response);
+      return response;
+    } catch (error: AxiosError | any) {
+      
+      console.log("❌ Error resigning from team", error);
       return error.response.data;
       
     } finally {

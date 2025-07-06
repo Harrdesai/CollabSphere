@@ -1,44 +1,58 @@
 // src/components/Modals/Notice/createNotice.tsx
 
-import React from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ChevronDownIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
+import DateTimePicker from "@/components/ui/dateTimePicker";
 
-import DatePickerField from "@/components/DateField";
 import noticeSchema from "@/zodSchema/notice.Schema";
+import useNoticeBoardStore from "@/store/useNoticeBoard.store";
 
 export interface NoticeCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
+  id: string;
 }
 
-const NoticeCreateModal = ({ isOpen, onClose }: NoticeCreateModalProps) => {
-  const [open, setOpen] = React.useState(false);
-
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
-
+const NoticeCreateModal = ({ isOpen, onClose, id }: NoticeCreateModalProps) => {
+  const { createNotice } = useNoticeBoardStore();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
   const notice = useForm({
     resolver: zodResolver(noticeSchema),
     defaultValues: {
+      teamId: "",
       title: "",
       content: "",
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(Date.now() + 5 * 60 * 1000),
+      endDate: new Date(Date.now() + 10 * 60 * 1000),
     },
   });
 
   const onSubmit = async (data: any) => {
     console.log(`Data: ${JSON.stringify(data)}`);
+    const response = await createNotice(data);
+    console.log(response)
+    if (response.status === 200) {
+    notice.reset();
+    onClose();
+    } else {
+      setErrorMessage(response.errors?.error || "Something went wrong.");
+    }
   };
+  
+  useEffect(() => {
+    if (id) {
+      notice.setValue("teamId", id);
+    }
+  }, [id, onSubmit]);
+  
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="flex flex-col gap-4 w-full lg:min-w-1/2 lg:max-1/2 min-w-full rounded-3xl">
@@ -46,6 +60,8 @@ const NoticeCreateModal = ({ isOpen, onClose }: NoticeCreateModalProps) => {
           Create Notice
         </DialogTitle>
         <DialogDescription />
+        {errorMessage && <p className="text-destructive text-xl">{errorMessage}</p>}
+        {JSON.stringify(notice.formState.errors)}
         <Form {...notice}>
           <form onSubmit={notice.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -74,52 +90,34 @@ const NoticeCreateModal = ({ isOpen, onClose }: NoticeCreateModalProps) => {
                 </FormItem>
               )}
             />
-            <DatePickerField
+            <FormField
               control={notice.control}
               name="startDate"
-              label="Start Date"
-              value={new Date()}
-              formatDate={(date) => date.toLocaleDateString()}
+              render={({ field }) => (
+                <DateTimePicker
+                  field={field}
+                  label="Select start time"
+                  description="Choose the start date & time"
+                  onChange={(date) => notice.setValue("startDate", date)}
+                />
+              )}
             />
-            <DatePickerField
+
+            <FormField
               control={notice.control}
               name="endDate"
-              label="End Date"
-              value={new Date()}
-              formatDate={(date) => date.toLocaleDateString()}
+              render={({ field }) => (
+                <DateTimePicker
+                  field={field}
+                  label="Select end time"
+                  description="Choose the end date & time"
+                  onChange={(date) => notice.setValue("endDate", date)}
+                />
+              )}
             />
             <div className="flex justify-end">
               <Button type="submit">Submit</Button>
             </div>
-            <Label htmlFor="date" className="px-1">
-              Date of birth
-            </Label>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  id="date"
-                  className="w-48 justify-between font-normal"
-                >
-                  {date ? date.toLocaleDateString() : "Select date"}
-                  <ChevronDownIcon />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-auto overflow-hidden p-0"
-                align="start"
-              >
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  captionLayout="dropdown"
-                  onSelect={(date) => {
-                    setDate(date);
-                    setOpen(false);
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
           </form>
         </Form>
       </DialogContent>

@@ -9,11 +9,15 @@ import { useAuthStore } from "@/store/useAuthStore";
 import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
 import NoticeCreateModal from "@/components/Modals/Notice/createNotice";
 import CreateTeamModal from "@/components/Modals/Teams/createTeam";
-import { IdCard, Mail, Shield, StickyNote } from "lucide-react";
+import { Calendar, IdCard, Mail, Shield, StickyNote } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import useInvitationStore from "@/store/useInvitation.store";
 import DeleteRequestConfirmationModal from "@/components/Modals/deleteRequestConfirmationModal";
 import RejectInvitationConfirmationModal from "@/components/Modals/rejectInvitationConfirmationModal";
+import useTimelineStore from "@/store/useTimeline.store";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
+import ResignFromTeamModal from "@/components/Modals/resignFromTeamModal";
 
 export interface NoticeProps {
   id: string;
@@ -27,7 +31,7 @@ export interface NoticeProps {
 const HomePage = () => {
   const { authUserDetails, getUserDetails } = useAuthStore();
   const { fetchPendingJoinRequests, pendingInvitations, acceptTeamInvitation, isLoading } = useInvitationStore();
-
+  const { fetchTimelineOfUser, timelineDetails, isTimelineLoading } = useTimelineStore();
 
   useEffect(() => {
     getUserDetails();
@@ -43,6 +47,8 @@ const HomePage = () => {
   const [deleteRequestConfirmationModalOpen, setDeleteRequestConfirmationModalOpen] = useState(false);
   const [rejectInvitationConfirmationModalOpen, setRejectInvitationConfirmationModalOpen] = useState(false);
   const [invitationDetails, setInvitationDetails] = useState<any>(null);
+  const [teamDetail, setTeamDetail] = useState<any>(null);
+  const [resignModalOpen, setResignModalOpen] = useState(false);
 
   // useEffect(() => {
   //   const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
@@ -101,6 +107,11 @@ const HomePage = () => {
     setRejectInvitationConfirmationModalOpen(true);
   }
 
+  const handleResign = async (teamData: any) => {
+    setTeamDetail(teamData);
+    setResignModalOpen(true);
+  }
+
   useEffect(() => {
     
     if (!deleteRequestConfirmationModalOpen) {
@@ -108,6 +119,10 @@ const HomePage = () => {
     }
   }, [ deleteRequestConfirmationModalOpen ]);
 
+  useEffect(() => {
+    getUserDetails();
+  }, [resignModalOpen]);
+  
   if (!authUserDetails) {
     return <div>Loading...</div>;
   }
@@ -220,14 +235,23 @@ const HomePage = () => {
                           {team.title}
                         </CardTitle>
                         {/* {JSON.stringify(team)} */}
-                        <Button variant={"destructive"}>
+                        <Button variant={"destructive"}
+                          onClick={() => handleResign(team)}
+                        >
                           Leave Team
                         </Button>
                       </div>
                       <CardDescription className="ml-8">
                         {team.about}
-                        {console.log(team)}
                       </CardDescription>
+                      {team.members.find((member:any) => (member.userId === authUserDetails.userId && member.isActive))?.userRoleInTeam?.filter((role: any) => (role.teamId === team.id && role.isActive)).map((role: any) => (
+                        <Label
+                        key = {role.id}
+                        >
+                          {designationLabelConvert(role.designation)}
+                        </Label>
+                      ))
+                      }
                       <Label className="text-xl text-primary ml-2">Team Members :</Label>
                       {team.members.filter((member:any) => member.userId !== authUserDetails.userId).map((member: any, index: number) => (
                         <Label className="text-base font-normal text-primary ml-6"
@@ -310,6 +334,69 @@ const HomePage = () => {
             </ScrollArea>
           </Card>
         );
+      case "timeline":
+        if(isTimelineLoading) return <div>Loading...</div>;
+        return (
+          <ScrollArea className="flex max-h-[73vh]">
+            <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r h-10 dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
+              <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
+                Timeline
+              </CardTitle>
+            </CardHeader>
+            {Object.keys(timelineDetails.timelineData).map((yearWise: any) => (
+              <Collapsible
+                key={yearWise}
+              >
+                <CollapsibleTrigger className="w-fit mt-4 px-6 bg-foreground text-xl text-background rounded-full mb-2">
+                {yearWise}
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  {Object.keys(timelineDetails.timelineData[yearWise]).map((monthWise: any, index: number) => (
+                    <Collapsible
+                      key={monthWise}
+                    >
+                      <CollapsibleTrigger className="w-28 bg-muted-foreground text-xl text-background rounded-full mb-2 ml-4">{monthWise}</CollapsibleTrigger>
+                      <CollapsibleContent>
+                        {Object.keys(timelineDetails.timelineData[yearWise][monthWise]).map((dayWise: any, index: number) => (
+                          <Collapsible
+                            className="flex w-full p-2 pt-0"
+                            key={dayWise}
+                          >
+                            <CollapsibleTrigger className="flex h-fit w-fill justify-end m-2 mb-0 mt-0 text-xl bg-secondary rounded-2xl lg:rounded-full px-3 pb-0.5 hover:font-bold hover:underline ">
+                              {moment(`${monthWise} ${dayWise}, ${yearWise}`, 'MMMM DD, YYYY').format('YYYY MMMM Do')}
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="flex flex-col min-w-2/3 p-2 pt-0 rounded-2xl">
+                              {Array.isArray(timelineDetails.timelineData[yearWise][monthWise][dayWise]) &&
+                                timelineDetails.timelineData[yearWise][monthWise][dayWise].map((event: any) => (
+                                  <Card
+                                    className="border-none m-2 mt-0 w-full gap-2 p-2 pt-0 rounded-3xl text-muted-foreground"
+                                    key={event.id}
+                                  >
+                                    <CardTitle className="font-normal rounded-xl lg:rounded-full text-xl">
+                                      <span className="text-foreground">Team Name: </span>
+                                      {event.team?.title}
+                                    </CardTitle>
+                                    <CardDescription className="font-normal rounded-xl lg:rounded-full ml-4">
+                                      <span className="text-foreground">Designation: </span>
+                                      {designationLabelConvert(event.designation)}
+                                    </CardDescription>
+                                    <CardDescription className="font-normal rounded-xl lg:rounded-full ml-4">
+                                      <span className="text-foreground">Action: </span>
+                                      {actionLabelConvert(event.action)}
+                                    </CardDescription>
+                                  </Card>
+                                ))}
+                            </CollapsibleContent>
+                          </Collapsible>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            ))}
+          </ScrollArea>
+        );
     }
   };
 
@@ -317,7 +404,7 @@ const HomePage = () => {
     <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
       {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
       <Card className="flex w-2/3 gap-2 p-2 h-full">
-        <CardHeader className="flex w-full">
+        <CardHeader className="flex flex-wrap w-full">
           <Button
             className={`gap-2 ${
               activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
@@ -329,7 +416,7 @@ const HomePage = () => {
             Notice Board
           </Button>
           <Button
-            className={`tab gap-2 ${
+            className={`gap-2 ${
               activeTab === "teamsJoined" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
             onClick={() => setActiveTab("teamsJoined")}
@@ -339,7 +426,7 @@ const HomePage = () => {
             Teams Joined
           </Button>
           <Button
-            className={`tab gap-2 ${
+            className={`gap-2 ${
               activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
             onClick={() => {setActiveTab("invitationsAndJoinRequests");
@@ -349,6 +436,17 @@ const HomePage = () => {
           >
             <Mail className="w-4 h-4" />
             Invitations & Join Requests
+          </Button>
+          <Button
+          className={`gap-2 ${
+            activeTab === "timeline" ? "bg-muted-foreground text-secondary" : ""
+          } w-min`}
+          onClick={() => {setActiveTab("timeline");
+                          fetchTimelineOfUser()}}
+          variant="link"
+          >
+            <Calendar className="w-4 h-4" />
+            Timeline
           </Button>
         </CardHeader>
         {renderTabContent()}
@@ -438,6 +536,13 @@ const HomePage = () => {
         isOpen={rejectInvitationConfirmationModalOpen}
         onClose={() => setRejectInvitationConfirmationModalOpen(false)}
         data={invitationDetails}
+      />
+
+      <ResignFromTeamModal
+        isOpen={resignModalOpen}
+        onClose={() => {setResignModalOpen(false);}}
+        team={teamDetail}
+        userId={authUserDetails.userId}
       />
     </Card>
   );

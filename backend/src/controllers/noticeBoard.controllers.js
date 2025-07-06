@@ -72,7 +72,7 @@ const createNotice = async (request, response) => {
     })
 
     if (!notice) {
-      throw new ApiError(500, "Error creating notice");
+      throw new ApiError(400, "Error creating notice");
     }
     response.status(200).json(
       new ApiResponse(200, notice, "Notice created successfully")

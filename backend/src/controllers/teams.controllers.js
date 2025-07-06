@@ -1490,6 +1490,38 @@ const resign = async (request, response) => {
         }))
       });
 
+      
+      const checkIsMemberPartOfTeam = await prisma.userRoleInTeam.findFirst({
+        where: {
+          teamId: teamId,
+          userId: userId,
+          isActive: true
+        }
+      })
+
+      if (!checkIsMemberPartOfTeam) {
+        await prisma.teams.update({
+          where: {
+            id: teamId
+          },data: {
+            members: {
+              disconnect: {
+                userId
+              }
+            }
+          }
+        });
+        
+        await prisma.teamsEditLog.create({
+          data: {
+            teamId: teamId,
+            userId: userId,
+            action: $Enums.Action.LEAVED_TEAM,
+            designation: $Enums.Designation.LEAVED_TEAM
+          }
+        })
+      }
+
       return rolesToRemoveWithoutLeader.map(role => role.id);
     })
 
@@ -1973,9 +2005,29 @@ const getTimelineOfUser = async (request, response) => {
       }
     })
 
+    const startDate = timeline.length ? timeline[timeline.length - 1].createdAt : null;
+    const endDate = timeline.length ? timeline[0].createdAt : null;
+
+    const timelineData = {}
+
+    timeline.forEach((entry) => {
+      const date = moment(entry.createdAt);
+      const year = date.format('YYYY');
+      const month = date.format('MMMM');
+      const day = date.format('DD');
+
+      if (!timelineData[year]) timelineData[year] = {};
+      if (!timelineData[year][month]) timelineData[year][month] = {};
+      if (!timelineData[year][month][day]) timelineData[year][month][day] = [];
+
+      timelineData[year][month][day].push(entry);
+    })
+
     response.status(200).json(
       new ApiResponse(200, {
-        timeline: timeline
+        startDate,
+        endDate,
+        timelineData
       }, "Timeline of user fetched successfully")
     )
 

@@ -74,6 +74,7 @@ enum Designation {
   DATA_ENGINEER
   DATABASE_DESIGNER
   TEAM_LEADER
+  LEAVED_TEAM
 }
 
 model Teams {

@@ -89,7 +89,8 @@ export namespace $Enums {
   DATA_ANALYST: 'DATA_ANALYST',
   DATA_ENGINEER: 'DATA_ENGINEER',
   DATABASE_DESIGNER: 'DATABASE_DESIGNER',
-  TEAM_LEADER: 'TEAM_LEADER'
+  TEAM_LEADER: 'TEAM_LEADER',
+  LEAVED_TEAM: 'LEAVED_TEAM'
 };
 
 export type Designation = (typeof Designation)[keyof typeof Designation]

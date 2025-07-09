@@ -26,9 +26,9 @@ chatRoutes.get('/:chatRoomId/details', authMiddleware, getChatDetails);
 
 chatRoutes.post('/:chatRoomId/send-message', authMiddleware, sendMessage);
 
-chatRoutes.post('/:chatRoomId/update-message/:messageId', authMiddleware, updateMessage);
+chatRoutes.post('/update-message/:messageId', authMiddleware, updateMessage);
 
-chatRoutes.delete('/:chatRoomId/delete-message/:messageId', authMiddleware, deleteMessage);
+chatRoutes.delete('/delete-message/:messageId', authMiddleware, deleteMessage);
 
 chatRoutes.get('/:chatRoomId/messages', authMiddleware, getMessages);
 

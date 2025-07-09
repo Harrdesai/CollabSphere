@@ -4,8 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { Calendar, IdCard, Mail, Shield, StickyNote, Trash2 } from "lucide-react";
-import {} from "@/components/ui/alert-dialog";
+import { Calendar, IdCard, Mail, SendHorizonal, Shield, StickyNote, Trash2 } from "lucide-react";
 
 import { useAuthStore } from "@/store/useAuthStore";
 import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
@@ -20,6 +19,7 @@ import RemoveMemberModal from "@/components/Modals/removeMemberModal";
 import useTimelineStore from "@/store/useTimeline.store";
 import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import ChatComponent from "@/components/chatComponent";
 
 export interface NoticeProps {
   id: string;
@@ -34,6 +34,7 @@ const TeamLeaderHomePage = () => {
   const { authUserDetails, getUserDetails } = useAuthStore();
   const { fetchPendingInvitations, pendingInvitations, acceptTeamJoiningRequest, isLoading } = useInvitationStore();
   const { fetchTimelineOfTeam, timelineDetails, isTimelineLoading } = useTimelineStore();
+
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -352,13 +353,13 @@ const TeamLeaderHomePage = () => {
                 {yearWise}
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  {Object.keys(timelineDetails.timelineData[yearWise]).map((monthWise: any, index: number) => (
+                  {Object.keys(timelineDetails.timelineData[yearWise]).map((monthWise: any, {/* TODO: index: number */}) => (
                     <Collapsible
                       key={monthWise}
                     >
                       <CollapsibleTrigger className="w-28 bg-muted-foreground text-xl text-background rounded-full mb-2 ml-4">{monthWise}</CollapsibleTrigger>
                       <CollapsibleContent>
-                        {Object.keys(timelineDetails.timelineData[yearWise][monthWise]).map((dayWise: any, index: number) => (
+                        {Object.keys(timelineDetails.timelineData[yearWise][monthWise]).map((dayWise: any,{/* TODO: index: number */}) => (
                           <Collapsible
                             className="flex w-full p-2 pt-0"
                             key={dayWise}
@@ -452,57 +453,7 @@ const TeamLeaderHomePage = () => {
         {renderTabContent()}
       </Card>
       <Card className="flex w-1/3 gap-2 p-2 border-0 pt-0 justify-between h-full ">
-        <Card className="flex w-full gap-2 p-2">
-          {teamsData.map((team: any) => (
-            <Card
-              key={team.id}
-              className="flex flex-col w-full p-0 border-0 shadow-none gap-2 m-0"
-            >
-              <CardTitle className="text-md">{team.title}</CardTitle>
-              {team.chats?.map((chat: any) => (
-                <Card
-                  className="flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl"
-                  key={chat.id}
-                >
-                  <CardTitle className="text-sm mt-2 ">{chat.title}</CardTitle>
-                  {chat.messages?.map((message: any) => (
-                    <Card
-                      className="flex w-full p-0 m-0 border-0 shadow-none rounded-2xl"
-                      key={message.id}
-                    >
-                      {message.userId === authUserDetails.userId ? (
-                        <div
-                          className="flex justify-end w-full"
-                          key={message.id}
-                        >
-                          <Card className="flex p-2 pt-0 gap-0 max-w-[80%]">
-                            {message.message}
-                            <CardFooter className="flex pl-0 pr-0 mt-2 justify-end text-xs w-full">
-                              {dateFormat(message.createdAt)}
-                            </CardFooter>
-                          </Card>
-                        </div>
-                      ) : (
-                        <div
-                          className="flex justify-start w-full"
-                          key={message.id}
-                        >
-                          <Card className="flex p-2 pt-0 gap-0 max-w-[80%] dark:bg-neutral-800 text-primary border-dashed">
-                            <CardTitle className="text-sm pl-0 dark:text-muted-foreground font-normal">{`${message.user.firstName} ${message.user.lastName}`}</CardTitle>
-                            {message.message}
-                            <CardFooter className="flex pl-0 pr-0 mt-2 justify-end text-xs w-full">
-                              {dateFormat(message.createdAt)}
-                            </CardFooter>
-                          </Card>
-                        </div>
-                      )}
-                    </Card>
-                  ))}
-                </Card>
-              ))}
-            </Card>
-          ))}
-        </Card>
+        <ChatComponent teamsData={authUserDetails.teams} userId={authUserDetails.userId} />
       </Card>
       {/* Modal */}
 

@@ -449,7 +449,11 @@ const getMeInDetails = async (request, response) => {
                   }
                 }
               },
-              notices: true,
+              notices: {
+                orderBy: {
+                  startDate: "desc"
+                }
+              },
               tags: true,
             }
           },

@@ -12,7 +12,6 @@ import moment from "moment";
 interface DateTimePickerProps {
   field: any;
   label?: string;
-  description?: string;
   onChange: (date: Date) => void;
 }
 

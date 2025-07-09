@@ -15,6 +15,7 @@ import Register from './page/Register';
 import Teams from './page/TeamsList';
 import MembersList from './page/MembersList';
 import MembersProfile from './page/MembersProfile';
+import Trial from './page/trial';
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           <Route path="/teams" element={authUser ? <Teams/> : <Navigate to="/login" />} />
           <Route path="/search-members" element={authUser ? <MembersList/> : <Navigate to="/login" />} />
           <Route path="/members/:id" element={authUser ? <MembersProfile/> : <Navigate to="/login" />} />
+          <Route path="/trial" element={<Trial/>} />
         </Routes>
       </div>
   )

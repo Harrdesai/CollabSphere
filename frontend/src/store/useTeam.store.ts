@@ -14,7 +14,7 @@ interface TeamState {
   fetchAllTeams: () => Promise<void>;
   fetchTeamDetails: (teamId: string) => Promise<void>;
   updateTeamDetails: (teamId: string, teamDetails: any) => Promise<any>;
-
+  deleteTeam: (teamId: string) => Promise<any>;
 }
 
 const useTeamStore = create<TeamState>((set) => ({
@@ -104,6 +104,22 @@ const useTeamStore = create<TeamState>((set) => ({
 
     } catch (error: AxiosError | any) {
       console.log("❌ Error updating team details", error);
+      return error.response.data;
+
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  deleteTeam: async (teamId: string) => {
+    set({ isLoading: true });
+
+    try {
+      const response = await axiosInstance.post(`/teams/${teamId}/delete`);
+      return response;
+
+    } catch (error: AxiosError | any) {
+      console.log("❌ Error deleting team", error);
       return error.response.data;
 
     } finally {

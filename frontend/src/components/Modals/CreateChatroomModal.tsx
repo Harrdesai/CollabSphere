@@ -32,6 +32,9 @@ const CreateChatroomModal = ({ isOpen, onClose, teamId }: CreateChatroomProps) =
     console.log(`Data: ${JSON.stringify(chatRoomDetails)}`);
 
     await createChatRoom(teamId, chatRoomDetails);
+
+    createChatRoomForm.reset();
+    onClose();
   }
 
   return (

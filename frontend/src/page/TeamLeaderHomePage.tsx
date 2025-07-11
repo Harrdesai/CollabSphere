@@ -22,7 +22,7 @@ import useTimelineStore from "@/store/useTimeline.store";
 import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
 import ChatComponent from "@/components/chatComponent";
 import UpdateTeamDetailsModal from "@/components/Modals/updateTeamDetailsModal";
-
+import DeleteTeamConfirmationModal from "@/components/Modals/Teams/deleteConfirmationAlertDialog";
 export interface NoticeProps {
   id: string;
   title: string;
@@ -58,6 +58,9 @@ const TeamLeaderHomePage = () => {
   const [updateTeamDetailsModalOpen, setUpdateTeamDetailsModalOpen] = useState(false);
   const [passTeamIdToUpdateTeamDetails, setPassTeamIdToUpdateTeamDetails] = useState("");
 
+  const [deleteTeamConfirmationModalOpen, setDeleteTeamConfirmationModalOpen] = useState(false);
+  const [passTeamIdToDeleteTeam, setPassTeamIdToDeleteTeam] = useState("");
+  const [passTeamTitleToDeleteTeam, setPassTeamTitleToDeleteTeam] = useState("");
 
   // useEffect(() => {
   //   const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
@@ -120,6 +123,12 @@ const TeamLeaderHomePage = () => {
   const handleUpdateTeamDetails = (teamId: string) => {
     setPassTeamIdToUpdateTeamDetails(teamId);
     setUpdateTeamDetailsModalOpen(true);
+  }
+
+  const handleTeamDeleteConfirmation = (teamId: string, teamTitle: string) => {
+    setPassTeamIdToDeleteTeam(teamId);
+    setPassTeamTitleToDeleteTeam(teamTitle);
+    setDeleteTeamConfirmationModalOpen(true);
   }
   // useEffect(() => {
 
@@ -245,7 +254,7 @@ const TeamLeaderHomePage = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="text-destructive"
-                    // onClick={() => handleDeleteChatRoom(team.id, chat.id, chat.title, team.title)}
+                    onClick={() => handleTeamDeleteConfirmation(teamsData[0]?.id, teamsData[0]?.title)}
                   >
                     <Trash2 className="text-destructive" />
                     Delete Team
@@ -529,6 +538,13 @@ const TeamLeaderHomePage = () => {
         isOpen={updateTeamDetailsModalOpen}
         onClose={() => setUpdateTeamDetailsModalOpen(false)}
         teamId={passTeamIdToUpdateTeamDetails!}
+      />
+
+      <DeleteTeamConfirmationModal
+        isOpen={deleteTeamConfirmationModalOpen}
+        onClose={() => setDeleteTeamConfirmationModalOpen(false)}
+        teamId={passTeamIdToDeleteTeam!}
+        teamTitle={passTeamTitleToDeleteTeam!}
       />
     </Card>
   );

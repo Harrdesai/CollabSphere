@@ -97,7 +97,6 @@ const NoticeCreateModal = ({ isOpen, onClose, id }: NoticeCreateModalProps) => {
                 <DateTimePicker
                   field={field}
                   label="Select start time"
-                  description="Choose the start date & time"
                   onChange={(date) => notice.setValue("startDate", date)}
                 />
               )}
@@ -110,7 +109,6 @@ const NoticeCreateModal = ({ isOpen, onClose, id }: NoticeCreateModalProps) => {
                 <DateTimePicker
                   field={field}
                   label="Select end time"
-                  description="Choose the end date & time"
                   onChange={(date) => notice.setValue("endDate", date)}
                 />
               )}

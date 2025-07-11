@@ -4,21 +4,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { Calendar, IdCard, Mail, SendHorizonal, Shield, StickyNote, Trash2 } from "lucide-react";
-
-import { useAuthStore } from "@/store/useAuthStore";
-import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
-import NoticeCreateModal from "@/components/Modals/Notice/createNotice";
+import { CalendarDays, IdCard, Mail, Plus, Shield, StickyNote, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import useInvitationStore from "@/store/useInvitation.store";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
+import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
+import NoticeCreateModal from "@/components/Modals/Notice/createNotice";
 import DeleteConfirmationModal from "@/components/Modals/deleteConfirmationModal";
 import RejectConfirmationModal from "@/components/Modals/rejectConfirmationModal";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import RemoveMemberModal from "@/components/Modals/removeMemberModal";
+import { useAuthStore } from "@/store/useAuthStore";
+import useInvitationStore from "@/store/useInvitation.store";
 import useTimelineStore from "@/store/useTimeline.store";
 import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import ChatComponent from "@/components/chatComponent";
 
 export interface NoticeProps {
@@ -149,12 +149,9 @@ const TeamLeaderHomePage = () => {
                         <CardTitle className="pl-4 text-xl bg-accent w-fit rounded-full dark:bg-accent pr-4 pb-1">
                           {team.title}
                         </CardTitle>
-                        <Button
-                          className="text-3xl px-2 pb-1"
+                        <Plus className="text-background font-extrabold bg-muted-foreground rounded-full w-8"
                           onClick={() => handleCreateNotice(team.id)}
-                        >
-                          +
-                        </Button>
+                        />
                       </div>
                       {team.notices?.length > 0 && (
                         <CardDescription className="pl-8">
@@ -446,7 +443,7 @@ const TeamLeaderHomePage = () => {
                           fetchTimelineOfTeam(teamsData[0].id)}}
           variant="link"
           >
-            <Calendar className="w-4 h-4" />
+            <CalendarDays className="w-4 h-4" />
             Timeline
           </Button>
         </CardHeader>

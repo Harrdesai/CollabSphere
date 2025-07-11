@@ -17,7 +17,7 @@ export interface CreateChatroomProps {
 }
 
 const CreateChatroomModal = ({ isOpen, onClose, teamId }: CreateChatroomProps) => {
-console.log(`refreshing`)
+
   const { createChatRoom } = useChatStore();
 
   const createChatRoomForm = useForm({

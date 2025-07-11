@@ -4,11 +4,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { CalendarDays, IdCard, Mail, Plus, Shield, StickyNote, Trash2 } from "lucide-react";
+import { CalendarDays, Edit, Ellipsis, IdCard, Mail, Plus, Shield, StickyNote, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 import NoticeDetailModal from "@/components/Modals/Notice/noticeDetail";
 import NoticeCreateModal from "@/components/Modals/Notice/createNotice";
@@ -20,6 +21,7 @@ import useInvitationStore from "@/store/useInvitation.store";
 import useTimelineStore from "@/store/useTimeline.store";
 import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
 import ChatComponent from "@/components/chatComponent";
+import UpdateTeamDetailsModal from "@/components/Modals/updateTeamDetailsModal";
 
 export interface NoticeProps {
   id: string;
@@ -52,6 +54,10 @@ const TeamLeaderHomePage = () => {
   const [rejectConfirmationModalOpen, setRejectConfirmationModalOpen] = useState(false);
   const [removeMemberModalOpen, setRemoveMemberModalOpen] = useState(false);
   const [memberDetail, setMemberDetail] = useState<any>(null);
+
+  const [updateTeamDetailsModalOpen, setUpdateTeamDetailsModalOpen] = useState(false);
+  const [passTeamIdToUpdateTeamDetails, setPassTeamIdToUpdateTeamDetails] = useState("");
+
 
   // useEffect(() => {
   //   const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
@@ -111,6 +117,10 @@ const TeamLeaderHomePage = () => {
     setInvitationDetails(data);
   }
   
+  const handleUpdateTeamDetails = (teamId: string) => {
+    setPassTeamIdToUpdateTeamDetails(teamId);
+    setUpdateTeamDetailsModalOpen(true);
+  }
   // useEffect(() => {
 
   //   if (!deleteConfirmationModalOpen && !rejectConfirmationModalOpen) {
@@ -210,12 +220,42 @@ const TeamLeaderHomePage = () => {
         );
       case "membersWithDesignation":
         return (
-          <Card className="flex gap-2 p-2 h-[79vh]">
+          <Card className="flex flex-col gap-2 p-2 h-[79vh]">
             <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
               <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
                 Members with Designations
               </CardTitle>
             </CardHeader>
+            <CardHeader className="flex justify-between items-center">
+              <CardTitle>
+                {teamsData[0]?.title}
+              </CardTitle>
+              <DropdownMenu>
+                <DropdownMenuTrigger 
+                  // hidden={!chat.isActive}
+                >
+                  <Ellipsis />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem
+                    onClick={() => handleUpdateTeamDetails(teamsData[0]?.id)}
+                  >
+                    <Edit />
+                    Update Team Details
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-destructive"
+                    // onClick={() => handleDeleteChatRoom(team.id, chat.id, chat.title, team.title)}
+                  >
+                    <Trash2 className="text-destructive" />
+                    Delete Team
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </CardHeader>
+            <CardDescription>
+              {teamsData[0]?.about}
+            </CardDescription>
             <Label className="pl-4 p-2">
               <Checkbox
                 id="includeInactive"
@@ -483,6 +523,12 @@ const TeamLeaderHomePage = () => {
         onClose={() => setRemoveMemberModalOpen(false)}
         member={memberDetail}
         teamId={teamsData[0].id}
+      />
+
+      <UpdateTeamDetailsModal
+        isOpen={updateTeamDetailsModalOpen}
+        onClose={() => setUpdateTeamDetailsModalOpen(false)}
+        teamId={passTeamIdToUpdateTeamDetails!}
       />
     </Card>
   );

@@ -155,7 +155,7 @@ const modifyTeamDetails = async (request, response) => {
 
   try {
 
-    const { title, about, link = [], ArrayOfTagIds = [] } = request.body;
+    const { title, about, link = [], tags: ArrayOfTagIds = [] } = request.body;
     const teamId = request.params.teamId;
 
     if (!teamId) {
@@ -202,11 +202,14 @@ const modifyTeamDetails = async (request, response) => {
           tags: {
             connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
           }
-        }
+        },
+        include: {
+          tags: true,
+        },
       });
 
       return updateTeamDetails;
-    })
+    });
 
     response.status(200).json(
       new ApiResponse(200, {
@@ -1687,9 +1690,9 @@ const getTeamDetails = async (request, response) => {
       new ApiResponse(200, details, "Team details fetched successfully")
     )
 
+    console.log(`response`, team);
+
   } catch (error) {
-
-
 
     response.status(error.statusCode || 500).json(
       new ApiError(error.statusCode || 500, "Failed to fetch team details", {
@@ -2084,9 +2087,9 @@ const getTeamDetail = async (request, response) => {
               }
             }
           },
+          tags: true,
           uniqueTitle: false,
           teamLeaderId: false,
-          link: false,
           updatedAt: false
         }
       })

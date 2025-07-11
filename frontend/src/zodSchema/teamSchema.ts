@@ -1,12 +1,15 @@
 // src/zodSchema/teamSchema.ts
 import { z } from "zod";
 
+interface Link {
+  name: string;
+  url: string;
+}
 export interface TeamProps {
   title: String;
   about: String;
+  link: Link[];
   tags: String[];
-  link: { name: String, url: String }[];
-
 }
 
 const teamSchema = z.object({

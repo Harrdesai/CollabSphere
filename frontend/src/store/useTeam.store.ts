@@ -13,6 +13,8 @@ interface TeamState {
   createTeam: (createTeamData: TeamState) => Promise<any>;
   fetchAllTeams: () => Promise<void>;
   fetchTeamDetails: (teamId: string) => Promise<void>;
+  updateTeamDetails: (teamId: string, teamDetails: any) => Promise<any>;
+
 }
 
 const useTeamStore = create<TeamState>((set) => ({
@@ -89,7 +91,25 @@ const useTeamStore = create<TeamState>((set) => ({
       set({ isLoading: false });
       
     }
-  }
+  },
+
+  updateTeamDetails: async (teamId: string, teamDetails: any) => {
+    set({ isLoading: true });
+
+    try {
+      console.log(`input-----------------`, teamDetails);
+      const response = await axiosInstance.post(`/teams/update/${teamId}`, teamDetails);
+      console.log(`response of update-----------------`, response);
+      return response;
+
+    } catch (error: AxiosError | any) {
+      console.log("❌ Error updating team details", error);
+      return error.response.data;
+
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 }))
 
 export default useTeamStore

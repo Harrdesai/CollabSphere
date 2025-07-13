@@ -5,6 +5,7 @@ import { ApiError } from "../utils/api-error.js";
 import { $Enums, Prisma, PrismaClient } from "../generated/prisma/index.js";
 import { canUserJoinAnotherTeam, isAuthorized, isTeamMember, memberCount } from "../utils/helpers.js";
 import moment from "moment";
+
 const prisma = new PrismaClient();
 
 const createTeam = async (request, response) => {
@@ -1739,6 +1740,18 @@ const assignNewRoleToExistingMember = async (request, response) => {
         throw new ApiError(400, "User is not a member of this team");
       }
 
+      const isRoleAlreadyAssigned = await prisma.userRoleInTeam.findFirst({
+        where: {
+          teamId: teamId,
+          userId: userId,
+          designation: designation,
+          isActive: true
+        }
+      });
+
+      if (isRoleAlreadyAssigned) {
+        return isRoleAlreadyAssigned
+      }
       const newRole = await prisma.userRoleInTeam.create({
         data: {
           teamId: teamId,

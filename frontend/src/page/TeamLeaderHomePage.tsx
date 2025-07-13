@@ -23,6 +23,8 @@ import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
 import ChatComponent from "@/components/chatComponent";
 import UpdateTeamDetailsModal from "@/components/Modals/updateTeamDetailsModal";
 import DeleteTeamConfirmationModal from "@/components/Modals/Teams/deleteConfirmationAlertDialog";
+import AssignNewRoleToExistingMemberModal from "@/components/Modals/roleAssigningModal";
+
 export interface NoticeProps {
   id: string;
   title: string;
@@ -62,6 +64,12 @@ const TeamLeaderHomePage = () => {
   const [passTeamIdToDeleteTeam, setPassTeamIdToDeleteTeam] = useState("");
   const [passTeamTitleToDeleteTeam, setPassTeamTitleToDeleteTeam] = useState("");
 
+  const [assignNewRoleToExistingMemberModalOpen, setAssignNewRoleToExistingMemberModalOpen] = useState(false);
+  const [passTeamIdToAssignRoleModal, setPassTeamIdToAssignRoleModal] = useState("");
+  const [passMemberIdToAssignRoleModal, setPassMemberIdToAssignRoleModal] = useState("");
+  const [passMemberFirstNameToAssignRoleModal, setPassMemberFirstNameToAssignRoleModal] = useState("");
+  const [passMemberLastNameToAssignRoleModal, setPassMemberLastNameToAssignRoleModal] = useState("");
+  
   // useEffect(() => {
   //   const intervalId = setInterval(() => forceUpdate((prev) => prev + 1), 1000);
   //   return () => clearInterval(intervalId);
@@ -130,6 +138,16 @@ const TeamLeaderHomePage = () => {
     setPassTeamTitleToDeleteTeam(teamTitle);
     setDeleteTeamConfirmationModalOpen(true);
   }
+
+  const handleRoleAssign = (teamId: string, memberId: string, firstName: string, lastName: string) => {
+    setPassTeamIdToAssignRoleModal(teamId);
+    setPassMemberIdToAssignRoleModal(memberId);
+    setPassMemberFirstNameToAssignRoleModal(firstName);
+    setPassMemberLastNameToAssignRoleModal(lastName);
+
+    setAssignNewRoleToExistingMemberModalOpen(true);
+  }
+  
   // useEffect(() => {
 
   //   if (!deleteConfirmationModalOpen && !rejectConfirmationModalOpen) {
@@ -294,6 +312,17 @@ const TeamLeaderHomePage = () => {
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>Remove Member or Role</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Plus
+                              className="text-background font-extrabold bg-muted-foreground rounded-full w-8"
+                              onClick={() =>handleRoleAssign(teamsData[0]?.id, member.userId, member.firstName, member?.lastName,)}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Assign New Role</p>
                           </TooltipContent>
                         </Tooltip>
                       </Label>
@@ -546,6 +575,16 @@ const TeamLeaderHomePage = () => {
         teamId={passTeamIdToDeleteTeam!}
         teamTitle={passTeamTitleToDeleteTeam!}
       />
+
+      <AssignNewRoleToExistingMemberModal
+        isOpen={assignNewRoleToExistingMemberModalOpen}
+        onClose={() => setAssignNewRoleToExistingMemberModalOpen(false)}
+        teamId={passTeamIdToAssignRoleModal!}
+        memberId={passMemberIdToAssignRoleModal!}
+        firstName={passMemberFirstNameToAssignRoleModal!}
+        lastName={passMemberLastNameToAssignRoleModal!}
+      />
+
     </Card>
   );
 };

@@ -31,6 +31,8 @@ interface InvitationState {
   acceptTeamInvitation: (id: string) => Promise<any>;
 
   rejectTeamInvitation: (id: string) => Promise<any>;
+
+  assigningRole: (teamId: string, data: any) => Promise<any>;
 }
 
 const useInvitationStore = create<InvitationState>((set) => ({
@@ -210,7 +212,25 @@ const useInvitationStore = create<InvitationState>((set) => ({
     } finally {
       set({ isLoading: false });
     }
-  }
+  },
+
+  assigningRole: async (teamId: string, data: any) => {
+
+    set({ isLoading: true });
+
+    try {
+      const response = await axiosInstance.post(`/teams/${teamId}/assign-role`, data);
+      return response.status;
+
+    } catch (error: AxiosError | any) {
+      console.log("❌ Error assigning role", error);
+      return error.response.data;
+
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
 }));
 
 export default useInvitationStore;

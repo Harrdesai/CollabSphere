@@ -64,9 +64,6 @@ const createTeam = async (request, response) => {
           about,
           teamLeaderId,
           link,
-          tags: {
-            connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
-          },
           members: {
             connect: {
               userId: teamLeaderId
@@ -74,6 +71,12 @@ const createTeam = async (request, response) => {
           }
         }
       });
+
+      if (ArrayOfTagIds.length > 0) {
+        teamData.tags = {
+          connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
+        };
+      }
 
       await prisma.user.update({
         where: {

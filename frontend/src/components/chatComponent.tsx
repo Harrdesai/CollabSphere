@@ -118,7 +118,7 @@ const ChatComponent = ({teamsData, userId} : ChatComponentProps) => {
   }
   
   return (
-    <Card className="flex w-full gap-2 p-2">
+    <Card className="flex w-full gap-2 p-0 border-0">
       <Label className="pl-4 p-2">
         <Checkbox
           id="includeInactive"
@@ -147,11 +147,11 @@ const ChatComponent = ({teamsData, userId} : ChatComponentProps) => {
             </TooltipContent>
           </Tooltip>
           </div>
-          <ScrollArea className="rounded-2xl h-[72vh] border-0">
+          <ScrollArea className="rounded-2xl h-[70vh] border-0">
             {team.chats?.map((chat: any) => (
               includeInactive || chat.isActive ? (
                 <Card
-                  className={`w-full p-2 pt-0 pr-4 gap-2 ${
+                  className={`w-full p-2 pt-0 gap-2 ${
                     !chat.isActive ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   key={chat.id}

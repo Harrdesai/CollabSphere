@@ -147,11 +147,11 @@ const ChatComponent = ({teamsData, userId} : ChatComponentProps) => {
             </TooltipContent>
           </Tooltip>
           </div>
-          <ScrollArea className="rounded-2xl h-[62vh] border">
+          <ScrollArea className="rounded-2xl h-[72vh] border-0">
             {team.chats?.map((chat: any) => (
               includeInactive || chat.isActive ? (
                 <Card
-                  className={`flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl ${
+                  className={`w-full p-2 pt-0 pr-4 gap-2 ${
                     !chat.isActive ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   key={chat.id}

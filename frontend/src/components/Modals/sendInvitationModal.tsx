@@ -53,7 +53,6 @@ const SendInvitationModal = ({
 
     const response = await sendInvitation(teamId, data);
 
-    console.log(`response --------------> ${JSON.stringify(response)}`);
     if (response === 200) {
       onClose();
 

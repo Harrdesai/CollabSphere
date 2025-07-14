@@ -24,6 +24,7 @@ import ChatComponent from "@/components/chatComponent";
 import UpdateTeamDetailsModal from "@/components/Modals/updateTeamDetailsModal";
 import DeleteTeamConfirmationModal from "@/components/Modals/Teams/deleteConfirmationAlertDialog";
 import AssignNewRoleToExistingMemberModal from "@/components/Modals/roleAssigningModal";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
 export interface NoticeProps {
   id: string;
@@ -480,56 +481,66 @@ const TeamLeaderHomePage = () => {
   return (
     <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
       {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
-      <Card className="flex w-2/3 gap-2 p-2 h-full rounded-b-lg">
-        <CardHeader className="flex flex-wrap w-full">
-          <Button
+      <ResizablePanelGroup
+      direction="horizontal"
+      className=" rounded-lg h-max border"
+    >
+      <ResizablePanel defaultSize={66} minSize={25}>
+        <Card className="flex gap-2 p-2 h-full rounded-b-lg">
+          <CardHeader className="flex flex-wrap w-full">
+            <Button
+              className={`gap-2 ${
+                activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
+              } w-min`}
+              onClick={() => setActiveTab("noticeBoard")}
+              variant="link"
+            >
+              <StickyNote className="w-4 h-4" />
+              Notice Board
+            </Button>
+            <Button
+              className={`tab gap-2 ${
+                activeTab === "membersWithDesignation" ? "bg-muted-foreground text-secondary" : ""
+              } w-min`}
+              onClick={() => setActiveTab("membersWithDesignation")}
+              variant="link"
+            >
+              <IdCard className="w-4 h-4" />
+              Members Roles
+            </Button>
+            <Button
+              className={`gap-2 ${
+                activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
+              } w-min`}
+              onClick={() => {setActiveTab("invitationsAndJoinRequests");
+                              fetchPendingInvitations(teamsData[0].id)}}
+              variant="link"
+            >
+              <Mail className="w-4 h-4" />
+              Invitations & Join Requests
+            </Button>
+            <Button
             className={`gap-2 ${
-              activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
+              activeTab === "timeline" ? "bg-muted-foreground text-secondary" : ""
             } w-min`}
-            onClick={() => setActiveTab("noticeBoard")}
+            onClick={() => {setActiveTab("timeline");
+                            fetchTimelineOfTeam(teamsData[0].id)}}
             variant="link"
-          >
-            <StickyNote className="w-4 h-4" />
-            Notice Board
-          </Button>
-          <Button
-            className={`tab gap-2 ${
-              activeTab === "membersWithDesignation" ? "bg-muted-foreground text-secondary" : ""
-            } w-min`}
-            onClick={() => setActiveTab("membersWithDesignation")}
-            variant="link"
-          >
-            <IdCard className="w-4 h-4" />
-            Members Roles
-          </Button>
-          <Button
-            className={`gap-2 ${
-              activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
-            } w-min`}
-            onClick={() => {setActiveTab("invitationsAndJoinRequests");
-                            fetchPendingInvitations(teamsData[0].id)}}
-            variant="link"
-          >
-            <Mail className="w-4 h-4" />
-            Invitations & Join Requests
-          </Button>
-          <Button
-          className={`gap-2 ${
-            activeTab === "timeline" ? "bg-muted-foreground text-secondary" : ""
-          } w-min`}
-          onClick={() => {setActiveTab("timeline");
-                          fetchTimelineOfTeam(teamsData[0].id)}}
-          variant="link"
-          >
-            <CalendarDays className="w-4 h-4" />
-            Timeline
-          </Button>
-        </CardHeader>
-        {renderTabContent()}
-      </Card>
-      <Card className="flex w-1/3 gap-2 p-2 border-0 pt-0 justify-between h-full ">
-        <ChatComponent teamsData={authUserDetails.teams} userId={authUserDetails.userId} />
-      </Card>
+            >
+              <CalendarDays className="w-4 h-4" />
+              Timeline
+            </Button>
+          </CardHeader>
+          {renderTabContent()}
+        </Card>
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={34} minSize={20}>
+        <Card className="flex gap-2 p-2 border-0 pt-0 justify-between h-full ">
+          <ChatComponent teamsData={authUserDetails.teams} userId={authUserDetails.userId} />
+        </Card>
+      </ResizablePanel>
+    </ResizablePanelGroup>
       {/* Modal */}
 
       <NoticeCreateModal

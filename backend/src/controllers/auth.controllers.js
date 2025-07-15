@@ -411,6 +411,16 @@ const getMeInDetails = async (request, response) => {
     const userId = request.cookies.userId;
 
     const user = await prisma.$transaction(async (prisma) => {
+
+      const isLeader = await prisma.user.findUnique({
+        where: {
+          userId
+        },
+        select: {
+          isTeamLeader: true
+        }
+      });
+
       const userDetails = await prisma.user.findUnique({
         where: {
           userId
@@ -450,11 +460,19 @@ const getMeInDetails = async (request, response) => {
                 }
               },
               notices: {
+                ...(isLeader.isTeamLeader
+                  ? {} // Team leader sees all
+                  : {
+                      where: {
+                        startDate: { lte: new Date() },
+                        endDate: { gte: new Date() }
+                      }
+                    }),
                 orderBy: {
                   startDate: "desc"
                 }
               },
-              tags: true,
+                tags: true,
             }
           },
           userVisitingTrack: true,
@@ -466,7 +484,7 @@ const getMeInDetails = async (request, response) => {
             }
           }
         }
-      })
+      });
 
       if (!userDetails.lastVisitDate || userDetails.lastVisitDate <= yesterday) {
 

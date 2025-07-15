@@ -25,8 +25,9 @@ import { Checkbox } from "./ui/checkbox";
 interface ChatComponentProps {
   teamsData: any[];
   userId: string;
+  isTeamLeader: boolean;
 }
-const ChatComponent = ({teamsData, userId} : ChatComponentProps) => {
+const ChatComponent = ({teamsData, userId, isTeamLeader} : ChatComponentProps) => {
   const [currentTime, setCurrentTime] = useState(Date.now());
   const [editingMessage, setEditingMessage] = useState<any>(null);
   const [createChatRoomModalOpen, setCreateChatRoomModalOpen] = useState(false);
@@ -61,7 +62,6 @@ const ChatComponent = ({teamsData, userId} : ChatComponentProps) => {
   }
 
   const handleDeleteChatRoom = async (teamId: string, chatRoomId: string, chatRoomTitle: string, teamTitle: string) => {
-    console.log(`teamid------${teamId}, chatRoomId------${chatRoomId}`);
     setPassTeamIdToDeleteChatRoom(teamId);
     setPassChatRoomIdToDeleteChatRoom(chatRoomId);
     setPassChatRoomTitleToDeleteChatRoom(chatRoomTitle);
@@ -119,35 +119,37 @@ const ChatComponent = ({teamsData, userId} : ChatComponentProps) => {
   
   return (
     <Card className="flex w-full gap-2 p-0 border-0">
-      <Label className="pl-4 p-2">
-        <Checkbox
-          id="includeInactive"
-          checked={includeInactive}
-          onCheckedChange={(checked) => setIncludeInactive(!!checked)}
-        />
-        Include Inactive Roles
-      </Label>
+      {isTeamLeader && 
+        <Label className="pl-4 p-2 pb-0">
+          <Checkbox
+            id="includeInactive"
+            checked={includeInactive}
+            onCheckedChange={(checked) => setIncludeInactive(!!checked)}
+          />
+          Include Inactive Roles
+        </Label>
+      }
       {teamsData.map((team: any) => (
         <Card
         key={team.id}
-        className="flex flex-col w-full p-0 border-0 shadow-none gap-2 m-0"
+        className="flex flex-col w-full p-0 pt-2 border-0 shadow-none gap-2 m-0"
         >
           <div className="flex justify-between">
-          <CardTitle className="text-md">
-            {team.title}
-          </CardTitle>
-          <Tooltip>
-            <TooltipTrigger>
-              <Plus className="text-background font-extrabold bg-muted-foreground rounded-full w-8"
-                onClick={() => handleCreateChatRoom(team.id)}
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Create a new chat Room</p>
-            </TooltipContent>
-          </Tooltip>
+            <CardTitle className="text-md">
+              {team.title}
+            </CardTitle>
+            <Tooltip>
+              <TooltipTrigger>
+                <Plus className="text-background font-extrabold bg-muted-foreground rounded-full w-8"
+                  onClick={() => handleCreateChatRoom(team.id)}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Create a new chat Room</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
-          <ScrollArea className="rounded-2xl h-[70vh] border-0">
+          <ScrollArea className={`rounded-2xl border-none ${isTeamLeader ? "max-h-[73vh]" : "max-h-[66vh]"}`}>
             {team.chats?.map((chat: any) => (
               includeInactive || chat.isActive ? (
                 <Card

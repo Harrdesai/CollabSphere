@@ -73,7 +73,7 @@ const createTeam = async (request, response) => {
       });
 
       if (ArrayOfTagIds.length > 0) {
-        teamData.tags = {
+        newTeam.tags = {
           connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
         };
       }

@@ -18,6 +18,8 @@ import useTimelineStore from "@/store/useTimeline.store";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { actionLabelConvert, designationLabelConvert } from "@/lib/helper";
 import ResignFromTeamModal from "@/components/Modals/resignFromTeamModal";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import ChatComponent from "@/components/chatComponent";
 
 export interface NoticeProps {
   id: string;
@@ -39,6 +41,7 @@ const HomePage = () => {
 
   const [activeTab, setActiveTab] = useState("noticeBoard");
   // const [_, forceUpdate ] = useState(0);
+  const [passTeamId, setPassTeamId] = useState("");
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
   const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -82,7 +85,8 @@ const HomePage = () => {
     setNoticeDetailModalOpen(true);
   };
 
-  const handleCreateNotice = () => {
+  const handleCreateNotice = (teamId: string) => {
+    setPassTeamId(teamId);
     setCreateNoticeModalOpen(true);
   };
   
@@ -138,7 +142,7 @@ const HomePage = () => {
                 Notice Board
               </CardTitle>
             </CardHeader>
-            <ScrollArea className="rounded-2xl max-h-[75vh] border">
+            <ScrollArea className="rounded-2xl max-h-[68vh] border">
               <Card className="flex flex-col w-full border-none p-0">
                 {teamsData.map((team: any) => {
                   const isExpandable = team.notices?.length > 3;
@@ -154,12 +158,12 @@ const HomePage = () => {
                         <CardTitle className="pl-4 text-xl bg-accent w-fit rounded-full dark:bg-accent pr-4 pb-1">
                         {team.title}
                       </CardTitle>
-                      <Button
+                      {/* <Button
                         className="text-3xl px-2 pb-1"
-                        onClick={() => handleCreateNotice()}
+                        onClick={() =>handleCreateNotice(team.id)}
                       >
                         +
-                      </Button>
+                      </Button> */}
                       </div>
                       {team.notices?.length > 0 && (
                         <CardDescription className="pl-8">
@@ -351,13 +355,13 @@ const HomePage = () => {
                 {yearWise}
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  {Object.keys(timelineDetails.timelineData[yearWise]).map((monthWise: any, index: number) => (
+                  {Object.keys(timelineDetails.timelineData[yearWise]).map((monthWise: any) => (
                     <Collapsible
                       key={monthWise}
                     >
                       <CollapsibleTrigger className="w-28 bg-muted-foreground text-xl text-background rounded-full mb-2 ml-4">{monthWise}</CollapsibleTrigger>
                       <CollapsibleContent>
-                        {Object.keys(timelineDetails.timelineData[yearWise][monthWise]).map((dayWise: any, index: number) => (
+                        {Object.keys(timelineDetails.timelineData[yearWise][monthWise]).map((dayWise: any) => (
                           <Collapsible
                             className="flex w-full p-2 pt-0"
                             key={dayWise}
@@ -403,114 +407,81 @@ const HomePage = () => {
   return (
     <Card className="flex w-full flex-row items-center gap-2 justify-center p-2 h-[88vh]">
       {/* <pre>{JSON.stringify(authUser, null, 2)}</pre> */}
-      <Card className="flex w-2/3 gap-2 p-2 h-full">
-        <CardHeader className="flex flex-wrap w-full">
-          <Button
-            className={`gap-2 ${
-              activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
-            } w-min`}
-            onClick={() => setActiveTab("noticeBoard")}
-            variant="link"
-          >
-            <StickyNote className="w-4 h-4" />
-            Notice Board
-          </Button>
-          <Button
-            className={`gap-2 ${
-              activeTab === "teamsJoined" ? "bg-muted-foreground text-secondary" : ""
-            } w-min`}
-            onClick={() => setActiveTab("teamsJoined")}
-            variant="link"
-          >
-            <IdCard className="w-4 h-4" />
-            Teams Joined
-          </Button>
-          <Button
-            className={`gap-2 ${
-              activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
-            } w-min`}
-            onClick={() => {setActiveTab("invitationsAndJoinRequests");
-                            fetchPendingJoinRequests();
-                          }}
-            variant="link"
-          >
-            <Mail className="w-4 h-4" />
-            Invitations & Join Requests
-          </Button>
-          <Button
-          className={`gap-2 ${
-            activeTab === "timeline" ? "bg-muted-foreground text-secondary" : ""
-          } w-min`}
-          onClick={() => {setActiveTab("timeline");
-                          fetchTimelineOfUser()}}
-          variant="link"
-          >
-            <Calendar className="w-4 h-4" />
-            Timeline
-          </Button>
-        </CardHeader>
-        {renderTabContent()}
-      </Card>
-      <Card className="flex w-1/3 gap-2 p-2 border-0 pt-0 justify-between h-full ">
-      <Button
-        onClick={() => handleCreateTeam()}
-        className="text-xl px-2 pb-1"
+      <ResizablePanelGroup
+      direction="horizontal"
+      className=" rounded-lg h-max border"
       >
-        Create Team
-      </Button>
-      <Card className="flex w-full gap-2 p-2">
-      
-        {teamsData.map((team: any) => (
-          <Card
-            key={team.id}
-            className="flex flex-col w-full p-0 border-0 shadow-none gap-2 m-0"
-          >
-            <CardTitle className="text-md">{team.title}</CardTitle>
-            {team.chats?.map((chat: any) => (
-              <Card
-                className="flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl"
-                key={chat.id}
+        <ResizablePanel defaultSize={66} minSize={25}>
+          <Card className="flex gap-2 p-2 h-full">
+            <CardHeader className="flex flex-wrap w-full">
+              <Button
+                className={`gap-2 ${
+                  activeTab === "noticeBoard" ? "bg-muted-foreground text-secondary" : ""
+                } w-min`}
+                onClick={() => setActiveTab("noticeBoard")}
+                variant="link"
               >
-                <CardTitle className="text-sm mt-2 ">{chat.title}</CardTitle>
-                {chat.messages?.map((message: any) => (
-                  <Card
-                    className="flex w-full p-0 m-0 border-0 shadow-none rounded-2xl"
-                    key={message.id}
-                  >
-                    {message.userId === authUserDetails.userId ? (
-                      <div className="flex justify-end w-full" key={message.id}>
-                        <Card className="flex p-2 pt-0 gap-0 max-w-[80%]">
-                          {message.message}
-                          <CardFooter className="flex pl-0 pr-0 mt-2 justify-end text-xs w-full">
-                            {dateFormat(message.createdAt)}
-                          </CardFooter>
-                        </Card>
-                      </div>
-                    ) : (
-                      <div
-                        className="flex justify-start w-full"
-                        key={message.id}
-                      >
-                        <Card className="flex p-2 pt-0 gap-0 max-w-[80%] dark:bg-neutral-800 text-primary border-dashed">
-                          <CardTitle className="text-sm pl-0 dark:text-muted-foreground font-normal">{`${message.user.firstName} ${message.user.lastName}`}</CardTitle>
-                          {message.message}
-                          <CardFooter className="flex pl-0 pr-0 mt-2 justify-end text-xs w-full">
-                            {dateFormat(message.createdAt)}
-                          </CardFooter>
-                        </Card>
-                      </div>
-                    )}
-                  </Card>
-                ))}
-              </Card>
-            ))}
+                <StickyNote className="w-4 h-4" />
+                Notice Board
+              </Button>
+              <Button
+                className={`gap-2 ${
+                  activeTab === "teamsJoined" ? "bg-muted-foreground text-secondary" : ""
+                } w-min`}
+                onClick={() => setActiveTab("teamsJoined")}
+                variant="link"
+              >
+                <IdCard className="w-4 h-4" />
+                Teams Joined
+              </Button>
+              <Button
+                className={`gap-2 ${
+                  activeTab === "invitationsAndJoinRequests" ? "bg-muted-foreground text-secondary" : ""
+                } w-min`}
+                onClick={() => {setActiveTab("invitationsAndJoinRequests");
+                                fetchPendingJoinRequests();
+                              }}
+                variant="link"
+              >
+                <Mail className="w-4 h-4" />
+                Invitations & Join Requests
+              </Button>
+              <Button
+              className={`gap-2 ${
+                activeTab === "timeline" ? "bg-muted-foreground text-secondary" : ""
+              } w-min`}
+              onClick={() => {setActiveTab("timeline");
+                              fetchTimelineOfUser()}}
+              variant="link"
+              >
+                <Calendar className="w-4 h-4" />
+                Timeline
+              </Button>
+            </CardHeader>
+            {renderTabContent()}
           </Card>
-        ))}
-      </Card>
-      </Card>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={34} minSize={20}>
+          <Card className="flex gap-0 p-2 border-0 justify-between h-full ">
+            <Button
+              onClick={() => handleCreateTeam()}
+              className="text-xl pb-1"
+              disabled={teamsData.length !== 0}
+            >
+              Create Team
+            </Button>
+            {teamsData.length !== 0 && (
+              <p className="text-destructive ml-4">Resign from all teams to create a new team.</p>
+            )}
+            <ChatComponent teamsData={authUserDetails.teams} userId={authUserDetails.userId} isTeamLeader = {false} />
+          </Card>
+        </ResizablePanel>
+      </ResizablePanelGroup>
       {/* Modal */}
 
       <NoticeCreateModal
+        id={passTeamId!}
         isOpen={createNoticeModalOpen}
         onClose={() => setCreateNoticeModalOpen(false)}
       />

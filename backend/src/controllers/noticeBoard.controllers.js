@@ -104,6 +104,7 @@ const getNotices = async (request, response) => {
       isLeader = await isAuthorized(request.user.userId, id);
 
     }
+    
     const isMember = await isTeamMember(teamIds, request.user.userId);
     
     console.log(`isLeader ----- ${isLeader} isMember ----- ${isMember}`);

@@ -161,6 +161,7 @@ const modifyTeamDetails = async (request, response) => {
 
     const { title, about, link = [], tags: ArrayOfTagIds = [] } = request.body;
     const teamId = request.params.teamId;
+    const userId = request.user.userId;
 
     if (!teamId) {
       throw new ApiError(400, "Team id is not provided, please provide team id");
@@ -192,6 +193,8 @@ const modifyTeamDetails = async (request, response) => {
       }
 
     }
+
+    const isTeamLeader = await isAuthorized(userId, teamId);
 
     const team = await prisma.$transaction(async (prisma) => {
 

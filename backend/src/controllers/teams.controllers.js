@@ -196,6 +196,10 @@ const modifyTeamDetails = async (request, response) => {
 
     const isTeamLeader = await isAuthorized(userId, teamId);
 
+    if (!isTeamLeader) {
+      throw new ApiError(403, "You are not a team leader");
+    }
+
     const team = await prisma.$transaction(async (prisma) => {
 
       const updateTeamDetails = await prisma.teams.update({
@@ -2138,7 +2142,6 @@ const getTeamDetail = async (request, response) => {
 export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser, getTeamDetail };
 
 
-// verify team leader id while updating team detail
 // implementaion of isActive field in UserRoleInTeam
 // Remove pending request or invitation on last member accepted a request or invitation
 // implementation of leave multiple team desgination

@@ -256,6 +256,10 @@ const updateNotice = async (request, response) => {
         throw new ApiError(403, "Notice does not belong to this team");
       }
 
+      if(notice.endDate < new Date()) {
+        throw new ApiError(400, "Cannot update an expired notice");
+      }
+
       const updatedNotice = await prismaTx.notice.update({
         where: {
           id: noticeId
@@ -333,7 +337,11 @@ const deleteNotice = async (request, response) => {
       }
 
       if (notice.status === $Enums.Status.DELETED) {
-        throw new ApiError(400, "Notice already deleted");
+        throw new ApiError(403, "Notice already deleted");
+      }
+
+      if(notice.endDate < new Date()) {
+        throw new ApiError(403, "Notice has already expired, so you cannot delete it");
       }
 
       const deleteNotice = await prismaTx.notice.update({

@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { CalendarDays, Edit, Ellipsis, IdCard, Mail, Plus, Shield, StickyNote, Trash2 } from "lucide-react";
+import { CalendarDays, Edit, Ellipsis, Eye, IdCard, Mail, Plus, Shield, StickyNote, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -25,6 +25,7 @@ import UpdateTeamDetailsModal from "@/components/Modals/updateTeamDetailsModal";
 import DeleteTeamConfirmationModal from "@/components/Modals/Teams/deleteConfirmationAlertDialog";
 import AssignNewRoleToExistingMemberModal from "@/components/Modals/roleAssigningModal";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import DeleteNoticeConfirmationModal from "@/components/Modals/Notice/deleteConfirmationDialog";
 
 export interface NoticeProps {
   id: string;
@@ -49,6 +50,7 @@ const TeamLeaderHomePage = () => {
   const [passTeamId, setPassTeamId] = useState("");
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
   const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
+  const [deleteNoticeConfirmationModalOpen, setDeleteNoticeConfirmationModalOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [createNoticeModalOpen, setCreateNoticeModalOpen] = useState(false);
   const [includeInactive, setIncludeInactive] = useState(false);
@@ -103,6 +105,10 @@ const TeamLeaderHomePage = () => {
     setNoticeDetailModalOpen(true);
   };
 
+  const handleDeleteNotice = (notice: NoticeProps) => {
+    setSelectedNoticeDetail(notice);
+    setDeleteNoticeConfirmationModalOpen(true);
+  }
   const handleCreateNotice = (teamId: string) => {
     setPassTeamId(teamId);
     setCreateNoticeModalOpen(true);
@@ -198,25 +204,50 @@ const TeamLeaderHomePage = () => {
                       )}
 
                       {visibleNotices?.map((notice: any, index: number) => {
+                        const activeNotice = (notice.status === "APPROVED" && notice.endDate > new Date().toISOString());
                         const isThirdNotice =
                           index === 2 && !expanded && isExpandable;
                         return (
                           <div className="relative" key={notice.id}>
-                            <Card
-                              onClick={() => handleNoticeDetail(notice)}
-                              className={`flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl dark:bg-neutral-800 text-primary border-dashed ${
-                                isThirdNotice ? "blur-sm" : ""
-                              }`}
-                            >
-                              {notice.title}
-                              <CardFooter className="flex pl-0 pr-0 justify-between text-xs">
-                                <p>Expires in {countdown(notice.endDate)}</p>
-                                <p>
-                                  Published on {dateFormat(notice.startDate)}
-                                </p>
-                              </CardFooter>
-                            </Card>
-
+                            <DropdownMenu>
+                              <DropdownMenuTrigger className="w-full">
+                                <Card
+                                  className={`flex flex-col w-full p-2 pt-0 gap-2 m-0 border-2 rounded-2xl dark:bg-neutral-800 text-primary border-dashed ${
+                                    !activeNotice ? "opacity-50 cursor-not-allowed" : ""
+                                  } ${
+                                    isThirdNotice ? "blur-sm" : ""
+                                  }`}
+                                >
+                                  <div className="text-left text-sm p-1 pb-0 font-semibold">
+                                    {notice.title}
+                                  </div>
+                                  <CardFooter className="flex pl-0 pr-0 justify-between text-xs">
+                                    <p>Expires in {countdown(notice.endDate)}</p>
+                                    <p>
+                                      Published on {dateFormat(notice.startDate)}
+                                    </p>
+                                  </CardFooter>
+                                </Card>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                              <DropdownMenuItem onClick={() => handleNoticeDetail(notice)}>
+                                <Eye className="mr-2" />
+                                View
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Edit className="mr-2" />
+                                Edit
+                              </DropdownMenuItem>
+                              {activeNotice && (
+                              <DropdownMenuItem onClick={() => handleDeleteNotice(notice)}>
+                                <Trash2 className="mr-2 text-destructive" />
+                                <span className="text-destructive">
+                                  Discard
+                                </span>
+                              </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                             {/* 🔽 Overlay Button only on 3rd card */}
                             {isThirdNotice && (
                               <div className="absolute inset-0 flex justify-center items-center bg-gradient-to-t from-neutral-100/90 dark:from-neutral-800/90 to-transparent rounded-2xl">
@@ -251,7 +282,7 @@ const TeamLeaderHomePage = () => {
           <Card className="flex flex-col gap-2 p-2 h-[79vh]">
             <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
               <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
-                Members with Designations
+                Team Details
               </CardTitle>
             </CardHeader>
             <CardHeader className="flex justify-between items-center">
@@ -292,7 +323,7 @@ const TeamLeaderHomePage = () => {
               />
               Include Inactive Roles
             </Label>
-            <ScrollArea className="rounded-2xl max-h-[62vh] border">
+            <ScrollArea className="rounded-2xl max-h-[52vh] border">
                 {teamsData[0]?.members?.map((member: any, index: number) => {
                   return (
                     <CardHeader key={member.userId}>
@@ -415,7 +446,7 @@ const TeamLeaderHomePage = () => {
       case "timeline":
         if(isTimelineLoading) return <div>Loading...</div>;
         return (
-          <ScrollArea className="flex max-h-[73vh]">
+          <ScrollArea className="flex max-h-[78vh]">
             <CardHeader className="dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r h-10 dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 rounded-full">
               <CardTitle className="flex w-full text-3xl justify-center bg-clip-text text-neutral-800 dark:text-neutral-50">
                 Timeline
@@ -506,7 +537,7 @@ const TeamLeaderHomePage = () => {
                 variant="link"
               >
                 <IdCard className="w-4 h-4" />
-                Members Roles
+                Team Details
               </Button>
               <Button
                 className={`gap-2 ${
@@ -553,6 +584,12 @@ const TeamLeaderHomePage = () => {
         isOpen={noticeDetailModalOpem}
         onClose={() => setNoticeDetailModalOpen(false)}
         notice={selectedNoticeDetail ?? ({} as NoticeProps)}
+      />
+
+      <DeleteNoticeConfirmationModal
+        isOpen={deleteNoticeConfirmationModalOpen}
+        onClose={() => setDeleteNoticeConfirmationModalOpen(false)}
+        data={selectedNoticeDetail}
       />
 
       <DeleteConfirmationModal

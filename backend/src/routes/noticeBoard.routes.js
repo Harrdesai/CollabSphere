@@ -14,7 +14,7 @@ noticeBoardRoutes.get('/:noticeId/details', authMiddleware, getNotice);
 
 noticeBoardRoutes.post('/:noticeId/update', authMiddleware, updateNotice);
 
-noticeBoardRoutes.post('/:noticeId/delete', authMiddleware, deleteNotice);
+noticeBoardRoutes.post('/:teamId/:noticeId/delete', authMiddleware, deleteNotice);
 
 noticeBoardRoutes.get('/requests', authMiddleware, getNoticeRequests);
 

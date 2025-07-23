@@ -26,6 +26,7 @@ import DeleteTeamConfirmationModal from "@/components/Modals/Teams/deleteConfirm
 import AssignNewRoleToExistingMemberModal from "@/components/Modals/roleAssigningModal";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import DeleteNoticeConfirmationModal from "@/components/Modals/Notice/deleteConfirmationDialog";
+import NoticeUpdateModal from "@/components/Modals/Notice/updateNotice";
 
 export interface NoticeProps {
   id: string;
@@ -50,6 +51,7 @@ const TeamLeaderHomePage = () => {
   const [passTeamId, setPassTeamId] = useState("");
   const [noticeDetailModalOpem, setNoticeDetailModalOpen] = useState(false);
   const [selectedNoticeDetail, setSelectedNoticeDetail] = useState<NoticeProps | null>(null);
+  const [updateNoticeModalOpen, setUpdateNoticeModalOpen] = useState(false);
   const [deleteNoticeConfirmationModalOpen, setDeleteNoticeConfirmationModalOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [createNoticeModalOpen, setCreateNoticeModalOpen] = useState(false);
@@ -104,6 +106,11 @@ const TeamLeaderHomePage = () => {
     setSelectedNoticeDetail(notice);
     setNoticeDetailModalOpen(true);
   };
+  
+  const handleUpdateNotice = (notice: NoticeProps) => {
+    setSelectedNoticeDetail(notice);
+    setUpdateNoticeModalOpen(true);
+  }
 
   const handleDeleteNotice = (notice: NoticeProps) => {
     setSelectedNoticeDetail(notice);
@@ -234,7 +241,7 @@ const TeamLeaderHomePage = () => {
                                 <Eye className="mr-2" />
                                 View
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleUpdateNotice(notice)}>
                                 <Edit className="mr-2" />
                                 Edit
                               </DropdownMenuItem>
@@ -583,6 +590,12 @@ const TeamLeaderHomePage = () => {
       <NoticeDetailModal
         isOpen={noticeDetailModalOpem}
         onClose={() => setNoticeDetailModalOpen(false)}
+        notice={selectedNoticeDetail ?? ({} as NoticeProps)}
+      />
+
+      <NoticeUpdateModal
+        isOpen= {updateNoticeModalOpen}
+        onClose={() => setUpdateNoticeModalOpen(false)}
         notice={selectedNoticeDetail ?? ({} as NoticeProps)}
       />
 

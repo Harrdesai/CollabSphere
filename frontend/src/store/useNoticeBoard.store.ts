@@ -11,6 +11,7 @@ interface NoticeBoardState {
 
   fetchNotices: (teamIdArray: string[]) => Promise<void>;
   createNotice: (noticeDetail: object) => Promise<any>;
+  updateNotice: (noitceId: string, teamId: string, noticeDetail: object) => Promise<any>; 
   deleteNotice: (noticeId: string, teamId: string) => Promise<any>;
 }
 const useNoticeBoardStore = create<NoticeBoardState>((set) => ({
@@ -49,6 +50,19 @@ const useNoticeBoardStore = create<NoticeBoardState>((set) => ({
     }
   },
   
+  updateNotice: async (noitceId: string, teamId: string, noticeDetail: object) => {
+    set({ isLoading: true });
+    try {
+      const response = await axiosInstance.post(`/notice/${teamId}/${noitceId}/update`, noticeDetail);
+      return response;
+    } catch (error: AxiosError | any) {
+      console.log("❌ Error updating notice", error);
+      return error.response.data;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
   deleteNotice: async (noticeId: string, teamId: string) => {
     set({ isLoading: true });
     try {

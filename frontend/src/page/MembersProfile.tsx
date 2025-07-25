@@ -12,11 +12,14 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import moment from "moment";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import GitHubCalendar from 'react-github-calendar';
 
 import useMemberStore from "@/store/useMember.store";
 import ExpandableText from "@/components/ExpandableText";
 import SendInvitationModal from "@/components/Modals/sendInvitationModal";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTheme } from "@/components/theme-provider";
+import ContributionCalender from "@/components/HeatmapCalendar";
 
 const MembersProfile = () => {
   const navigate = useNavigate();
@@ -48,7 +51,7 @@ const MembersProfile = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  
+  console.log(`memberProfile---------------`, memberProfile);
   return (
     <Card className="flex w-full flex-row rounded-3xl items-center gap-2 p-2 h-[88vh]">
       {memberProfile && (
@@ -256,20 +259,23 @@ const MembersProfile = () => {
           <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Team Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
-            <p>team</p>
-            <p>team</p>
-            <p>team</p>
-            <p>team</p>
+          <Card className="flex flex-col w-full p-0 bg-stone-50 dark:bg-transparent">
+            <ContributionCalender data={memberProfile.userVisitingTrack} />
           </Card>
           <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Git Commit Contributions
           </CardTitle>
           <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
-            <p>git</p>
-            <p>git</p>
-            <p>git</p>
-            <p>git</p>
+            { (memberProfile.github) ? (
+            <GitHubCalendar
+              username={memberProfile.github}
+              colorScheme={useTheme().theme === "dark" ? "dark" : "light"}
+              showWeekdayLabels={true}
+              hideMonthLabels={true}
+            />
+            ): (
+              <p className="text-2xl">No GitHub Account Linked</p>
+            )}
           </Card>
           <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Masterji Contributions

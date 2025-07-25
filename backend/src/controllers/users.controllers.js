@@ -176,7 +176,6 @@ const userProfile = async (request, response) => {
         },
         userVisitingTrack: {
           select: {
-            userId: true,
             date: true
           }
         },

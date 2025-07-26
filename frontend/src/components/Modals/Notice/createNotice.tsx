@@ -5,13 +5,15 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DateTimePicker from "@/components/ui/dateTimePicker";
 
 import noticeSchema from "@/zodSchema/notice.Schema";
 import useNoticeBoardStore from "@/store/useNoticeBoard.store";
+import { cn } from "@/lib/utils";
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
+
 
 export interface NoticeCreateModalProps {
   isOpen: boolean;
@@ -51,19 +53,23 @@ const NoticeCreateModal = ({ isOpen, onClose, id }: NoticeCreateModalProps) => {
       notice.setValue("teamId", id);
     }
   }, [id, onSubmit]);
+
+  useEffect(() => {
+    notice.reset();
+  }, [onClose, isOpen])
   
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="flex flex-col gap-4 w-full lg:min-w-1/2 lg:max-1/2 min-w-full rounded-3xl">
+      <DialogContent className="flex flex-col gap-2 w-full lg:min-w-2/3 lg:max-1/2 min-w-full rounded-3xl">
         <DialogTitle className="text-neutral-800 dark:text-neutral-50 dark:bg-gradient-to-r from-stone-100 via-stone-200 to-stone-400 bg-gradient-to-r dark:from-stone-900 dark:via-stone-800 dark:to-stone-700 p-1 px-4 w-fit rounded-full">
           Create Notice
         </DialogTitle>
         <DialogDescription />
         {errorMessage && <p className="text-destructive text-xl">{errorMessage}</p>}
-        {JSON.stringify(notice.formState.errors)}
+        {/* {JSON.stringify(notice.formState.errors)} */}
         <Form {...notice}>
-          <form onSubmit={notice.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={notice.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={notice.control}
               name="title"
@@ -84,7 +90,22 @@ const NoticeCreateModal = ({ isOpen, onClose, id }: NoticeCreateModalProps) => {
                 <FormItem>
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter the Notice Title" {...field} />
+                    <MinimalTiptapEditor
+                      {...field}
+                      throttleDelay={0}
+                      className={cn(
+                        "h-full min-h-56 w-full min-w-0 rounded-xl",
+                        {
+                          "border-destructive focus-within:border-destructive":
+                            notice.formState.errors.content,
+                        }
+                      )}
+                      editorContentClassName="overflow-auto h-full flex grow  placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-gray-300 dark:border-input"
+                      output="html"
+                      placeholder="Enter the Notice Content"
+                      editable={true}
+                      editorClassName="focus:outline-hidden px-5 py-4 h-full grow"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

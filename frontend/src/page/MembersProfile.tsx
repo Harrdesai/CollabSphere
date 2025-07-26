@@ -257,15 +257,19 @@ const MembersProfile = () => {
               })}
           </Card>
           <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
-            Team Contributions
+            Activeness
           </CardTitle>
           <Card className="flex flex-col w-full p-0 bg-stone-50 dark:bg-transparent">
-            <ContributionCalender data={memberProfile.userVisitingTrack} />
+            <ContributionCalender 
+            data={memberProfile.userVisitingTrack}
+            noOfDaysUserVisited = {memberProfile._count?.userVisitingTrack}
+            longestStreak = {memberProfile.longestStreak}
+            />
           </Card>
           <CardTitle className="flex w-fit gap-2 mt-2 mb-2 pl-4 text-2xl font-normal text-foreground bg-stone-200">
             Git Commit Contributions
           </CardTitle>
-          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
+          <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent pt-4">
             { (memberProfile.github) ? (
             <GitHubCalendar
               username={memberProfile.github}

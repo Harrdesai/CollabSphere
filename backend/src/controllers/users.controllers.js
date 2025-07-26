@@ -44,7 +44,17 @@ const searchedUserLists = async (request, response) => {
   const limit = parseInt(request.query.limit || '10', 10);
   const skip = (page - 1) * limit;
 
-  console.log(`searchKeyWord:-------- ${searchKeyWord}, searchTags:------ ${searchTagIds}`);
+  const userId = request.user.userId || null;
+
+  const courseNameArray = await prisma.user.findUnique({
+    where: {
+      userId
+    },
+    select: {
+      courseName: true
+    }
+  })
+
   try {
 
     const users = await prisma.user.findMany({
@@ -66,6 +76,10 @@ const searchedUserLists = async (request, response) => {
                 }
               }
             ]
+          }, {
+            courseName: {
+              hasSome: courseNameArray.courseName
+            }
           },
           ...(searchTagIds.length > 0
             ? [

@@ -13,10 +13,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useMemberStore from "@/store/useMember.store";
 import ExpandableText from "@/components/ExpandableText";
 import { userActiveness } from "@/lib/helper";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const MembersList = () => {
   const { isLoading, members, fetchSearchedMembersList, setMembers, fetchUsedTags, tags } = useMemberStore();
-
+  const { onlineUsers } = useAuthStore();
   useEffect(() => {
     fetchUsedTags();
   }, [fetchUsedTags]);
@@ -92,20 +93,24 @@ const MembersList = () => {
                 </Avatar>
                 <CardTitle className="bg-transparent dark:bg-transparent">
                   <div className="flex gap-2 text-xl">
-                  {member.firstName} {member.lastName}
-                  {member.isTeamLeader && (
-                <Label className="border-2 rounded-full px-2 w-32 bg-muted py-1 h-6 m-1">
-                  <Shield className="h-4 w-4" />
-                  Team Leader
-                </Label>
-              )}
-              </div>
+                    {member.firstName} {member.lastName}
+                    {member.isTeamLeader && (
+                      <Label className="border-2 rounded-full px-2 w-32 bg-muted py-1 h-6 m-1">
+                        <Shield className="h-4 w-4" />
+                        Team Leader
+                      </Label>
+                    )}
+                    {onlineUsers.includes(member.userId) && (
+                      <Label className="border-2 rounded-full text-foreground bg-green-500/40 px-2 py-1 h-6 m-1">
+                        Online
+                      </Label>
+                    )}
+                   </div>
                   {member.about?.length > 200 ? (
                     <ExpandableText text={member.about}/>
                   ) : (
                     <CardDescription className="font-normal my-2">{member.about}</CardDescription>
-                  )
-                  }
+                  )}
                 </CardTitle>
               </CardHeader>
               <CardFooter className="gap-4 pl-0 text-muted-foreground">
@@ -179,11 +184,3 @@ const MembersList = () => {
 };
 
 export default MembersList;
-
-// <Checkbox
-//   id={tag.id}
-//   checked={selectedTagIds.includes(tag.id)}
-//   onCheckedChange={(checked) => {
-//   handleTagChange( tag.id, Boolean(checked))
-//   }}
-// />

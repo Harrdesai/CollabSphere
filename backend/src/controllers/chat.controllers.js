@@ -4,8 +4,11 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { PrismaClient } from "../generated/prisma/index.js";
 import { isAuthorized, isTeamMember } from "../utils/helpers.js";
+import { getReceiverSocketIds, io} from "../utils/socket.js";
 
 const prisma = new PrismaClient();
+
+// TODO: need to refactor that on remove of member he can no longer access the chat room and not send web socket notification to that users Id
 
 const createChatRoom = async (request, response) => {
 
@@ -15,7 +18,6 @@ const createChatRoom = async (request, response) => {
     const userId = request.user.userId;
     const { title, about } = request.body;
 
-    console.log(`userId: ${userId}, teamId: ${teamId}, title: ${title}, about: ${about}`);
     if (!teamId || !userId || !title || !about) {
       throw new ApiError(400, "Please provide team id, user id, title and about");
     }
@@ -26,11 +28,29 @@ const createChatRoom = async (request, response) => {
       throw new ApiError(403, "You are not a team leader");
     }
 
+    const teamMembersUserIds = await prisma.teams.findUnique({
+      where: {
+        id: teamId
+      },
+      select: {
+        members: {
+          select: {
+            userId: true
+          }
+        }
+      }
+    });
+
+    const arrayOfTeamMembersUserIds = teamMembersUserIds.members.map((member) => member.userId);
+
     const chatRoom = await prisma.chat.create({
       data: {
         teamId: teamId,
         title: title,
-        about: about
+        about: about,
+        members: {
+          connect: arrayOfTeamMembersUserIds.map((userId) => ({ userId: userId }))
+        }
       }
     });
 
@@ -328,6 +348,14 @@ const sendMessage = async (request, response) => {
           chatId: chatRoomId,
           userId: userId,
           message: message
+        },
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true
+            }
+          }
         }
       })
 
@@ -336,6 +364,27 @@ const sendMessage = async (request, response) => {
 
     if (!createMessage) {
       throw new ApiError(500, "Failed to send message");
+    }
+
+    const userIdsOfChatRoomMembers = await prisma.chat.findUnique({
+      where: {
+        id: chatRoomId
+      },
+      select: {
+        members: {
+          select: {
+            userId: true
+          }
+        }
+      }
+    })
+
+    const aarrayOfUserIds = userIdsOfChatRoomMembers.members.map(member => member.userId).filter(id => id !== userId);
+
+    const receiverSocketIds = getReceiverSocketIds(aarrayOfUserIds);
+
+    if (receiverSocketIds.length > 0) {
+      io.to(receiverSocketIds).emit("newMessage", createMessage);
     }
 
     response.status(200).json(
@@ -400,11 +449,42 @@ const updateMessage = async (request, response) => {
         },
         data: {
           message: message
+        },
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true
+            }
+          }
         }
       })
 
       return updatedMessage
     })
+
+    const chatRoomId = updatedMessage.chatId;
+
+    const userIdsOfChatRoomMembers = await prisma.chat.findUnique({
+      where: {
+        id: chatRoomId
+      },
+      select: {
+        members: {
+          select: {
+            userId: true
+          }
+        }
+      }
+    })
+
+    const aarrayOfUserIds = userIdsOfChatRoomMembers.members.map(member => member.userId).filter(id => id !== userId);
+
+    const receiverSocketIds = getReceiverSocketIds(aarrayOfUserIds);
+
+    if (receiverSocketIds.length > 0) {
+      io.to(receiverSocketIds).emit("updatedMessage", updatedMessage);
+    }
 
     if (!updatedMessage) {
       throw new ApiError(500, "Failed to update message");
@@ -477,6 +557,32 @@ const deleteMessage = async (request, response) => {
       throw new ApiError(500, "Failed to delete message");
     }
 
+    const chatRoomId = deletedMessage.chatId;
+
+    const userIdsOfChatRoomMembers = await prisma.chat.findUnique({
+      where: {
+        id: chatRoomId
+      },
+      select: {
+        members: {
+          select: {
+            userId: true
+          }
+        }
+      }
+    })
+
+    const aarrayOfUserIds = userIdsOfChatRoomMembers.members.map(member => member.userId).filter(id => id !== userId);
+
+    const receiverSocketIds = await getReceiverSocketIds(aarrayOfUserIds);
+
+    if (receiverSocketIds.length > 0) {
+      io.to(receiverSocketIds).emit("messageDeleted", deletedMessage);
+      console.log(`receiverSocketIds`, receiverSocketIds);
+    }
+
+    console.log(`deletedMessage`, deletedMessage);
+
     response.status(200).json(
       new ApiResponse(200, {
         message: deletedMessage
@@ -494,7 +600,7 @@ const deleteMessage = async (request, response) => {
 
 }
 
-// pagination with limit of 20 messages
+// pagination with limit of 20 messages from 2nd request on first request it should be 40 as user scroll in last 20 api should be hit
 const getMessages = async (request, response) => {
 
   try {
@@ -502,14 +608,16 @@ const getMessages = async (request, response) => {
     const chatRoomId = request.params.chatRoomId;
     const userId = request.user.userId;
     const teamId = request.params.teamId;
+    const limit = parseInt(request.query.limit)  || 20;
+    const beforeMessageId = request.query.beforeMessageId;
+
+    console.log(`beforeMessageId`, beforeMessageId);
 
     if (!chatRoomId) {
       throw new ApiError(400, "Please provide chat room id");
     }
 
     const messages = await prisma.$transaction(async (prismaTx) => {
-
-
 
       const isMember = await isTeamMember(teamId, userId);
 
@@ -528,9 +636,32 @@ const getMessages = async (request, response) => {
         throw new ApiError(404, "Chat room not found");
       }
 
+      let cursorCondition = {};
+
+      if (beforeMessageId) {
+
+        console.log(`triggered`);
+        const beforeMessage = await prismaTx.message.findUnique({
+          where: {
+            id: beforeMessageId
+          }
+        })
+
+        if (!beforeMessage) {
+          throw new ApiError(404, "Invalid before message id");
+        }
+
+        cursorCondition = {
+          createdAt: {
+            lt: beforeMessage.createdAt
+          }
+        };
+      }
+
       const messages = await prismaTx.message.findMany({
         where: {
           chatId: chatRoomId,
+          ...cursorCondition,
         },
         include: {
           user: {
@@ -543,11 +674,13 @@ const getMessages = async (request, response) => {
         orderBy: {
           createdAt: "desc"
         },
-        take: 20
+        take: limit
       })
 
       return messages
     })
+
+    const messagesInReverseOrder = messages.reverse();
 
     if (!messages) {
       throw new ApiError(500, "Failed to get messages in chat");
@@ -555,7 +688,7 @@ const getMessages = async (request, response) => {
 
     response.status(200).json(
       new ApiResponse(200, {
-        messages: messages
+        messages: messagesInReverseOrder
       }, "Messages fetched successfully")
     )
 

@@ -697,6 +697,31 @@ const acceptTeamInvitation = async (request, response) => {
             }
           }
         })
+
+        const chatRoomIdOfTeams = await prisma.chat.findMany({
+          where: {
+            teamId: invitation.teamId,
+            isActive: true
+          },
+          select: {
+            id: true
+          }
+        });
+
+        for (const chat of chatRoomIdOfTeams) {
+          await prisma.chat.update({
+            where: {
+              id: chat.id
+            },
+            data: {
+              members: {
+                connect: {
+                  userId: invitation.memberId
+                }
+              }
+            }
+          })
+        }
       }
 
       const partOfTeam = await prisma.user.findUnique({
@@ -891,6 +916,12 @@ const removeMemberFromTeam = async (request, response) => {
       throw new ApiError(400, "No valid roles to remove (TEAM_LEADER role cannot be removed)");
     }
 
+    const userIdOfMembersToBeRemoved = rolesToRemoveWithoutLeader[0]?.userId
+
+    if (!userIdOfMembersToBeRemoved) {
+      throw new ApiError(400, "No valid roles to remove");
+    }
+    
     const removeMembers = await prisma.$transaction(async (prisma) => {
 
       await prisma.userRoleInTeam.updateMany({
@@ -901,6 +932,56 @@ const removeMemberFromTeam = async (request, response) => {
           isActive: false
         },
       });
+
+      const noRoleExists = await prisma.userRoleInTeam.findMany({
+        where: {
+          teamId: teamId,
+          isActive: true,
+          userId: userIdOfMembersToBeRemoved
+        }
+      })
+
+      if (noRoleExists.length === 0) {
+
+        await prisma.teams.update({
+          where: {
+            id: teamId
+          },
+          data: {
+            members: {
+              disconnect: {
+                userId: userIdOfMembersToBeRemoved
+              }
+            }
+          }
+        })
+
+        const chatRoomIdOfTeams = await prisma.chat.findMany({
+          where: {
+            teamId: teamId
+          },
+          select: {
+            id: true
+          }
+        });
+
+        console.log(`chatRoomIdOfTeams`, chatRoomIdOfTeams);
+
+        for (const chat of chatRoomIdOfTeams) {
+          await prisma.chat.update({
+            where: {
+              id: chat.id
+            },
+            data: {
+              members: {
+                disconnect: {
+                  userId: userIdOfMembersToBeRemoved
+                }
+              }
+            }
+          })
+        }
+      }
 
       await prisma.teamsEditLog.createMany({
         data: rolesToRemoveWithoutLeader.map(role => ({
@@ -2146,3 +2227,4 @@ export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancel
 // Remove pending request or invitation on last member accepted a request or invitation
 // implementation of leave multiple team desgination
 // update request sent to team join for different role in team from existing member
+

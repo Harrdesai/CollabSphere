@@ -8,7 +8,6 @@ import DashboardWrapper from './DashboardWrapper.tsx'
 import { ThemeProvider } from "@/components/theme-provider"
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
     <BrowserRouter>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
     <DashboardWrapper>
@@ -16,5 +15,4 @@ createRoot(document.getElementById('root')!).render(
     </DashboardWrapper>
     </ThemeProvider>
     </BrowserRouter>
-  </StrictMode>,
 )

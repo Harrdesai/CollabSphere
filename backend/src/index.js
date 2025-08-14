@@ -1,5 +1,7 @@
-import app from './app.js'
+// src/index.js
+
 import dotenv from 'dotenv'
+import { httpServer } from './utils/socket.js'
 
 dotenv.config({
   path: './.env'
@@ -7,6 +9,6 @@ dotenv.config({
 
 const port = process.env.PORT
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })

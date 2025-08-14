@@ -38,7 +38,7 @@ export interface NoticeProps {
 }
 
 const TeamLeaderHomePage = () => {
-  const { authUserDetails, getUserDetails } = useAuthStore();
+  const { authUserDetails, getUserDetails, socket } = useAuthStore();
   const { fetchPendingInvitations, pendingInvitations, acceptTeamJoiningRequest, isLoading } = useInvitationStore();
   const { fetchTimelineOfTeam, timelineDetails, isTimelineLoading } = useTimelineStore();
 

@@ -2,9 +2,17 @@
 import { axiosInstance } from "@/lib/axios";
 import type { AxiosError } from "axios";
 import { create } from "zustand";
+import { useAuthStore } from "./useAuthStore"
+import type { ChatMessage } from "@/components/chatComponent";
 
 interface chatState {
   isLoading: boolean;
+  activeChatRoomId: string | null;
+  chatMessages: ChatMessage[];
+  hasMoreMessages: boolean;
+  
+  fetchMessages: (teamId: string, chatRoomId: string, beforeMessageId?: string, limit?: number) => Promise<any>;
+
   sendMessage: (chatId:string, teamId:string, message:any) => Promise<any>;
   updateMessage: ( teamId:string, messageId:string, message:any) => Promise<any>;
   deleteMessage: ( teamId:string, messageId:string) => Promise<any>;
@@ -12,17 +20,80 @@ interface chatState {
   createChatRoom: (teamId:string, chatRoomDetails:any) => Promise<any>;
   updateChatRoomDetails: (teamId:string, chatRoomId:string, chatRoomDetails:any) => Promise<any>;
   deleteChatRoom: (teamId:string, chatRoomId:string) => Promise<any>;
+
+  subscribeToEvent: () => void;
+  unsubscribeFromEvent: () => void;
 }
 
-const useChatStore = create<chatState> ((set) => ({
+const useChatStore = create<chatState> ((set, get) => ({
   isLoading: false,
+  chatMessages: [],
+  activeChatRoomId: null,
+  hasMoreMessages: true,
   
+  fetchMessages: async ( teamId, chatRoomId, beforeMessageId, limit) => {
+
+    // set({ isLoading: true });
+
+    try {
+      
+      if ((get().hasMoreMessages === false) && (get().activeChatRoomId === chatRoomId)) return;
+      
+      set({ activeChatRoomId: chatRoomId });
+
+      set({ hasMoreMessages: true });
+
+      const limitToUse = limit || (beforeMessageId ? 20 : 40);
+
+      let url = `/${teamId}/chat/${chatRoomId}/messages?&limit=${limitToUse}` ;
+
+      if (beforeMessageId) {
+        url += `&beforeMessageId=${beforeMessageId}`;
+      }
+
+      const response = await axiosInstance.get(url);
+
+      const fetchedMessages = response.data.data.messages;
+
+      if (fetchedMessages.length < limitToUse) {
+        set({ hasMoreMessages: false });
+      }
+
+      set (( state ) => {
+
+        if(beforeMessageId) {
+          const existingMessages = new Set (state.chatMessages.map(msg => msg.id));
+
+          const newMessages = fetchedMessages.filter((msg : ChatMessage) => !existingMessages.has(msg.id));
+
+          return { chatMessages: [...newMessages, ...state.chatMessages] };
+
+        } else {
+
+          return { chatMessages: fetchedMessages };
+        }
+      })
+
+      
+    } catch (error: AxiosError | any) {
+      console.log("❌ Error fetching messages", error);
+
+    } finally {
+      // set({ isLoading: false });
+    }
+  },
+
   sendMessage: async (chatId, teamId, message) => {
+    
     set({ isLoading: true });
 
     try {
 
       const response = await axiosInstance.post(`/${teamId}/chat/${chatId}/send-message`, message );
+
+      console.log(`response of sending message`, response.status);
+      
+      set ({ chatMessages: [...get().chatMessages, response.data.data.message] });
       return response;
 
     } catch (error: AxiosError | any) {
@@ -39,8 +110,10 @@ const useChatStore = create<chatState> ((set) => ({
 
     try {
       const response = await axiosInstance.post(`/${teamId}/chat/update-message/${messageId}`, message );
-      return response;
+      
+      set ({ chatMessages: get().chatMessages.map((msg) => ((msg.id === messageId) ? response.data.data.message : msg) ) });
 
+      return response;
     } catch (error: AxiosError | any) {
       console.log("❌ Error sending chat message", error);
       return error.response.data;
@@ -56,6 +129,9 @@ const useChatStore = create<chatState> ((set) => ({
     try {
       
       const response = await axiosInstance.delete(`/${teamId}/chat/delete-message/${messageId}`);
+
+      set ({ chatMessages: get().chatMessages.filter((msg) => msg.id !== messageId) });
+
       return response;
 
     } catch (error: AxiosError | any) {
@@ -115,7 +191,58 @@ const useChatStore = create<chatState> ((set) => ({
       set({ isLoading: false });
     }
   },
+
+  subscribeToEvent: () => {
+    const { activeChatRoomId } = get(); 
+
+    console.log(`activeChatRoomId`, activeChatRoomId);
+
+    if (!activeChatRoomId) return
+
+    const socket = useAuthStore.getState().socket;
+
+    console.log(`socket value is ${socket?.id}`);
+
+    socket?.on("newMessage", (newMessage) => {
+      console.log(`new message from socket--------------`, newMessage);
+
+      if(newMessage.chatId === activeChatRoomId) {
+        set((state) => ({
+          chatMessages: [...state.chatMessages, newMessage],
+        }));
+      }
+    });
+
+    socket?.on("updatedMessage", (updatedMessage) => {
+      console.log(`updated message from socket--------------`, updatedMessage);
+      if(updatedMessage.chatId === activeChatRoomId) {
+        set((state) => ({
+          chatMessages: state.chatMessages.map((message) => {
+            if (message.id === updatedMessage.id) {
+              return updatedMessage;
+            }
+            return message;
+          }),
+        }));
+      }
+    });
+
+    socket?.on("messageDeleted", (deletedMessage) => {
+      console.log(`deleted message from socket--------------`, deletedMessage);
+      if(deletedMessage.chatId === activeChatRoomId) {
+        set((state) => ({
+          chatMessages: state.chatMessages.filter((message) => message.id !== deletedMessage.id),
+        }));
+      }
+    });
+  },
   
+  unsubscribeFromEvent: () => {
+    const socket = useAuthStore.getState().socket;
+    socket?.off("newMessage");
+  },
 }))
+
+
 
 export default useChatStore

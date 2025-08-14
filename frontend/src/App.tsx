@@ -20,9 +20,10 @@ import Trial from './page/trial';
 
 function App() {
 
-  const { authUser, checkAuth, } = useAuthStore()
+  const { authUser, checkAuth, onlineUsers } = useAuthStore()
   const [isAuthChecked, setIsAuthChecked] = useState(false);
 
+  console.log(onlineUsers);
   useEffect(() => {
     checkAuth().finally(() => {
       setIsAuthChecked(true);

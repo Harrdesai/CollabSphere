@@ -16,6 +16,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import GitHubCalendar from 'react-github-calendar';
 
 import useMemberStore from "@/store/useMember.store";
+import { useAuthStore } from "@/store/useAuthStore";
 import ExpandableText from "@/components/ExpandableText";
 import SendInvitationModal from "@/components/Modals/sendInvitationModal";
 import { useTheme } from "@/components/theme-provider";
@@ -29,6 +30,7 @@ const MembersProfile = () => {
   const { memberProfile, isLoading, fetchMemberProfile } = useMemberStore();
   const [isSendInvitationModalOpen, setIsSendInvitationModalOpen] = useState(false);
   const [showInviteButton, setShowInviteButton] = useState(true);
+  const { onlineUsers } = useAuthStore();
 
   const handleModalOpen = () => {
     setIsSendInvitationModalOpen(true);
@@ -51,14 +53,14 @@ const MembersProfile = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(`memberProfile---------------`, memberProfile);
+  console.log(`memberProfile---------------${onlineUsers}`, memberProfile);
   return (
     <Card className="flex w-full flex-row rounded-3xl items-center gap-2 p-2 h-[88vh]">
       {memberProfile && (
         <ScrollArea className="flex w-full flex-col h-full border-none shadow-none">
           <Card className="flex flex-col w-full gap-2 p-2 bg-stone-50 dark:bg-transparent">
             <CardHeader className="flex w-full p-0">
-            <CardTitle className="flex gap-2 pl-4 pb-0 pr-4 text-2xl text-primary">
+            <CardTitle className="flex gap-2 pl-4 pb-0 pr-1 text-2xl text-primary">
               {memberProfile.firstName} {memberProfile.lastName}
               {memberProfile.isTeamLeader && (
                 <Label className="border-2 rounded-full bg-muted px-2 py-1 h-6 m-1">
@@ -67,6 +69,11 @@ const MembersProfile = () => {
                 </Label>
               )}
             </CardTitle>
+              {onlineUsers.includes(memberProfile.userId) && (
+                <Label className="border-2 rounded-full text-foreground bg-green-500/40 px-2 py-1 h-6 m-1">
+                  Online
+                </Label>
+              )}
             {showInviteButton && (
               <Button className="py-4 items-center" onClick={handleModalOpen}>
                 <PlusCircle />

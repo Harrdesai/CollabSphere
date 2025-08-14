@@ -60,6 +60,7 @@ const searchedUserLists = async (request, response) => {
     const users = await prisma.user.findMany({
       where: {
         isActive: true,
+        userId: { not: userId },
         AND: [
           {
             OR: [

@@ -2,7 +2,7 @@
 
 import express from 'express';
 import { authMiddleware } from '../middleware/auth.middleware.js';
-import { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser, getTeamDetail } from '../controllers/teams.controllers.js'
+import { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, getTimelineOfTeam, getTimelineOfUser, getTeamDetail } from '../controllers/teams.controllers.js'
 
 const teamsRoutes = express.Router();
 
@@ -41,10 +41,6 @@ teamsRoutes.get('/list-of-teams', authMiddleware, getTeams);
 teamsRoutes.get('/:teamId/get-team-details', authMiddleware, getTeamDetails);
 
 teamsRoutes.post('/:teamId/assign-role', authMiddleware, assignNewRoleToExistingMember);
-
-teamsRoutes.post('/create-tag', authMiddleware, createTag);
-
-teamsRoutes.post('/update-tag', authMiddleware, updateTag);
 
 teamsRoutes.get('/:teamId/get-team-members', authMiddleware, getListOfTeamMembers);
 

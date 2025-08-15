@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import teamSchema from "@/zodSchema/teamSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BookOpen, Plus, Trash2 } from "lucide-react";
@@ -17,6 +16,8 @@ import useTeamStore from "@/store/useTeam.store";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import type { z } from "zod";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import AddNewTagModal from "../addNewTag";
 
 export interface createTeamModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ type TeamFormType = z.infer<typeof teamSchema>;
 
 const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
   const { isTagLoading, tags, fetchAllTags } = useTagStore();
+  const [addNewTagModalOpen, setAddNewTagModalOpen] = useState(false);
   const { isLoading, createTeam } = useTeamStore();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -62,8 +64,14 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
 
   useEffect(() => {
     fetchAllTags();
-  }, [isOpen]);
+    team.reset();
+    setErrorMessage(null);
+  }, [isOpen, addNewTagModalOpen]);
 
+  const handleAddNewTag = () => {
+    setAddNewTagModalOpen(true);
+  };
+  
   const onSubmit = async (data: any) => {
     console.log(`Data: ${JSON.stringify(data)}`);
 
@@ -192,27 +200,31 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
                     name={`tags.${index}`}
                     render={({ field }) => (
                       <FormItem>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
+                        <DropdownMenu>
                           <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a verified email to display" />
-                            </SelectTrigger>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="outline" className="border-primary">
+                                {field.value ? tags.find((tag: { id: string }) => tag.id === field.value)?.name : "Select a tag"}
+                              </Button>
+                            </DropdownMenuTrigger>
                           </FormControl>
-                          <SelectContent>
+                          <DropdownMenuContent>
                             {isTagLoading ? (
                               <p>Loading...</p>
                             ) : (
                               tags.map((tag: { id: string; name: string }) => (
-                                <SelectItem key={tag.id} value={tag.id}>
+                                <DropdownMenuItem key={tag.id} onSelect={() => field.onChange(tag.id)}>
                                   {tag.name}
-                                </SelectItem>
+                                </DropdownMenuItem>
                               ))
                             )}
-                          </SelectContent>
-                        </Select>
+                            <DropdownMenuItem onSelect={() => handleAddNewTag()}
+                              className="font-semibold bg-primary text-secondary">
+                              <Plus className="w-4 h-4 mr-1 text-secondary " />
+                              Add New Tag
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -239,6 +251,12 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
           </form>
         </Form>
       </DialogContent>
+      {addNewTagModalOpen && (
+        <AddNewTagModal
+          isOpen={addNewTagModalOpen}
+          onClose={() => setAddNewTagModalOpen(false)}
+        />
+      )}
     </Dialog>
   );
 };

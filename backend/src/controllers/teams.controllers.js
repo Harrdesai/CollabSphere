@@ -1932,94 +1932,6 @@ const getListOfTeamMembers = async (request, response) => {
 
 }
 
-// Tags controllers
-const createTag = async (request, response) => {
-
-  try {
-
-    const { tagName } = request.body;
-
-    if (!tagName) {
-      throw new ApiError(400, "Tag is required");
-    }
-
-    const isTagAlreadyCreated = await prisma.tag.findFirst({
-      where: {
-        name: tagName.toLowerCase().trim().split(" ").join("")
-      }
-    })
-
-    if (isTagAlreadyCreated) {
-      throw new ApiError(400, "Tag already exists");
-    }
-
-    const newTag = await prisma.tag.create({
-      data: {
-        name: tagName.toLowerCase().trim().split(" ").join("")
-      }
-    })
-
-    response.status(200).json(
-      new ApiResponse(200, {
-        tag: newTag
-      }, `Tag : ${tagName} created successfully`)
-    )
-
-  } catch (error) {
-
-    response.status(error.statusCode || 500).json(
-      new ApiError(error.statusCode || 500, "Error while creating tag", {
-        error: error.message
-      })
-    )
-
-  }
-}
-
-const updateTag = async (request, response) => {
-
-  try {
-
-    const { updatedName, oldName } = request.body;
-
-    if (!updatedName || !oldName) {
-      throw new ApiError(400, "new name and tag is required");
-    }
-
-    const tagId = await prisma.tag.findUnique({
-      where: {
-        name: oldName.toLowerCase().trim().split(" ").join("")
-      },
-      select: {
-        id: true
-      }
-    })
-    const updatedTag = await prisma.tag.update({
-      where: {
-        id: tagId.id
-      },
-      data: {
-        name: updatedName.toLowerCase().trim().split(" ").join("")
-      }
-    })
-
-    response.status(200).json(
-      new ApiResponse(200, {
-        tag: updatedTag
-      }, `Tag : ${updatedName} updated successfully`)
-    )
-
-  } catch (error) {
-
-    response.status(error.statusCode || 500).json(
-      new ApiError(error.statusCode || 500, "Error while updating tag", {
-        error: error.message
-      })
-    )
-
-  }
-}
-
 // access the list of past members
 const getTimelineOfTeam = async (request, response) => {
 
@@ -2220,7 +2132,7 @@ const getTeamDetail = async (request, response) => {
 
 }
 
-export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, createTag, updateTag, getTimelineOfTeam, getTimelineOfUser, getTeamDetail };
+export { createTeam, deleteTeam, modifyTeamDetails, sendInviteToJoinTeam, cancelTeamInvitation, acceptTeamInvitation, rejectTeamInvitation, getListOfPendingTeamInvitations, removeMemberFromTeam, sendRequestToJoinTeam, cancelTeamJoiningRequest, acceptTeamJoiningRequest, rejectTeamJoiningRequest, getListOfPendingTeamJoiningRequests, resign, getTeams, getTeamDetails, assignNewRoleToExistingMember, getListOfTeamMembers, getTimelineOfTeam, getTimelineOfUser, getTeamDetail };
 
 
 // implementaion of isActive field in UserRoleInTeam

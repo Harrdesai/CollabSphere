@@ -12,7 +12,7 @@ const createTeam = async (request, response) => {
 
   try {
 
-    const { title, about, link = [], tags: ArrayOfTagIds = [] } = request.body;
+    const { title, about, link = [], tags = [] } = request.body;
 
     const teamLeaderId = request.user.userId;
 
@@ -72,10 +72,17 @@ const createTeam = async (request, response) => {
         }
       });
 
-      if (ArrayOfTagIds.length > 0) {
-        newTeam.tags = {
-          connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
-        };
+      if (tags.length > 0) {
+        await prisma.teams.update({
+          where: {
+            id: newTeam.id
+          },
+          data: {
+            tags: {
+              connect: tags.map((tag) => ({ id: tag.id }))
+            }
+          }
+        });
       }
 
       await prisma.user.update({
@@ -159,7 +166,7 @@ const modifyTeamDetails = async (request, response) => {
 
   try {
 
-    const { title, about, link = [], tags: ArrayOfTagIds = [] } = request.body;
+    const { title, about, link = [], tags = [] } = request.body;
     const teamId = request.params.teamId;
     const userId = request.user.userId;
 
@@ -211,7 +218,7 @@ const modifyTeamDetails = async (request, response) => {
           about,
           link,
           tags: {
-            connect: ArrayOfTagIds.map((tagId) => ({ id: tagId }))
+            connect: tags.map((tag) => ({ id: tag.id })),
           }
         },
         include: {

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,7 +17,6 @@ import useTeamStore from "@/store/useTeam.store";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import type { z } from "zod";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import AddNewTagModal from "../addNewTag";
 
 export interface createTeamModalProps {
@@ -39,7 +39,7 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
       title: "",
       about: "",
       link: [{ name: "", url: "" }],
-      tags: [""],
+      tags: [{ id: "", name: "" }],
     },
   });
 
@@ -66,7 +66,11 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
     fetchAllTags();
     team.reset();
     setErrorMessage(null);
-  }, [isOpen, addNewTagModalOpen]);
+  }, [isOpen]);
+
+  useEffect(() => {
+      fetchAllTags();
+  }, [addNewTagModalOpen]);
 
   const handleAddNewTag = () => {
     setAddNewTagModalOpen(true);
@@ -187,7 +191,7 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
             <FormLabel>
               <BookOpen className="w-5 h-5" />
               Tags
-              <Button type="button" onClick={() => appendTag("")}>
+              <Button type="button" onClick={() => appendTag({ id: "", name: "" })}>
                 <Plus className="w-4 h-4 mr-1" />
                 Add Tag
               </Button>
@@ -204,7 +208,7 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
                           <FormControl>
                             <DropdownMenuTrigger asChild>
                               <Button variant="outline" className="border-primary">
-                                {field.value ? tags.find((tag: { id: string }) => tag.id === field.value)?.name : "Select a tag"}
+                                {field.value && field.value.name ? field.value.name : "Select Tag"}
                               </Button>
                             </DropdownMenuTrigger>
                           </FormControl>
@@ -213,7 +217,7 @@ const CreateTeamModal = ({ isOpen, onClose }: createTeamModalProps) => {
                               <p>Loading...</p>
                             ) : (
                               tags.map((tag: { id: string; name: string }) => (
-                                <DropdownMenuItem key={tag.id} onSelect={() => field.onChange(tag.id)}>
+                                <DropdownMenuItem key={tag.id} onSelect={() => field.onChange({ id: tag.id, name: tag.name})}>
                                   {tag.name}
                                 </DropdownMenuItem>
                               ))

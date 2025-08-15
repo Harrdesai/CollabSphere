@@ -1,7 +1,8 @@
 // src/components/Modals/updateTeamDetailsModal.tsx
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Card, CardContent } from "@/components/ui/card";
 import { useFieldArray, useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -15,8 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import teamSchema from "@/zodSchema/teamSchema";
 import { Textarea } from "../ui/textarea";
 import { BookOpen, Plus, Trash2 } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import useTagStore from "@/store/useTag.store";
+import AddNewTagModal from "./addNewTag";
 
 export interface UpdateTeamDetailsModalProps {
   isOpen: boolean;
@@ -26,6 +27,7 @@ export interface UpdateTeamDetailsModalProps {
 const UpdateTeamDetailsModal = ({ isOpen, onClose, teamId }: UpdateTeamDetailsModalProps) => {
 
   const {fetchTeamDetails, updateTeamDetails, teamDetail, isLoading} = useTeamStore();
+    const [addNewTagModalOpen, setAddNewTagModalOpen] = useState(false);
   const { isTagLoading, tags, fetchAllTags } = useTagStore();
 
   useEffect(() => {
@@ -34,13 +36,21 @@ const UpdateTeamDetailsModal = ({ isOpen, onClose, teamId }: UpdateTeamDetailsMo
     fetchAllTags()
   }, [teamId]);
 
+  useEffect(() => {
+      fetchAllTags();
+  }, [addNewTagModalOpen]);
+
+  const handleAddNewTag = () => {
+    setAddNewTagModalOpen(true);
+  };
+
   {console.log(`teamDetail`, teamDetail)};
   const updateTeamForm = useForm<z.infer<typeof teamSchema>>({
     resolver: zodResolver(teamSchema),
     defaultValues: {
       title: "",
       about: "",
-      tags: [],
+      tags: [{ id: "", name: "" }],
       link: [{ name: "", url: "",}],
     },
   });
@@ -50,7 +60,7 @@ const UpdateTeamDetailsModal = ({ isOpen, onClose, teamId }: UpdateTeamDetailsMo
     updateTeamForm.reset({
       title: teamDetail.title || "",
       about: teamDetail.about || "",
-      tags: teamDetail.tags?.map((tag:any) => tag.id) || [],
+      tags: teamDetail.tags? teamDetail.tags.map((tag: { id: string; name: string }) => ({ id: tag.id, name: tag.name })) : [{ id: "", name: "" }],
       link: teamDetail.link || [{ name: "", url: "",}],
     });
   }
@@ -180,7 +190,7 @@ const UpdateTeamDetailsModal = ({ isOpen, onClose, teamId }: UpdateTeamDetailsMo
               <FormLabel>
                 <BookOpen className="w-5 h-5" />
                 Tags
-                <Button type="button" onClick={() => appendTag("")}>
+                <Button type="button" onClick={() => appendTag({ id: "", name: "" })}>
                   <Plus className="w-4 h-4 mr-1" />
                   Add Tag
                 </Button>
@@ -193,27 +203,31 @@ const UpdateTeamDetailsModal = ({ isOpen, onClose, teamId }: UpdateTeamDetailsMo
                       name={`tags.${index}`}
                       render={({ field }) => (
                         <FormItem>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
+                          <DropdownMenu>
                             <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a tag" />
-                              </SelectTrigger>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" className="border-primary">
+                                  {field.value && field.value.name ? field.value.name : "Select Tag"}
+                                </Button>
+                              </DropdownMenuTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <DropdownMenuContent>
                               {isTagLoading ? (
                                 <p>Loading...</p>
                               ) : (
                                 tags.map((tag: { id: string; name: string }) => (
-                                  <SelectItem key={tag.id} value={tag.id}>
+                                  <DropdownMenuItem key={tag.id} onSelect={() => field.onChange({ id: tag.id, name: tag.name})}>
                                     {tag.name}
-                                  </SelectItem>
+                                  </DropdownMenuItem>
                                 ))
                               )}
-                            </SelectContent>
-                          </Select>
+                              <DropdownMenuItem onSelect={() => handleAddNewTag()}
+                                className="font-semibold bg-primary text-secondary">
+                                <Plus className="w-4 h-4 mr-1 text-secondary" />
+                                Add New Tag
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -244,6 +258,12 @@ const UpdateTeamDetailsModal = ({ isOpen, onClose, teamId }: UpdateTeamDetailsMo
           
         </DialogFooter>
       </DialogContent>
+      {addNewTagModalOpen && (
+        <AddNewTagModal
+          isOpen={addNewTagModalOpen}
+          onClose={() => setAddNewTagModalOpen(false)}
+        />
+      )}
     </Dialog>
   )
 }
